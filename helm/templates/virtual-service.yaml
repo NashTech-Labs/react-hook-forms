@@ -1,14 +1,14 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
-  name: { { .Values.gateway.name } }
-  namespace: { { .Values.gateway.namespace } }
+  name: {{.Values.gateway.name}}
+  namespace: {{ .Values.gateway.namespace }}
 spec:
   selector:
     istio: ingressgateway
   servers:
     - hosts:
-        - { { .Values.gateway.host } }
+        - {{ .Values.gateway.host }}
       port:
         name: http
         number: 80
@@ -21,18 +21,18 @@ spec:
         mode: SIMPLE
         credentialName: cluster-certs
       hosts:
-        - { { .Values.gateway.host } }
+        - {{ .Values.gateway.host }}
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: { { .Values.virtualService.name } }
-  namespace: { { .Values.gateway.namespace } }
+  name: {{ .Values.virtualService.name }}
+  namespace: {{ .Values.gateway.namespace }}
 spec:
   gateways:
-    - { { .Values.gateway.name } }
+    - {{ .Values.gateway.name }}
   hosts:
-    - { { .Values.gateway.host } }
+    - {{ .Values.gateway.host }}
   http:
     - name: bo-panel
       match:
@@ -40,6 +40,6 @@ spec:
             prefix: "/"
       route:
         - destination:
-            host: { { .Values.virtualService.hostone } }
+            host: {{ .Values.virtualService.hostone }}
             port:
               number: 3000
