@@ -1,0 +1,8 @@
+apiVersion: gial.gial.lblw.dev/v1
+kind: Hostname
+metadata:
+  name: {{ .Values.gateway.host }}
+  namespace: {{ .Values.gateway.namespace }}
+spec:
+  zone: "private"
+  hostrule: "bluenose-default"

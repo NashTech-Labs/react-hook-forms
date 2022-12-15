@@ -1,0 +1,120 @@
+image: node:16.13
+
+stages:
+  - INSTALL
+  # - LINT & UNIT
+  - BUILD
+  - SONAR
+
+INSTALL:
+  stage: INSTALL
+  script:
+    - echo "Installing node modules..."
+    - npm cache clean --force
+    - npm config set @lds:registry https://gitlab.lblw.ca/api/v4/packages/npm/
+    - npm config set '//gitlab.lblw.ca/api/v4/packages/npm/:_authToken' "$CI_JOB_TOKEN"
+    - npm config set '//gitlab.lblw.ca/api/v4/projects/1758/packages/npm/:_authToken' "$CI_JOB_TOKEN"
+    - npm config set @sdm:registry https://gitlab.lblw.ca/api/v4/packages/npm/
+    - npm config set '//gitlab.lblw.ca/api/v4/projects/1840/packages/npm/:_authToken' "$CI_JOB_TOKEN"
+    - npm ci
+  artifacts:
+    paths:
+      - node_modules
+
+# LINTING:
+#   stage: LINT & UNIT
+#   dependencies:
+#     - INSTALL
+#   needs: ["INSTALL"]
+#   script:
+#     - echo "Linting...."
+#     - npm run lint
+#   after_script:
+#     - echo "Linting completed"
+
+# TESTING_UNIT:
+#   stage: LINT & UNIT
+#   dependencies:
+#     - INSTALL
+#   needs: ["INSTALL"]
+#   script:
+#     - echo "Running uni tests ..."
+#     - npm run test
+#   after_script:
+#     - echo "==> Testing completed"
+#   artifacts:
+#     when: always
+#     name: unit_coverage
+#     paths:
+#       - coverage
+
+BUILD_DEV:
+  tags:
+    - gcp-secure
+  image: gcr.io/loblaw-gcr/google-sdk-docker
+  stage: BUILD
+  dependencies:
+    - INSTALL
+  variables:
+    PROJECT: loblaw-gcr
+    IMAGE_NAME: bo-panel-ui
+  before_script:
+    # - echo NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID=$NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID  >> .env
+    # - echo NEXT_PUBLIC_SESSION_COUNT_DOWN_TIME=$NEXT_PUBLIC_SESSION_COUNT_DOWN_TIME  >> .env
+    # - echo NEXT_PUBLIC_SESSION_IDLE_TIME_LIMIT=$NEXT_PUBLIC_SESSION_IDLE_TIME_LIMIT  >> .env
+    # - echo NEXT_PUBLIC_BFF_ENDPOINT=$NEXT_PUBLIC_BFF_DEV_ENDPOINT  >> .env
+    # - cat .env
+  script:
+    - export TAG=$CI_COMMIT_SHORT_SHA
+    - docker build . -t gcr.io/${PROJECT}/${IMAGE_NAME}:${TAG}
+    - gcloud auth activate-service-account --key-file=${service_account_key}
+    - gcloud auth configure-docker
+    - docker push gcr.io/${PROJECT}/${IMAGE_NAME}:${TAG}
+  only:
+    - develop
+
+DEPLOY_DEV:
+  image: gcr.io/loblaw-gcr/helm3:v1
+  stage: DEPLOY
+  dependencies:
+    - INSTALL
+  tags:
+    - gcp-secure
+  services:
+    - docker:dind
+  variables:
+    NAMESPACE: platform-backoffice-domain-dev
+    HELM_RELEASE_NAME: bo-panel-ui
+    HELM_CHART_PATH: helm
+    HELM_VALUES: helm/values-lower.yaml
+  before_script:
+    - gcloud auth activate-service-account --key-file=${service_account_key}
+    - gcloud auth configure-docker
+    - gcloud container clusters get-credentials bluenose --region us-east1 --project ld-shipyard
+  script:
+    - export TAG=$CI_COMMIT_SHORT_SHA
+    - kubectl get service -o wide
+    - >
+      helm upgrade --install --namespace ${NAMESPACE} ${HELM_RELEASE_NAME} ${HELM_CHART_PATH} -f ${HELM_VALUES}
+      --set image.tag=$CI_COMMIT_SHORT_SHA
+      --wait
+  only:
+    - develop
+
+SONAR:
+  stage: SONAR
+  image:
+    name: sonarsource/sonar-scanner-cli:latest
+  dependencies:
+    - TESTING_UNIT
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar" # Defines the location of the analysis task cache
+    GIT_DEPTH: "0" # Tells git to fetch all the branches of the project, required by the analysis task
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - "${CI_PROJECT_DIR}/.sonar/cache"
+  script:
+    - sonar-scanner -Dsonar.qualitygate.wait=true
+  allow_failure: true
+  when: manual

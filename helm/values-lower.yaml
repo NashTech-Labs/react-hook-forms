@@ -1,0 +1,59 @@
+# This values file is for deploying the app to the lower environment.
+
+deployment:
+  replicaCount: 1
+  app: "bo-panel-ui"
+  image: gcr.io/loblaw-gcr/bo-panel-ui
+  imagePullPolicy: Always
+  readinessProbe:
+    scheme: HTTP
+    path: /fesvc/health
+    port: 3000
+    initialDelaySeconds: 10
+    periodSeconds: 5
+  resources:
+    limits: # default limit
+      cpu: "2"
+      memory: 1Gi
+    requests: # 2x the defaults
+      cpu: 200m
+      memory: 256Mi
+
+#explicity security config such that processes running in container have limited access to the container OS/file system
+securityContext:
+  enabled: true
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 3000
+  fsGroup: 2000
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 3
+  averageCPUUtilization: 85
+  averageMemoryUtilization: 85
+
+rollingUpdate:
+  maxSurge: 25%
+  maxUnavailable: 25%
+
+image:
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 3000
+
+gateway:
+  host: bo-panel-dev.loblaw.digital
+  name: bo-panel
+  namespace: platform-backoffice-domain-dev
+
+virtualService:
+  name: bo-panel
+  hostone: back-office-customer-support-ui
+
+envMap:
+  key: "value"
