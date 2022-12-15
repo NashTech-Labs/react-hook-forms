@@ -4,6 +4,7 @@ stages:
   - INSTALL
   # - LINT & UNIT
   - BUILD
+  - DEPLOY
   - SONAR
 
 INSTALL:
