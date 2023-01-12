@@ -2,11 +2,15 @@ import React from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import { useRouter } from "next/router";
 import Grid from "@mui/material/Grid";
+import { useAppDispatch } from "../../store/index";
+import { userToken } from "../../store/feature/auth/authSlice";
 
 function Login() {
+  const dispatch = useAppDispatch();
   const router = useRouter();
 
   const responseGoogleSuccess = (response: any) => {
+    dispatch(userToken(response?.credential));
     if (response != null) {
       router.push("/deals");
     }

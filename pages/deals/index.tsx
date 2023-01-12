@@ -1,6 +1,6 @@
 import Deals from "../../components/Deals/Deals";
 
-export const SearchData = () => {
+export const dealsMainPage = () => {
   return <Deals />;
 };
-export default SearchData;
+export default dealsMainPage;
