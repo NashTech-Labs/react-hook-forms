@@ -1,7 +1,7 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
 
-function Deals() {
+function DealsMainPage() {
   return (
     <Grid
       container
@@ -16,4 +16,4 @@ function Deals() {
   );
 }
 
-export default Deals;
+export default DealsMainPage;

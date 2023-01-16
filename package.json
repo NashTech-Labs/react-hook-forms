@@ -11,7 +11,8 @@
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
-    "@mui/material": "^5.11.0",
+    "@mui/icons-material": "^5.11.0",
+    "@mui/material": "^5.11.4",
     "@react-oauth/google": "^0.5.1",
     "@reduxjs/toolkit": "^1.8.3",
     "@types/node": "18.11.15",
@@ -19,6 +20,7 @@
     "@types/react-dom": "18.0.9",
     "eslint": "8.29.0",
     "eslint-config-next": "13.0.6",
+    "jwt-decode": "^3.1.2",
     "next": "13.0.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",

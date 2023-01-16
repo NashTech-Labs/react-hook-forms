@@ -1,17 +1,27 @@
-import {configureStore} from "@reduxjs/toolkit";
-import {persistStore} from "redux-persist";
-import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
+import { configureStore } from "@reduxjs/toolkit";
+import authReducer from "./feature/auth/authSlice";
+import { persistReducer, persistStore } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+
+const persistauthConfig = {
+  key: "auth",
+  storage,
+};
+
+const persistedAuthReducer = persistReducer(persistauthConfig, authReducer);
 
 export const generateStore = (preloadedState = {}) => {
-    return configureStore({
-        reducer: {
-        },
-        middleware: (getDefaultMiddleware) =>
-            getDefaultMiddleware({
-                serializableCheck: false,
-            }),
-        preloadedState,
-    });
+  return configureStore({
+    reducer: {
+      user: persistedAuthReducer,
+    },
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: false,
+      }),
+    preloadedState,
+  });
 };
 
 export const store = generateStore();
@@ -24,4 +34,3 @@ export type AppDispatch = typeof store.dispatch;
 
 export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
-
