@@ -1,0 +1,42 @@
+.signoutBtn {
+    color: #ffffff;
+    padding: 8px 25px;
+    text-transform: capitalize;
+    float: right;
+}
+
+.navbar-box {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.signoutBtn:hover {
+    color: #000;
+    background-color: #e6e6e6;
+    padding: 8px 25px;
+    text-transform: capitalize;
+}
+
+.searchField {
+    background-color: #fff;
+    padding-right: 5px;
+}
+
+.MuiTab-root {
+    background-color: red;
+}
+
+.userManagement {
+    font-weight: 400;
+    font-size: 16px;
+    margin-left: 62%;
+    margin-top: 2%;
+    cursor: pointer;
+    text-decoration: underline;
+    float: left;
+}
+
+.homeIcon {
+    margin-right: 6%;
+}
