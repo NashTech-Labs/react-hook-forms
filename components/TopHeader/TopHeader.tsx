@@ -66,12 +66,12 @@ function TopHeader() {
 
   const homefn = () => {
     handleClose();
-    router.push("/search");
+    router.push("/deals");
   };
 
   const manageUsersfn = () => {
     handleClose();
-    router.push("userManagement");
+    router.push("/userManagement");
   };
 
   return (
@@ -132,7 +132,7 @@ function TopHeader() {
                       />{" "}
                       Home
                     </MenuItem>
-                    {userRole?.data?.roles?.includes("CS_ADMIN") === false ? (
+                    {userRole?.data?.roles?.includes("BO_ADMIN") ? (
                       <MenuItem onClick={manageUsersfn}>
                         <AppRegistrationIcon className={styles.homeIcon} />
                         Manage Users

@@ -4,6 +4,7 @@ import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { RolesOfUser } from "../api/getRoles";
+import { userRoleList } from "../api/getAllUsers";
 
 const persistauthConfig = {
   key: "auth",
@@ -17,11 +18,12 @@ export const generateStore = (preloadedState = {}) => {
     reducer: {
       user: persistedAuthReducer,
       [RolesOfUser.reducerPath]: RolesOfUser.reducer,
+      [userRoleList.reducerPath]: userRoleList.reducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
         serializableCheck: false,
-      }).concat([RolesOfUser.middleware]),
+      }).concat([RolesOfUser.middleware,userRoleList.middleware]),
     preloadedState,
   });
 };
