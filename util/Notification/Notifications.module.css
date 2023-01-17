@@ -1,0 +1,14 @@
+.toast-body{
+    margin: 0 !important;
+    padding: 0 10px !important;
+    width: fit-content;
+}
+
+.toast-message{
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 16px;
+    color: #2F2F2F;
+    letter-spacing:0.2px ;
+    margin: 0px;
+}

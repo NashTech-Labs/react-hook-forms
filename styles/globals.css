@@ -24,3 +24,9 @@ a {
     background: black;
   }
 }
+
+.toast-container {
+  width: fit-content !important;
+  top: 6em !important;
+}
+
