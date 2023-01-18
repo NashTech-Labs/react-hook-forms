@@ -96,7 +96,8 @@ DEPLOY_DEV:
     - export TAG=$CI_COMMIT_SHORT_SHA
     - kubectl get service -o wide
     - >
-      helm upgrade --install --namespace ${NAMESPACE} ${HELM_RELEASE_NAME} ${HELM_CHART_PATH} -f ${HELM_VALUES} --force
+      helm uninstall ${HELM_RELEASE_NAME}
+      helm upgrade --install --namespace ${NAMESPACE} ${HELM_RELEASE_NAME} ${HELM_CHART_PATH} -f ${HELM_VALUES}
       --set image.tag=$CI_COMMIT_SHORT_SHA
       --wait
   only:
