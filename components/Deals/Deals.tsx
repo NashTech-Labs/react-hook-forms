@@ -1,19 +1,19 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, {useState, useEffect, useCallback, useMemo} from "react";
 import Card from "@mui/material/Card";
-import { Box, CardContent, Grid, Typography } from "@mui/material";
+import {Box, CardContent, Grid, Typography} from "@mui/material";
 import Button from "@mui/material/Button";
 import styles from "./Deals.module.css";
-import DataTable, { TableColumn } from "react-data-table-component";
-import { useGetAllListQuery } from "../../api/getAllDeals";
+import DataTable, {TableColumn} from "react-data-table-component";
+import {useGetAllListQuery} from "../../api/getAllDeals";
 import TableLoader from "../TableLoader/TableLoader";
 import CreateIcon from "@mui/icons-material/Create";
-import { AllDealsList } from "../../api/getAllDeals";
-import { dateFormat } from "../../util/format";
+import {AllDealsList} from "../../api/getAllDeals";
+import {dateFormat} from "../../util/format";
 import Chip from "@mui/material/Chip";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 function Deals() {
-  const { data, isLoading } = useGetAllListQuery();
+  const {data, isLoading} = useGetAllListQuery();
 
   console.log(data);
 
@@ -56,7 +56,7 @@ function Deals() {
     () => [
       {
         name: "Deal",
-        width: "35%",
+        // width: "35%",
         selector: (row: any) => (
           <div className={styles.dealContent}>
             <img className={styles.dealimg} src={row.mediaUrl} />{" "}
@@ -66,8 +66,8 @@ function Deals() {
               <span>
                 {row.valid_from && row.valid_to
                   ? `${dateFormat(row.valid_from)} - ${dateFormat(
-                      row.valid_to
-                    )}`
+                    row.valid_to
+                  )}`
                   : null}
               </span>
               <br />
@@ -120,11 +120,11 @@ function Deals() {
 
   let content = null;
 
-  if (isLoading) {
+  if(isLoading) {
     content = <TableLoader />;
   }
 
-  if (data) {
+  if(data) {
     content = (
       <Grid item lg={8} md={9} sm={9}>
         <Grid display="flex" justifyContent="space-between" mt={8} mb={4}>
@@ -133,16 +133,16 @@ function Deals() {
           </Typography>
 
           <Button variant="contained" className={styles.btn}>
-            <CreateIcon sx={{ marginRight: "5px" }} />
+            <CreateIcon sx={{marginRight: "5px"}} />
             Create new
           </Button>
         </Grid>
 
         <Card className={styles["deal-card"]}>
-          <CardContent sx={{ padding: "0px" }}>
+          <CardContent sx={{padding: "0px"}}>
             <Typography
               variant="h5"
-              sx={{ mb: 3 }}
+              sx={{mb: 3}}
               className={styles["deal-card-header"]}
             >
               All

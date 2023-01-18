@@ -5,4 +5,4 @@ import DealsMainPage from "../../components/Deals/DealsMainPage";
 export const dealsMainPage = () => {
   return <DealsMainPage />;
 };
-export default dealsMainPage;
+export default Deals;
