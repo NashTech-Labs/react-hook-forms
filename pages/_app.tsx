@@ -1,13 +1,13 @@
-import "../styles/globals.css";
 import React from "react";
-import type { AppProps } from "next/app";
-import { Provider } from "react-redux";
-import { GoogleOAuthProvider } from "@react-oauth/google";
-import { store } from "../store";
+import type {AppProps} from "next/app";
+import {Provider} from "react-redux";
+import {GoogleOAuthProvider} from "@react-oauth/google";
+import {store} from "../store";
 import TopHeader from "../components/TopHeader/TopHeader";
-import { ToastContainer } from "react-toastify";
+import {ToastContainer} from "react-toastify";
+import "../styles/globals.css";
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({Component, pageProps}: AppProps) {
   return (
     <Provider store={store}>
       <GoogleOAuthProvider
