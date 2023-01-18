@@ -33,7 +33,7 @@ function TopHeader() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
-  const isdropdownVisible = router.pathname === "/" ? false : true;
+  const isTitleVisible = router.pathname === "/" ? false : true;
 
   useEffect(() => {
     if (token !== "") {
@@ -80,7 +80,7 @@ function TopHeader() {
         <Toolbar>
           <Grid container spacing={2} alignItems="center">
             <Grid item lg={3} md={3} sm={3}>
-              {isdropdownVisible === true ? (
+              {isTitleVisible === true ? (
                 <Typography
                   variant="h5"
                   component="div"
@@ -94,13 +94,13 @@ function TopHeader() {
                   component="div"
                   className={styles["logo-text"]}
                 >
-                  BO Connect
+                  Back Office
                 </Typography>
               )}
             </Grid>
 
             <Grid item lg={9} md={9} sm={9}>
-              {signoutVisible && (
+              {isTitleVisible && signoutVisible && (
                 <Grid
                   sx={{
                     display: "flex",

@@ -32,7 +32,7 @@ function Login() {
       style={{ minHeight: "60vh" }}
     >
       <div>
-        <h1>Welcome to BO Deals</h1>
+        <h1>Welcome to Back Office</h1>
         <Grid sx={{ marginLeft: "10%" }}>
           <GoogleLogin
             onSuccess={responseGoogleSuccess}
