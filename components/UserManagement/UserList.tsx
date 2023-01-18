@@ -1,13 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
 import Card from "@mui/material/Card";
 import { Box, Button, CardContent, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import Modal from "react-modal";
 import styles from "./UserList.module.css";
 import { useGetUserRoleListQuery } from "../../api/getAllUsers";
+import AddUser from "./AddUser/AddUser";
 
 const UserList = () => {
-  const { data,isError} = useGetUserRoleListQuery();
+  const [isOpen, setIsOpen] = useState(false);
+  const { data,isError,refetch} = useGetUserRoleListQuery();
+
+  const addModalStyles = {
+    content: {
+      width: "27%",
+      top: "40%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+      borderRadius: "2px",
+      background: "#fff",
+      boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+      padding: "16px",
+      gap: "10px",
+    },
+    overlay: {
+      zIndex: "999",
+      background: "rgba(0,0,0,0.4",
+    },
+  };
 
   const customStyles = {
     rows: {
@@ -74,6 +98,14 @@ const UserList = () => {
     },
   ];
 
+  const handleAddClick = () => {
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+
   let content = null;
 
   if(isError) {
@@ -118,7 +150,7 @@ const UserList = () => {
                 startIcon={<AddIcon fontSize="large" />}
                 className={styles["add-btn"]}
                 sx={{ mb: 3 }}
-                onClick={() => alert("Add Clicked")}
+                onClick={handleAddClick}
               >
                 Add user
               </Button>
@@ -150,6 +182,14 @@ const UserList = () => {
         </Typography>
         {content}
       </Box>
+
+      <Modal
+        style={addModalStyles}
+        isOpen={isOpen}
+        onRequestClose={closeModal}
+      >
+        <AddUser closeModal={closeModal} refetch={refetch}/>
+      </Modal>
     </>
   );
 };

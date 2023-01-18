@@ -11,7 +11,7 @@ export const userRoleList = createApi({
         method: "GET",
         headers: {
           "X-Loblaw-Tenant-ID": "JOE_FRESH",
-          "X-Loblaw-App-Id" : "BO_Tool"
+          "X-Loblaw-Support-Tool-ID" : "BO"
         },
       }),
     }),
