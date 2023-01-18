@@ -6,6 +6,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { RolesOfUser } from "../api/getRoles";
 import { userRoleList } from "../api/getAllUsers";
 import { addUser } from "../api/addUser";
+import { viewAllDeals } from "../api/getAllDeals";
 
 const persistauthConfig = {
   key: "auth",
@@ -20,7 +21,8 @@ export const generateStore = (preloadedState = {}) => {
       user: persistedAuthReducer,
       [RolesOfUser.reducerPath]: RolesOfUser.reducer,
       [userRoleList.reducerPath]: userRoleList.reducer,
-      [addUser.reducerPath]: addUser.reducer
+      [addUser.reducerPath]: addUser.reducer,
+      [viewAllDeals.reducerPath]: viewAllDeals.reducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
@@ -28,7 +30,8 @@ export const generateStore = (preloadedState = {}) => {
       }).concat([
         RolesOfUser.middleware,
         userRoleList.middleware,
-        addUser.middleware
+        addUser.middleware,
+        viewAllDeals.middleware,
       ]),
     preloadedState,
   });
