@@ -87,7 +87,6 @@ const UserList = () => {
             marginTop: "-8%",
           }}
           data-testid="edit-user-access-btn"
-          onClick={() => alert("Edit Access")}
         >
           Edit access
         </Button>
@@ -176,7 +175,7 @@ const UserList = () => {
 
   return (
     <>
-      <Box>
+      <Box data-testid="userList">
         <Typography variant="h1" mb={5} className={styles["section-header"]}>
           Roles and Permissions
         </Typography>

@@ -6,6 +6,7 @@ import {
   Button,
   FormControl,
   MenuItem,
+  InputLabel,
 } from "@mui/material";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import CloseIcon from "@mui/icons-material/Close";
@@ -28,6 +29,7 @@ interface ReceivedProp {
 function AddUser({ closeModal, refetch }: ReceivedProp) {
   const [userEmail, setEmail] = useState("");
   const [userRole, setRole] = useState("");
+  const [labelHide, setLabelHide] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [roleError, setRoleError] = useState("");
   const [addUser] = useAddUserMutation();
@@ -67,6 +69,7 @@ function AddUser({ closeModal, refetch }: ReceivedProp) {
   }: SelectChangeEvent): void => {
     setRole(value);
     setRoleError("");
+    setLabelHide(true);
   };
 
   const handleEmailChange = ({
@@ -176,9 +179,15 @@ function AddUser({ closeModal, refetch }: ReceivedProp) {
           Role
         </Typography>
         <FormControl fullWidth>
+          {!labelHide && (
+            <InputLabel id="demo-simple-select-label" shrink={false} data-testid="selectLabel">
+              Select
+            </InputLabel>
+          )}
           <Select
             id="role-select"
             displayEmpty
+            label="Select"
             sx={
               roleError
                 ? {
@@ -216,14 +225,8 @@ function AddUser({ closeModal, refetch }: ReceivedProp) {
             }
             onChange={handleSelectChange}
             onBlur={checkRoleValidation}
-            renderValue={(selected) => {
-              if (selected.length === 0) {
-                return <div style={{ color: "#666B73" }}>Select</div>;
-              }
-              return selected;
-            }}
           >
-            <MenuItem value={"BO_ADMIN"}>Admin</MenuItem>
+            <MenuItem value={"BO_ADMIN"} data-testid="option">Admin</MenuItem>
             <MenuItem value={"BO_USER"}>User</MenuItem>
           </Select>
         </FormControl>
