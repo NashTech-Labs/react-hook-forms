@@ -1,7 +1,7 @@
 version: '3.3'
 
 services:
-  bo-panel-ui:
+  bo-panel:
     ports:
       - 3000:3000
     build:
