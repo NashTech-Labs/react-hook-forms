@@ -7,6 +7,7 @@ import Modal from "react-modal";
 import styles from "./UserList.module.css";
 import { useGetUserRoleListQuery } from "../../api/getAllUsers";
 import AddUser from "./AddUser/AddUser";
+import { notifyError } from "../../util/Notification/Notification";
 
 const UserList = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -96,6 +97,10 @@ const UserList = () => {
       button: true,
     },
   ];
+
+  if(isError){
+    notifyError("Oops! Something went wrong", "userList-error")
+  }
 
   const handleAddClick = () => {
     setIsOpen(true);

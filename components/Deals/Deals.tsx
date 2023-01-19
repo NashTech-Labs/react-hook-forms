@@ -1,24 +1,25 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import Card from "@mui/material/Card";
-import { CardContent, Grid, Typography } from "@mui/material";
+
+import { Box, CardContent, Grid, Typography } from "@mui/material";
+import { useRouter } from "next/router";
 import Button from "@mui/material/Button";
 import styles from "./Deals.module.css";
-import DataTable from "react-data-table-component";
+import DataTable, { TableColumn } from "react-data-table-component";
 import { useGetAllListQuery } from "../../api/getAllDeals";
 import TableLoader from "../TableLoader/TableLoader";
 import CreateIcon from "@mui/icons-material/Create";
+import { AllDealsList } from "../../api/getAllDeals";
 import { dateFormat } from "../../util/format";
 import Chip from "@mui/material/Chip";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import { useRouter } from "next/router";
+import Modal from "react-modal";
+import DeleteDeal from "../DeleteDeal/DeleteDeal";
 
 function Deals() {
   const router = useRouter();
-
-  const { data, isLoading } = useGetAllListQuery();
-
-  console.log(data);
-
+  const [isOpen, setIsOpen] = useState(false);
+  const { data, isLoading, refetch } = useGetAllListQuery();
   const [selectedRows, setSelectedRows] = useState<any>([]);
 
   useEffect(() => {
@@ -28,6 +29,27 @@ function Deals() {
   const handleChange = useCallback((state: any) => {
     setSelectedRows(state.selectedRows);
   }, []);
+
+  const addModalStyles = {
+    content: {
+      width: "27%",
+      top: "40%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+      borderRadius: "2px",
+      background: "#fff",
+      boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+      padding: "16px",
+      gap: "10px",
+    },
+    overlay: {
+      zIndex: "999",
+      background: "rgba(0,0,0,0.4",
+    },
+  };
 
   const customStyles = {
     rows: {
@@ -120,6 +142,14 @@ function Deals() {
     };
   }, []);
 
+  const handleDeleteClick = () => {
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+
   let content = null;
 
   if (isLoading) {
@@ -165,13 +195,23 @@ function Deals() {
             />
           </CardContent>
 
-          <Grid display="flex" justifyContent="space-between" mt={3} mb={4}>
-            <Grid>
-              <DeleteOutlineIcon />
-              Delete
+          <Grid container alignItems="center">
+            <Grid item>
+              <Button
+                variant="outlined"
+                startIcon={<DeleteOutlineIcon sx={{ fontSize: "16px" }} />}
+                className={styles["delete-btn"]}
+                disabled={selectedRows.length < 1}
+                onClick={handleDeleteClick}
+              >
+                Delete
+              </Button>
             </Grid>
-
-            <Grid></Grid>
+            {selectedRows.length > 0 && (
+              <Grid item>
+                <Typography variant="body2">{`(${selectedRows.length} selected)`}</Typography>
+              </Grid>
+            )}
           </Grid>
         </Card>
       </Grid>
@@ -181,6 +221,19 @@ function Deals() {
   return (
     <Grid container justifyContent="center">
       {content}
+      <Box>
+        <Modal
+          style={addModalStyles}
+          isOpen={isOpen}
+          onRequestClose={closeModal}
+        >
+          <DeleteDeal
+            closeModal={closeModal}
+            selectedDeals={selectedRows}
+            refetch={refetch}
+          />
+        </Modal>
+      </Box>
     </Grid>
   );
 }

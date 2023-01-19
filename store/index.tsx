@@ -8,6 +8,7 @@ import { RolesOfUser } from "../api/getRoles";
 import { userRoleList } from "../api/getAllUsers";
 import { addUser } from "../api/addUser";
 import { viewAllDeals } from "../api/getAllDeals";
+import { deleteDeal } from "../api/deleteDeal";
 
 const persistauthConfig = {
   key: "auth",
@@ -32,6 +33,7 @@ export const generateStore = (preloadedState = {}) => {
       [userRoleList.reducerPath]: userRoleList.reducer,
       [addUser.reducerPath]: addUser.reducer,
       [viewAllDeals.reducerPath]: viewAllDeals.reducer,
+      [deleteDeal.reducerPath]:deleteDeal.reducer
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
@@ -41,6 +43,7 @@ export const generateStore = (preloadedState = {}) => {
         userRoleList.middleware,
         addUser.middleware,
         viewAllDeals.middleware,
+        deleteDeal.middleware
       ]),
     preloadedState,
   });
