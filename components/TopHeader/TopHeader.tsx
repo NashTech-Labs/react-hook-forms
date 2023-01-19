@@ -19,6 +19,7 @@ import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined
 import { Divider, Menu } from "@mui/material";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
+import { updateDealStep } from "../../store/feature/deal/dealSlice";
 
 function TopHeader() {
   const dispatch = useAppDispatch();
@@ -46,6 +47,7 @@ function TopHeader() {
     handleClose();
     googleLogout();
     dispatch(userToken(""));
+    dispatch(updateDealStep(0));
     router.push("/");
   };
 
@@ -66,6 +68,7 @@ function TopHeader() {
 
   const homefn = () => {
     handleClose();
+    dispatch(updateDealStep(0));
     router.push("/deals");
   };
 
