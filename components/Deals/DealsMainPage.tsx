@@ -53,7 +53,12 @@ function DealsMainPage() {
   }
 
   if (rolesData) {
-    content = <Deals />;
+    const roles: any = rolesData;
+    if (roles.roles.includes("BO_ADMIN", "BO_AGENT")) {
+      content = <Deals />;
+    } else {
+      content = <SearchEmptyError />;
+    }
   }
 
   return (
