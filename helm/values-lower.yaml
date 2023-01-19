@@ -53,7 +53,7 @@ gateway:
 
 virtualService:
   name: bo-panel
-  hostone: back-office-customer-support-ui
+  hostone: bo-panel-ui
 
 envMap:
   key: "value"
