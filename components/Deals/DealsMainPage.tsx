@@ -54,7 +54,7 @@ function DealsMainPage() {
 
   if (rolesData) {
     const roles: any = rolesData;
-    if (roles.roles.includes("BO_ADMIN", "BO_AGENT")) {
+    if (roles.roles.includes("BO_ADMIN") || roles.roles.includes("BO_USER")) {
       content = <Deals />;
     } else {
       content = <SearchEmptyError />;

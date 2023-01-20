@@ -44,5 +44,21 @@
     color: #FFFFFF;
     border-radius: 5px;
   }
+
+.delete-btn{
+    text-transform: capitalize;
+    border: 0px;
+    color:#333333;
+    padding-right: 5px;
+}
+
+.delete-btn:hover{
+    border: 0px;
+    background-color: #ffffff;
+}
+
+.delete-btn:disabled{
+    border: 0px;
+}
   
   
