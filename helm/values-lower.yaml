@@ -30,7 +30,7 @@ securityContext:
 
 autoscaling:
   enabled: true
-  minReplicas: 2
+  minReplicas: 1
   maxReplicas: 2
   averageCPUUtilization: 85
   averageMemoryUtilization: 85
