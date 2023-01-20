@@ -19,7 +19,7 @@ deployment:
       cpu: 200m
       memory: 256Mi
 
-#explicity security config such that processes running in container have limited access to the container OS/file system
+# explicity security config such that processes running in container have limited access to the container OS/file system
 securityContext:
   enabled: true
   readOnlyRootFilesystem: true
