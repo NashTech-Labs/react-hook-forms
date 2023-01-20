@@ -16,6 +16,17 @@ interface ReceivedProp {
   selectedDeals: any;
 }
 
+interface DealDetails {
+  dealTitle: string;
+  dealValue: [];
+  identifier: string;
+  mediaUrl: string;
+  status: string;
+  type: string;
+  valid_from: string;
+  valid_to: string;
+}
+
 function DeleteDeal({ closeModal, selectedDeals, refetch }: ReceivedProp) {
   const [consent, setConsent] = useState(false);
   const [deleteDeal] = useDeleteDealMutation();
@@ -31,7 +42,12 @@ function DeleteDeal({ closeModal, selectedDeals, refetch }: ReceivedProp) {
   };
 
   const handleSubmit = async () => {
-    await deleteDeal(selectedDeals[0].identifier)
+    let deal_Ids: string[] = [];
+    selectedDeals.forEach((element: DealDetails) => {
+      deal_Ids.push(element.identifier);
+    });
+    await deleteDeal(deal_Ids)
+      .unwrap()
       .then(() => {
         closeModalfn();
         refetch();
