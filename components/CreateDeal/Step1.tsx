@@ -10,18 +10,24 @@ import StepTitle from "../StepTitle";
 import Button from "@mui/material/Button";
 import { updateDealStep } from "../../store/feature/deal/dealSlice";
 import { useAppDispatch } from "../../store/index";
+import { useRouter } from "next/router";
 
 function Step1() {
+  const router = useRouter();
+
   const dispatch = useAppDispatch();
 
-  const [dealType, setDealType] = useState(0);
+  const [dealCount, setDealCount] = useState(0);
+
+  const [discountDealSelected, setDiscountDealSelected] = useState(false);
 
   const handleDealValue = (value: any) => {
-    setDealType(value);
+    setDealCount(value);
+    setDiscountDealSelected(!discountDealSelected);
   };
 
   const ContinueDeal = () => {
-    dispatch(updateDealStep(dealType));
+    dispatch(updateDealStep(dealCount));
   };
 
   return (
@@ -42,8 +48,11 @@ function Step1() {
         <StepTitle title={"Select deal type"} />
 
         <Grid
-          onClick={() => handleDealValue(1)}
+          onClick={() => {
+            handleDealValue(1);
+          }}
           className={styles["deal-card-container"]}
+          bgcolor={discountDealSelected ? "#E6ECF6" : "#fff"}
         >
           <DiscountOutlinedIcon className={styles.Discount} />
           <Grid className={styles.dealTitle}>
@@ -56,10 +65,7 @@ function Step1() {
           </Grid>
         </Grid>
 
-        <Grid
-          // onClick={() => handleDealValue(1)}
-          className={styles["deal-card-container"]}
-        >
+        <Grid className={styles["deal-card-container"]} bgcolor={"#EBEBE4"}>
           <LocalShippingOutlinedIcon className={styles.Discount} />
           <Grid className={styles.dealTitle}>
             <Typography variant="h6" className={styles.dealType}>
@@ -69,13 +75,9 @@ function Step1() {
           </Grid>
         </Grid>
 
-        <Grid
-          // onClick={() => handleDealValue(1)}
-          container
-          className={styles["deal-card-container"]}
-        >
+        <Grid className={styles["deal-card-container"]} bgcolor={"#EBEBE4"}>
           <PaidOutlinedIcon className={styles.Discount} />
-          <Grid item className={styles.dealTitle}>
+          <Grid className={styles.dealTitle}>
             <Typography variant="h6" className={styles.dealType}>
               Multi-Buy
             </Typography>
@@ -88,12 +90,19 @@ function Step1() {
 
       <Grid container justifyContent="center">
         <Grid item lg={6} md={8} sm={9}>
-          <Grid display="flex" justifyContent="space-between" mb={2}>
-            <Button variant="contained">Cancel</Button>
+          <Grid className={styles.btnSection}>
+            <Button
+              variant="contained"
+              className={styles.cancelBtn}
+              onClick={() => router.push("/deals")}
+            >
+              Cancel
+            </Button>
             <Button
               onClick={() => ContinueDeal()}
               variant="contained"
-              disabled={dealType === 0 ? true : false}
+              disabled={!discountDealSelected}
+              className={styles.continueBtn}
             >
               Continue
             </Button>

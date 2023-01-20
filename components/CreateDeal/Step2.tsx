@@ -23,7 +23,7 @@ const Step2 = () => {
     <>
       <Grid container justifyContent="center">
         <Grid item lg={8} md={8} sm={9}>
-          <Grid display="flex" justifyContent="space-between" mt={8} mb={2}>
+          <Grid display="flex" justifyContent="space-between" mt={8}>
             <Typography variant="h3" className={styles.heading}>
               Create New Discount Deal
             </Typography>
