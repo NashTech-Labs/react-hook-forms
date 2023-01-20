@@ -122,7 +122,7 @@ function Deals() {
               textTransform: "initial",
               marginTop: "-8%",
             }}
-          >
+            onClick={() => router.push("deals/view")}>
             View
           </Button>
         ),
