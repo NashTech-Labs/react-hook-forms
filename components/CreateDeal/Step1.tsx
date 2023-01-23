@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { Grid, makeStyles, Typography } from "@mui/material";
+import React, {useState} from "react";
+import {useRouter} from "next/router";
+import {Grid, Typography} from "@mui/material";
 import Card from "@mui/material/Card";
 import styles from "./Step1.module.css";
 import StepLabel from "../StepLabel";
@@ -8,9 +9,9 @@ import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined
 import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
 import StepTitle from "../StepTitle";
 import Button from "@mui/material/Button";
-import { updateDealStep } from "../../store/feature/deal/dealSlice";
-import { useAppDispatch } from "../../store/index";
-import { useRouter } from "next/router";
+import {updateDealStep} from "../../store/feature/deal/dealSlice";
+import {useAppDispatch} from "../../store/index";
+import commonStyles from './Steps.module.css'
 
 function Step1() {
   const router = useRouter();
@@ -43,7 +44,7 @@ function Step1() {
         </Grid>
       </Grid>
 
-      <Card className={styles["step-card-container"]}>
+      <Card className={commonStyles["step-card-container"]}>
         <StepLabel currentStep={1} totalSteps={7} />
         <StepTitle title={"Select deal type"} />
 
@@ -51,7 +52,7 @@ function Step1() {
           onClick={() => {
             handleDealValue(1);
           }}
-          className={styles["deal-card-container"]}
+          className={commonStyles["deal-card-container"]}
           bgcolor={discountDealSelected ? "#E6ECF6" : "#fff"}
         >
           <DiscountOutlinedIcon className={styles.Discount} />
@@ -65,7 +66,7 @@ function Step1() {
           </Grid>
         </Grid>
 
-        <Grid className={styles["deal-card-container"]} bgcolor={"#EBEBE4"}>
+        <Grid className={commonStyles["deal-card-container"]} bgcolor={"#EBEBE4"}>
           <LocalShippingOutlinedIcon className={styles.Discount} />
           <Grid className={styles.dealTitle}>
             <Typography variant="h6" className={styles.dealType}>
@@ -75,7 +76,7 @@ function Step1() {
           </Grid>
         </Grid>
 
-        <Grid className={styles["deal-card-container"]} bgcolor={"#EBEBE4"}>
+        <Grid className={commonStyles["deal-card-container"]} bgcolor={"#EBEBE4"}>
           <PaidOutlinedIcon className={styles.Discount} />
           <Grid className={styles.dealTitle}>
             <Typography variant="h6" className={styles.dealType}>
@@ -90,10 +91,10 @@ function Step1() {
 
       <Grid container justifyContent="center">
         <Grid item lg={6} md={8} sm={9}>
-          <Grid className={styles.btnSection}>
+          <Grid className={commonStyles.btnSection}>
             <Button
               variant="contained"
-              className={styles.cancelBtn}
+              className={commonStyles.cancelBtn}
               onClick={() => router.push("/deals")}
             >
               Cancel
@@ -102,7 +103,7 @@ function Step1() {
               onClick={() => ContinueDeal()}
               variant="contained"
               disabled={!discountDealSelected}
-              className={styles.continueBtn}
+              className={commonStyles.continueBtn}
             >
               Continue
             </Button>
