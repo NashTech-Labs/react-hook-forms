@@ -6,9 +6,9 @@ interface IStepLabel {
     totalSteps: number
 }
 
-const StepLabel = ({currentStep, totalSteps}: IStepLabel) => {
-    return <Typography gutterBottom sx={{color: '#276ADD', fontSize: '14px', fontWeight: 600}}>
-        Step {currentStep} OF {totalSteps}
+const StepLabel = ({ currentStep, totalSteps }: IStepLabel) => {
+    return <Typography gutterBottom sx={{ color: '#276ADD', fontSize: '14px', fontWeight: 600 }}>
+        STEP {currentStep} OF {totalSteps}
     </Typography>
 }
 
