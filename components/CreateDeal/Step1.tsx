@@ -1,17 +1,16 @@
-import React, {useState} from "react";
-import {useRouter} from "next/router";
-import {Grid, Typography} from "@mui/material";
+import React, { useState } from "react";
+import { useRouter } from "next/router";
+import { Grid, Typography } from "@mui/material";
 import Card from "@mui/material/Card";
-import styles from "./Step1.module.css";
 import StepLabel from "../StepLabel";
 import DiscountOutlinedIcon from "@mui/icons-material/DiscountOutlined";
 import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
 import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
 import StepTitle from "../StepTitle";
 import Button from "@mui/material/Button";
-import {updateDealStep} from "../../store/feature/deal/dealSlice";
-import {useAppDispatch} from "../../store/index";
-import commonStyles from './Steps.module.css'
+import { updateDealStep } from "../../store/feature/deal/dealSlice";
+import { useAppDispatch } from "../../store/index";
+import commonStyles from "./Steps.module.css";
 
 function Step1() {
   const router = useRouter();
@@ -35,8 +34,8 @@ function Step1() {
     <>
       <Grid container justifyContent="center">
         <Grid item lg={6} md={8} sm={9}>
-          <Grid display="flex" justifyContent="space-between" mt={8} mb={2}>
-            <Typography variant="h3" className={styles.heading}>
+          <Grid display="flex" justifyContent="space-between" mt={8}>
+            <Typography variant="h3" className={commonStyles.heading}>
               Create New Deal
             </Typography>
             <Typography></Typography>
@@ -55,9 +54,9 @@ function Step1() {
           className={commonStyles["deal-card-container"]}
           bgcolor={discountDealSelected ? "#E6ECF6" : "#fff"}
         >
-          <DiscountOutlinedIcon className={styles.Discount} />
-          <Grid className={styles.dealTitle}>
-            <Typography variant="h6" className={styles.dealType}>
+          <DiscountOutlinedIcon className={commonStyles.Discount} />
+          <Grid className={commonStyles.dealTitle}>
+            <Typography variant="h6" className={commonStyles.dealType}>
               Discount
             </Typography>
             <Typography>
@@ -66,20 +65,26 @@ function Step1() {
           </Grid>
         </Grid>
 
-        <Grid className={commonStyles["deal-card-container"]} bgcolor={"#EBEBE4"}>
-          <LocalShippingOutlinedIcon className={styles.Discount} />
-          <Grid className={styles.dealTitle}>
-            <Typography variant="h6" className={styles.dealType}>
+        <Grid
+          className={commonStyles["deal-card-container"]}
+          bgcolor={"#EBEBE4"}
+        >
+          <LocalShippingOutlinedIcon className={commonStyles.Discount} />
+          <Grid className={commonStyles.dealTitle}>
+            <Typography variant="h6" className={commonStyles.dealType}>
               Free Shipping
             </Typography>
             <Typography>Create a free shipping deal.</Typography>
           </Grid>
         </Grid>
 
-        <Grid className={commonStyles["deal-card-container"]} bgcolor={"#EBEBE4"}>
-          <PaidOutlinedIcon className={styles.Discount} />
-          <Grid className={styles.dealTitle}>
-            <Typography variant="h6" className={styles.dealType}>
+        <Grid
+          className={commonStyles["deal-card-container"]}
+          bgcolor={"#EBEBE4"}
+        >
+          <PaidOutlinedIcon className={commonStyles.Discount} />
+          <Grid className={commonStyles.dealTitle}>
+            <Typography variant="h6" className={commonStyles.dealType}>
               Multi-Buy
             </Typography>
             <Typography>
