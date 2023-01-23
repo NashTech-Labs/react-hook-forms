@@ -1,21 +1,23 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import { Grid, SelectChangeEvent } from "@mui/material";
+import {Grid, SelectChangeEvent} from "@mui/material";
 import TextInputField from "../FormComponents/TextInputField";
 import StepLabel from "../StepLabel";
 import Tag from "../Tag";
 import StepTitle from "../StepTitle";
-import { stackTypeOptions } from "../../constants/FormOptions";
+import {stackTypeOptions} from "../../constants/FormOptions";
 import styles from "./Step2.module.css";
+import commonStyles from './Steps.module.css'
+import Step3 from './Step3'
 
 const Step2 = () => {
   const [stackingType, setStackingType] = useState<string>("");
 
-  const handleChange = ({ target: { value } }: SelectChangeEvent) => {
+  const handleChange = ({target: {value}}: SelectChangeEvent) => {
     setStackingType(value);
   };
 
@@ -32,7 +34,7 @@ const Step2 = () => {
         </Grid>
       </Grid>
 
-      <Card className={styles["step-card-container"]}>
+      <Card className={commonStyles["step-card-container"]}>
         <StepLabel currentStep={2} totalSteps={7} />
         <StepTitle title={"General Information"} />
         <Tag label="Internal facing" />
@@ -80,6 +82,7 @@ const Step2 = () => {
           </Select>
         </FormControl>
       </Card>
+      <Step3 />
     </>
   );
 };

@@ -1,0 +1,22 @@
+.cutom-percentage {
+    margin-left: 30px;
+    display: flex;
+}
+
+.percentage-icon-container {
+    display: flex;
+    margin-left: 20px;
+    align-items: center;
+    justify-content: center;
+}
+
+.basket-fields {
+    display: flex;
+    background: #FCFCFC;
+    align-items: center;
+    margin: 20px 0px;
+    padding: 20px 50px;
+    border: 1px solid #CCCCCC;
+    border-radius: 5px;
+    gap: 20px;
+}
