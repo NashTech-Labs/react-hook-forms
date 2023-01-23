@@ -61,7 +61,7 @@ function DeleteDeal({ closeModal, selectedDeals, refetch }: ReceivedProp) {
 
   return (
     <>
-      <Box p={1} data-testid="addUserModal" sx={{ padding: 0 }}>
+      <Box p={1} data-testid="deleteDealModal" sx={{ padding: 0 }}>
         <Grid container alignItems="center" my={2}>
           <Grid item lg={11}>
             <Typography variant="h5" className={classes["modal-heading"]}>
@@ -80,7 +80,7 @@ function DeleteDeal({ closeModal, selectedDeals, refetch }: ReceivedProp) {
         <Box my={3}>
           <FormGroup>
             <FormControlLabel
-              control={<Checkbox checked={consent} onChange={handleChange} />}
+              control={<Checkbox checked={consent} onChange={handleChange} data-testid="consentCheck"/>}
               label="Yes, I understand and would like to proceed."
               sx={{ color: "#666B73" }}
             />
@@ -101,7 +101,7 @@ function DeleteDeal({ closeModal, selectedDeals, refetch }: ReceivedProp) {
             <Button
               className={classes["submit-btn"]}
               variant="contained"
-              data-testid="addBtn"
+              data-testid="submitBtn"
               disabled={!consent}
               onClick={handleSubmit}
             >

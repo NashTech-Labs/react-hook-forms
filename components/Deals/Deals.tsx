@@ -30,7 +30,7 @@ function Deals() {
     setSelectedRows(state.selectedRows);
   }, []);
 
-  const addModalStyles = {
+  const deleteDealStyles = {
     content: {
       width: "27%",
       top: "40%",
@@ -223,7 +223,7 @@ function Deals() {
       {content}
       <Box>
         <Modal
-          style={addModalStyles}
+          style={deleteDealStyles}
           isOpen={isOpen}
           onRequestClose={closeModal}
         >
