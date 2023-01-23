@@ -109,7 +109,7 @@ const Step3 = () => {
         <StepLabel currentStep={3} totalSteps={7} />
         <StepTitle title={"Deal Value"} />
         <RadioGroupField options={dealLevelOptions} label="Is this at a basket level or product level?" defaultValue="product" onChange={setDealLevel} />
-        <StyledTabs tabs={dealTabs} setActiveTab={setActiveTab} />
+        {dealLevel === 'product' && < StyledTabs tabs={dealTabs} setActiveTab={setActiveTab} />}
         {content}
         <FormCardPreview title="Customer preview" description="Preview will generate after inputs are completed" />
     </Card>
