@@ -42,6 +42,11 @@ function DeleteDeal({ closeModal, selectedDeals, refetch }: ReceivedProp) {
   };
 
   const handleSubmit = async () => {
+    let successMsg =
+      selectedDeals.length > 1
+        ? `${selectedDeals.length} Deals deleted successfully`
+        : `${selectedDeals.length} Deal deleted successfully`;
+
     let deal_Ids: string[] = [];
     selectedDeals.forEach((element: DealDetails) => {
       deal_Ids.push(element.identifier);
@@ -51,7 +56,7 @@ function DeleteDeal({ closeModal, selectedDeals, refetch }: ReceivedProp) {
       .then(() => {
         closeModalfn();
         refetch();
-        notifySuccess(`${selectedDeals.length} Deals deleted successfully`);
+        notifySuccess(successMsg);
       })
       .catch(() => {
         closeModalfn();
@@ -80,7 +85,13 @@ function DeleteDeal({ closeModal, selectedDeals, refetch }: ReceivedProp) {
         <Box my={3}>
           <FormGroup>
             <FormControlLabel
-              control={<Checkbox checked={consent} onChange={handleChange} data-testid="consentCheck"/>}
+              control={
+                <Checkbox
+                  checked={consent}
+                  onChange={handleChange}
+                  data-testid="consentCheck"
+                />
+              }
               label="Yes, I understand and would like to proceed."
               sx={{ color: "#666B73" }}
             />
