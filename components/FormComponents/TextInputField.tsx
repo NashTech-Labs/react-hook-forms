@@ -1,4 +1,5 @@
 import React from 'react'
+import {useFormContext, useController} from "react-hook-form";
 import Typography from '@mui/material/Typography';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import styles from './FormComponents.module.css'
@@ -14,9 +15,17 @@ interface ITextFieldProps {
     noBottomGutters?: boolean
     noTopGutters?: boolean
     disabled?: boolean
+    name: string
 }
 
-const TextInputField = ({title, description, placeholder, tooltip, required, multiline, type, noBottomGutters, noTopGutters, disabled}: ITextFieldProps) => {
+const TextInputField = ({title, description, placeholder, tooltip, required, multiline, type, noBottomGutters, noTopGutters, disabled, name}: ITextFieldProps) => {
+    const {control} = useFormContext()
+    const {field} = useController({
+        control,
+        name
+    })
+    const {onChange, onBlur, ref, value} = field
+
     const classNames = [styles['form-field']]
     noBottomGutters && classNames.push(styles['no-bottom-margin'])
     noTopGutters && classNames.push(styles['no-top-margin'])
@@ -40,6 +49,11 @@ const TextInputField = ({title, description, placeholder, tooltip, required, mul
             multiline={multiline}
             type={type}
             disabled={disabled}
+            onChange={onChange}
+            onBlur={onBlur}
+            inputRef={ref}
+            name={name}
+            value={value}
         />
     </div>
 }

@@ -1,10 +1,11 @@
-import React, {useState} from "react";
+import React from "react";
+import {useFormContext, useController} from 'react-hook-form'
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import {Grid, SelectChangeEvent} from "@mui/material";
+import {Grid} from "@mui/material";
 import TextInputField from "../FormComponents/TextInputField";
 import StepLabel from "../StepLabel";
 import Tag from "../Tag";
@@ -15,11 +16,12 @@ import commonStyles from './Steps.module.css'
 import Step3 from './Step3'
 
 const Step2 = () => {
-  const [stackingType, setStackingType] = useState<string>("");
-
-  const handleChange = ({target: {value}}: SelectChangeEvent) => {
-    setStackingType(value);
-  };
+  const {control} = useFormContext()
+  const {field} = useController({
+    control,
+    name: 'stackingType'
+  })
+  const {onChange, onBlur, ref, value} = field
 
   return (
     <>
@@ -42,21 +44,25 @@ const Step2 = () => {
           title="Title"
           description="Max 80 characters"
           placeholder="eg. WK10 20% Off On All Sale Items"
+          name="title"
         />
         <TextInputField
           title="Description"
           placeholder="Enter description for deal"
           multiline
+          name="description"
         />
         <TextInputField
           title="Identifier"
           description="Max 15 characters alphanumeric values"
           placeholder="00000 00000 00000"
+          name="identifier"
         />
         <TextInputField
           title="Priority"
           description="Numeric values between 1 to 100"
           placeholder="eg 100"
+          name="priority"
         />
         <Typography variant="body1" gutterBottom>
           Stacking Type
@@ -65,14 +71,17 @@ const Step2 = () => {
           <Select
             labelId="statcking-type-select"
             id="statcking-type-select"
-            value={stackingType}
+            value={value}
             size="small"
-            onChange={handleChange}
+            onChange={onChange}
             displayEmpty
             renderValue={(value) =>
               value ? stackTypeOptions[String(value)] : "Select Type"
             }
             className={styles["select"]}
+            inputRef={ref}
+            name={'stackingType'}
+            onBlur={onBlur}
           >
             {Object.keys(stackTypeOptions).map((key) => (
               <MenuItem key={key} value={key}>

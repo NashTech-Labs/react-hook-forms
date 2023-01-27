@@ -1,4 +1,5 @@
-import React, {ChangeEvent, useState} from 'react'
+import React from 'react'
+import {useFormContext, useController} from "react-hook-form";
 import FormControl from '@mui/material/FormControl'
 import FormLabel from '@mui/material/FormLabel'
 import RadioGroup from '@mui/material/RadioGroup'
@@ -14,25 +15,24 @@ interface IRadioControlOption {
 interface IRadioGroupFieldProps {
     options: IRadioControlOption[]
     label: string
-    defaultValue?: string
-    onChange?: Function
+    name: string
 }
 
-const RadioGroupField = ({options, label, defaultValue, onChange}: IRadioGroupFieldProps) => {
-    const [value, setValue] = useState<string>(defaultValue || options[0]?.value)
-
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setValue(e.target.value)
-        onChange && onChange(e.target.value)
-    }
+const RadioGroupField = ({options, label, name}: IRadioGroupFieldProps) => {
+    const {control} = useFormContext()
+    const {field} = useController({
+        control,
+        name
+    })
+    const {onChange, onBlur, value} = field
 
     return <FormControl className={styles["form-field"]}>
         <FormLabel id="demo-radio-buttons-group-label">{label}</FormLabel>
         <RadioGroup
             aria-labelledby="demo-radio-buttons-group-label"
-            defaultValue={defaultValue}
-            name="radio-buttons-group"
-            onChange={handleChange}
+            onChange={onChange}
+            onBlur={onBlur}
+            name={name}
             value={value}
         >
             {
