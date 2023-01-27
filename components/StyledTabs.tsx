@@ -10,15 +10,15 @@ interface ITab {
 
 interface IStyledTabsProps {
     tabs: ITab[]
-    setActiveTab: Function
+    handleTabUpdate: Function
 }
 
-const StyledTabs = ({tabs, setActiveTab}: IStyledTabsProps) => {
+const StyledTabs = ({tabs, handleTabUpdate}: IStyledTabsProps) => {
     const [tab, setTab] = useState<number>(0)
 
     const handleChange = (e: SyntheticEvent, newTab: number) => {
         setTab(newTab)
-        setActiveTab(tabs[newTab]?.value)
+        handleTabUpdate(tabs[newTab]?.value)
     }
 
     return <Tabs
