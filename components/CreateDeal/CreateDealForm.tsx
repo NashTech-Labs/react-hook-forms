@@ -1,17 +1,28 @@
 import React from 'react'
-import {useForm, FormProvider} from "react-hook-form";
-import Step2 from './Step2'
+import { useForm, FormProvider } from "react-hook-form";
+import GeneralInformation from './GeneralInformation'
 import createDealDefaultFormState from '../../constants/CreateDealDefaultFormState'
-import {ICreateDealFormState} from '../../constants/CreateDealFormStateType'
+import { ICreateDealFormState } from '../../constants/CreateDealFormStateType'
+import DealValue from './DealValue';
+import ProductsCollection from './ProductsCollection/ProductsCollection';
+import Exclusions from './Exclusions/Exclusions';
 
 const CreateDealForm = () => {
+
+    const handleFormSubmit = (values: ICreateDealFormState): void => {
+        // TODO: form submit
+    }
+
     const formMethods = useForm<ICreateDealFormState>({
         defaultValues: createDealDefaultFormState
     });
 
     return <FormProvider {...formMethods}>
         <form onSubmit={formMethods.handleSubmit(handleFormSubmit)}>
-            <Step2 />
+            <GeneralInformation />
+            <DealValue />
+            <ProductsCollection />
+            <Exclusions />
         </form>
     </FormProvider>
 }
