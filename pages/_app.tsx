@@ -17,7 +17,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
       <GoogleOAuthProvider
-        clientId={process.env.NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID || "894932219841-rijq7rc3aga0qj5cqk0oooljgseteue0.apps.googleusercontent.com"}
+        clientId={process.env.NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID || ""}
       >
         <ToastContainer className="toast-container" />
         <TopHeader />
