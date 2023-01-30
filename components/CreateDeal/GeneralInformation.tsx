@@ -1,27 +1,26 @@
-import React from "react";
-import {useFormContext, useController} from 'react-hook-form'
+import React, { useState } from "react";
+import { useFormContext, useController } from 'react-hook-form'
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import {Grid} from "@mui/material";
+import { Grid } from "@mui/material";
 import TextInputField from "../FormComponents/TextInputField";
 import StepLabel from "../StepLabel";
 import Tag from "../Tag";
 import StepTitle from "../StepTitle";
-import {stackTypeOptions} from "../../constants/FormOptions";
-import styles from "./Step2.module.css";
+import { stackTypeOptions } from "../../constants/FormOptions";
+import styles from "./GeneralInformation.module.css";
 import commonStyles from './Steps.module.css'
-import Step3 from './Step3'
 
-const Step2 = () => {
-  const {control} = useFormContext()
-  const {field} = useController({
+const GeneralInformation = () => {
+  const { control } = useFormContext()
+  const { field } = useController({
     control,
     name: 'stackingType'
   })
-  const {onChange, onBlur, ref, value} = field
+  const { onChange, onBlur, ref, value } = field
 
   return (
     <>
@@ -91,9 +90,8 @@ const Step2 = () => {
           </Select>
         </FormControl>
       </Card>
-      <Step3 />
     </>
   );
 };
 
-export default Step2;
+export default GeneralInformation;

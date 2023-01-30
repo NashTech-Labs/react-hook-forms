@@ -1,5 +1,5 @@
-import React, {useState} from 'react'
-import {useFormContext, useWatch} from "react-hook-form";
+import React, { useState } from 'react'
+import { useFormContext, useWatch } from "react-hook-form";
 import Card from "@mui/material/Card";
 import Typography from '@mui/material/Typography';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -10,34 +10,34 @@ import StepLabel from "../StepLabel";
 import RadioGroupField from '../FormComponents/RadioGroupField'
 import StyledTabs from '../StyledTabs'
 import TextInputField from '../FormComponents/TextInputField'
-import styles from "./Step3.module.css";
+import styles from "./DealValue.module.css";
 import FormCardPreview from '../FormCardPreview'
 import commonStyles from './Steps.module.css'
 
 
 const dealLevelOptions = [
-    {value: 'product', label: 'Product'},
-    {value: 'basket', label: 'Basket'}
+    { value: 'product', label: 'Product' },
+    { value: 'basket', label: 'Basket' }
 ]
 
 const dealTabs = [
-    {label: 'Dollar ($) off', value: 'dollar'},
-    {label: 'Percentage ($) off', value: 'percentage'},
-    {label: 'Fixed price', value: 'fixed'}
+    { label: 'Dollar ($) off', value: 'dollar' },
+    { label: 'Percentage ($) off', value: 'percentage' },
+    { label: 'Fixed price', value: 'fixed' }
 ]
 
 const percentageOptions = [
-    {value: '10', label: '10%'},
-    {value: '20', label: '20%'},
-    {value: '30', label: '30%'},
-    {value: '40', label: '40%'},
-    {value: 'custom', label: 'Add custom value'}
+    { value: '10', label: '10%' },
+    { value: '20', label: '20%' },
+    { value: '30', label: '30%' },
+    { value: '40', label: '40%' },
+    { value: 'custom', label: 'Add custom value' }
 ]
 
-const Step3 = () => {
+const DealValue = () => {
     const [activeTab, setActiveTab] = useState(dealTabs[0]?.value)
     const [basketDealType, setBasketDealType] = useState<string>('dollar')
-    const {control, setValue} = useFormContext()
+    const { control, setValue } = useFormContext()
     const percentageOff = useWatch({
         control,
         name: 'percentageOff'
@@ -64,8 +64,8 @@ const Step3 = () => {
     }
 
     let content = null
-    if(dealLevel === 'product') {
-        if(activeTab === 'dollar') {
+    if (dealLevel === 'product') {
+        if (activeTab === 'dollar') {
             content = <TextInputField
                 title="Enter dollar ($) off"
                 description="Must be numeric values only"
@@ -75,7 +75,7 @@ const Step3 = () => {
             />
         }
 
-        if(activeTab === 'percentage') {
+        if (activeTab === 'percentage') {
             content = <>
                 <RadioGroupField options={percentageOptions} label="Select percentage" name='percentageOff' />
                 <div className={styles['cutom-percentage']}>
@@ -91,7 +91,7 @@ const Step3 = () => {
             </>
         }
 
-        if(activeTab === 'fixed') {
+        if (activeTab === 'fixed') {
             content = <TextInputField
                 title="Enter fixed price value"
                 description="Must be numeric values only"
@@ -102,7 +102,7 @@ const Step3 = () => {
         }
     }
 
-    if(dealLevel === 'basket') {
+    if (dealLevel === 'basket') {
         content = <div className={styles['basket-fields']}>
             <Typography>Spend</Typography>
             <OutlinedInput
@@ -134,4 +134,4 @@ const Step3 = () => {
     </Card>
 }
 
-export default Step3
+export default DealValue

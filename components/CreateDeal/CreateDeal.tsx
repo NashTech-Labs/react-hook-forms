@@ -12,7 +12,7 @@ import { updateDealStep } from "../../store/feature/deal/dealSlice";
 import { useAppDispatch } from "../../store/index";
 import commonStyles from "./Steps.module.css";
 
-function Step1() {
+function CreateDeal() {
   const router = useRouter();
 
   const dispatch = useAppDispatch();
@@ -119,4 +119,4 @@ function Step1() {
   );
 }
 
-export default Step1;
+export default CreateDeal;
