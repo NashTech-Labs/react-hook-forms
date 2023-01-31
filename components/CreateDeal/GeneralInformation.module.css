@@ -1,14 +1,11 @@
-.stack-type-form-control {
-    width: 350px;
-}
-
-.select {
-    padding: 10px 0px;
-}
-
 .heading {
     font-style: normal;
     font-weight: 600;
     font-size: 36px;
     line-height: 42px;
+}
+
+.generate-link {
+    color: #276ADD;
+    cursor: pointer;
 }
