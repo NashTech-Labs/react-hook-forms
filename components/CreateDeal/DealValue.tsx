@@ -72,6 +72,7 @@ const DealValue = () => {
                 placeholder="$ 0.00"
                 type="number"
                 name="dollarOff"
+                required
             />
         }
 
@@ -98,27 +99,32 @@ const DealValue = () => {
                 placeholder="$ 0.00"
                 type="number"
                 name="fixedPriceOff"
+                required
             />
         }
     }
 
     if (dealLevel === 'basket') {
         content = <div className={styles['basket-fields']}>
-            <Typography>Spend</Typography>
-            <OutlinedInput
-                id="title"
+            <TextInputField
+                name="basketSpend"
                 placeholder='$ 0.00'
                 type='number'
+                title="Spend"
+                inline
+                required
             />
             <Typography>Get</Typography>
             <ButtonGroup>
                 <Button variant={getButtonVariant('percentage')} onClick={() => handleBasketDealTypeChange('percentage')}>%</Button>
                 <Button variant={getButtonVariant('dollar')} onClick={() => handleBasketDealTypeChange('dollar')}>$</Button>
             </ButtonGroup>
-            <OutlinedInput
-                id="title"
+            <TextInputField
+                name="basketDiscount"
                 placeholder='$ 0.00'
                 type='number'
+                inline
+                required
             />
             <Typography>Off</Typography>
         </div>

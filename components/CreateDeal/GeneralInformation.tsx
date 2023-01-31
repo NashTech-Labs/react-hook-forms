@@ -1,10 +1,7 @@
-import React, { useState } from "react";
-import { useFormContext, useController } from 'react-hook-form'
+import React from "react";
+import { useFormContext } from 'react-hook-form'
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 import { Grid } from "@mui/material";
 import TextInputField from "../FormComponents/TextInputField";
 import StepLabel from "../StepLabel";
@@ -13,14 +10,15 @@ import StepTitle from "../StepTitle";
 import { stackTypeOptions } from "../../constants/FormOptions";
 import styles from "./GeneralInformation.module.css";
 import commonStyles from './Steps.module.css'
+import generateIdentifier from '../../util/generateIdentifier'
+import SelectField from '../FormComponents/SelectField'
 
 const GeneralInformation = () => {
-  const { control } = useFormContext()
-  const { field } = useController({
-    control,
-    name: 'stackingType'
-  })
-  const { onChange, onBlur, ref, value } = field
+  const {setValue} = useFormContext()
+
+  const handleGenerateIdentifier = () => {
+    setValue('identifier', generateIdentifier(),{ shouldValidate: true })
+  }
 
   return (
     <>
@@ -44,6 +42,7 @@ const GeneralInformation = () => {
           description="Max 80 characters"
           placeholder="eg. WK10 20% Off On All Sale Items"
           name="title"
+          required
         />
         <TextInputField
           title="Description"
@@ -56,39 +55,21 @@ const GeneralInformation = () => {
           description="Max 15 characters alphanumeric values"
           placeholder="00000 00000 00000"
           name="identifier"
+          endAdornment={<div className={styles['generate-link']} onClick={handleGenerateIdentifier}>Generate</div>}
+          required
         />
         <TextInputField
           title="Priority"
           description="Numeric values between 1 to 100"
           placeholder="eg 100"
           name="priority"
+          required
+          type="number"
         />
         <Typography variant="body1" gutterBottom>
           Stacking Type
         </Typography>
-        <FormControl className={styles["stack-type-form-control"]}>
-          <Select
-            labelId="statcking-type-select"
-            id="statcking-type-select"
-            value={value}
-            size="small"
-            onChange={onChange}
-            displayEmpty
-            renderValue={(value) =>
-              value ? stackTypeOptions[String(value)] : "Select Type"
-            }
-            className={styles["select"]}
-            inputRef={ref}
-            name={'stackingType'}
-            onBlur={onBlur}
-          >
-            {Object.keys(stackTypeOptions).map((key) => (
-              <MenuItem key={key} value={key}>
-                {stackTypeOptions[key]}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <SelectField options={stackTypeOptions} name='stackingType'/>
       </Card>
     </>
   );

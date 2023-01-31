@@ -9,3 +9,33 @@
 .no-top-margin {
     margin-top: 0px !important;
 }
+
+.error-icon {
+    color: #E1251B;
+    margin-left: 10px;
+}
+
+.error-text {
+    color: #E1251B;
+    font-size: 12px;
+}
+
+.stack-type-form-control {
+    width: 350px;
+}
+
+.select {
+    padding: 10px 0px;
+}
+
+.select-error-icon {
+    color: #E1251B;
+    margin: 10px;
+}
+
+.inline {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
