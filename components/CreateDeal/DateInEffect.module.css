@@ -1,0 +1,16 @@
+.subtitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1c1b1f;
+  line-height: 21px;
+}
+
+.date-picker {
+  width: 100%;
+}
+
+.field-title {
+  font-size: 16px;
+  line-height: 120%;
+  color: #333333;
+}
