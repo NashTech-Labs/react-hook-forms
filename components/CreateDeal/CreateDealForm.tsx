@@ -2,13 +2,13 @@ import React from 'react'
 import {useForm, FormProvider} from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import  * as yup from "yup";
-import Step2 from './Step2'
 import GeneralInformation from './GeneralInformation'
 import createDealDefaultFormState from '../../constants/CreateDealDefaultFormState'
 import { ICreateDealFormState } from '../../constants/CreateDealFormStateType'
 import DealValue from './DealValue';
 import ProductsCollection from './ProductsCollection/ProductsCollection';
 import Exclusions from './Exclusions/Exclusions';
+import DateInEffect from './DateInEffect';
 
 const schema = yup.object().shape({
     title: yup.string().max(80, 'Error: Title should be less than 80 characters').required('Error: Title is required'),
@@ -38,6 +38,7 @@ const CreateDealForm = () => {
         <form onSubmit={formMethods.handleSubmit(handleFormSubmit)}>
             <GeneralInformation />
             <DealValue />
+            <DateInEffect/>
             <ProductsCollection />
             <Exclusions />
         </form>
