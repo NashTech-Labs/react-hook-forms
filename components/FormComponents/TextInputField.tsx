@@ -32,9 +32,11 @@ const TextInputField = ({title, description, placeholder, tooltip, required, mul
     const {onChange, onBlur, ref, value} = field
 
     const classNames = [styles['form-field']]
+    const titleClassNames = []
     noBottomGutters && classNames.push(styles['no-bottom-margin'])
     noTopGutters && classNames.push(styles['no-top-margin'])
     inline && classNames.push(styles['inline'])
+    required && titleClassNames.push(styles['required'])
 
     const sxOverrides: any = {
          '&.Mui-disabled': {
@@ -42,7 +44,13 @@ const TextInputField = ({title, description, placeholder, tooltip, required, mul
          },
          '&.Mui-error':{
              background: '#FEFAF9'
-         }
+         },
+         '& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button':{
+                display: 'none',
+          },
+         '& input[type=number]': {
+              MozAppearance: 'textfield',
+          },
      }
 
      if(!inline){
@@ -51,7 +59,7 @@ const TextInputField = ({title, description, placeholder, tooltip, required, mul
 
      if(inline){
         return <div className={classNames.join(' ')}>
-        {title && <Typography variant='body1'>
+        {title && <Typography variant='body1' className={titleClassNames.join(' ')}>
              {title}
          </Typography>}
        {description &&  <Typography variant="caption" display="block" gutterBottom>
@@ -87,7 +95,7 @@ const TextInputField = ({title, description, placeholder, tooltip, required, mul
      } 
 
     return <div className={classNames.join(' ')}>
-       {title && <Typography variant='body1'>
+       {title && <Typography variant='body1'  className={titleClassNames.join(' ')}>
             {title}
         </Typography>}
       {description &&  <Typography variant="caption" display="block" gutterBottom>
@@ -111,6 +119,7 @@ const TextInputField = ({title, description, placeholder, tooltip, required, mul
                 </InputAdornment>
             }
             error={Boolean(error)}
+            minRows={3}
         />
        {error &&  <FieldErrorMessage message={error.message} />}
     </div>
