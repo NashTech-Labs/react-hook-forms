@@ -53,23 +53,20 @@ const GeneralInformation = () => {
         <TextInputField
           title="Identifier"
           description="Max 15 characters alphanumeric values"
-          placeholder="00000 00000 00000"
+          placeholder="eg. 00000-00000-00000"
           name="identifier"
           endAdornment={<div className={styles['generate-link']} onClick={handleGenerateIdentifier}>Generate</div>}
           required
         />
         <TextInputField
           title="Priority"
-          description="Numeric values between 1 to 100"
+          description="Numeric value must be 1 to 100"
           placeholder="eg 100"
           name="priority"
           required
           type="number"
         />
-        <Typography variant="body1" gutterBottom>
-          Stacking Type
-        </Typography>
-        <SelectField options={stackTypeOptions} name='stackingType'/>
+        <SelectField options={stackTypeOptions} name='stackingType' title="Stacking Type" required/>
       </Card>
     </>
   );
