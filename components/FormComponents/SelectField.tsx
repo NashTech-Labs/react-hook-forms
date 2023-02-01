@@ -49,8 +49,11 @@ const SelectField = ({options, name, required, title}: ISelectFieldProps) => {
       onBlur={onBlur}
       error={Boolean(error)}
       IconComponent={error ? EmptyIconComponent : ArrowDropDownIcon}
-      endAdornment={<InputAdornment position="end">
-        {error && <InfoOutlinedIcon className={styles['select-error-icon']} />}
+      endAdornment={<InputAdornment position="end" sx={{ marginRight: '5px' }}>
+        {error && <>
+          <InfoOutlinedIcon className={styles['select-error-icon']} />
+          <ArrowDropDownIcon/>
+        </>}
       </InputAdornment>}
       sx={{
         width: '350px',

@@ -13,7 +13,7 @@ export const addUser = createApi({
   endpoints: (builder) => ({
     addUser: builder.mutation<any[],UserDetail>({
       query: ({business,...rest}) => ({
-        url: "v1/deal/addUser",
+        url: "/v1/roles/add",
         method: "POST",
         body: rest,
         headers: {
