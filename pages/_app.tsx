@@ -5,6 +5,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { store } from "../store";
 import TopHeader from "../components/TopHeader/TopHeader";
 import { ToastContainer } from "react-toastify";
+import {StyledEngineProvider} from "@mui/material/styles";
 import "../styles/globals.css";
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -16,6 +17,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <Provider store={store}>
+      <StyledEngineProvider injectFirst>
       <GoogleOAuthProvider
         clientId={process.env.NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID || ""}
       >
@@ -23,6 +25,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <TopHeader />
         {pageLoaded ? <Component {...pageProps} /> : null}
       </GoogleOAuthProvider>
+      </StyledEngineProvider>
     </Provider>
   );
 }

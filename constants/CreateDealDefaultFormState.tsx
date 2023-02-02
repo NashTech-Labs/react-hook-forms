@@ -12,7 +12,9 @@ const createDealDefaultFormState: ICreateDealFormState = {
     fixedPriceOff: '',
     customPercentageOff: '',
     basketSpend: '',
-    basketDiscount: ''
+    basketDiscount: '',
+    englishMessage:'',
+    frenchMessage:''
 }
 
 export default createDealDefaultFormState
