@@ -1,4 +1,4 @@
-import React from 'react'
+import React , { FocusEvent } from 'react'
 import {useFormContext, useController} from "react-hook-form";
 import Typography from '@mui/material/Typography';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -21,22 +21,34 @@ interface ITextFieldProps {
     name: string
     endAdornment?: JSX.Element
     inline? : boolean
+    displayDollarFormat?: boolean
 }
 
-const TextInputField = ({title, description, placeholder, tooltip, required, multiline, type, noBottomGutters, noTopGutters, disabled, name, endAdornment, inline}: ITextFieldProps) => {
-    const {control} = useFormContext()
+const TextInputField = ({title, description, placeholder, tooltip, required, multiline, type, noBottomGutters, noTopGutters, disabled, name, endAdornment, inline, displayDollarFormat}: ITextFieldProps) => {
+    const {control, setValue } = useFormContext()
     const {field, fieldState : {error}} = useController({
         control,
         name
     })
     const {onChange, onBlur, ref, value} = field
 
+    const handleBlur = ({ target: { value }}: FocusEvent<HTMLInputElement>) => {
+      setValue(name, value ? parseFloat(value).toFixed(2) : value, { shouldDirty: true , shouldTouch: true, shouldValidate: true})
+    }
+
     const classNames = [styles['form-field']]
     const titleClassNames = []
+    let startAdornment = null
     noBottomGutters && classNames.push(styles['no-bottom-margin'])
     noTopGutters && classNames.push(styles['no-top-margin'])
     inline && classNames.push(styles['inline'])
-    required && titleClassNames.push(styles['required'])
+    required&& !inline && titleClassNames.push(styles['required'])
+
+    if(displayDollarFormat){
+        startAdornment = <InputAdornment position='start'>
+        {value && '$'}
+       </InputAdornment>
+    }
 
     const sxOverrides: any = {
          '&.Mui-disabled': {
@@ -75,7 +87,7 @@ const TextInputField = ({title, description, placeholder, tooltip, required, mul
              type={type}
              disabled={disabled}
              onChange={onChange}
-             onBlur={onBlur}
+             onBlur={displayDollarFormat ?  handleBlur : onBlur}
              inputRef={ref}
              name={name}
              value={value}
@@ -84,6 +96,7 @@ const TextInputField = ({title, description, placeholder, tooltip, required, mul
                      {error && <InfoOutlinedIcon className={styles['error-icon']}/>}
                  </InputAdornment>
              }
+             startAdornment={startAdornment}
              error={Boolean(error)}
          />
          </div>
@@ -109,7 +122,7 @@ const TextInputField = ({title, description, placeholder, tooltip, required, mul
             type={type}
             disabled={disabled}
             onChange={onChange}
-            onBlur={onBlur}
+            onBlur={displayDollarFormat ?  handleBlur : onBlur}
             inputRef={ref}
             name={name}
             value={value}
@@ -120,6 +133,7 @@ const TextInputField = ({title, description, placeholder, tooltip, required, mul
             }
             error={Boolean(error)}
             minRows={3}
+            startAdornment={startAdornment}
         />
        {error &&  <FieldErrorMessage message={error.message} />}
     </div>

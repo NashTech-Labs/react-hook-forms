@@ -15,10 +15,11 @@ const schema = yup.object().shape({
     identifier: yup.string().max(15 ,'Error: Identifier should be less than 15 characters').required('Error: Identifier is required'),
     priority: yup.number().typeError('Error: Priority is required').min(1, 'Error: Priority should be between 1 and 100').max(100, 'Error: Priority should be between 1 and 100').required('Error: Priority is required'),
     stackingType: yup.string().required('Error: Stacking type is required'),
-    dollarOff: yup.number().typeError('Dollar amount should be a number').required('Error: Dollar ($) value required'),
-    fixedPriceOff: yup.number().typeError('Dollar amount should be a number').min(1, 'Error: Must be a minimum of $1.00').required('Error: Dollar ($) value required'),
-    basketSpend : yup.number().typeError('Dollar amount should be a number').min(1, 'Error: Must be a minimum of $1.00').required('Error: Dollar ($) value required'),
-    basketDiscount: yup.number().typeError('Dollar amount should be a number').min(1, 'Error: Must be a minimum of $1.00').required('Error: Dollar ($) value required')
+    dollarOff: yup.number().typeError('Error: Dollar($) value required').min(0, 'Error: Dollar ($) value must be greater than $0').required('Error: Dollar ($) value required'),
+    customPercentageOff: yup.number().typeError('Error: Percentage(%) value required').min(1, 'Error: Percentage value should be between 1-99').max(99, 'Error: Percentage value should be between 1-99').required('Error: Percentage(%) value required'),
+    fixedPriceOff: yup.number().typeError('Error: Dollar($) value required').min(1, 'Error: Must be a minimum of $1.00').required('Error: Dollar ($) value required'),
+    basketSpend : yup.number().typeError('Error: Dollar($) value required').min(1, 'Error: Must be a minimum of $1.00').required('Error: Dollar ($) value required'),
+    basketDiscount: yup.number().typeError('Error: Dollar($) value required').min(1, 'Error: Must be a minimum of $1.00').required('Error: Dollar ($) value required')
 }).required();
 
 const CreateDealForm = () => {

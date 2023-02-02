@@ -27,6 +27,16 @@ const StyledTabs = ({tabs, handleTabUpdate}: IStyledTabsProps) => {
         textColor="inherit"
         variant="fullWidth"
         TabIndicatorProps={{style: {height: '4px'}}}
+        sx={{
+            '.Mui-selected' : {
+                color: '#043385',
+                fontWeight: 600
+            },
+            '.MuiTab-root':{
+                textTransform: 'capitalize',
+                fontSize: '16px'
+            }
+        }}
     >
         {tabs.map(({label}, index) => <Tab key={`${label}-${index}`} label={label} />)}
     </Tabs>
