@@ -18,8 +18,8 @@ export const addUser = createApi({
         body: rest,
         headers: {
             "X-Loblaw-Tenant-ID": `${business}`,
-            "X-Loblaw-Support-Tool-ID" : "BO",
-            "X-Loblaw-auth-provider": "GOOGLE",
+            "X-Loblaw-Support-Tool-ID" : 'BO',
+            "X-Loblaw-auth-provider": 'GOOGLE',
         },
       }),
     }),
