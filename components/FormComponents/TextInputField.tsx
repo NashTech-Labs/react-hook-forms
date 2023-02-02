@@ -21,10 +21,11 @@ interface ITextFieldProps {
     name: string
     endAdornment?: JSX.Element
     inline? : boolean
-    displayDollarFormat?: boolean
+    displayDollarFormat?: boolean,
+    regular?:boolean
 }
 
-const TextInputField = ({title, description, placeholder, tooltip, required, multiline, type, noBottomGutters, noTopGutters, disabled, name, endAdornment, inline, displayDollarFormat}: ITextFieldProps) => {
+const TextInputField = ({title, description, placeholder, tooltip, required, multiline, type, noBottomGutters, noTopGutters, disabled, name, endAdornment, inline,displayDollarFormat,regular}: ITextFieldProps) => {
     const {control, setValue } = useFormContext()
     const {field, fieldState : {error}} = useController({
         control,
@@ -67,6 +68,10 @@ const TextInputField = ({title, description, placeholder, tooltip, required, mul
 
      if(!inline){
         sxOverrides['width'] = '350px'
+     }
+
+     if(regular){
+        sxOverrides['width'] = '100%'
      }
 
      if(inline){

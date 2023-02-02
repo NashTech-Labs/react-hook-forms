@@ -11,4 +11,6 @@ export interface ICreateDealFormState {
     customPercentageOff: string
     basketSpend: string
     basketDiscount: string
+    englishMessage: string,
+    frenchMessage:string
 }

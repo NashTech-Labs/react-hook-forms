@@ -9,6 +9,7 @@ import DealValue from './DealValue';
 import ProductsCollection from './ProductsCollection/ProductsCollection';
 import Exclusions from './Exclusions/Exclusions';
 import DateInEffect from './DateInEffect';
+import PromotionalMessages from './PromotionalMessages/PromotionalMessages';
 
 const schema = yup.object().shape({
     title: yup.string().max(80, 'Error: Title should be less than 80 characters').required('Error: Title is required'),
@@ -19,7 +20,9 @@ const schema = yup.object().shape({
     customPercentageOff: yup.number().typeError('Error: Percentage(%) value required').min(1, 'Error: Percentage value should be between 1-99').max(99, 'Error: Percentage value should be between 1-99').required('Error: Percentage(%) value required'),
     fixedPriceOff: yup.number().typeError('Error: Dollar($) value required').min(1, 'Error: Must be a minimum of $1.00').required('Error: Dollar ($) value required'),
     basketSpend : yup.number().typeError('Error: Dollar($) value required').min(1, 'Error: Must be a minimum of $1.00').required('Error: Dollar ($) value required'),
-    basketDiscount: yup.number().typeError('Error: Dollar($) value required').min(1, 'Error: Must be a minimum of $1.00').required('Error: Dollar ($) value required')
+    basketDiscount: yup.number().typeError('Error: Dollar($) value required').min(1, 'Error: Must be a minimum of $1.00').required('Error: Dollar ($) value required'),
+    englishMessage: yup.string().required('Error: English message required'),
+    frenchMessage: yup.string().required('Error: French message required'),
 }).required();
 
 const CreateDealForm = () => {
@@ -42,6 +45,7 @@ const CreateDealForm = () => {
             <DateInEffect/>
             <ProductsCollection />
             <Exclusions />
+            <PromotionalMessages/>
         </form>
     </FormProvider>
 }
