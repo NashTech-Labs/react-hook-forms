@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { useFormContext, useWatch } from "react-hook-form";
 import Card from "@mui/material/Card";
 import Typography from '@mui/material/Typography';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import Button from '@mui/material/Button'
 import ButtonGroup from '@mui/material/ButtonGroup'
 import StepTitle from "../StepTitle";
@@ -22,14 +21,14 @@ const dealLevelOptions = [
 
 const dealTabs = [
     { label: 'Dollar ($) off', value: 'dollar' },
-    { label: 'Percentage ($) off', value: 'percentage' },
+    { label: 'Percentage (%) off', value: 'percentage' },
     { label: 'Fixed price', value: 'fixed' }
 ]
 
 const percentageOptions = [
     { value: '10', label: '10%' },
     { value: '20', label: '20%' },
-    { value: '30', label: '30%' },
+    { value: '25', label: '25%' },
     { value: '40', label: '40%' },
     { value: 'custom', label: 'Add custom value' }
 ]
@@ -56,14 +55,17 @@ const DealValue = () => {
     }
 
     const handleTabUpdate = (newTab: string): void => {
-        setValue('dollarOff', '')
-        setValue('percentageOff', '')
-        setValue('fixedPriceOff', '')
-        setValue('customPercentageOff', '')
+        if(newTab !== 'percentage'){
+            setValue('dollarOff', '')
+            setValue('percentageOff', '')
+            setValue('fixedPriceOff', '')
+            setValue('customPercentageOff', '')
+        }
         setActiveTab(newTab)
     }
 
     let content = null
+
     if (dealLevel === 'product') {
         if (activeTab === 'dollar') {
             content = <TextInputField
@@ -73,12 +75,13 @@ const DealValue = () => {
                 type="number"
                 name="dollarOff"
                 required
+                displayDollarFormat
             />
         }
 
         if (activeTab === 'percentage') {
             content = <>
-                <RadioGroupField options={percentageOptions} label="Select percentage" name='percentageOff' />
+                <RadioGroupField options={percentageOptions} label="Select percentage" name='percentageOff' required/>
                 <div className={styles['cutom-percentage']}>
                     <TextInputField
                         placeholder="Enter numeric value between 1-99"
@@ -100,6 +103,7 @@ const DealValue = () => {
                 type="number"
                 name="fixedPriceOff"
                 required
+                displayDollarFormat
             />
         }
     }
@@ -113,6 +117,7 @@ const DealValue = () => {
                 title="Spend"
                 inline
                 required
+                displayDollarFormat
             />
             <Typography>Get</Typography>
             <ButtonGroup>
@@ -125,6 +130,7 @@ const DealValue = () => {
                 type='number'
                 inline
                 required
+                displayDollarFormat
             />
             <Typography>Off</Typography>
         </div>
@@ -133,7 +139,7 @@ const DealValue = () => {
     return <Card className={commonStyles["step-card-container"]}>
         <StepLabel currentStep={3} totalSteps={7} />
         <StepTitle title={"Deal Value"} />
-        <RadioGroupField options={dealLevelOptions} label="Is this at a basket level or product level?" name="dealLevel" />
+        <RadioGroupField options={dealLevelOptions} label="Is this at a basket level or product level?" name="dealLevel" required/>
         {dealLevel === 'product' && < StyledTabs tabs={dealTabs} handleTabUpdate={handleTabUpdate} />}
         {content}
         <FormCardPreview title="Customer preview" description="Preview will generate after inputs are completed" />

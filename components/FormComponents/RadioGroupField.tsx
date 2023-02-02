@@ -16,18 +16,21 @@ interface IRadioGroupFieldProps {
     options: IRadioControlOption[]
     label: string
     name: string
+    required?: boolean
 }
 
-const RadioGroupField = ({options, label, name}: IRadioGroupFieldProps) => {
+const RadioGroupField = ({options, label, name,required}: IRadioGroupFieldProps) => {
     const {control} = useFormContext()
     const {field} = useController({
         control,
         name
     })
     const {onChange, onBlur, value} = field
+    const titleClassNames = []
+    required && titleClassNames.push(styles['required'])
 
     return <FormControl className={styles["form-field"]}>
-        <FormLabel id="demo-radio-buttons-group-label">{label}</FormLabel>
+        <FormLabel id="demo-radio-buttons-group-label" className={titleClassNames.join(' ')}>{label}</FormLabel>
         <RadioGroup
             aria-labelledby="demo-radio-buttons-group-label"
             onChange={onChange}
