@@ -1,4 +1,4 @@
-import {ICreateDealFormState} from './CreateDealFormStateType'
+import { ICreateDealFormState } from './CreateDealFormStateType'
 
 const createDealDefaultFormState: ICreateDealFormState = {
     title: '',
@@ -13,8 +13,14 @@ const createDealDefaultFormState: ICreateDealFormState = {
     customPercentageOff: '',
     basketSpend: '',
     basketDiscount: '',
-    englishMessage:'',
-    frenchMessage:''
+    englishMessage: '',
+    frenchMessage: '',
+    mch: [],
+    exmch: [],
+    liam: [],
+    exliam: [],
+    file: {},
+    exfile: {}
 }
 
 export default createDealDefaultFormState

@@ -51,7 +51,7 @@ const Exclusions = () => {
     if (activeTab === "uploadProduct") {
         content = (
             <>
-                <UploadExcel />
+                <UploadExcel uploadStep="exfile" />
             </>
         );
     }
@@ -59,7 +59,7 @@ const Exclusions = () => {
     if (activeTab === "addProduct") {
         content = (
             <>
-                <ManuallyAdd />
+                <ManuallyAdd mchValue="exmch" liamValue="exliam" />
             </>
         );
     }

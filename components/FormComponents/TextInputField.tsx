@@ -1,5 +1,5 @@
-import React , { FocusEvent } from 'react'
-import {useFormContext, useController} from "react-hook-form";
+import React, { FocusEvent } from 'react'
+import { useFormContext, useController } from "react-hook-form";
 import Typography from '@mui/material/Typography';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment'
@@ -20,21 +20,21 @@ interface ITextFieldProps {
     disabled?: boolean
     name: string
     endAdornment?: JSX.Element
-    inline? : boolean
+    inline?: boolean
     displayDollarFormat?: boolean,
-    regular?:boolean
+    regular?: boolean
 }
 
-const TextInputField = ({title, description, placeholder, tooltip, required, multiline, type, noBottomGutters, noTopGutters, disabled, name, endAdornment, inline,displayDollarFormat,regular}: ITextFieldProps) => {
-    const {control, setValue } = useFormContext()
-    const {field, fieldState : {error}} = useController({
+const TextInputField = ({ title, description, placeholder, tooltip, required, multiline, type, noBottomGutters, noTopGutters, disabled, name, endAdornment, inline, displayDollarFormat, regular }: ITextFieldProps) => {
+    const { control, setValue } = useFormContext()
+    const { field, fieldState: { error } } = useController({
         control,
         name
     })
-    const {onChange, onBlur, ref, value} = field
+    const { onChange, onBlur, ref, value } = field
 
-    const handleBlur = ({ target: { value }}: FocusEvent<HTMLInputElement>) => {
-      setValue(name, value ? parseFloat(value).toFixed(2) : value, { shouldDirty: true , shouldTouch: true, shouldValidate: true})
+    const handleBlur = ({ target: { value } }: FocusEvent<HTMLInputElement>) => {
+        setValue(name, value ? parseFloat(value).toFixed(2) : value, { shouldDirty: true, shouldTouch: true, shouldValidate: true })
     }
 
     const classNames = [styles['form-field']]
@@ -43,80 +43,80 @@ const TextInputField = ({title, description, placeholder, tooltip, required, mul
     noBottomGutters && classNames.push(styles['no-bottom-margin'])
     noTopGutters && classNames.push(styles['no-top-margin'])
     inline && classNames.push(styles['inline'])
-    required&& !inline && titleClassNames.push(styles['required'])
+    required && !inline && titleClassNames.push(styles['required'])
 
-    if(displayDollarFormat){
+    if (displayDollarFormat) {
         startAdornment = <InputAdornment position='start'>
-        {value && '$'}
-       </InputAdornment>
+            {value && '$'}
+        </InputAdornment>
     }
 
     const sxOverrides: any = {
-         '&.Mui-disabled': {
-             backgroundColor: disabled ? '#F0F0F0' : '#ffffff'
-         },
-         '&.Mui-error':{
-             background: '#FEFAF9'
-         },
-         '& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button':{
-                display: 'none',
-          },
-         '& input[type=number]': {
-              MozAppearance: 'textfield',
-          },
-     }
+        '&.Mui-disabled': {
+            backgroundColor: disabled ? '#F0F0F0' : '#ffffff'
+        },
+        '&.Mui-error': {
+            background: '#FEFAF9'
+        },
+        '& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
+            display: 'none',
+        },
+        '& input[type=number]': {
+            MozAppearance: 'textfield',
+        },
+    }
 
-     if(!inline){
+    if (!inline) {
         sxOverrides['width'] = '350px'
-     }
+    }
 
-     if(regular){
+    if (regular) {
         sxOverrides['width'] = '100%'
-     }
+    }
 
-     if(inline){
+    if (inline) {
         return <div className={classNames.join(' ')}>
-        {title && <Typography variant='body1' className={titleClassNames.join(' ')}>
-             {title}
-         </Typography>}
-       {description &&  <Typography variant="caption" display="block" gutterBottom>
-             {description}
-         </Typography>}
-         <div>
+            {title && <Typography variant='body1' className={titleClassNames.join(' ')}>
+                {title}
+            </Typography>}
+            {description && <Typography variant="caption" display="block" gutterBottom>
+                {description}
+            </Typography>}
             <div>
-         <OutlinedInput
-             id="title"
-             placeholder={placeholder}
-             sx={sxOverrides}
-             multiline={multiline}
-             type={type}
-             disabled={disabled}
-             onChange={onChange}
-             onBlur={displayDollarFormat ?  handleBlur : onBlur}
-             inputRef={ref}
-             name={name}
-             value={value}
-             endAdornment={<InputAdornment position="end">
-                     {endAdornment}
-                     {error && <InfoOutlinedIcon className={styles['error-icon']}/>}
-                 </InputAdornment>
-             }
-             startAdornment={startAdornment}
-             error={Boolean(error)}
-         />
-         </div>
-         <div>
-          {error &&  <FieldErrorMessage message={error.message} />}
-          </div>
-         </div>
-     </div>
-     } 
+                <div>
+                    <OutlinedInput
+                        id="title"
+                        placeholder={placeholder}
+                        sx={sxOverrides}
+                        multiline={multiline}
+                        type={type}
+                        disabled={disabled}
+                        onChange={onChange}
+                        onBlur={displayDollarFormat ? handleBlur : onBlur}
+                        inputRef={ref}
+                        name={name}
+                        value={value}
+                        endAdornment={<InputAdornment position="end">
+                            {endAdornment}
+                            {error && <InfoOutlinedIcon className={styles['error-icon']} />}
+                        </InputAdornment>
+                        }
+                        startAdornment={startAdornment}
+                        error={Boolean(error)}
+                    />
+                </div>
+                <div>
+                    {error && <FieldErrorMessage message={error.message} />}
+                </div>
+            </div>
+        </div>
+    }
 
     return <div className={classNames.join(' ')}>
-       {title && <Typography variant='body1'  className={titleClassNames.join(' ')}>
+        {title && <Typography variant='body1' className={titleClassNames.join(' ')}>
             {title}
         </Typography>}
-      {description &&  <Typography variant="caption" display="block" gutterBottom>
+        {description && <Typography variant="caption" display="block" gutterBottom>
             {description}
         </Typography>}
         <OutlinedInput
@@ -127,20 +127,20 @@ const TextInputField = ({title, description, placeholder, tooltip, required, mul
             type={type}
             disabled={disabled}
             onChange={onChange}
-            onBlur={displayDollarFormat ?  handleBlur : onBlur}
+            onBlur={displayDollarFormat ? handleBlur : onBlur}
             inputRef={ref}
             name={name}
             value={value}
             endAdornment={<InputAdornment position="end">
-                    {endAdornment}
-                    {error && <InfoOutlinedIcon className={styles['error-icon']}/>}
-                </InputAdornment>
+                {endAdornment}
+                {error && <InfoOutlinedIcon className={styles['error-icon']} />}
+            </InputAdornment>
             }
             error={Boolean(error)}
             minRows={3}
             startAdornment={startAdornment}
         />
-       {error &&  <FieldErrorMessage message={error.message} />}
+        {error && <FieldErrorMessage message={error.message} />}
     </div>
 }
 

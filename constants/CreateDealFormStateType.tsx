@@ -12,5 +12,11 @@ export interface ICreateDealFormState {
     basketSpend: string
     basketDiscount: string
     englishMessage: string,
-    frenchMessage:string
+    frenchMessage: string
+    mch: string[]
+    exmch: string[]
+    liam: string[]
+    exliam: string[]
+    file: any
+    exfile: any
 }
