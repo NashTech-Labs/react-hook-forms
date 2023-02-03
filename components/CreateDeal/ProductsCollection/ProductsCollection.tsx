@@ -28,7 +28,7 @@ function ProductsCollection() {
     if (activeTab === "uploadProduct") {
         content = (
             <>
-                <UploadExcel />
+                <UploadExcel uploadStep="file" />
             </>
         );
     }
@@ -36,7 +36,7 @@ function ProductsCollection() {
     if (activeTab === "addProduct") {
         content = (
             <>
-                <ManuallyAdd />
+                <ManuallyAdd mchValue="mch" liamValue="liam" />
             </>
         );
     }
