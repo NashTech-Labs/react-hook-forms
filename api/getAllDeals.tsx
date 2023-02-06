@@ -21,8 +21,7 @@ export const viewAllDeals = createApi({
         url: `/v1/deal/viewAllDeals`,
         method: "GET",
         headers: {
-          "X-Loblaw-Tenant-ID": "JOE_FRESH",
-          "X-Loblaw-Support-Tool-ID": "BO",
+          "X-Loblaw-Tenant-ID": "JOE_FRESH"
         },
       }),
     }),
