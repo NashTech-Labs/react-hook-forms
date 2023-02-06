@@ -19,4 +19,8 @@ export interface ICreateDealFormState {
     exliam: string[]
     file: any
     exfile: any
+    startDatePicker:object | null
+    endDatePicker: object | null
+    startTimePicker : object | null
+    endTimePicker : object | null
 }

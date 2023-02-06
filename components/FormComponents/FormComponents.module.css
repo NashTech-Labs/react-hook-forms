@@ -44,3 +44,7 @@
     content: ' *';
     color: #E1251B;
 }
+
+.date-picker {
+    width: 100%;
+}

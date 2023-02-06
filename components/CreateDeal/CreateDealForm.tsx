@@ -8,8 +8,8 @@ import { ICreateDealFormState } from '../../constants/CreateDealFormStateType'
 import DealValue from './DealValue';
 import ProductsCollection from './ProductsCollection/ProductsCollection';
 import Exclusions from './Exclusions/Exclusions';
-import DateInEffect from './DateInEffect';
 import PromotionalMessages from './PromotionalMessages/PromotionalMessages';
+import DateInEffect from './DateInEffect/DateInEffect';
 
 const MAX_FILE_SIZE = 1000000; //1MB
 
@@ -18,6 +18,16 @@ const validFileExtensions: any = ['.xlsx', '.xlsm', '.xlsb', '.xltx', '.xltm', '
 function isValidFileType(fileName: any) {
     var afterDot = fileName?.substr(fileName?.indexOf('.'));
     return fileName && validFileExtensions.includes(afterDot);
+}
+
+const isEndDateTimeValid = (endDateOrTime:any, startDateOrTime:object,operation:string)=>{
+    if(operation === ">="){
+        return (endDateOrTime>=startDateOrTime);
+    }
+    if(operation === ">"){
+        return(endDateOrTime>startDateOrTime);
+    } 
+    return true
 }
 
 const schema = yup.object().shape({
@@ -49,7 +59,17 @@ const schema = yup.object().shape({
         .test("not-valid-size", "Error: Max allowed size is 1 MB",
             value => value && value.size < MAX_FILE_SIZE)
         .test("is-valid-type", "Error: File Type not accepted",
-            value => isValidFileType(value && value?.name?.toLowerCase()))
+            value => isValidFileType(value && value?.name?.toLowerCase())),
+    startDatePicker:yup.date().typeError("Error: Valid date required").min(new Date().toJSON().slice(0, 10),"Error: You cannot add date before today").required('Error: Date required').nullable(),
+    startTimePicker:yup.date().min(new Date(),"Error: You cannot select time before current time").required('Error: Time required').nullable(),
+    endDatePicker:yup.date().typeError("Error: Valid date required").required('Error: Date required').nullable()
+        .test("test-end-date","Error: End date smaller than start date",function(value,context){
+            return isEndDateTimeValid(value, context.parent.startDatePicker,">=");
+        }),
+    endTimePicker:yup.date().required('Error: Time required').nullable()
+        .test("test-end-time","Error: End time must be greater than start time",function(value,context){
+            return isEndDateTimeValid(value, context.parent.startTimePicker,">");
+        }),
 }).required();
 
 const CreateDealForm = () => {
