@@ -7,11 +7,16 @@ import Modal from "react-modal";
 import styles from "./UserList.module.css";
 import { useGetUserRoleListQuery } from "../../api/getAllUsers";
 import AddUser from "./AddUser/AddUser";
-import { notifyError } from "../../util/Notification/Notification";
+import { notifyError, notifySuccess } from "../../util/Notification/Notification";
+import EditUserModal from "./EditUser/EditUserModal";
+import { useRemoveUserMutation } from "../../api/removeUser";
 
 const UserList = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { data,isError,refetch} = useGetUserRoleListQuery();
+  const [showEditUserModal, setShowEditUserModal] = useState(false);
+  const [selectedRow, setSelectedRow] = useState<any>(null);
+  const [removeUser] = useRemoveUserMutation();
 
   const addModalStyles = {
     content: {
@@ -59,6 +64,27 @@ const UserList = () => {
     },
   };
 
+  const editUserModalcustomStyles = {
+    content: {
+      width: "500px",
+      top: "40%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+      borderRadius: "2px",
+      background: "#fff",
+      boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+      padding: "16px",
+      gap: "10px",
+    },
+    overlay: {
+      zIndex: "999",
+      background: "rgba(0,0,0,0.4",
+    },
+  };
+
   const columns: TableColumn<any>[] = [
     {
       name: "Email",
@@ -79,7 +105,7 @@ const UserList = () => {
     },
     {
       name: "Action",
-      cell: () => (
+      cell: (row) => (
         <Button
           sx={{
             fontWeight: "400",
@@ -88,6 +114,7 @@ const UserList = () => {
             marginTop: "-8%",
           }}
           data-testid="edit-user-access-btn"
+          onClick={() => handleEditClick(row)}
         >
           Edit access
         </Button>
@@ -108,6 +135,27 @@ const UserList = () => {
 
   const closeModal = () => {
     setIsOpen(false);
+  };
+
+  const handleEditClick = (row: any) => {
+    setSelectedRow(row);
+    setShowEditUserModal(true);
+  };
+
+  const closeRemoveUserModal = () => {
+    setShowEditUserModal(false);
+  };
+
+  const handleRemoveUser = async () => {
+    if (!selectedRow) return;
+
+    await removeUser(selectedRow.customerId)
+      .then(() => {
+        notifySuccess(`user has been successfully removed`);
+        refetch();
+      })
+      .catch((e) => notifyError(e.data.error, "add-user"));
+    closeRemoveUserModal();
   };
 
   let content = null;
@@ -193,6 +241,19 @@ const UserList = () => {
         onRequestClose={closeModal}
       >
         <AddUser closeModal={closeModal} refetch={refetch}/>
+      </Modal>
+      <Modal
+        style={editUserModalcustomStyles}
+        isOpen={showEditUserModal}
+        onRequestClose={closeRemoveUserModal}
+      >
+        <EditUserModal
+          closeModal={closeRemoveUserModal}
+          user={selectedRow}
+          handleRemoveUser={handleRemoveUser}
+          selectedRow={selectedRow}
+          refetch={refetch}
+        />
       </Modal>
     </>
   );

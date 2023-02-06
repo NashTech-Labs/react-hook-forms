@@ -1,0 +1,52 @@
+.modal-heading {
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 28px;
+    color: #333333;
+    margin-bottom: 14px;
+}
+
+.modal-subheading {
+    font-weight: 400;
+    font-size: 14px;
+    margin-bottom: 38px;
+    color: #666B73
+}
+
+.exit-btn {
+    background: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    padding: 8px;
+    gap: 8px;
+    font-size: 16px;
+    color: #333333;
+    text-transform: initial;
+}
+
+.confirm-btn {
+    background: #276add;
+    border-radius: 4px;
+    padding: 8px;
+    gap: 8px;
+    text-transform: initial;
+    font-size: 16px;
+    color: #fff;
+}
+
+.main-option {
+    width: 210px;
+    height: 120px;
+    padding: 4px 8px;
+    border: 1px solid #276ADD;
+    margin: 5px;
+    text-transform: capitalize;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.error-text {
+    color: #E1251B;
+    font-weight: 400;
+    font-size: 12px
+}
