@@ -20,7 +20,11 @@ const createDealDefaultFormState: ICreateDealFormState = {
     liam: [],
     exliam: [],
     file: {},
-    exfile: {}
+    exfile: {},
+    startDatePicker:null,
+    endDatePicker: null,
+    startTimePicker : null,
+    endTimePicker:null
 }
 
 export default createDealDefaultFormState
