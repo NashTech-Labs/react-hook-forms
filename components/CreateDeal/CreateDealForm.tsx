@@ -41,14 +41,14 @@ const schema = yup.object().shape({
         .required("Required")
         .test("not-valid-size", "Max allowed size is 100KB",
             value => value && value.size < MAX_FILE_SIZE)
-        .test("is-valid-type", "Not a valid excel type",
-            value => isValidFileType(value && value.name.toLowerCase())),
+        .test("is-valid-type", "Error: File Type not accepted",
+            value => isValidFileType(value && value?.name?.toLowerCase())),
     exfile: yup
         .mixed()
         .required("Error: File Required")
         .test("not-valid-size", "Error: Max allowed size is 1 MB",
             value => value && value.size < MAX_FILE_SIZE)
-        .test("is-valid-type", "Error: Not a valid excel type",
+        .test("is-valid-type", "Error: File Type not accepted",
             value => isValidFileType(value && value?.name?.toLowerCase()))
 }).required();
 

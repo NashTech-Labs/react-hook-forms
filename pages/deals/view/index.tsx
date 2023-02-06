@@ -1,8 +1,9 @@
 import React from "react";
+import Summary from "../../../components/Summary/Summary";
 
 const ViewDeal = () => {
 
-  return <><h1> Deal Details Page</h1></>;
+  return <Summary />;
 };
 
 export default ViewDeal;
