@@ -48,3 +48,8 @@
 .date-picker {
     width: 100%;
 }
+
+.valid-icon {
+    color: #467E1B;
+    margin-left: 10px;    
+}

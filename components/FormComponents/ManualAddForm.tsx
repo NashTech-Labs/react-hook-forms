@@ -2,8 +2,9 @@ import { FormControl, Grid, InputAdornment, OutlinedInput } from '@mui/material'
 import React from 'react'
 import { useController, useFormContext } from 'react-hook-form'
 import FieldErrorMessage from './FieldErrorMessage'
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import styles from './FormComponents.module.css'
+import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 
 interface AddFieldProps {
     name: string
@@ -43,14 +44,15 @@ function ManualAddForm({ name, placeholder }: AddFieldProps) {
                 value={value}
                 endAdornment={<InputAdornment position="end">
                     {/* {endAdornment} */}
-                    {error && <InfoOutlinedIcon className={styles['error-icon']} />}
+                    {error && <ErrorOutlineIcon className={styles['error-icon']} />}
+                    {field.value && !error ? <CheckCircleOutlineOutlinedIcon className={styles['valid-icon']} /> : null}
                 </InputAdornment>
                 }
                 error={Boolean(error)}
             />
-            <div>
+            <Grid>
                 {error && <FieldErrorMessage message={error.message} />}
-            </div>
+            </Grid>
         </FormControl>
     )
 }
