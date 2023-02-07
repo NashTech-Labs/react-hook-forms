@@ -10,3 +10,8 @@
   line-height: 120%;
   color: #333333;
 }
+
+.field-title:after {
+  content: ' *';
+  color: #E1251B;
+}

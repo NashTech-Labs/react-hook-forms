@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { LocalizationProvider, TimePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { useController, useFormContext } from "react-hook-form";
-import { TextField } from "@mui/material";
+import { IconButton, InputAdornment, TextField } from "@mui/material";
 import styles from "./FormComponents.module.css";
 import FieldErrorMessage from "./FieldErrorMessage";
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 interface ITimePickerProps {
   name: string;
@@ -14,6 +16,7 @@ interface ITimePickerProps {
 }
 
 function InputTimePicker({ disabled, name,dateValue }: ITimePickerProps) {
+  const [open, setOpen] = useState(false);
   const { control,setValue } = useFormContext();
   const {
     field,
@@ -23,6 +26,12 @@ function InputTimePicker({ disabled, name,dateValue }: ITimePickerProps) {
     name,
   });
   const { onChange, onBlur, ref, value } = field;
+
+  const onPickerOpen = ()=>{
+    setOpen(true);
+    setValue(name,dateValue)
+  }
+
   return (
     <LocalizationProvider dateAdapter={AdapterMoment}>
       <TimePicker
@@ -30,19 +39,41 @@ function InputTimePicker({ disabled, name,dateValue }: ITimePickerProps) {
         value={value}
         className={styles["date-picker"]}
         disabled={disabled}
-        onOpen={()=>{
-          setValue(name,dateValue)
-        }}
+        open={open}
         onChange={onChange}
-        onClose = {onBlur}
+        onClose = {()=>{
+          setOpen(false)
+          onBlur()
+        }}
         renderInput={(params) => (
           <TextField
             {...params}
             id={name}
-            inputProps={{...params.inputProps, readOnly: true}}
             onBlur={onBlur}
             error={error?true:false}
             InputLabelProps={{ shrink: false }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  {error && <ErrorOutlineIcon sx={{ color: "red" }} />}
+                  <IconButton
+                    sx={{
+                      marginRight: "-12px",
+                    }}
+                    onClick={onPickerOpen}
+                    disabled={disabled}
+                  >
+                    <AccessTimeIcon
+                      sx={
+                        !disabled
+                          ? { color: "#333333" }
+                          : { color: "rgba(0,0,0,0.38)" }
+                      }
+                    />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
         )}
       />

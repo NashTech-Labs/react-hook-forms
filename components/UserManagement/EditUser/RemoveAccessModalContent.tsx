@@ -12,7 +12,7 @@ interface IRemoveAccessModalContent {
 const RemoveAccessModalContent = ({ consent, handleChange, closeModal, handleRemoveUser }: IRemoveAccessModalContent) => {
   return <>
     <Typography variant="subtitle2" className={classes['modal-subheading']} >
-      This will remove them from the system and their existing Agent/Admin role(s). Are you sure you want to remove this user?
+      This will remove them from the system and their existing User/Admin role(s). Are you sure you want to remove this user?
     </Typography>
     <FormControlLabel
       control={
