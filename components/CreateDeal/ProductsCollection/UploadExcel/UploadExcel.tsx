@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Grid, Typography } from "@mui/material";
 import commonStyles from "../../Steps.module.css";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
@@ -11,7 +11,7 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 function UploadExcel({ uploadStep }: any) {
 
-    const { control } = useFormContext()
+    const { control, setError } = useFormContext()
     const { field, fieldState: { error } } = useController({
         control,
         name: uploadStep
@@ -32,17 +32,18 @@ function UploadExcel({ uploadStep }: any) {
         if (evt) {
             setFile(evt);
 
-            // let f = evt;
-            // const reader = new FileReader();
-            // reader.onload = async (evt: any) => {
-            //     const bstr = evt.target.result;
-            //     const wb = XLSX.read(bstr, { type: "binary" });
+            let f = evt;
+            const reader = new FileReader();
+            reader.onload = async (evt: any) => {
+                const bstr = evt.target.result;
+                const wb = XLSX.read(bstr, { type: "binary" });
 
-            //     const sheetName = wb.SheetNames[0];
-            //     const worksheet = wb.Sheets[sheetName];
-            //     const json = XLSX.utils.sheet_to_json(worksheet);
-            // };
-            // reader.readAsBinaryString(f);
+                const sheetName = wb.SheetNames[0];
+                const worksheet = wb.Sheets[sheetName];
+                const json = XLSX.utils.sheet_to_json(worksheet);
+                console.log(json)
+            };
+            reader.readAsBinaryString(f);
         }
     };
 
@@ -51,9 +52,29 @@ function UploadExcel({ uploadStep }: any) {
         setFile({});
     };
 
+    let fileSelectEle: any = document.getElementById(uploadStep);
+
+    const charge = () => {
+        document.body.onfocus = function () { setTimeout(checkOnCancel, 100); };
+    }
+
+    useEffect(() => {
+        charge();
+    }, [fileSelectEle])
+
+    const checkOnCancel = () => {
+        if (fileSelectEle) {
+            return
+        }
+        else {
+            setError(uploadStep, { message: 'Error: File required' });
+        }
+        document.body.onfocus = null;
+    }
+
     return (
         <>
-            <Typography mt={2} mb="-2%">
+            <Typography className={commonStyles.required} mt={2} mb="-2%">
                 Collection
             </Typography>
             {error ?

@@ -42,13 +42,13 @@ const schema = yup.object().shape({
     basketDiscount: yup.number().typeError('Error: Dollar($) value required').min(1, 'Error: Must be a minimum of $1.00').required('Error: Dollar ($) value required'),
     englishMessage: yup.string().required('Error: English message required'),
     frenchMessage: yup.string().required('Error: French message required'),
-    mch: yup.array().of(yup.string().matches(/^[mM]/, "Error: Must start with M").min(9, "Error: Valid MCH required").max(9, "Error: Valid MCH required")),
-    exmch: yup.array().of(yup.string().matches(/^[mM]/, "Error: Must start with M").min(9, "Error: Valid MCH required").max(9, "Error: Valid MCH required")),
-    liam: yup.array().of(yup.string().matches(/^[a-zA-Z]/, "Error: Must start with letter").min(13, "Error: Valid LIAM required").max(13, "Error: Valid LIAM required")),
-    exliam: yup.array().of(yup.string().matches(/^[a-zA-Z]/, "Error: Must start with letter").min(13, "Error: Valid LIAM required").max(13, "Error: Valid LIAM required")),
+    mch: yup.array().of(yup.string().required('Error: MCH field required').matches(/^[mM]/, "Error: Must start with M").min(9, "Error: Valid MCH required").max(9, "Error: Valid MCH required")),
+    exmch: yup.array().of(yup.string().required('Error: LIAM field required').matches(/^[mM]/, "Error: Must start with M").min(9, "Error: Valid MCH required").max(9, "Error: Valid MCH required")),
+    liam: yup.array().of(yup.string().required('Error: MCH field required').matches(/^[a-zA-Z]/, "Error: Must start with letter").min(13, "Error: Valid LIAM required").max(13, "Error: Valid LIAM required")),
+    exliam: yup.array().of(yup.string().required('Error: LIAM field required').matches(/^[a-zA-Z]/, "Error: Must start with letter").min(13, "Error: Valid LIAM required").max(13, "Error: Valid LIAM required")),
     file: yup
         .mixed()
-        .required("Required")
+        .required("Error: File required")
         .test("not-valid-size", "Max allowed size is 100KB",
             value => value && value.size < MAX_FILE_SIZE)
         .test("is-valid-type", "Error: File Type not accepted",

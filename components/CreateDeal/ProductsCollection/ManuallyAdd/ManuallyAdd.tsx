@@ -45,6 +45,9 @@ function ManuallyAdd({ mchValue, liamValue }: any) {
         if (mch.length > 5) {
             setShowAllBtnMCH(true)
         }
+        else {
+            setShowAllBtnMCH(false)
+        }
 
     }, [mch])
 
@@ -54,7 +57,7 @@ function ManuallyAdd({ mchValue, liamValue }: any) {
 
             {mch.length > 0 ? (
                 <>
-                    <Typography>Products *</Typography>
+                    <Typography className={commonStyles.required} >Products</Typography>
                     <Typography>
                         Must be 9 characters beginning with the letter ‘M’
                     </Typography>
@@ -78,7 +81,7 @@ function ManuallyAdd({ mchValue, liamValue }: any) {
                     <Grid mt={2} container display="grid" justifyContent="center">
                         {showAllListMCH ?
                             <Grid item lg={12}>
-                                <Typography>Showing {mch.length} of {mch.length} recently added</Typography>
+                                <Typography>Showing <strong> {mch.length} of {mch.length} </strong> recently added</Typography>
                                 <Grid onClick={handleShowAllMCH} display="flex" ml={5}>
                                     <KeyboardArrowUpIcon /> <Typography ml={1}> Collapse</Typography>
                                 </Grid>
@@ -86,7 +89,7 @@ function ManuallyAdd({ mchValue, liamValue }: any) {
                             :
 
                             <Grid item lg={12}>
-                                <Typography>Showing 5 of {mch.length} recently added</Typography>
+                                <Typography>Showing <strong> 5 of {mch.length} </strong> recently added</Typography>
                                 <Grid onClick={handleShowAllMCH} display="flex" ml={5}>
                                     <KeyboardArrowDownIcon /> <Typography ml={1}> Show all</Typography>
                                 </Grid>
@@ -101,10 +104,16 @@ function ManuallyAdd({ mchValue, liamValue }: any) {
                     There are currently no MCH(s) that have been added
                 </Typography>
             ) : null}
-            <Typography onClick={() => handleMCH()} className={commonStyles.addbtn}>
-                <AddCircleOutlineIcon className={commonStyles.mchIcon} />
-                Add MCH
-            </Typography>
+
+            <Grid container>
+                <Grid item lg={2} onClick={() => handleMCH()} className={commonStyles.addbtn}>
+                    <AddCircleOutlineIcon className={commonStyles.mchIcon} />
+                    <Typography ml="3px" mt="1px">
+                        Add MCH
+                    </Typography>
+                </Grid>
+            </Grid>
+
             <Divider sx={{ border: "1px solid rgba(0, 0, 0, 0.25)" }}></Divider>
 
             <ManuallyAddLiam liamValue={liamValue} />

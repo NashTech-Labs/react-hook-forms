@@ -38,6 +38,9 @@ function ManuallyAddLiam({ liamValue }: any) {
         if (liam.length > 5) {
             setShowAllBtnLIAM(true)
         }
+        else {
+            setShowAllBtnLIAM(false)
+        }
 
     }, [liam])
 
@@ -49,7 +52,7 @@ function ManuallyAddLiam({ liamValue }: any) {
             {
                 liam.length > 0 ? (
                     <>
-                        <Typography>Products *</Typography>
+                        <Typography className={commonStyles.required}>Products</Typography>
                         <Typography>
                             Must be 13 characters beginning with a letter
                         </Typography>
@@ -76,7 +79,7 @@ function ManuallyAddLiam({ liamValue }: any) {
                     <Grid mt={2} container display="grid" justifyContent="center">
                         {showAllListLIAM ?
                             <Grid item lg={12}>
-                                <Typography>Showing {liam.length} of {liam.length} recently added</Typography>
+                                <Typography>Showing <strong> {liam.length} of {liam.length} </strong> recently added</Typography>
                                 <Grid onClick={handleShowAllLIAM} display="flex" ml={5}>
                                     <KeyboardArrowUpIcon /> <Typography ml={1}> Collapse</Typography>
                                 </Grid>
@@ -84,7 +87,7 @@ function ManuallyAddLiam({ liamValue }: any) {
                             :
 
                             <Grid item lg={12}>
-                                <Typography>Showing 5 of {liam.length} recently added</Typography>
+                                <Typography>Showing <strong>5 of {liam.length} </strong> recently added</Typography>
                                 <Grid onClick={handleShowAllLIAM} display="flex" ml={5}>
                                     <KeyboardArrowDownIcon /> <Typography ml={1}> Show all</Typography>
                                 </Grid>
@@ -101,13 +104,15 @@ function ManuallyAddLiam({ liamValue }: any) {
                     </Typography>
                     : null
             }
-            <Typography
-                onClick={() => handleLIAM()}
-                className={commonStyles.addbtn}
-            >
-                <AddCircleOutlineIcon className={commonStyles.mchIcon} />
-                Add LIAMs
-            </Typography>
+
+            <Grid container>
+                <Grid item lg={2} onClick={() => handleLIAM()} className={commonStyles.addbtn}>
+                    <AddCircleOutlineIcon className={commonStyles.mchIcon} />
+                    <Typography ml="3px" mt="1px">
+                        Add LIAMs
+                    </Typography>
+                </Grid>
+            </Grid>
         </>
     )
 }
