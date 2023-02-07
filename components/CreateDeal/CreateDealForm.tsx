@@ -61,12 +61,12 @@ const schema = yup.object().shape({
         .test("is-valid-type", "Error: File Type not accepted",
             value => isValidFileType(value && value?.name?.toLowerCase())),
     startDatePicker:yup.date().typeError("Error: Valid date required").min(new Date().toJSON().slice(0, 10),"Error: You cannot add date before today").required('Error: Date required').nullable(),
-    startTimePicker:yup.date().min(new Date(),"Error: You cannot select time before current time").required('Error: Time required').nullable(),
+    startTimePicker:yup.date().typeError("Error: Valid time required").min(new Date(),"Error: You cannot select time before current time").required('Error: Time required').nullable(),
     endDatePicker:yup.date().typeError("Error: Valid date required").required('Error: Date required').nullable()
         .test("test-end-date","Error: End date smaller than start date",function(value,context){
             return isEndDateTimeValid(value, context.parent.startDatePicker,">=");
         }),
-    endTimePicker:yup.date().required('Error: Time required').nullable()
+    endTimePicker:yup.date().typeError("Error: Valid time required").required('Error: Time required').nullable()
         .test("test-end-time","Error: End time must be greater than start time",function(value,context){
             return isEndDateTimeValid(value, context.parent.startTimePicker,">");
         }),

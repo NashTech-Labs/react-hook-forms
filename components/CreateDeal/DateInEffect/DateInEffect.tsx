@@ -5,8 +5,6 @@ import StepTitle from "../../StepTitle";
 import commonStyles from "../Steps.module.css";
 import FormCardPreview from "../../FormCardPreview";
 import styles from "./DateInEffect.module.css";
-import { Moment } from "moment";
-import moment from "moment";
 import { useWatch } from "react-hook-form";
 import DatePicker from "../../FormComponents/DatePicker";
 import InputTimePicker from "../../FormComponents/TimePicker";
@@ -24,20 +22,6 @@ function DateInEffect() {
   const startTimeValue = useWatch({
     name: "startTimePicker",
   });
-
-  const convertToUTC = (date: Moment | null, time: Moment | null) => {
-    let utcTimestamp = moment
-      .utc(
-        moment(
-          `${moment(date).format("YYYY-MM-DD")}` +
-            " " +
-            `${moment(time).format("HH:mm:ss")}`
-        ).format()
-      )
-      .valueOf();
-
-    return utcTimestamp;
-  };
 
   return (
     <Card className={commonStyles["step-card-container"]}>
