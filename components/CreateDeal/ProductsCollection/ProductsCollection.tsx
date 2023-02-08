@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {useFormContext} from "react-hook-form";
 import {
     Card,
     Divider
@@ -17,10 +18,12 @@ const dealTabs = [
 ];
 
 function ProductsCollection() {
+    const { setValue } = useFormContext()
     const [activeTab, setActiveTab] = useState(dealTabs[0]?.value);
 
     const handleTabUpdate = (newTab: string): void => {
         setActiveTab(newTab)
+        setValue('productsCollectionTab', newTab, {shouldValidate: true})
     }
 
     let content = null;

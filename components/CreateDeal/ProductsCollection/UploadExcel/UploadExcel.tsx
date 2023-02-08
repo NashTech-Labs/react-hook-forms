@@ -18,8 +18,6 @@ function UploadExcel({ uploadStep }: any) {
     })
     const { onChange, onBlur } = field
 
-    console.log(field.value, error)
-
     const [file, setFile] = useState<any>({});
 
     const hiddenFileInput = useRef<any>(null);
