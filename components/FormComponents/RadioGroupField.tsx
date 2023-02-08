@@ -1,5 +1,5 @@
 import React from 'react'
-import {useFormContext, useController} from "react-hook-form";
+import { useFormContext, useController } from "react-hook-form";
 import FormControl from '@mui/material/FormControl'
 import FormLabel from '@mui/material/FormLabel'
 import RadioGroup from '@mui/material/RadioGroup'
@@ -14,27 +14,32 @@ interface IRadioControlOption {
 
 interface IRadioGroupFieldProps {
     options: IRadioControlOption[]
-    label: string
+    label?: string
     name: string
     required?: boolean
-    handleChange? : Function
+    handleChange?: Function
 }
 
-const RadioGroupField = ({options, label, name,required, handleChange}: IRadioGroupFieldProps) => {
-    const {control} = useFormContext()
-    const {field} = useController({
+const RadioGroupField = ({ options, label, name, required, handleChange }: IRadioGroupFieldProps) => {
+    const { control } = useFormContext()
+    const { field } = useController({
         control,
         name
     })
-    const {onChange, onBlur, value} = field
+    const { onChange, onBlur, value } = field
     const titleClassNames = []
+    titleClassNames.push(styles['labelHeading'])
     required && titleClassNames.push(styles['required'])
 
     return <FormControl className={styles["form-field"]}>
-        <FormLabel id="demo-radio-buttons-group-label" className={titleClassNames.join(' ')}>{label}</FormLabel>
+        <FormLabel sx={{
+            '&.Mui-focused': {
+                color: 'black'
+            }
+        }} id="demo-radio-buttons-group-label" className={titleClassNames.join(' ')}>{label}</FormLabel>
         <RadioGroup
             aria-labelledby="demo-radio-buttons-group-label"
-            onChange={(e)=> {
+            onChange={(e) => {
                 onChange(e)
                 handleChange && handleChange(e)
             }}
@@ -43,7 +48,7 @@ const RadioGroupField = ({options, label, name,required, handleChange}: IRadioGr
             value={value}
         >
             {
-                options.map(({value, label}) => <FormControlLabel key={value} value={value} control={<Radio />} label={label} />)
+                options.map(({ value, label }) => <FormControlLabel key={value} value={value} control={<Radio />} label={label} />)
             }
         </RadioGroup>
     </FormControl>

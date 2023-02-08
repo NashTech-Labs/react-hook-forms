@@ -18,14 +18,15 @@ export interface ICreateDealFormState {
     productsCollectionTab: string
     mch: string[]
     productExclusionsCollectionTab: string
+    dealApplyType: string
     dealLevelOptions: string
     exmch: string[]
     liam: string[]
     exliam: string[]
     file: any
     exfile: any
-    startDatePicker:object | null
+    startDatePicker: object | null
     endDatePicker: object | null
-    startTimePicker : object | null
-    endTimePicker : object | null
+    startTimePicker: object | null
+    endTimePicker: object | null
 }
