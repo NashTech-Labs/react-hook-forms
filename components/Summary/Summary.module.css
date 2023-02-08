@@ -21,3 +21,23 @@
     font-size: 16px;
     line-height: 16px;
 }
+
+.title {
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 42px;
+    font-style: italic;
+}
+
+.titleContainer {
+    margin-left: 25%;
+}
+
+.Chip {
+    border-radius: 8px;
+    background-color: #666B73;
+    color: #FFF;
+    font-weight: 600;
+    margin-top: 2%;
+    font-size: 14px;
+}

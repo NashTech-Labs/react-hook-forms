@@ -18,6 +18,7 @@ const createDealDefaultFormState: ICreateDealFormState = {
     englishMessage: '',
     frenchMessage: '',
     productsCollectionTab: 'uploadProduct',
+    dealApplyType: '',
     dealLevelOptions: 'no',
     mch: [],
     exmch: [],
@@ -26,10 +27,10 @@ const createDealDefaultFormState: ICreateDealFormState = {
     productExclusionsCollectionTab: 'uploadProduct',
     file: {},
     exfile: {},
-    startDatePicker:null,
+    startDatePicker: null,
     endDatePicker: null,
-    startTimePicker : null,
-    endTimePicker:null
+    startTimePicker: null,
+    endTimePicker: null
 }
 
 export default createDealDefaultFormState

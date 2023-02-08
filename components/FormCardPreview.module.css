@@ -22,3 +22,8 @@
     gap: 5px;
     margin-top: 5px;
 }
+
+.required::after {
+    content: ' *';
+    color: #E1251B;
+}

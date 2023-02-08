@@ -19,7 +19,7 @@ import DeleteDeal from "../DeleteDeal/DeleteDeal";
 function Deals() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-  const { data, isLoading, refetch } = useGetAllListQuery();
+  const { data, isLoading, error, refetch } = useGetAllListQuery();
   const [selectedRows, setSelectedRows] = useState<any>([]);
 
   useEffect(() => {
@@ -90,8 +90,8 @@ function Deals() {
               <span>
                 {row.valid_from && row.valid_to
                   ? `${dateFormat(row.valid_from)} - ${dateFormat(
-                      row.valid_to
-                    )}`
+                    row.valid_to
+                  )}`
                   : null}
               </span>
               <br />
@@ -155,6 +155,67 @@ function Deals() {
   if (isLoading) {
     content = <TableLoader />;
   }
+
+  if (error) {
+    content = (
+      <>
+        <Grid item lg={8} md={9} sm={9}>
+          <Grid display="flex" justifyContent="space-between" mt={8} mb={4}>
+            <Typography variant="h3" className={styles.heading}>
+              Deals & Promotions
+            </Typography>
+
+            <Button
+              onClick={() => router.push("/deals/create")}
+              variant="contained"
+              className={styles.btn}
+            >
+              <CreateIcon sx={{ marginRight: "5px" }} />
+              Create new
+            </Button>
+          </Grid>
+
+          <Card className={styles["deal-card"]}>
+            <CardContent sx={{ padding: "0px" }}>
+              <Typography
+                variant="h5"
+                sx={{ mb: 3 }}
+                className={styles["deal-card-header"]}
+              >
+                All
+              </Typography>
+              <DataTable
+                persistTableHead
+                data={[]}
+                highlightOnHover
+                columns={columns}
+                customStyles={customStyles}
+              />
+            </CardContent>
+
+            <Grid container alignItems="center">
+              <Grid item>
+                <Button
+                  variant="outlined"
+                  startIcon={<DeleteOutlineIcon sx={{ fontSize: "16px" }} />}
+                  className={styles["delete-btn"]}
+                  disabled={selectedRows.length < 1}
+                >
+                  Delete
+                </Button>
+              </Grid>
+              {selectedRows.length > 0 && (
+                <Grid item>
+                  <Typography variant="body2">{`(${selectedRows.length} selected)`}</Typography>
+                </Grid>
+              )}
+            </Grid>
+          </Card>
+        </Grid>
+      </>
+    )
+  }
+
 
   if (data) {
     content = (

@@ -1,31 +1,31 @@
 import React from 'react'
-import {useFormContext, useController} from 'react-hook-form'
+import { useFormContext, useController } from 'react-hook-form'
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import InputAdornment from '@mui/material/InputAdornment'
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import Typography from '@mui/material/Typography'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import FieldErrorMessage from '../FormComponents/FieldErrorMessage'
 import styles from './FormComponents.module.css'
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 interface ISelectFieldProps {
-  title: string
-  options: {[index: string]: string}
+  title?: string
+  options: { [index: string]: string }
   name: string
   required?: boolean
 }
 
 const EmptyIconComponent = () => <div />
 
-const SelectField = ({options, name, required, title}: ISelectFieldProps) => {
-  const {control} = useFormContext()
-  const {field, fieldState: {error}} = useController({
+const SelectField = ({ options, name, required, title }: ISelectFieldProps) => {
+  const { control } = useFormContext()
+  const { field, fieldState: { error } } = useController({
     control,
     name
   })
-  const {onChange, onBlur, ref, value} = field
+  const { onChange, onBlur, ref, value } = field
   const titleClassNames = []
   required && titleClassNames.push(styles['required'])
 
@@ -51,8 +51,8 @@ const SelectField = ({options, name, required, title}: ISelectFieldProps) => {
       IconComponent={error ? EmptyIconComponent : ArrowDropDownIcon}
       endAdornment={<InputAdornment position="end" sx={{ marginRight: '5px' }}>
         {error && <>
-          <InfoOutlinedIcon className={styles['select-error-icon']} />
-          <ArrowDropDownIcon/>
+          <ErrorOutlineIcon className={styles['select-error-icon']} />
+          <ArrowDropDownIcon />
         </>}
       </InputAdornment>}
       sx={{
