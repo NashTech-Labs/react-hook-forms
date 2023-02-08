@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./feature/auth/authSlice";
 import dealReducer from "./feature/deal/dealSlice";
+import newDealReducer from './feature/deal/newDealSlice'
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
@@ -22,15 +23,23 @@ const dealsCount = {
   storage,
 };
 
+const newDeal = {
+  key: 'newDeal',
+  storage
+}
+
 const persistedAuthReducer = persistReducer(persistauthConfig, authReducer);
 
 const persistedDealReducer = persistReducer(dealsCount, dealReducer);
+
+const persistedNewDeal = persistReducer(newDeal ,newDealReducer)
 
 export const generateStore = (preloadedState = {}) => {
   return configureStore({
     reducer: {
       user: persistedAuthReducer,
       deal: persistedDealReducer,
+      newDeal: persistedNewDeal,
       [RolesOfUser.reducerPath]: RolesOfUser.reducer,
       [userRoleList.reducerPath]: userRoleList.reducer,
       [addUser.reducerPath]: addUser.reducer,

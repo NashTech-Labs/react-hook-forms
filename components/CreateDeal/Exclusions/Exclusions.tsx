@@ -44,6 +44,7 @@ const Exclusions = () => {
 
     const handleTabUpdate = (newTab: string): void => {
         setActiveTab(newTab)
+        setValue('productExclusionsCollectionTab', newTab, {shouldValidate: true})
     }
 
     let content = null

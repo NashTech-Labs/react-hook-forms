@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, ChangeEvent } from 'react'
 import { useFormContext, useWatch } from "react-hook-form";
 import Card from "@mui/material/Card";
 import Typography from '@mui/material/Typography';
@@ -57,11 +57,18 @@ const DealValue = () => {
     const handleTabUpdate = (newTab: string): void => {
         if(newTab !== 'percentage'){
             setValue('dollarOff', '')
-            setValue('percentageOff', '')
+            setValue('percentageOff', 10)
             setValue('fixedPriceOff', '')
             setValue('customPercentageOff', '')
         }
         setActiveTab(newTab)
+        setValue('dealDiscountTab', newTab)
+    }
+
+    const handleCustomPercentageChange = (e: ChangeEvent<HTMLInputElement>) => {
+      if(e.target.value !== 'custom'){
+        setValue('customPercentageOff', '',{ shouldValidate: true})
+      }
     }
 
     let content = null
@@ -81,11 +88,10 @@ const DealValue = () => {
 
         if (activeTab === 'percentage') {
             content = <>
-                <RadioGroupField options={percentageOptions} label="Select percentage" name='percentageOff' required/>
+                <RadioGroupField options={percentageOptions} label="Select percentage" name='percentageOff' required handleChange={handleCustomPercentageChange}/>
                 <div className={styles['cutom-percentage']}>
                     <TextInputField
                         placeholder="Enter numeric value between 1-99"
-                        type="number"
                         noTopGutters
                         disabled={percentageOff !== 'custom'}
                         name="customPercentageOff"

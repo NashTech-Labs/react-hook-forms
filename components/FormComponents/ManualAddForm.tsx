@@ -20,8 +20,6 @@ function ManualAddForm({ name, placeholder }: AddFieldProps) {
     })
     const { onChange, onBlur, ref, value } = field
 
-    console.log(field, error)
-
     return (
         <FormControl fullWidth>
             <OutlinedInput

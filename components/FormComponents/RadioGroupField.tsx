@@ -17,9 +17,10 @@ interface IRadioGroupFieldProps {
     label: string
     name: string
     required?: boolean
+    handleChange? : Function
 }
 
-const RadioGroupField = ({options, label, name,required}: IRadioGroupFieldProps) => {
+const RadioGroupField = ({options, label, name,required, handleChange}: IRadioGroupFieldProps) => {
     const {control} = useFormContext()
     const {field} = useController({
         control,
@@ -33,7 +34,10 @@ const RadioGroupField = ({options, label, name,required}: IRadioGroupFieldProps)
         <FormLabel id="demo-radio-buttons-group-label" className={titleClassNames.join(' ')}>{label}</FormLabel>
         <RadioGroup
             aria-labelledby="demo-radio-buttons-group-label"
-            onChange={onChange}
+            onChange={(e)=> {
+                onChange(e)
+                handleChange && handleChange(e)
+            }}
             onBlur={onBlur}
             name={name}
             value={value}
