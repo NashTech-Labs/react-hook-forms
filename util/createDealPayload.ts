@@ -62,12 +62,15 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
         "reward_type": rewardType,
         "rewards": [
             {
-                "value": rewardValue,
+                // "value": rewardValue,
+                "value": "10",
                 "restrictions": null
             }
         ],
-        "valid_from": moment.utc(startDatePicker).valueOf(),
-        "valid_to": moment.utc(endDatePicker).valueOf(),
+        // "valid_from": moment.utc(startDatePicker).valueOf(),
+        // "valid_to": moment.utc(endDatePicker).valueOf(),
+        "valid_from":  "2023-01-15T00:00:00",
+        "valid_to": "2023-01-15T00:00:00",
         "promo_restrictions": {
             "product_code": {
                "liam": exliam,
@@ -77,7 +80,7 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
                 "value": dealApplyType
             }
         },
-        "store_id": "1234",
+        "store_id": "5264",
         "promotion_message_english": englishMessage,
         "promotion_message_french": frenchMessage,
         "deal_stage": "DRAFT",

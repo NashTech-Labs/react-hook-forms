@@ -12,6 +12,7 @@ import { viewAllDeals } from "../api/getAllDeals";
 import { deleteDeal } from "../api/deleteDeal";
 import { removeUser } from "../api/removeUser";
 import { updateUser } from "../api/updateUser";
+import { createDeals } from "../api/createDeal";
 
 const persistauthConfig = {
   key: "auth",
@@ -32,7 +33,7 @@ const persistedAuthReducer = persistReducer(persistauthConfig, authReducer);
 
 const persistedDealReducer = persistReducer(dealsCount, dealReducer);
 
-const persistedNewDeal = persistReducer(newDeal ,newDealReducer)
+const persistedNewDeal = persistReducer(newDeal, newDealReducer)
 
 export const generateStore = (preloadedState = {}) => {
   return configureStore({
@@ -44,15 +45,17 @@ export const generateStore = (preloadedState = {}) => {
       [userRoleList.reducerPath]: userRoleList.reducer,
       [addUser.reducerPath]: addUser.reducer,
       [viewAllDeals.reducerPath]: viewAllDeals.reducer,
-      [deleteDeal.reducerPath]:deleteDeal.reducer,
-      [removeUser.reducerPath]:removeUser.reducer,
-      [updateUser.reducerPath]:updateUser.reducer
+      [deleteDeal.reducerPath]: deleteDeal.reducer,
+      [removeUser.reducerPath]: removeUser.reducer,
+      [updateUser.reducerPath]: updateUser.reducer,
+      [createDeals.reducerPath]: createDeals.reducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
         serializableCheck: false,
       }).concat([
         RolesOfUser.middleware,
+        createDeals.middleware,
         userRoleList.middleware,
         addUser.middleware,
         viewAllDeals.middleware,

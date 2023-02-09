@@ -16,7 +16,7 @@ import { productCollectionTabs, dealLevelExclusionOptions } from '../../../const
 
 const Exclusions = () => {
     const [dealItems, setDealItems] = useState<string>('')
-    const [activeTab, setActiveTab] = useState(dealLevelExclusionOptions[0]?.value);
+    const [activeTab, setActiveTab] = useState(productCollectionTabs[0]?.value);
 
     const { control, setValue } = useFormContext()
 
@@ -58,7 +58,7 @@ const Exclusions = () => {
         <Tag label="Internal facing" />
         <Grid display="grid">
             <SelectField options={dealApplyOptions} name="dealApplyType" title="What items does this deal apply to?" required />
-            <RadioGroupField options={dealLevelExclusionOptions} label="Will there be additional products excluded from this deal?" name="dealLevelOptions" required={true} />
+            <RadioGroupField options={dealLevelExclusionOptions} label="Will there be additional products excluded from this deal?" name="dealLevelOptions" required={true} handleChange={handleChange} />
             {dealOptions === 'yes' ? <><StyledTabs tabs={productCollectionTabs} handleTabUpdate={handleTabUpdate} />
                 <Divider sx={{ border: "1px solid rgba(0, 0, 0, 0.25)" }}></Divider>
                 {content}</>
