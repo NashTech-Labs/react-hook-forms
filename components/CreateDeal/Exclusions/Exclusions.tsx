@@ -12,20 +12,11 @@ import ManuallyAdd from '../ProductsCollection/ManuallyAdd/ManuallyAdd';
 import StyledTabs from '../../StyledTabs';
 import { useFormContext, useWatch } from 'react-hook-form';
 import SelectField from '../../FormComponents/SelectField';
-
-const dealLevelOptions = [
-    { value: 'no', label: 'No' },
-    { value: 'yes', label: 'Yes' }
-]
-
-const dealTabs = [
-    { label: "Upload product(s)", value: "uploadProduct" },
-    { label: "Manually add product(s)", value: "addProduct" },
-];
+import { productCollectionTabs, dealLevelExclusionOptions } from '../../../constants/FormOptions'
 
 const Exclusions = () => {
     const [dealItems, setDealItems] = useState<string>('')
-    const [activeTab, setActiveTab] = useState(dealTabs[0]?.value);
+    const [activeTab, setActiveTab] = useState(dealLevelExclusionOptions[0]?.value);
 
     const { control, setValue } = useFormContext()
 
@@ -67,8 +58,8 @@ const Exclusions = () => {
         <Tag label="Internal facing" />
         <Grid display="grid">
             <SelectField options={dealApplyOptions} name="dealApplyType" title="What items does this deal apply to?" required />
-            <RadioGroupField options={dealLevelOptions} label="Will there be additional products excluded from this deal?" name="dealLevelOptions" required={true} />
-            {dealOptions === 'yes' ? <><StyledTabs tabs={dealTabs} handleTabUpdate={handleTabUpdate} />
+            <RadioGroupField options={dealLevelExclusionOptions} label="Will there be additional products excluded from this deal?" name="dealLevelOptions" required={true} />
+            {dealOptions === 'yes' ? <><StyledTabs tabs={productCollectionTabs} handleTabUpdate={handleTabUpdate} />
                 <Divider sx={{ border: "1px solid rgba(0, 0, 0, 0.25)" }}></Divider>
                 {content}</>
                 : null}

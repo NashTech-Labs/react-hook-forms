@@ -11,7 +11,7 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 function UploadExcel({ uploadStep }: any) {
 
-    const { control, setError } = useFormContext()
+    const { control, setValue } = useFormContext()
     const { field, fieldState: { error } } = useController({
         control,
         name: uploadStep
@@ -29,7 +29,7 @@ function UploadExcel({ uploadStep }: any) {
     const handleUpload = (evt: any) => {
         if (evt) {
             setFile(evt);
-
+            setValue(uploadStep === 'file' ?  'fileName' : 'exFileName', evt.name)
             let f = evt;
             const reader = new FileReader();
             reader.onload = async (evt: any) => {
@@ -39,7 +39,14 @@ function UploadExcel({ uploadStep }: any) {
                 const sheetName = wb.SheetNames[0];
                 const worksheet = wb.Sheets[sheetName];
                 const json = XLSX.utils.sheet_to_json(worksheet);
-                console.log(json)
+                const mchData: string[] = []
+                const liamData: string[] = []
+                json.forEach(({ mch, liam }: any)=> {
+                    mchData.push(mch)
+                    liamData.push(liam)
+                })
+                setValue( uploadStep === 'file' ? 'mch' : 'exmch', mchData)
+                setValue(uploadStep === 'file' ? 'liam' : 'exliam', liamData)
             };
             reader.readAsBinaryString(f);
         }
@@ -61,13 +68,13 @@ function UploadExcel({ uploadStep }: any) {
     }, [fileSelectEle])
 
     const checkOnCancel = () => {
-        if (fileSelectEle) {
-            return
-        }
-        else {
-            setError(uploadStep, { message: 'Error: File required' });
-        }
-        document.body.onfocus = null;
+        // if (fileSelectEle) {
+        //     return
+        // }
+        // else {
+        //     setError(uploadStep, { message: 'Error: File required' });
+        // }
+        // document.body.onfocus = null;
     }
 
     return (

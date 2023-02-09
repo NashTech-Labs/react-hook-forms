@@ -1,7 +1,8 @@
 import moment from 'moment'
 import {ICreateDealFormState} from '../../constants/CreateDealFormStateType'
+import { dealLevelExclusionOptions, dealApplyOptions } from '../../constants/FormOptions'
 
-const getFormattedDate = (date: any) => moment(date).format('MMMM DD, YYYY H:mm a z')
+const getFormattedDate = (date: any, time: any) => `${moment(date).format('MMMM DD, YYYY')} ${moment(time).format('H:mm a z')}`
 
 interface IConfigValue {
     title: string
@@ -69,7 +70,7 @@ const config: IConfig = {
         }
     },
     {
-        title: 'getValue',
+        title: 'Value',
         getValue: (formData: ICreateDealFormState) => {
             const {dollarOff, percentageOff, fixedPriceOff} = formData
             return dollarOff || percentageOff || fixedPriceOff
@@ -88,30 +89,30 @@ const config: IConfig = {
     'Date in effect': [{
         title: 'Start Date',
         getValue: (formData: ICreateDealFormState) => {
-            const {startDatePicker} = formData
-            return getFormattedDate(startDatePicker)
+            const {startDatePicker, startTimePicker} = formData
+            return getFormattedDate(startDatePicker, startTimePicker)
         }
     },
     {
         title: 'End Date',
         getValue: (formData: ICreateDealFormState) => {
-            const {endDatePicker} = formData
-            return getFormattedDate(endDatePicker)
+            const {endDatePicker, endTimePicker} = formData
+            return getFormattedDate(endDatePicker, endTimePicker)
         }
     },
     {
         title: 'Customer preview',
         getValue: (formData: ICreateDealFormState) => {
-            const {startDatePicker, endDatePicker} = formData
-            return `Starts ${getFormattedDate(startDatePicker)} and ends ${getFormattedDate(endDatePicker)}`
+            const {startDatePicker,startTimePicker, endDatePicker, endTimePicker} = formData
+            return `Starts ${getFormattedDate(startDatePicker, startTimePicker)} and ends ${getFormattedDate(endDatePicker, endTimePicker)}`
         }
     }],
     'Prodcuts and Collections': [
         {
             title: 'Collection',
             getValue: (formData: ICreateDealFormState) => {
-                // const {collection} = formData
-                // return collection
+                const {fileName} = formData
+                return fileName
             }
         }
     ],
@@ -119,22 +120,22 @@ const config: IConfig = {
         {
             title: 'What items does this deal apply to?',
             getValue: (formData: ICreateDealFormState) => {
-                // const {exclusionsDealApply} = formData
-                // return exclusionsDealApply
+                const {dealApplyType} = formData
+                return dealApplyOptions[dealApplyType]
             }
         },
         {
             title: 'Will there be additional prodcuts excluded from this deal?',
             getValue: (formData: ICreateDealFormState) => {
-                // const {additionalExclusions} = formData
-                // return additionalExclusions
+                const {dealLevelOptions} = formData
+                return dealLevelExclusionOptions.find(({value})=> value === dealLevelOptions)?.label
             }
         },
         {
             title: 'Collection',
             getValue: (formData: ICreateDealFormState) => {
-                // const {collection} = formData
-                // return collection
+                const {exFileName} = formData
+                return exFileName
             }
         }
     ],
