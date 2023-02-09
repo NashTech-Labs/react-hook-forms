@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Grid, Typography } from "@mui/material";
 import commonStyles from "../../Steps.module.css";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
@@ -29,7 +29,7 @@ function UploadExcel({ uploadStep }: any) {
     const handleUpload = (evt: any) => {
         if (evt) {
             setFile(evt);
-            setValue(uploadStep === 'file' ?  'fileName' : 'exFileName', evt.name)
+            setValue(uploadStep === 'file' ? 'fileName' : 'exFileName', evt.name)
             let f = evt;
             const reader = new FileReader();
             reader.onload = async (evt: any) => {
@@ -41,11 +41,11 @@ function UploadExcel({ uploadStep }: any) {
                 const json = XLSX.utils.sheet_to_json(worksheet);
                 const mchData: string[] = []
                 const liamData: string[] = []
-                json.forEach(({ mch, liam }: any)=> {
+                json.forEach(({ mch, liam }: any) => {
                     mchData.push(mch)
                     liamData.push(liam)
                 })
-                setValue( uploadStep === 'file' ? 'mch' : 'exmch', mchData)
+                setValue(uploadStep === 'file' ? 'mch' : 'exmch', mchData)
                 setValue(uploadStep === 'file' ? 'liam' : 'exliam', liamData)
             };
             reader.readAsBinaryString(f);
@@ -55,27 +55,10 @@ function UploadExcel({ uploadStep }: any) {
     const handleDelete = (e: any) => {
         e.stopPropagation();
         setFile({});
+        setValue(uploadStep, null)
+        setValue(uploadStep === 'file' ? 'mch' : 'exmch', [])
+        setValue(uploadStep === 'file' ? 'liam' : 'exliam', [])
     };
-
-    let fileSelectEle: any = document.getElementById(uploadStep);
-
-    const charge = () => {
-        document.body.onfocus = function () { setTimeout(checkOnCancel, 100); };
-    }
-
-    useEffect(() => {
-        charge();
-    }, [fileSelectEle])
-
-    const checkOnCancel = () => {
-        // if (fileSelectEle) {
-        //     return
-        // }
-        // else {
-        //     setError(uploadStep, { message: 'Error: File required' });
-        // }
-        // document.body.onfocus = null;
-    }
 
     return (
         <>
