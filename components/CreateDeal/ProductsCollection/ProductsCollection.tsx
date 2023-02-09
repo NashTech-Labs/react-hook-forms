@@ -11,15 +11,11 @@ import commonStyles from "../Steps.module.css";
 import StyledTabs from "../../StyledTabs";
 import UploadExcel from "./UploadExcel/UploadExcel"
 import ManuallyAdd from "./ManuallyAdd/ManuallyAdd";
-
-const dealTabs = [
-    { label: "Upload product(s)", value: "uploadProduct" },
-    { label: "Manually add product(s)", value: "addProduct" },
-];
+import { productCollectionTabs } from '../../../constants/FormOptions'
 
 function ProductsCollection() {
     const { setValue } = useFormContext()
-    const [activeTab, setActiveTab] = useState(dealTabs[0]?.value);
+    const [activeTab, setActiveTab] = useState(productCollectionTabs[0]?.value);
 
     const handleTabUpdate = (newTab: string): void => {
         setActiveTab(newTab)
@@ -51,7 +47,7 @@ function ProductsCollection() {
                 <StepTitle title={"Products and Collections"} />
                 <Tag label="Internal facing" />
 
-                <StyledTabs tabs={dealTabs} handleTabUpdate={handleTabUpdate} />
+                <StyledTabs tabs={productCollectionTabs} handleTabUpdate={handleTabUpdate} />
                 <Divider sx={{ border: "1px solid rgba(0, 0, 0, 0.25)" }}></Divider>
                 {content}
             </Card>

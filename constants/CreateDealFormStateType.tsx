@@ -23,10 +23,11 @@ export interface ICreateDealFormState {
     exmch: string[]
     liam: string[]
     exliam: string[]
-    file: any
-    exfile: any
+    fileName: string
+    exFileName: string
     startDatePicker: object | null
     endDatePicker: object | null
     startTimePicker: object | null
     endTimePicker: object | null
+    collectionFileName: string
 }

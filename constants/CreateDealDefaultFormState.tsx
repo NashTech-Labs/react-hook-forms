@@ -25,12 +25,13 @@ const createDealDefaultFormState: ICreateDealFormState = {
     liam: [],
     exliam: [],
     productExclusionsCollectionTab: 'uploadProduct',
-    file: {},
-    exfile: {},
+    fileName: '',
+    exFileName: '',
     startDatePicker: null,
     endDatePicker: null,
     startTimePicker: null,
-    endTimePicker: null
+    endTimePicker: null,
+    collectionFileName: ''
 }
 
 export default createDealDefaultFormState

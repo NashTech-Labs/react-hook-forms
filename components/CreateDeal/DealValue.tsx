@@ -12,26 +12,7 @@ import TextInputField from '../FormComponents/TextInputField'
 import styles from "./DealValue.module.css";
 import FormCardPreview from '../FormCardPreview'
 import commonStyles from './Steps.module.css'
-
-
-const dealLevelOptions = [
-    { value: 'product', label: 'Product' },
-    { value: 'basket', label: 'Basket' }
-]
-
-const dealTabs = [
-    { label: 'Dollar ($) off', value: 'dollar' },
-    { label: 'Percentage (%) off', value: 'percentage' },
-    { label: 'Fixed price', value: 'fixed' }
-]
-
-const percentageOptions = [
-    { value: '10', label: '10%' },
-    { value: '20', label: '20%' },
-    { value: '25', label: '25%' },
-    { value: '40', label: '40%' },
-    { value: 'custom', label: 'Add custom value' }
-]
+import { dealLevelOptions, dealTabs, percentageOptions} from '../../constants/FormOptions'
 
 const DealValue = () => {
     const [activeTab, setActiveTab] = useState(dealTabs[0]?.value)
