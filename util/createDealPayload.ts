@@ -40,7 +40,12 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
          englishMessage,
          frenchMessage,
          startDatePicker,
-         endDatePicker
+         endDatePicker,
+         fileMCH,
+         exfileMCH,
+         fileLIAM,
+         exfileLIAM,
+         productsCollectionTab
         } = formData
     const { rewardType, rewardValue } = getRewardType(formData)
 
@@ -52,8 +57,8 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
         "scope_type": dealLevel,
         "scopes": {
             "product_code": {
-               "liam": liam,
-                "mch": mch
+               "liam": productsCollectionTab === "uploadProduct" ? fileLIAM : liam,
+                "mch": productsCollectionTab === "uploadProduct" ? fileMCH : mch
             },
             "price_applicability": {
                 "value": dealApplyType
@@ -73,8 +78,8 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
         "valid_to": "2023-01-15T00:00:00",
         "promo_restrictions": {
             "product_code": {
-               "liam": exliam,
-                "mch": exmch
+               "liam": productsCollectionTab === "uploadProduct" ? exfileLIAM : exliam,
+                "mch": productsCollectionTab === "uploadProduct" ? exfileMCH : exmch
             },
             "price_applicability": {
                 "value": dealApplyType

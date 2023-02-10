@@ -97,8 +97,8 @@ const schema = yup.object().shape({
     exliam: yup.array().of(yup.string().required('Error: LIAM field required').matches(/^[a-zA-Z]/, "Error: Must start with letter").min(13, "Error: Valid LIAM required").max(13, "Error: Valid LIAM required")),
     file: yup
         .mixed()
-        .test("file-required", "Error: FIle required", (value) => {
-            if (value?.size > 0) {
+        .test("file-required", "Error: FIle required", (value, context) => {
+            if (value?.size > 0 || context?.parent?.productsCollectionTab === "addProduct") {
                 return true
             } else return false
         })
@@ -107,7 +107,11 @@ const schema = yup.object().shape({
                 return value?.size && value.size < MAX_FILE_SIZE
             } else return true
         })
-        .test("is-valid-type", "Error: File Type not accepted", value => isValidFileType(value && value?.name?.toLowerCase())),
+        .test("is-valid-type", "Error: File Type not accepted", (value, context) => {
+            if (context?.parent?.productsCollectionTab === 'uploadProduct') {
+                return isValidFileType(value && value?.name?.toLowerCase())
+            } else return true
+        }),
     exfile: yup
         .mixed()
         .test("not-valid-size", "Error: Max allowed size is 1 MB", (value, context) => {
@@ -142,6 +146,7 @@ const CreateDealForm = () => {
         mode: 'all'
     });
     const { getValues, trigger, formState: { errors } } = formMethods
+
     const handleFormSubmit = async (e: MouseEvent) => {
         e.preventDefault()
         const cleanForm = await trigger(undefined, { shouldFocus: true })

@@ -42,7 +42,6 @@ const DealSummaryView = () => {
           error.data?.details ? error.data?.details : "Something went wrong",
           "deal-failed"
         )
-        console.log(error)
       });
   }
 
