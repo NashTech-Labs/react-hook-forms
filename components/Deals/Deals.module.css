@@ -1,64 +1,78 @@
 .deal-card {
-    border: 1px solid #cccccc;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 12px;
-    padding: 24px 20px 8px;
+  border: 1px solid #cccccc;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+  padding: 24px 20px 8px;
 }
 
 .deal-card-header {
-    font-weight: 600;
-    font-size: 24px;
-    line-height: 28px;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 28px;
 }
 
 .dealimg {
-    width: 65px;
-    height: 65px;
-    border-radius: 5px;
+  width: 70px;
+  height: 70px;
+  border-radius: 5px;
 }
 
-.dealContent {
-    display: flex;
-    justify-content: flex-start;
-    white-space: pre-line !important;
+.no-image{
+  width: 70px !important;
+  height: 70px;
+  border:1px solid #F0F0F0;
+  border-radius: 5px;
+  background-color: #F0F0F0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .heading {
-    font-style: normal;
-    font-weight: 600;
-    font-size: 36px;
-    line-height: 42px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 42px;
 }
 
 .dealTitle {
-    margin-left: 20px;
+  margin-left: 20px;
 }
 
 .btn {
-    text-transform: inherit;
+  text-transform: inherit;
 }
 
 .chip {
-    background-color: #35824E;
-    font-weight: 600;
-    color: #FFFFFF;
-    border-radius: 5px;
-  }
-
-.delete-btn{
-    text-transform: capitalize;
-    border: 0px;
-    color:#333333;
-    padding-right: 5px;
+  background-color: #35824e;
+  font-weight: 600;
+  color: #ffffff;
+  border-radius: 5px;
+  font-size: 12px;
+  margin-top: 5px;
+  height: 20px;
 }
 
-.delete-btn:hover{
-    border: 0px;
-    background-color: #ffffff;
+.delete-btn {
+  text-transform: capitalize;
+  border: 0px;
+  color: #333333;
+  padding-right: 5px;
 }
 
-.delete-btn:disabled{
-    border: 0px;
+.delete-btn:hover {
+  border: 0px;
+  background-color: #ffffff;
 }
-  
-  
+
+.delete-btn:disabled {
+  border: 0px;
+}
+
+.deal-duration {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 120%;
+  color: #666b73;
+  margin-top: 5px;
+}

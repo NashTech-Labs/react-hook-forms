@@ -43,7 +43,7 @@ describe("EditUserModal tests", () => {
       </Provider>
     );
     fireEvent.click(await screen.findByText('Update Role'))
-    await screen.findByText('Agent')
+    await screen.findByText('User')
     await screen.findByText('Administrator')
   })
 
