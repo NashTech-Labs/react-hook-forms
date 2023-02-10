@@ -11,14 +11,14 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 function UploadExcel({ uploadStep }: any) {
 
-    const { control, setValue } = useFormContext()
+    const { control, setValue, getValues } = useFormContext()
     const { field, fieldState: { error } } = useController({
         control,
         name: uploadStep
     })
     const { onChange, onBlur } = field
 
-    const [file, setFile] = useState<any>({});
+    const file: any = getValues(uploadStep)
 
     const hiddenFileInput = useRef<any>(null);
 
@@ -28,7 +28,6 @@ function UploadExcel({ uploadStep }: any) {
 
     const handleUpload = (evt: any) => {
         if (evt) {
-            setFile(evt);
             setValue(uploadStep === 'file' ? 'fileName' : 'exFileName', evt.name)
             let f = evt;
             const reader = new FileReader();
@@ -45,8 +44,8 @@ function UploadExcel({ uploadStep }: any) {
                     mchData.push(mch)
                     liamData.push(liam)
                 })
-                setValue(uploadStep === 'file' ? 'mch' : 'exmch', mchData)
-                setValue(uploadStep === 'file' ? 'liam' : 'exliam', liamData)
+                setValue(uploadStep === 'file' ? 'fileMCH' : 'exfileMCH', mchData)
+                setValue(uploadStep === 'file' ? 'fileLIAM' : 'exfileLIAM', liamData)
             };
             reader.readAsBinaryString(f);
         }
@@ -54,10 +53,9 @@ function UploadExcel({ uploadStep }: any) {
 
     const handleDelete = (e: any) => {
         e.stopPropagation();
-        setFile({});
         setValue(uploadStep, null)
-        setValue(uploadStep === 'file' ? 'mch' : 'exmch', [])
-        setValue(uploadStep === 'file' ? 'liam' : 'exliam', [])
+        setValue(uploadStep === 'file' ? 'fileMCH' : 'exfileMCH', [])
+        setValue(uploadStep === 'file' ? 'fileLIAM' : 'exfileLIAM', [])
     };
 
     return (

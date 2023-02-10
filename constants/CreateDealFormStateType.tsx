@@ -16,13 +16,17 @@ export interface ICreateDealFormState {
     englishMessage: string
     frenchMessage: string
     productsCollectionTab: string
-    mch: string[]
     productExclusionsCollectionTab: string
     dealApplyType: string
     dealLevelOptions: string
+    mch: string[]
     exmch: string[]
     liam: string[]
     exliam: string[]
+    fileMCH: string[]
+    exfileMCH: string[]
+    fileLIAM: string[]
+    exfileLIAM: string[]
     fileName: string
     exFileName: string
     startDatePicker: object | null
