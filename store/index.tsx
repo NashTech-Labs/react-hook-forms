@@ -13,6 +13,7 @@ import { deleteDeal } from "../api/deleteDeal";
 import { removeUser } from "../api/removeUser";
 import { updateUser } from "../api/updateUser";
 import { createDeals } from "../api/createDeal";
+import { dealPreview } from "../api/dealPreview";
 
 const persistauthConfig = {
   key: "auth",
@@ -49,6 +50,7 @@ export const generateStore = (preloadedState = {}) => {
       [removeUser.reducerPath]: removeUser.reducer,
       [updateUser.reducerPath]: updateUser.reducer,
       [createDeals.reducerPath]: createDeals.reducer,
+      [dealPreview.reducerPath]: dealPreview.reducer
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
@@ -61,7 +63,8 @@ export const generateStore = (preloadedState = {}) => {
         viewAllDeals.middleware,
         deleteDeal.middleware,
         removeUser.middleware,
-        updateUser.middleware
+        updateUser.middleware,
+        dealPreview.middleware
       ]),
     preloadedState,
   });

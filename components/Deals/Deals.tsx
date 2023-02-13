@@ -14,12 +14,17 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import Modal from "react-modal";
 import DeleteDeal from "../DeleteDeal/DeleteDeal";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+import { useAppDispatch } from "../../store";
+import { updateDealId } from "../../store/feature/deal/dealSlice";
 
 function Deals() {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const { data, isLoading, error, refetch } = useGetAllListQuery();
   const [selectedRows, setSelectedRows] = useState<any>([]);
+
+  console.log(data)
 
   useEffect(() => {
     console.log("state", selectedRows);
@@ -145,7 +150,7 @@ function Deals() {
               textTransform: "initial",
               marginTop: "-8%",
             }}
-            onClick={() => router.push("deals/view")}
+            onClick={() => viewDetails(row.id)}
           >
             View
           </Button>
@@ -157,6 +162,11 @@ function Deals() {
     ],
     []
   );
+
+  const viewDetails = (value: Number) => {
+    router.push("deals/view");
+    dispatch(updateDealId(value))
+  }
 
   const handleSelectionCriteria = useMemo(() => {
     return (row: any) => {
