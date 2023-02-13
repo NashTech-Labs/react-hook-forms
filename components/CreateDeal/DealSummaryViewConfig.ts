@@ -40,12 +40,12 @@ const config: IConfig = {
                 return identifier
             }
         },
-        {
-            title: 'Priority', getValue: (formData: ICreateDealFormState) => {
-                const {priority} = formData
-                return priority
-            }
-        },
+        // {
+        //     title: 'Priority', getValue: (formData: ICreateDealFormState) => {
+        //         const {priority} = formData
+        //         return priority
+        //     }
+        // },
         {
             title: 'Stacking Type', getValue: (formData: ICreateDealFormState) => {
                 const {stackingType} = formData

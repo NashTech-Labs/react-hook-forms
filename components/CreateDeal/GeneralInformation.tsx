@@ -50,14 +50,14 @@ const GeneralInformation = () => {
           multiline
           name="description"
         />
-        <TextInputField
+        {/* <TextInputField
           title="Identifier"
           description="Max 15 characters alphanumeric values"
           placeholder="eg. 00000-00000-00000"
           name="identifier"
           endAdornment={<div className={styles['generate-link']} onClick={handleGenerateIdentifier}>Generate</div>}
           required
-        />
+        /> */}
         <TextInputField
           title="Priority"
           description="Numeric value must be 1 to 100"

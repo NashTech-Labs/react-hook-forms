@@ -13,9 +13,9 @@ import Exclusions from './Exclusions/Exclusions';
 import PromotionalMessages from './PromotionalMessages/PromotionalMessages';
 import styles from './CreateDealForm.module.css'
 import commonStyles from "./Steps.module.css";
-import { useAppDispatch } from "../../store/index";
+import { useAppDispatch, useAppSelector } from "../../store/index";
 import { updateDealStep } from "../../store/feature/deal/dealSlice";
-import { updateNewDeal } from '../../store/feature/deal/newDealSlice'
+import { updateNewDeal, getNewDealData } from '../../store/feature/deal/newDealSlice'
 import DateInEffect from './DateInEffect/DateInEffect';
 
 const MAX_FILE_SIZE = 1000000; //1MB
@@ -39,56 +39,56 @@ const isEndDateTimeValid = (endDateOrTime: any, startDateOrTime: object, operati
 
 const schema = yup.object().shape({
     title: yup.string().max(80, 'Error: Title should be less than 80 characters').required('Error: Title is required'),
-    identifier: yup.string().max(15, 'Error: Identifier should be less than 15 characters').required('Error: Identifier is required'),
+  //  identifier: yup.string().max(15, 'Error: Identifier should be less than 15 characters').required('Error: Identifier is required'),
     priority: yup.number().typeError('Error: Priority is required').min(1, 'Error: Priority should be between 1 and 100').max(100, 'Error: Priority should be between 1 and 100').required('Error: Priority is required'),
     stackingType: yup.string().required('Error: Stacking type is required'),
     dollarOff: yup
-        .number()
-        .transform(value => (isNaN(value) ? undefined : value))
-        .typeError('Error: Dollar($) value required')
-        .min(0, 'Error: Dollar ($) value must be greater than $0')
-        .test('dollar-off', 'Error: Dollar($) value required', (value, context) => {
-            if (context?.parent?.dealDiscountTab === 'dollar') {
-                return value !== undefined
-            } else return true
-        }),
+    .number()
+    .transform(value => (isNaN(value) ? undefined : value))
+    .typeError('Error: Dollar($) value required')
+    .min(0, 'Error: Dollar ($) value must be greater than $0')
+    .test('dollar-off', 'Error: Dollar($) value required', (value , context)=> {
+        if(context?.parent?.dealDiscountTab === 'dollar'){
+           return value !== undefined
+        } else return true
+    }),
     customPercentageOff: yup
-        .number()
-        .transform(value => (isNaN(value) ? undefined : value))
-        .min(1, 'Error: Percentage value should be between 1-99')
-        .max(99, 'Error: Percentage value should be between 1-99')
-        .test('custom-percentage-off', 'Error: Percentage(%) value required', (value, context) => {
-            if (context?.parent?.percentageOff === 'custom') {
-                return value !== undefined
-            } else return true
-        }),
+    .number()
+    .transform(value => (isNaN(value) ? undefined : value))
+    .min(1, 'Error: Percentage value should be between 1-99')
+    .max(99, 'Error: Percentage value should be between 1-99')
+    .test('custom-percentage-off', 'Error: Percentage(%) value required', (value , context)=> {
+        if(context?.parent?.percentageOff === 'custom'){
+            return value !== undefined
+        } else return true
+    }),
     fixedPriceOff: yup
-        .number()
-        .transform(value => (isNaN(value) ? undefined : value))
-        .min(1, 'Error: Must be a minimum of $1.00')
-        .test('fixed-price-off', 'Error: Dollar($) value required', (value, context) => {
-            if (context?.parent?.dealDiscountTab === 'fixed') {
-                return value !== undefined
-            } else return true
-        }),
+    .number()
+    .transform(value => (isNaN(value) ? undefined : value))
+    .min(1, 'Error: Must be a minimum of $1.00')
+    .test('fixed-price-off', 'Error: Dollar($) value required', (value , context)=> {
+     if(context?.parent?.dealDiscountTab === 'fixed'){
+        return value !== undefined
+     } else return true
+    }),
     basketSpend: yup
-        .number()
-        .transform(value => (isNaN(value) ? undefined : value))
-        .min(1, 'Error: Must be a minimum of $1.00')
-        .test('basket-spend', 'Error: Dollar($) value required', (value, context) => {
-            if (context?.parent?.dealLevel === 'basket') {
-                return value !== undefined
-            } else return true
-        }),
+    .number()
+    .transform(value => (isNaN(value) ? undefined : value))
+    .min(1, 'Error: Must be a minimum of $1.00')
+    .test('basket-spend', 'Error: Dollar($) value required', (value , context)=> {
+        if(context?.parent?.dealLevel === 'basket'){
+           return value !== undefined
+        } else return true
+       }),
     basketDiscount: yup
-        .number()
-        .transform(value => (isNaN(value) ? undefined : value))
-        .min(1, 'Error: Must be a minimum of $1.00')
-        .test('basket-discount', 'Error: Dollar($) value required', (value, context) => {
-            if (context?.parent?.dealLevel === 'basket') {
-                return value !== undefined
-            } else return true
-        }),
+    .number()
+    .transform(value => (isNaN(value) ? undefined : value))
+    .min(1, 'Error: Must be a minimum of $1.00')
+    .test('basket-discount', 'Error: Dollar($) value required', (value , context)=> {
+        if(context?.parent?.dealLevel === 'basket'){
+           return value !== undefined
+        } else return true
+       }),
     englishMessage: yup.string().required('Error: English message required'),
     frenchMessage: yup.string().required('Error: French message required'),
     mch: yup.array().of(yup.string().required('Error: MCH field required').matches(/^[mM]/, "Error: Must start with M").min(9, "Error: Valid MCH required").max(9, "Error: Valid MCH required")),
@@ -120,9 +120,9 @@ const schema = yup.object().shape({
             } else return true
         })
         .test("is-valid-type", "Error: File Type not accepted", (value, context) => {
-            if (context?.parent?.productExclusionsCollectionTab === 'uploadProduct' && context?.parent?.dealLevelOptions === 'yes') {
+            if(context?.parent?.productExclusionsCollectionTab === 'uploadProduct' && context?.parent?.dealLevelOptions === 'yes'){
                 return isValidFileType(value && value?.name?.toLowerCase())
-            } else return true
+              } else return true
         }),
     dealApplyType: yup.string().required('Error: Select applicable products'),
     startDatePicker: yup.date().typeError("Error: Valid date required").min(new Date().toJSON().slice(0, 10), "Error: You cannot add date before today").required('Error: Date required').nullable(),
@@ -140,25 +140,25 @@ const schema = yup.object().shape({
 const CreateDealForm = () => {
     const router = useRouter();
     const dispatch = useAppDispatch();
+    const draftFormValues = useAppSelector(getNewDealData)
     const formMethods = useForm<ICreateDealFormState>({
-        defaultValues: createDealDefaultFormState,
+        defaultValues: draftFormValues || createDealDefaultFormState,
         resolver: yupResolver(schema),
         mode: 'all'
     });
-    const { getValues, trigger, formState: { errors } } = formMethods
-
+    const { getValues, trigger, formState: {errors} } = formMethods
     const handleFormSubmit = async (e: MouseEvent) => {
-        e.preventDefault()
-        const cleanForm = await trigger(undefined, { shouldFocus: true })
+       e.preventDefault()
+       const cleanForm = await trigger(undefined, { shouldFocus : true })
 
-        if (cleanForm) {
-            dispatch(updateNewDeal(getValues()))
-            router.push('/deals/create/summary')
+       if(cleanForm){
+           dispatch(updateNewDeal(getValues()))
+           router.push('/deals/create/summary')
         }
     }
 
     const handleBack = () => {
-        dispatch(updateDealStep(0));
+      dispatch(updateDealStep(0));
     }
 
     return <FormProvider {...formMethods}>
@@ -171,12 +171,12 @@ const CreateDealForm = () => {
             <PromotionalMessages />
             <div className={styles['submit-btn-container']}>
                 <div>
-                    <Button variant="outlined" className={commonStyles['cancelBtn']}>Cancel</Button>
+                  <Button variant="outlined" className={commonStyles['cancelBtn']}>Cancel</Button>
                 </div>
                 <div className={styles['submit-container']}>
-                    <Button variant="text" onClick={handleBack} >Go Back</Button>
-                    <Button variant="contained" className={commonStyles['continueBtn']} onClick={e => handleFormSubmit(e)}>Continue</Button>
-                </div>
+                 <Button variant="text" onClick={handleBack} >Go Back</Button>
+                 <Button variant="contained"  className={commonStyles['continueBtn']} onClick={e => handleFormSubmit(e)}>Continue</Button>
+              </div>
             </div>
         </form>
     </FormProvider>
