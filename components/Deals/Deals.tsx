@@ -1,20 +1,19 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import Card from "@mui/material/Card";
-
 import { Box, CardContent, Grid, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import Button from "@mui/material/Button";
 import styles from "./Deals.module.css";
-import DataTable, { TableColumn } from "react-data-table-component";
+import DataTable from "react-data-table-component";
 import { useGetAllListQuery } from "../../api/getAllDeals";
 import TableLoader from "../TableLoader/TableLoader";
 import CreateIcon from "@mui/icons-material/Create";
-import { AllDealsList } from "../../api/getAllDeals";
 import { dateFormat } from "../../util/format";
 import Chip from "@mui/material/Chip";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import Modal from "react-modal";
 import DeleteDeal from "../DeleteDeal/DeleteDeal";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 
 function Deals() {
   const router = useRouter();
@@ -54,7 +53,7 @@ function Deals() {
   const customStyles = {
     rows: {
       style: {
-        height: "108px", // override the row height
+        minHeight: "108px", // override the row height
         width: "100%",
         fontSize: "16px",
       },
@@ -82,31 +81,55 @@ function Deals() {
         name: "Deal",
         width: "35%",
         selector: (row: any) => (
-          <div className={styles.dealContent}>
-            <img className={styles.dealimg} src={row.mediaUrl} />{" "}
-            <div className={styles.dealTitle}>
+          <Grid container>
+            <Grid item lg={2}>
+              {row.mediaUrl ? (
+                <img
+                  className={styles.dealimg}
+                  src="https://rukminim1.flixcart.com/image/832/832/xif0q/kids-dress/9/7/j/8-9-years-plus-buti-baby-gown-blue-fashion-dream-original-imafxu7rqutbdzvq-bb.jpeg?q=70"
+                />
+              ) : (
+                <Box className={styles["no-image"]}>
+                  <LocalOfferIcon sx={{ color: "#CCCCCC" }} />
+                </Box>
+              )}
+            </Grid>
+            <Grid item lg={9} sx={{ paddingLeft: "1rem" }}>
               <strong>{row.dealTitle}</strong>
-              <br />
-              <span>
-                {row.valid_from && row.valid_to
-                  ? `${dateFormat(row.valid_from)} - ${dateFormat(
-                    row.valid_to
-                  )}`
+              <div className={styles["deal-duration"]}>
+                {row.validFrom && row.validTo
+                  ? `${dateFormat(row.validFrom)} - ${dateFormat(row.validTo)}`
                   : null}
-              </span>
-              <br />
-              <Chip className={styles["chip"]} label={row.status} />
-            </div>
-          </div>
+              </div>
+              <Chip
+                className={styles["chip"]}
+                label={
+                  row.status.charAt(0).toUpperCase() +
+                  row.status.slice(1).toLowerCase()
+                }
+              />
+            </Grid>
+          </Grid>
         ),
       },
       {
         name: "Type",
-        selector: (row: any) => row.type,
+        selector: (row: any) => {
+          return (
+            row.type.charAt(0).toUpperCase() + row.type.slice(1).toLowerCase()
+          );
+        },
       },
       {
         name: "Value",
-        selector: (row: any) => row.dealValue,
+        selector: (row: any) => {
+          if (row.dealValue[0].rewardType === "$_OFF") {
+            return `$${row.dealValue[0].rewardValue} Off`;
+          }
+          if (row.dealValue[0].rewardType === "%_OFF") {
+            return `${row.dealValue[0].rewardValue}% Off`;
+          }
+        },
       },
       {
         name: "Identifier",
@@ -122,7 +145,8 @@ function Deals() {
               textTransform: "initial",
               marginTop: "-8%",
             }}
-            onClick={() => router.push("deals/view")}>
+            onClick={() => router.push("deals/view")}
+          >
             View
           </Button>
         ),
@@ -213,9 +237,8 @@ function Deals() {
           </Card>
         </Grid>
       </>
-    )
+    );
   }
-
 
   if (data) {
     content = (

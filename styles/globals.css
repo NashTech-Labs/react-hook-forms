@@ -26,6 +26,16 @@ a {
   }
 }
 
+.dtqzBx div:first-child{
+  white-space: pre-line !important;
+  width: 100%;
+}
+
+.hPQIua{
+  align-items: flex-start !important;
+  padding: 15px 0px !important;
+}
+
 .toast-container {
   width: fit-content !important;
   top: 6em !important;
@@ -33,5 +43,5 @@ a {
 
 .dMoOxb {
   align-items: baseline !important;
-  margin-top: 2% !important;
+  padding: 15px 0px !important;
 }

@@ -4,11 +4,16 @@ import { CustomQuery } from "../httpInterceptors";
 export interface AllDealsList {
   mediaUrl: string;
   dealTitle: string;
-  valid_from: string;
-  valid_to: string;
+  validFrom: string;
+  validTo: string;
   type: string;
   status: string;
-  dealValue: string;
+  dealValue: [
+    {
+        rewardType: string,
+        rewardValue: string
+    }
+],
   identifier: string;
 }
 
@@ -21,7 +26,8 @@ export const viewAllDeals = createApi({
         url: `/v1/deal/viewAllDeals`,
         method: "GET",
         headers: {
-          "X-Loblaw-Tenant-ID": "JOE_FRESH"
+          "X-Loblaw-Tenant-ID": "JOE_FRESH",
+          "x-apikey":"cGxlYXNlLWktcmVhbGx5LXdhbnQtdG8tYWNjZXNzLXBwZS1zdGFnaW5nLWFwaQo="
         },
       }),
     }),

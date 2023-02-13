@@ -26,7 +26,7 @@ describe("RolesPermissions tests", () => {
     const store = generateStore();
     server.use(
       rest.get(
-        `http://localhost:8080/v1/roles/getAllUsers`,
+        `https://cs-bo-panel-bff-dev.loblaw.digital/v1/roles/getAllUsers`,
         (req, res, ctx) => {
           return res(ctx.status(404));
         }

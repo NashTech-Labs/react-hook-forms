@@ -78,7 +78,7 @@ function TopHeader() {
   };
 
   return (
-    <Box className={styles["navbar-box"]}>
+    <Box className={styles["navbar-box"]} data-testid="topHeader">
       <AppBar position="sticky" sx={{ background: "#333333" }}>
         <Toolbar>
           <Grid container spacing={2} alignItems="center">
