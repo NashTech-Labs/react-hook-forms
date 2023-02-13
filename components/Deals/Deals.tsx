@@ -82,7 +82,7 @@ function Deals() {
         width: "35%",
         selector: (row: any) => (
           <Grid container>
-            <Grid item lg={2}>
+            <Grid item lg={3}>
               {row.mediaUrl ? (
                 <img
                   className={styles.dealimg}
@@ -94,7 +94,7 @@ function Deals() {
                 </Box>
               )}
             </Grid>
-            <Grid item lg={9} sx={{ paddingLeft: "1rem" }}>
+            <Grid item lg={9}>
               <strong>{row.dealTitle}</strong>
               <div className={styles["deal-duration"]}>
                 {row.validFrom && row.validTo
