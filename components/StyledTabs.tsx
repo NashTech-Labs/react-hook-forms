@@ -36,7 +36,9 @@ const StyledTabs = ({ tabs, handleTabUpdate }: IStyledTabsProps) => {
             },
             '.MuiTab-root': {
                 textTransform: 'inherit',
-                fontSize: '16px'
+                fontSize: '16px',
+                color: '#000000',
+                opacity: 1
             }
         }}
     >

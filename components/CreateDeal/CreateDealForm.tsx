@@ -46,7 +46,7 @@ const schema = yup.object().shape({
     .number()
     .transform(value => (isNaN(value) ? undefined : value))
     .typeError('Error: Dollar($) value required')
-    .min(0, 'Error: Dollar ($) value must be greater than $0')
+    .min(1, 'Error: Must be minimum of $1.00')
     .test('dollar-off', 'Error: Dollar($) value required', (value , context)=> {
         if(context?.parent?.dealDiscountTab === 'dollar'){
            return value !== undefined
@@ -85,10 +85,15 @@ const schema = yup.object().shape({
     .transform(value => (isNaN(value) ? undefined : value))
     .min(1, 'Error: Must be a minimum of $1.00')
     .test('basket-discount', 'Error: Dollar($) value required', (value , context)=> {
-        if(context?.parent?.dealLevel === 'basket'){
+        if(context?.parent?.dealLevel === 'basket' && context?.parent?.basketDealType === 'dollar'){
            return value !== undefined
         } else return true
-       }),
+       })
+    .test('basket-discount', 'Error: Percentage(%) value required', (value , context)=> {
+        if(context?.parent?.dealLevel === 'basket' && context?.parent?.basketDealType === 'percentage'){
+           return value !== undefined
+        } else return true
+    }),
     englishMessage: yup.string().required('Error: English message required'),
     frenchMessage: yup.string().required('Error: French message required'),
     mch: yup.array().of(yup.string().required('Error: MCH field required').matches(/^[mM]/, "Error: Must start with M").min(9, "Error: Valid MCH required").max(9, "Error: Valid MCH required")),

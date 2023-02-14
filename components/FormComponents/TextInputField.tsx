@@ -3,7 +3,7 @@ import { useFormContext, useController } from "react-hook-form";
 import Typography from '@mui/material/Typography';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment'
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 import FieldErrorMessage from '../FormComponents/FieldErrorMessage'
 import styles from './FormComponents.module.css'
 
@@ -23,9 +23,10 @@ interface ITextFieldProps {
     inline?: boolean
     displayDollarFormat?: boolean,
     regular?: boolean
+    displayPercentageFormat? : boolean
 }
 
-const TextInputField = ({ title, description, placeholder, tooltip, required, multiline, type, noBottomGutters, noTopGutters, disabled, name, endAdornment, inline, displayDollarFormat, regular }: ITextFieldProps) => {
+const TextInputField = ({ title, description, placeholder, tooltip, required, multiline, type, noBottomGutters, noTopGutters, disabled, name, endAdornment, inline, displayDollarFormat, regular, displayPercentageFormat }: ITextFieldProps) => {
     const { control, setValue } = useFormContext()
     const { field, fieldState: { error } } = useController({
         control,
@@ -48,6 +49,12 @@ const TextInputField = ({ title, description, placeholder, tooltip, required, mu
     if (displayDollarFormat) {
         startAdornment = <InputAdornment position='start'>
             {value && '$'}
+        </InputAdornment>
+    }
+
+    if(displayPercentageFormat) {
+        startAdornment = <InputAdornment position='start'>
+           {value && '%'}
         </InputAdornment>
     }
 
@@ -98,7 +105,7 @@ const TextInputField = ({ title, description, placeholder, tooltip, required, mu
                         value={value}
                         endAdornment={<InputAdornment position="end">
                             {endAdornment}
-                            {error && <InfoOutlinedIcon className={styles['error-icon']} />}
+                            {error && <ErrorOutlineOutlinedIcon className={styles['error-icon']} />}
                         </InputAdornment>
                         }
                         startAdornment={startAdornment}
@@ -133,7 +140,7 @@ const TextInputField = ({ title, description, placeholder, tooltip, required, mu
             value={value}
             endAdornment={<InputAdornment position="end">
                 {endAdornment}
-                {error && <InfoOutlinedIcon className={styles['error-icon']} />}
+                {error && <ErrorOutlineOutlinedIcon className={styles['error-icon']} />}
             </InputAdornment>
             }
             error={Boolean(error)}
