@@ -2,8 +2,8 @@
 
 deployment:
   replicaCount: 1
-  app: 'back-office-customer-support-ui'
-  image: gcr.io/loblaw-gcr/back-office-customer-support-ui
+  app: "bo-panel-ui"
+  image: gcr.io/loblaw-gcr/bo-panel-ui
   imagePullPolicy: Always
   readinessProbe:
     scheme: HTTP
@@ -13,12 +13,12 @@ deployment:
     periodSeconds: 5
   resources:
     limits: # default limit
-      cpu: '2'
+      cpu: "2"
       memory: 1Gi
     requests: # 2x the defaults
       cpu: 200m
       memory: 256Mi
-      
+
 #explicity security config such that processes running in container have limited access to the container OS/file system
 securityContext:
   enabled: true
@@ -40,22 +40,20 @@ rollingUpdate:
   maxUnavailable: 25%
 
 image:
-  tag: 'latest'
+  tag: "latest"
 
 service:
   type: ClusterIP
   port: 3000
 
 gateway:
-  host: cs-bo-panel-qa.loblaw.digital
-  name: cs-bo-panel
-  namespace: platform-backoffice-domain-qa
+  host: bo-panel-qa.loblaw.digital
+  name: bo-panel
+  namespace: platform-backoffice-domain-dev
 
 virtualService:
-  name: cs-bo-panel
-  hostone: back-office-customer-support-ui
+  name: bo-panel
+  hostone: bo-panel-ui
 
 envMap:
-  key: 'value'
-
-
+  key: "value"
