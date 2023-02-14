@@ -7,6 +7,8 @@ import { useGetDealPreviewQuery } from "../../api/dealPreview";
 import { updatedDealId } from "../../store/feature/deal/dealSlice";
 import { useAppSelector } from "../../store/index";
 
+
+
 function Summary() {
     const dealId = useAppSelector(updatedDealId);
 
