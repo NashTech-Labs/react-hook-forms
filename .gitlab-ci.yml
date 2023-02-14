@@ -112,7 +112,7 @@ DEPLOY_QA:
     NAMESPACE: platform-backoffice-domain-dev
     HELM_RELEASE_NAME: bo-panel-ui
     HELM_CHART_PATH: helm
-    HELM_VALUES: helm/values-lower.yaml
+    HELM_VALUES: helm/values-qa.yaml
   before_script:
     - gcloud auth activate-service-account --key-file=${service_account_key}
     - gcloud auth configure-docker
