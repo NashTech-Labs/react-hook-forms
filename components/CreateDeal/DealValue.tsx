@@ -16,8 +16,7 @@ import { dealLevelOptions, dealTabs, percentageOptions} from '../../constants/Fo
 
 const DealValue = () => {
     const [activeTab, setActiveTab] = useState(dealTabs[0]?.value)
-    const [basketDealType, setBasketDealType] = useState<string>('dollar')
-    const { control, setValue } = useFormContext()
+    const { control, setValue, clearErrors } = useFormContext()
     const percentageOff = useWatch({
         control,
         name: 'percentageOff'
@@ -26,13 +25,20 @@ const DealValue = () => {
         control,
         name: 'dealLevel'
     })
+    const basketDealType = useWatch({
+        control,
+        name: 'basketDealType'
+    })
+    const displayDollarFormat = basketDealType === 'dollar'
+    const displayPercentageFormat = basketDealType === 'percentage'
 
     const getButtonVariant = (type: string) => {
         return type === basketDealType ? 'contained' : 'outlined'
     }
 
     const handleBasketDealTypeChange = (type: string): void => {
-        setBasketDealType(type)
+        setValue('basketDealType', type , { shouldValidate: true })
+        clearErrors('basketDiscount')
     }
 
     const handleTabUpdate = (newTab: string): void => {
@@ -104,7 +110,8 @@ const DealValue = () => {
                 title="Spend"
                 inline
                 required
-                displayDollarFormat
+                displayDollarFormat={displayDollarFormat}
+                displayPercentageFormat={displayPercentageFormat}
             />
             <Typography>Get</Typography>
             <ButtonGroup>
@@ -113,11 +120,12 @@ const DealValue = () => {
             </ButtonGroup>
             <TextInputField
                 name="basketDiscount"
-                placeholder='$ 0.00'
+                placeholder={`${displayDollarFormat ? '$': '%'} 0.00`}
                 type='number'
                 inline
                 required
-                displayDollarFormat
+                displayDollarFormat={displayDollarFormat}
+                displayPercentageFormat={displayPercentageFormat}
             />
             <Typography>Off</Typography>
         </div>

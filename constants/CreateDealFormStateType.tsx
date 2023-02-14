@@ -34,4 +34,5 @@ export interface ICreateDealFormState {
     startTimePicker: object | null
     endTimePicker: object | null
     collectionFileName: string
+    basketDealType: string
 }
