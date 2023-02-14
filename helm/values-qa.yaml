@@ -49,7 +49,7 @@ service:
 gateway:
   host: bo-panel-qa.loblaw.digital
   name: bo-panel
-  namespace: platform-backoffice-domain-dev
+  namespace: platform-backoffice-domain-qa
 
 virtualService:
   name: bo-panel

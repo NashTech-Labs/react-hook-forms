@@ -109,7 +109,7 @@ DEPLOY_QA:
   services:
     - docker:dind
   variables:
-    NAMESPACE: platform-backoffice-domain-dev
+    NAMESPACE: platform-backoffice-domain-qa
     HELM_RELEASE_NAME: bo-panel-ui
     HELM_CHART_PATH: helm
     HELM_VALUES: helm/values-qa.yaml
