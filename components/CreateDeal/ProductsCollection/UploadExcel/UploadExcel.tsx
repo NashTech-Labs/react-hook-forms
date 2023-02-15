@@ -40,9 +40,13 @@ function UploadExcel({ uploadStep }: any) {
                 const json = XLSX.utils.sheet_to_json(worksheet);
                 const mchData: string[] = []
                 const liamData: string[] = []
-                json.forEach(({ mch, liam }: any) => {
-                    mchData.push(mch)
-                    liamData.push(liam)
+                json.forEach(({ MCH, LIAM }: any) => {
+                    if (MCH) {
+                        mchData.push(MCH)
+                    }
+                    if (LIAM) {
+                        liamData.push(LIAM)
+                    }
                 })
                 setValue(uploadStep === 'file' ? 'fileMCH' : 'exfileMCH', mchData)
                 setValue(uploadStep === 'file' ? 'fileLIAM' : 'exfileLIAM', liamData)

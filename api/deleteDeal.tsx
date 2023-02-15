@@ -5,11 +5,13 @@ export const deleteDeal = createApi({
   reducerPath: "deleteDeal",
   baseQuery: CustomQuery(),
   endpoints: (builder) => ({
-    deleteDeal: builder.mutation<any, string[]>({
+    deleteDeal: builder.mutation<any, Number[]>({
       query: (deal_Ids) => ({
-        url: `v1/deal/deleteDeals`,
+        url: `v1/deal/deals`,
         method: "DELETE",
-        body: deal_Ids,
+        body: {
+          "ids": deal_Ids
+        },
         headers: {
           "X-Loblaw-Tenant-ID": `JOE_FRESH`
         },

@@ -25,6 +25,7 @@ interface DealDetails {
   type: string;
   valid_from: string;
   valid_to: string;
+  id: Number
 }
 
 function DeleteDeal({ closeModal, selectedDeals, refetch }: ReceivedProp) {
@@ -47,9 +48,9 @@ function DeleteDeal({ closeModal, selectedDeals, refetch }: ReceivedProp) {
         ? `${selectedDeals.length} Deals deleted successfully`
         : `${selectedDeals.length} Deal deleted successfully`;
 
-    let deal_Ids: string[] = [];
+    let deal_Ids: Number[] = [];
     selectedDeals.forEach((element: DealDetails) => {
-      deal_Ids.push(element.identifier);
+      deal_Ids.push(element.id);
     });
     await deleteDeal(deal_Ids)
       .unwrap()
