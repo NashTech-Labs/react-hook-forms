@@ -8,15 +8,18 @@ import config from './DealSummaryViewConfig'
 import StepTitle from "../StepTitle";
 import commonStyles from './Steps.module.css'
 import summaryStyles from '../Summary/Summary.module.css'
-import { useAppSelector } from '../../store';
-import { getNewDealData } from '../../store/feature/deal/newDealSlice'
+import { useAppDispatch, useAppSelector } from '../../store';
+import { getNewDealData, updateNewDeal } from '../../store/feature/deal/newDealSlice'
 import { userProfileState } from '../../store/feature/auth/authSlice';
 import generateCreateDealPayload from '../../util/createDealPayload'
 import { useCreateDealsMutation } from '../../api/createDeal';
 import { notifyError, notifySuccess } from '../../util/Notification/Notification';
+import { updateDealStep } from '../../store/feature/deal/dealSlice';
+import CreateDealDefaultFormState from '../../constants/CreateDealDefaultFormState'
 
 const DealSummaryView = () => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const newDealData = useAppSelector(getNewDealData)
   const user = useAppSelector(userProfileState)
 
@@ -32,7 +35,9 @@ const DealSummaryView = () => {
     await createDeals(formattedPayloadWithUser)
       .unwrap()
       .then((data) => {
-        if (data?.dealGeneralInfo?.code) {
+        if (data) {
+          dispatch(updateNewDeal(CreateDealDefaultFormState))
+          dispatch(updateDealStep(0));
           router.push("/deals");
           notifySuccess("Deal successfully created")
         }

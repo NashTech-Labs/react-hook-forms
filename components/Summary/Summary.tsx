@@ -1,4 +1,4 @@
-import { Button, Card, Chip, Grid, Typography } from "@mui/material";
+import { Box, Button, Card, Chip, Grid, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import React from "react";
 import StepTitle from "../StepTitle";
@@ -6,8 +6,8 @@ import styles from "./Summary.module.css";
 import { useGetDealPreviewQuery } from "../../api/dealPreview";
 import { updatedDealId } from "../../store/feature/deal/dealSlice";
 import { useAppSelector } from "../../store/index";
-
-
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+import { dateTimeFormat } from "../../util/format";
 
 function Summary() {
     const dealId = useAppSelector(updatedDealId);
@@ -29,7 +29,7 @@ function Summary() {
         CsvString = "data:application/csv," + encodeURIComponent(CsvString);
         var x = document.createElement("A");
         x.setAttribute("href", CsvString);
-        x.setAttribute("download", "Disney-Clothing-Oct 4.xlsx");
+        x.setAttribute("download", "productList.csv");
         document.body.appendChild(x);
         x.click();
     }
@@ -40,9 +40,9 @@ function Summary() {
 
                 <Grid container display="flex" justifyContent='space-around' mb={4} mt={5}>
                     <Grid item lg={9} className={styles.titleContainer} >
-                        <Typography variant="h4" className={styles.title}>{data?.dealGeneralInfo?.title}</Typography>
-                        <Typography mt={2} >Draft created on Nov 1, 2022 at 1:20 PM EST</Typography>
-                        <Chip className={styles.Chip} label="Draft" />
+                        <Typography variant="h4" className={styles.title}>{data?.createDealRequest?.title}</Typography>
+                        <Typography mt={2} >Draft created on {data?.createDealRequest?.created_at ? dateTimeFormat(data?.createDealRequest?.created_at) : null}</Typography>
+                        <Chip className={styles.Chip} label={data?.createDealRequest?.status} />
                     </Grid>
                     <Typography></Typography>
                 </Grid>
@@ -50,7 +50,7 @@ function Summary() {
                 <Card className={styles["step-card-container"]}>
                     <StepTitle title={"Deal type"} />
                     <Typography variant="h4" className={styles.heading} mt={4}>Type</Typography>
-                    <Typography>Discount</Typography>
+                    <Typography >{data?.createDealRequest?.type}</Typography>
                 </Card>
 
                 <Card className={styles["step-card-container"]}>
@@ -62,32 +62,35 @@ function Summary() {
                                 <Typography variant="h4" className={styles.heading} mt={4} mb={1}>
                                     Title
                                 </Typography>
-                                <Typography className={styles.content} >{data?.dealGeneralInfo?.title}</Typography>
+                                <Typography className={styles.content} >{data?.createDealRequest?.title}</Typography>
 
                                 <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
                                     Description
                                 </Typography>
-                                <Typography className={styles.content} >{data?.dealGeneralInfo?.description}</Typography>
+                                <Typography className={styles.content} >{data?.createDealRequest?.description}</Typography>
 
                                 <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
                                     Identifier
                                 </Typography>
-                                <Typography className={styles.content}>{data?.dealGeneralInfo?.code}</Typography>
+                                <Typography className={styles.content}>{data?.createDealRequest?.code}</Typography>
 
                                 <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
                                     Priority
                                 </Typography>
-                                <Typography className={styles.content}>{data?.dealGeneralInfo?.priority}</Typography>
+                                <Typography className={styles.content}>{data?.createDealRequest?.priority}</Typography>
 
                                 <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
                                     Stacking type
                                 </Typography>
-                                <Typography className={styles.content}>{data?.dealGeneralInfo?.stacking_type}</Typography>
+                                <Typography className={styles.content}>{data?.createDealRequest?.stacking_type}</Typography>
                             </Grid>
                             <Grid mt={3}>
                                 <Typography>Media</Typography>
                                 <Grid className={styles.img} >
-                                    <Typography variant="h4" className={styles.imgContainer} >WIP</Typography>
+                                    <Box className={styles["no-image"]}>
+                                        {/* <Typography variant="h4" className={styles.imgContainer} >WIP</Typography> */}
+                                        <LocalOfferIcon sx={{ color: "#CCCCCC" }} />
+                                    </Box>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -163,7 +166,7 @@ function Summary() {
                                 <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
                                     Collection
                                 </Typography>
-                                <Typography className={styles.content} onClick={() => downloadExcel(data?.dealValue?.scopeValue?.product_code)} >Disney-Clothing-Oct 4.xcel</Typography>
+                                <Typography className={styles.content} onClick={() => downloadExcel(data?.dealValue?.scopeValue?.product_code)} >ProductList.csv</Typography>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -201,11 +204,11 @@ function Summary() {
                                 <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
                                     English message
                                 </Typography>
-                                <Typography className={styles.content} >{data?.dealGeneralInfo?.promotion_message_english}</Typography>
+                                <Typography className={styles.content} >{data?.createDealRequest?.promotion_message_english}</Typography>
                                 <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
                                     French message
                                 </Typography>
-                                <Typography className={styles.content} >{data?.dealGeneralInfo?.promotion_message_french}</Typography>
+                                <Typography className={styles.content} >{data?.createDealRequest?.promotion_message_french}</Typography>
                             </Grid>
                         </Grid>
                     </Grid>
