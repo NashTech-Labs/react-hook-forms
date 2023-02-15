@@ -113,7 +113,7 @@ const TextInputField = ({ title, description, placeholder, tooltip, required, mu
                     />
                 </div>
                 <div>
-                    {error && <FieldErrorMessage message={error.message} />}
+                    {error ? <FieldErrorMessage message={error.message} /> : <div style={{ height: '20px' }}/>}
                 </div>
             </div>
         </div>

@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from 'react'
+import React, { useState, ChangeEvent, useEffect } from 'react'
 import { useFormContext, useWatch } from "react-hook-form";
 import Card from "@mui/material/Card";
 import Typography from '@mui/material/Typography';
@@ -16,7 +16,7 @@ import { dealLevelOptions, dealTabs, percentageOptions} from '../../constants/Fo
 
 const DealValue = () => {
     const [activeTab, setActiveTab] = useState(dealTabs[0]?.value)
-    const { control, setValue, clearErrors } = useFormContext()
+    const { control, setValue, clearErrors, setFocus } = useFormContext()
     const percentageOff = useWatch({
         control,
         name: 'percentageOff'
@@ -29,6 +29,11 @@ const DealValue = () => {
         control,
         name: 'basketDealType'
     })
+
+    useEffect(()=>{
+        dealLevel === 'basket' && setFocus('basketSpend')
+    },[dealLevel, setFocus])
+
     const displayDollarFormat = basketDealType === 'dollar'
     const displayPercentageFormat = basketDealType === 'percentage'
 
@@ -103,30 +108,33 @@ const DealValue = () => {
 
     if (dealLevel === 'basket') {
         content = <div className={styles['basket-fields']}>
-            <TextInputField
-                name="basketSpend"
-                placeholder='$ 0.00'
-                type='number'
-                title="Spend"
-                inline
-                required
-                displayDollarFormat={displayDollarFormat}
-                displayPercentageFormat={displayPercentageFormat}
-            />
+            <div style={{marginTop: '20px'}}>
+                <TextInputField
+                    name="basketSpend"
+                    placeholder='$ 0.00'
+                    type='number'
+                    title="Spend"
+                    inline
+                    required
+                    displayDollarFormat
+                />
+            </div>
             <Typography>Get</Typography>
             <ButtonGroup>
                 <Button variant={getButtonVariant('percentage')} onClick={() => handleBasketDealTypeChange('percentage')}>%</Button>
                 <Button variant={getButtonVariant('dollar')} onClick={() => handleBasketDealTypeChange('dollar')}>$</Button>
             </ButtonGroup>
-            <TextInputField
-                name="basketDiscount"
-                placeholder={`${displayDollarFormat ? '$': '%'} 0.00`}
-                type='number'
-                inline
-                required
-                displayDollarFormat={displayDollarFormat}
-                displayPercentageFormat={displayPercentageFormat}
-            />
+            <div style={{marginTop: '20px'}}>
+                <TextInputField
+                    name="basketDiscount"
+                    placeholder={`${displayDollarFormat ? '$': '%'} 0.00`}
+                    type='number'
+                    inline
+                    required
+                    displayDollarFormat={displayDollarFormat}
+                    displayPercentageFormat={displayPercentageFormat}
+                />
+            </div>
             <Typography>Off</Typography>
         </div>
     }
