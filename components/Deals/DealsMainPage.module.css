@@ -1,4 +1,14 @@
 .container {
-    height: 60vh;
-  }
-  
+  height: 60vh;
+}
+
+.heading {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 42px;
+}
+
+.btn {
+  text-transform: inherit;
+}

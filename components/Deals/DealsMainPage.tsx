@@ -9,11 +9,14 @@ import {
 import jwt from "jwt-decode";
 import { useGetRolesOfUserMutation } from "../../api/getRoles";
 import styles from "./DealsMainPage.module.css";
-import { SearchError, SearchEmptyError } from "../Error/SearchError";
-import TableLoader from "../TableLoader/TableLoader";
-import Deals from "./Deals";
+import { SearchEmptyError } from "../Error/SearchError";
+import CreateIcon from "@mui/icons-material/Create";
+import Deals from "./AllDeals/Deals";
+import { Button, Typography } from "@mui/material";
+import { useRouter } from "next/router";
 
 function DealsMainPage() {
+  const router = useRouter();
   const userToken = useAppSelector(tokenState);
   const dispatch = useAppDispatch();
 
@@ -44,10 +47,6 @@ function DealsMainPage() {
 
   let content = null;
 
-  if (isLoading) {
-    content = <TableLoader />;
-  }
-
   if (isError) {
     content = <SearchEmptyError />;
   }
@@ -55,7 +54,34 @@ function DealsMainPage() {
   if (rolesData) {
     const roles: any = rolesData;
     if (roles.roles.includes("BO_ADMIN") || roles.roles.includes("BO_USER")) {
-      content = <Deals />;
+      content = (
+        <>
+          <Grid
+            item
+            display="flex"
+            justifyContent="space-between"
+            lg={8}
+            md={9}
+            sm={9}
+            mt={8}
+            mb={4}
+          >
+            <Typography variant="h3" className={styles.heading}>
+              Deals & Promotions
+            </Typography>
+
+            <Button
+              onClick={() => router.push("/deals/create")}
+              variant="contained"
+              className={styles.btn}
+            >
+              <CreateIcon sx={{ marginRight: "5px" }} />
+              Create new
+            </Button>
+          </Grid>
+          <Deals />
+        </>
+      );
     } else {
       content = <SearchEmptyError />;
     }
@@ -68,6 +94,7 @@ function DealsMainPage() {
       direction="row"
       alignItems="center"
       className={styles.container}
+      data-testid="dealMain-page"
     >
       {content}
     </Grid>
