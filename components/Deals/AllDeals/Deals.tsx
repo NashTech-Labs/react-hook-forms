@@ -1,21 +1,22 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import Card from "@mui/material/Card";
-import { Box, CardContent, Grid, Typography } from "@mui/material";
+import { Box, CardContent, Divider, Grid, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import Button from "@mui/material/Button";
 import styles from "./Deals.module.css";
 import DataTable from "react-data-table-component";
-import { useGetAllListQuery } from "../../api/getAllDeals";
-import TableLoader from "../TableLoader/TableLoader";
+import { useGetAllListQuery } from "../../../api/getAllDeals";
+import TableLoader from "../../TableLoader/TableLoader";
 import CreateIcon from "@mui/icons-material/Create";
-import { dateFormat } from "../../util/format";
+import { dateFormat } from "../../../util/format";
 import Chip from "@mui/material/Chip";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import Modal from "react-modal";
-import DeleteDeal from "../DeleteDeal/DeleteDeal";
+import DeleteDeal from "../../DeleteDeal/DeleteDeal";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
-import { useAppDispatch } from "../../store";
-import { updateDealId } from "../../store/feature/deal/dealSlice";
+import { notifyError } from "../../../util/Notification/Notification";
+import { useAppDispatch } from "../../../store";
+import { updateDealId } from "../../../store/feature/deal/dealSlice";
 
 function Deals() {
   const router = useRouter();
@@ -24,11 +25,11 @@ function Deals() {
   const { data, isLoading, error, refetch } = useGetAllListQuery();
   const [selectedRows, setSelectedRows] = useState<any>([]);
 
-  console.log(data)
-
   useEffect(() => {
-    console.log("state", selectedRows);
-  }, [selectedRows]);
+    if(error){
+      notifyError("Oops! Something went wrong","all-deal-error")
+    }
+  }, [error]);
 
   const handleChange = useCallback((state: any) => {
     setSelectedRows(state.selectedRows);
@@ -151,6 +152,7 @@ function Deals() {
               marginTop: "-8%",
             }}
             onClick={() => viewDetails(row.id)}
+            data-testid="view-btn"
           >
             View
           </Button>
@@ -193,22 +195,7 @@ function Deals() {
   if (error) {
     content = (
       <>
-        <Grid item lg={8} md={9} sm={9}>
-          <Grid display="flex" justifyContent="space-between" mt={8} mb={4}>
-            <Typography variant="h3" className={styles.heading}>
-              Deals & Promotions
-            </Typography>
-
-            <Button
-              onClick={() => router.push("/deals/create")}
-              variant="contained"
-              className={styles.btn}
-            >
-              <CreateIcon sx={{ marginRight: "5px" }} />
-              Create new
-            </Button>
-          </Grid>
-
+        <Grid item lg={8} md={9} sm={9} mt={2}>
           <Card className={styles["deal-card"]}>
             <CardContent sx={{ padding: "0px" }}>
               <Typography
@@ -221,29 +208,32 @@ function Deals() {
               <DataTable
                 persistTableHead
                 data={[]}
+                noDataComponent={
+                  <Box className={styles["no-data-box"]}>
+                    <Typography
+                      variant="body2"
+                      className={styles["no-data-text"]}
+                    >
+                      There are currently no deals to view
+                    </Typography>
+                    <Button
+                      onClick={() => router.push("/deals/create")}
+                      variant="outlined"
+                      className={styles["create-new-btn"]}
+                      data-testid="createNew-btn"
+                    >
+                      <CreateIcon sx={{ marginRight: "5px" }} />
+                      Create new
+                    </Button>
+                  </Box>
+                }
                 highlightOnHover
                 columns={columns}
                 customStyles={customStyles}
+                selectableRows
               />
+              <Divider sx={{ margin: "0px -20px 25px -20px" }} />
             </CardContent>
-
-            <Grid container alignItems="center">
-              <Grid item>
-                <Button
-                  variant="outlined"
-                  startIcon={<DeleteOutlineIcon sx={{ fontSize: "16px" }} />}
-                  className={styles["delete-btn"]}
-                  disabled={selectedRows.length < 1}
-                >
-                  Delete
-                </Button>
-              </Grid>
-              {selectedRows.length > 0 && (
-                <Grid item>
-                  <Typography variant="body2">{`(${selectedRows.length} selected)`}</Typography>
-                </Grid>
-              )}
-            </Grid>
           </Card>
         </Grid>
       </>
@@ -252,22 +242,7 @@ function Deals() {
 
   if (data) {
     content = (
-      <Grid item lg={8} md={9} sm={9}>
-        <Grid display="flex" justifyContent="space-between" mt={8} mb={4}>
-          <Typography variant="h3" className={styles.heading}>
-            Deals & Promotions
-          </Typography>
-
-          <Button
-            onClick={() => router.push("deals/create")}
-            variant="contained"
-            className={styles.btn}
-          >
-            <CreateIcon sx={{ marginRight: "5px" }} />
-            Create new
-          </Button>
-        </Grid>
-
+      <Grid item lg={8} md={9} sm={9} mt={2}>
         <Card className={styles["deal-card"]}>
           <CardContent sx={{ padding: "0px" }}>
             <Typography
@@ -297,6 +272,7 @@ function Deals() {
                 className={styles["delete-btn"]}
                 disabled={selectedRows.length < 1}
                 onClick={handleDeleteClick}
+                data-testid="delete-btn"
               >
                 Delete
               </Button>
@@ -313,7 +289,7 @@ function Deals() {
   }
 
   return (
-    <Grid container justifyContent="center">
+    <Grid container justifyContent="center" data-testid="homepage">
       {content}
       <Box>
         <Modal

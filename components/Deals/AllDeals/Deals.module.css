@@ -17,30 +17,19 @@
   border-radius: 5px;
 }
 
-.no-image{
+.no-image {
   width: 70px !important;
   height: 70px;
-  border:1px solid #F0F0F0;
+  border: 1px solid #f0f0f0;
   border-radius: 5px;
-  background-color: #F0F0F0;
+  background-color: #f0f0f0;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.heading {
-  font-style: normal;
-  font-weight: 600;
-  font-size: 36px;
-  line-height: 42px;
-}
-
 .dealTitle {
   margin-left: 20px;
-}
-
-.btn {
-  text-transform: inherit;
 }
 
 .chip {
@@ -51,6 +40,36 @@
   font-size: 12px;
   margin-top: 5px;
   height: 20px;
+}
+
+.create-new-btn {
+  background: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  color: #333333;
+  font-size: 16px;
+  text-transform: initial;
+  padding: 8px;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.create-new-btn:hover {
+  border: 1px solid #cccccc;
+}
+
+.no-data-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: #666b73;
+  margin-bottom: 1.3rem;
+}
+
+.no-data-box {
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .delete-btn {
