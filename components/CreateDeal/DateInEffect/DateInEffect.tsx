@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Card, Divider, Grid, Typography } from "@mui/material";
 import StepLabel from "../../StepLabel";
 import StepTitle from "../../StepTitle";
@@ -12,7 +12,6 @@ import moment from "moment";
 
 function DateInEffect() {
   const { setValue, trigger } = useFormContext();
-  const [desc, setDesc] = useState("");
 
   const startDateValue = useWatch({
     name: "startDatePicker",
@@ -29,6 +28,20 @@ function DateInEffect() {
   const startTimeValue = useWatch({
     name: "startTimePicker",
   });
+
+  let desc = null;
+
+  if (startDateValue && startTimeValue && endDateValue && endTimeValue) {
+    let description = `${moment(startDateValue).format("ll")} from ${moment(
+      startTimeValue
+    ).format("LT")} EST to ${moment(endDateValue).format("ll")} at ${moment(
+      endTimeValue
+    ).format("LT")} EST`;
+    desc = description;
+  } else {
+    desc = "Preview will generate after inputs are completed";
+  }
+  
 
   useEffect(() => {
     if (startDateValue && startTimeValue && endDateValue && endTimeValue) {
@@ -52,19 +65,6 @@ function DateInEffect() {
       trigger("endTimePicker");
     }
   }, [startTimeValue]);
-
-  useEffect(() => {
-    if (startDateValue && startTimeValue && endDateValue && endTimeValue) {
-      let description = `${moment(startDateValue).format("ll")} from ${moment(
-        startTimeValue
-      ).format("LT")} EST to ${moment(endDateValue).format("ll")} at ${moment(
-        endTimeValue
-      ).format("LT")} EST`;
-      setDesc(description);
-    } else {
-      setDesc("Preview will generate after inputs are completed");
-    }
-  }, [startDateValue, startTimeValue, endDateValue, endTimeValue]);
 
   return (
     <Card className={commonStyles["step-card-container"]}>
