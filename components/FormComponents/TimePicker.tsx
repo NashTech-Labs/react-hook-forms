@@ -12,12 +12,11 @@ interface ITimePickerProps {
   name: string;
   disabled?: boolean;
   required: boolean;
-  dateValue:object;
 }
 
-function InputTimePicker({ disabled, name,dateValue }: ITimePickerProps) {
+function InputTimePicker({ disabled, name }: ITimePickerProps) {
   const [open, setOpen] = useState(false);
-  const { control,setValue } = useFormContext();
+  const { control } = useFormContext();
   const {
     field,
     fieldState: { error },
@@ -25,12 +24,7 @@ function InputTimePicker({ disabled, name,dateValue }: ITimePickerProps) {
     control,
     name,
   });
-  const { onChange, onBlur, ref, value } = field;
-
-  const onPickerOpen = ()=>{
-    setOpen(true);
-    setValue(name,dateValue)
-  }
+  const { onChange, onBlur, value } = field;
 
   return (
     <LocalizationProvider dateAdapter={AdapterMoment}>
@@ -60,7 +54,7 @@ function InputTimePicker({ disabled, name,dateValue }: ITimePickerProps) {
                     sx={{
                       marginRight: "-12px",
                     }}
-                    onClick={onPickerOpen}
+                    onClick={()=>setOpen(true)}
                     disabled={disabled}
                   >
                     <AccessTimeIcon
