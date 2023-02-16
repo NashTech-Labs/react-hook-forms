@@ -14,6 +14,8 @@ import CreateIcon from "@mui/icons-material/Create";
 import Deals from "./AllDeals/Deals";
 import { Button, Typography } from "@mui/material";
 import { useRouter } from "next/router";
+import { updateNewDeal } from "../../store/feature/deal/newDealSlice";
+import CreateDealDefaultFormState from "../../constants/CreateDealDefaultFormState";
 
 function DealsMainPage() {
   const router = useRouter();
@@ -45,6 +47,11 @@ function DealsMainPage() {
     }
   }, [user, dispatch, RolesOfUser]);
 
+  const createDeal = () => {
+    router.push("/deals/create");
+    dispatch(updateNewDeal(CreateDealDefaultFormState))
+  }
+
   let content = null;
 
   if (isError) {
@@ -71,7 +78,7 @@ function DealsMainPage() {
             </Typography>
 
             <Button
-              onClick={() => router.push("/deals/create")}
+              onClick={() => createDeal()}
               variant="contained"
               className={styles.btn}
             >

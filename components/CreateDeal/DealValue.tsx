@@ -12,9 +12,12 @@ import TextInputField from '../FormComponents/TextInputField'
 import styles from "./DealValue.module.css";
 import FormCardPreview from '../FormCardPreview'
 import commonStyles from './Steps.module.css'
-import { dealLevelOptions, dealTabs, percentageOptions} from '../../constants/FormOptions'
+import { dealLevelOptions, dealTabs, percentageOptions } from '../../constants/FormOptions'
+import { useAppDispatch } from '../../store';
+import { updateDealLevel } from '../../store/feature/deal/dealSlice';
 
 const DealValue = () => {
+    const dispatch = useAppDispatch();
     const [activeTab, setActiveTab] = useState(dealTabs[0]?.value)
     const { control, setValue, clearErrors, setFocus } = useFormContext()
     const percentageOff = useWatch({
@@ -30,9 +33,9 @@ const DealValue = () => {
         name: 'basketDealType'
     })
 
-    useEffect(()=>{
+    useEffect(() => {
         dealLevel === 'basket' && setFocus('basketSpend')
-    },[dealLevel, setFocus])
+    }, [dealLevel, setFocus])
 
     const displayDollarFormat = basketDealType === 'dollar'
     const displayPercentageFormat = basketDealType === 'percentage'
@@ -42,12 +45,12 @@ const DealValue = () => {
     }
 
     const handleBasketDealTypeChange = (type: string): void => {
-        setValue('basketDealType', type , { shouldValidate: true })
+        setValue('basketDealType', type, { shouldValidate: true })
         clearErrors('basketDiscount')
     }
 
     const handleTabUpdate = (newTab: string): void => {
-        if(newTab !== 'percentage'){
+        if (newTab !== 'percentage') {
             setValue('dollarOff', '')
             setValue('percentageOff', 10)
             setValue('fixedPriceOff', '')
@@ -58,9 +61,22 @@ const DealValue = () => {
     }
 
     const handleCustomPercentageChange = (e: ChangeEvent<HTMLInputElement>) => {
-      if(e.target.value !== 'custom'){
-        setValue('customPercentageOff', '',{ shouldValidate: true})
-      }
+        if (e.target.value !== 'custom') {
+            setValue('customPercentageOff', '', { shouldValidate: true })
+        }
+    }
+
+    useEffect(() => {
+        if (dealLevel === 'product') {
+            dispatch(updateDealLevel('product'))
+        }
+        if (dealLevel === 'basket') {
+            dispatch(updateDealLevel('basket'))
+        }
+    }, [dealLevel])
+
+    const handleChange = (e: any) => {
+        dispatch(updateDealLevel(e.target.value))
     }
 
     let content = null
@@ -80,7 +96,7 @@ const DealValue = () => {
 
         if (activeTab === 'percentage') {
             content = <>
-                <RadioGroupField options={percentageOptions} label="Select percentage" name='percentageOff' required handleChange={handleCustomPercentageChange}/>
+                <RadioGroupField options={percentageOptions} label="Select percentage" name='percentageOff' required handleChange={handleCustomPercentageChange} />
                 <div className={styles['cutom-percentage']}>
                     <TextInputField
                         placeholder="Enter numeric value between 1-99"
@@ -108,7 +124,7 @@ const DealValue = () => {
 
     if (dealLevel === 'basket') {
         content = <div className={styles['basket-fields']}>
-            <div style={{marginTop: '20px'}}>
+            <div style={{ marginTop: '20px' }}>
                 <TextInputField
                     name="basketSpend"
                     placeholder='$ 0.00'
@@ -124,16 +140,16 @@ const DealValue = () => {
                 <Button variant={getButtonVariant('percentage')} onClick={() => handleBasketDealTypeChange('percentage')}>%</Button>
                 <Button variant={getButtonVariant('dollar')} onClick={() => handleBasketDealTypeChange('dollar')}>$</Button>
             </ButtonGroup>
-            <div style={{marginTop: '20px'}}>
+            <div style={{ marginTop: '20px' }}>
                 <TextInputField
                     name="basketDiscount"
-                    placeholder={`${displayDollarFormat ? '$': '%'} 0.00`}
+                    placeholder={`${displayDollarFormat ? '$' : '%'} 0.00`}
                     type='number'
                     inline
                     required
                     displayDollarFormat={displayDollarFormat}
                     displayPercentageFormat={displayPercentageFormat}
-                    endAdornment={displayDollarFormat ? undefined : <div style={{ position: 'absolute', left: '60px'}}>%</div>}
+                    endAdornment={displayDollarFormat ? undefined : <div style={{ position: 'absolute', left: '60px' }}>%</div>}
                 />
             </div>
             <Typography>Off</Typography>
@@ -143,7 +159,7 @@ const DealValue = () => {
     return <Card className={commonStyles["step-card-container"]}>
         <StepLabel currentStep={3} totalSteps={7} />
         <StepTitle title={"Deal Value"} />
-        <RadioGroupField options={dealLevelOptions} label="Is this at a basket level or product level?" name="dealLevel" required/>
+        <RadioGroupField options={dealLevelOptions} label="Is this at a basket level or product level?" name="dealLevel" required handleChange={handleChange} />
         {dealLevel === 'product' && < StyledTabs tabs={dealTabs} handleTabUpdate={handleTabUpdate} />}
         {content}
         <FormCardPreview title="Customer preview" description="Preview will generate after inputs are completed" />
