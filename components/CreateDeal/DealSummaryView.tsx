@@ -73,7 +73,7 @@ const DealSummaryView = () => {
           <Button
             variant="contained"
             className={commonStyles.cancelBtn}
-            onClick={() => router.push("/deals/create")}
+            onClick={() => router.push("/deals")}
           >
             Cancel
           </Button>
@@ -81,6 +81,7 @@ const DealSummaryView = () => {
             <Button
               onClick={() => router.push("/deals/create")}
               variant="text"
+              className={commonStyles['text-style-btn']}
             >
               Go back and edit
             </Button>
