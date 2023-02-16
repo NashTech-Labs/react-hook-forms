@@ -133,6 +133,7 @@ const DealValue = () => {
                     required
                     displayDollarFormat={displayDollarFormat}
                     displayPercentageFormat={displayPercentageFormat}
+                    endAdornment={displayDollarFormat ? undefined : <div style={{ position: 'absolute', left: '60px'}}>%</div>}
                 />
             </div>
             <Typography>Off</Typography>
