@@ -7,6 +7,7 @@ const getFormattedDate = (date: any, time: any) => `${moment(date).format('MMMM 
 interface IConfigValue {
     title: string
     getValue: Function
+    shouldHide?:  Function
 }
 
 interface IConfig {
@@ -34,18 +35,18 @@ const config: IConfig = {
                 return description
             }
         },
-        {
-            title: 'Identifier', getValue: (formData: ICreateDealFormState) => {
-                const {identifier} = formData
-                return identifier
-            }
-        },
         // {
-        //     title: 'Priority', getValue: (formData: ICreateDealFormState) => {
-        //         const {priority} = formData
-        //         return priority
+        //     title: 'Identifier', getValue: (formData: ICreateDealFormState) => {
+        //         const {identifier} = formData
+        //         return identifier
         //     }
         // },
+        {
+            title: 'Priority', getValue: (formData: ICreateDealFormState) => {
+                const {priority} = formData
+                return priority
+            }
+        },
         {
             title: 'Stacking Type', getValue: (formData: ICreateDealFormState) => {
                 const {stackingType} = formData
@@ -72,8 +73,12 @@ const config: IConfig = {
     {
         title: 'Value',
         getValue: (formData: ICreateDealFormState) => {
-            const {dollarOff, percentageOff, fixedPriceOff} = formData
-            return dollarOff || percentageOff || fixedPriceOff
+            const {dollarOff, percentageOff, fixedPriceOff, customPercentageOff} = formData
+            if(dollarOff || fixedPriceOff){
+                return `$${dollarOff || fixedPriceOff}`
+            } 
+
+            return `${percentageOff === 'custom' ? customPercentageOff : percentageOff}%`
         }
     },
     {
@@ -125,7 +130,7 @@ const config: IConfig = {
             }
         },
         {
-            title: 'Will there be additional prodcuts excluded from this deal?',
+            title: 'Will there be additional products excluded from this deal?',
             getValue: (formData: ICreateDealFormState) => {
                 const {dealLevelOptions} = formData
                 return dealLevelExclusionOptions.find(({value})=> value === dealLevelOptions)?.label
@@ -136,7 +141,11 @@ const config: IConfig = {
             getValue: (formData: ICreateDealFormState) => {
                 const {exFileName} = formData
                 return exFileName
-            }
+            },
+            shouldHide : (formData: ICreateDealFormState) => {
+                const {dealLevelOptions} = formData
+                return dealLevelOptions === 'no'
+            },
         }
     ],
     'Promotional messages': [

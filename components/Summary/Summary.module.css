@@ -32,6 +32,14 @@
     font-size: 36px;
     line-height: 42px;
     font-style: italic;
+    color: #333333;
+}
+
+.sub-title {
+    color: #666B73;
+    margin-bottom: 15px;
+    font-weight: 400;
+    font-size: 14px;
 }
 
 .titleContainer {
