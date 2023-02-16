@@ -21,7 +21,6 @@ function Summary() {
         var CsvString = "";
         Results.forEach((RowItem: any, RowIndex: any) => {
             RowItem.forEach((ColItem: any, ColIndex: any) => {
-                console.log(ColItem)
                 CsvString += ColItem + ',';
             });
             CsvString += "\r\n";
@@ -88,7 +87,6 @@ function Summary() {
                                 <Typography>Media</Typography>
                                 <Grid className={styles.img} >
                                     <Box className={styles["no-image"]}>
-                                        {/* <Typography variant="h4" className={styles.imgContainer} >WIP</Typography> */}
                                         <LocalOfferIcon sx={{ color: "#CCCCCC" }} />
                                     </Box>
                                 </Grid>
@@ -157,23 +155,25 @@ function Summary() {
                     </Grid>
                 </Card>
 
-                <Card className={styles["step-card-container"]}>
-                    <StepTitle title={"Products and Collections"} />
+                {data?.dealValue?.scopeType === 'product' ?
 
-                    <Grid container>
-                        <Grid item lg={12} md={9} sm={6}>
-                            <Grid item lg={7}>
-                                <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
-                                    Collection
-                                </Typography>
-                                <Typography className={styles.content} onClick={() => downloadExcel(data?.dealValue?.scopeValue?.product_code)} >ProductList.csv</Typography>
+                    <Card className={styles["step-card-container"]}>
+                        <StepTitle title={"Products and Collections"} />
+
+                        <Grid container>
+                            <Grid item lg={12} md={9} sm={6}>
+                                <Grid item lg={7}>
+                                    <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
+                                        Collection
+                                    </Typography>
+                                    <Typography className={styles.content} onClick={() => downloadExcel(data?.dealValue?.scopeValue?.product_code)} >ProductList.csv</Typography>
+                                </Grid>
                             </Grid>
                         </Grid>
-                    </Grid>
-                </Card>
+                    </Card> : null}
 
                 <Card className={styles["step-card-container"]}>
-                    <StepTitle title={"Exclusions"} />
+                    <StepTitle title={data?.dealValue?.scopeType === 'product' ? "Exclusions" : "Product applicability"} />
 
                     <Grid container>
                         <Grid item lg={12} md={9} sm={6}>
@@ -182,14 +182,17 @@ function Summary() {
                                     What items does this deal apply to?
                                 </Typography>
                                 <Typography className={styles.content} >{data?.applicableProduct?.priceApplicability?.value === 'REGULAR_ONLY' ? 'Regular priced items only' : 'All'}</Typography>
-                                <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
-                                    Will there be additional products excluded from this deal?
-                                </Typography>
-                                <Typography className={styles.content} >Yes</Typography>
-                                <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
-                                    Collection
-                                </Typography>
-                                <Typography className={styles.content} >Disney-Clothing-Oct 4.xcel</Typography>
+                                {data?.dealValue?.scopeType === 'product' ?
+                                    <>
+                                        <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
+                                            Will there be additional products excluded from this deal?
+                                        </Typography>
+                                        <Typography className={styles.content} >Yes</Typography>
+                                        <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
+                                            Collection
+                                        </Typography>
+                                        <Typography className={styles.content} >Disney-Clothing-Oct 4.xcel</Typography>
+                                    </> : null}
                             </Grid>
                         </Grid>
                     </Grid>
