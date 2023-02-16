@@ -178,3 +178,13 @@
     content: ' *';
     color: #E1251B;
 }
+
+.text-style-btn {
+    text-transform: none;
+    margin-right: 10px;
+}
+
+.text-style-btn:hover {
+    cursor: pointer;
+    text-decoration: underline
+  }

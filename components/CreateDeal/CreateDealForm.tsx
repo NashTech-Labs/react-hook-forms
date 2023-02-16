@@ -178,10 +178,10 @@ const CreateDealForm = () => {
             <PromotionalMessages dealLevelName={dealLevelName} />
             <div className={styles['submit-btn-container']}>
                 <div>
-                    <Button variant="outlined" className={commonStyles['cancelBtn']}>Cancel</Button>
+                    <Button variant="outlined" className={commonStyles['cancelBtn']} onClick={() => router.push("/deals")} >Cancel</Button>
                 </div>
                 <div className={styles['submit-container']}>
-                    <Button variant="text" onClick={handleBack} >Go Back</Button>
+                    <Button variant="text" onClick={handleBack} className={commonStyles['text-style-btn']} >Go Back</Button>
                     <Button variant="contained" className={commonStyles['continueBtn']} onClick={e => handleFormSubmit(e)}>Continue</Button>
                 </div>
             </div>
