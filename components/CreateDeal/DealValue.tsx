@@ -50,9 +50,17 @@ const DealValue = () => {
     }
 
     const handleTabUpdate = (newTab: string): void => {
-        if (newTab !== 'percentage') {
+        if (newTab === 'percentage') {
+            if(percentageOff === 'custom'){
+                setValue('dollarOff', '')
+                setValue('fixedPriceOff', '')
+            } else {
+                setValue('percentageOff', 10)
+                setValue('customPercentageOff', '')
+            }
+        } else {
+            setValue('percentageOff', '')
             setValue('dollarOff', '')
-            setValue('percentageOff', 10)
             setValue('fixedPriceOff', '')
             setValue('customPercentageOff', '')
         }
@@ -63,7 +71,7 @@ const DealValue = () => {
     const handleCustomPercentageChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.value !== 'custom') {
             setValue('customPercentageOff', '', { shouldValidate: true })
-        }
+        } 
     }
 
     useEffect(() => {
@@ -76,7 +84,18 @@ const DealValue = () => {
     }, [dealLevel])
 
     const handleChange = (e: any) => {
-        dispatch(updateDealLevel(e.target.value))
+        console.log(e.target.value)
+        const level = e.target.value
+        dispatch(updateDealLevel(level))
+        if(level === 'product') {
+            setValue('basketSpend','')
+            setValue('basketDiscount','')
+        } else {
+            setValue('percentageOff', 10)
+            setValue('dollarOff', '')
+            setValue('fixedPriceOff', '')
+            setValue('customPercentageOff', '')
+        }
     }
 
     let content = null

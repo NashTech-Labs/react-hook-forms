@@ -1,4 +1,5 @@
 import React, { MouseEvent } from 'react'
+import moment from 'moment';
 import { useRouter } from "next/router";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -153,12 +154,13 @@ const CreateDealForm = () => {
         resolver: yupResolver(schema),
         mode: 'all'
     });
-    const { getValues, trigger, formState: { errors } } = formMethods
+    const { getValues, trigger, setValue } = formMethods
     const handleFormSubmit = async (e: MouseEvent) => {
         e.preventDefault()
         const cleanForm = await trigger(undefined, { shouldFocus: true })
 
         if (cleanForm) {
+            setValue('draftCreatedTimestamp', moment())
             dispatch(updateNewDeal(getValues()))
             router.push('/deals/create/summary')
         }

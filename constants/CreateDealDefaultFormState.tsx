@@ -36,7 +36,8 @@ const createDealDefaultFormState: ICreateDealFormState = {
     startTimePicker: null,
     endTimePicker: null,
     collectionFileName: '',
-    basketDealType: 'dollar'
+    basketDealType: 'dollar',
+    draftCreatedTimestamp: null
 }
 
 export default createDealDefaultFormState
