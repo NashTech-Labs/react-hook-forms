@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import moment from 'moment'
 import { useRouter } from "next/router";
 import Card from '@mui/material/Card'
@@ -26,6 +26,7 @@ const DealSummaryView = () => {
   const user = useAppSelector(userProfileState)
 
   const [createDeals] = useCreateDealsMutation();
+  const [submitting, setSubmitting] = useState(false)
 
   const handleCreateDeal = async () => {
     const formattedPayload = generateCreateDealPayload(newDealData)
@@ -34,6 +35,7 @@ const DealSummaryView = () => {
       username: user?.name
     }
     console.log("Create deal payload", formattedPayloadWithUser)
+    setSubmitting(true)
     await createDeals(formattedPayloadWithUser)
       .unwrap()
       .then((data) => {
@@ -49,6 +51,8 @@ const DealSummaryView = () => {
           error.data?.details ? error.data?.details : "Something went wrong",
           "deal-failed"
         )
+      }).finally(()=>{
+        setSubmitting(false)
       });
   }
 
@@ -103,6 +107,7 @@ const DealSummaryView = () => {
               onClick={() => handleCreateDeal()}
               variant="contained"
               className={commonStyles.continueBtn}
+              disabled={submitting}
             >
               Create
             </Button>
