@@ -1,5 +1,5 @@
-import moment from 'moment'
 import { ICreateDealFormState } from '../constants/CreateDealFormStateType'
+import { convertDateTime } from './ConvertDateTime'
 
 const getRewardType = ({ dealDiscountTab, dollarOff, percentageOff, fixedPriceOff }: ICreateDealFormState) => {
     let rewardType = '$_OFF'
@@ -40,7 +40,9 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
          englishMessage,
          frenchMessage,
          startDatePicker,
+         startTimePicker,
          endDatePicker,
+         endTimePicker,
          fileMCH,
          exFileMCH,
          fileLIAM,
@@ -72,10 +74,8 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
                 "restrictions": null
             }
         ],
-        // "valid_from": moment.utc(startDatePicker).valueOf(),
-        // "valid_to": moment.utc(endDatePicker).valueOf(),
-        "valid_from":  "2023-01-15T00:00:00",
-        "valid_to": "2023-01-15T00:00:00",
+        "valid_from": convertDateTime(startDatePicker,startTimePicker),
+        "valid_to": convertDateTime(endDatePicker,endTimePicker),
         "promo_restrictions": {
             "product_code": {
                "liam": productsCollectionTab === "uploadProduct" ? exFileLIAM : exliam,

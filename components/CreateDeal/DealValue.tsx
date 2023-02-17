@@ -210,12 +210,18 @@ const DealValue = () => {
 
     if(dealLevel === 'product'){
         if(dealDiscountTab === 'percentage' && percentageOff){
-            customerPreview = `${percentageOff === 'custom' ? customPercentageOff : percentageOff}% off product(s)`
+            if(percentageOff === 'custom'){
+                if(customPercentageOff){
+                    customerPreview = `${customPercentageOff}% off products(s)`
+                }
+            }else{
+                customerPreview = `${percentageOff}% off products(s)`
+            }
         } else if(dollarOff || fixedPriceOff) {
             customerPreview = `$${dollarOff || fixedPriceOff} off product(s)`
         }
     } else if(basketSpend && basketDiscount) {
-        customerPreview = `Spend $${basketSpend} and get ${basketDealType === 'dollar' ? '$' : ''}${basketDiscount}${basketDealType === 'percentage' ? '%' : ''} off product(s)`
+        customerPreview = `Spend $${basketSpend}, Get ${basketDealType === 'dollar' ? '$' : ''}${basketDiscount}${basketDealType === 'percentage' ? '%' : ''} off`
     }
 
     return <Card className={commonStyles["step-card-container"]}>
