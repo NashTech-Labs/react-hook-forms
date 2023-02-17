@@ -88,7 +88,7 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
         "store_id": "5264",
         "promotion_message_english": englishMessage,
         "promotion_message_french": frenchMessage,
-        "deal_stage": "DRAFT",
+        "status": "DRAFT",
         "username": "Alex"
     }
 

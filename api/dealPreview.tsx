@@ -14,7 +14,7 @@ export const dealPreview = createApi({
     endpoints: (builder) => ({
         getDealPreview: builder.query<dealPreview, any>({
             query: (data) => ({
-                url: `/v1/deal/${data}/deals`,
+                url: `/v1/deal/${data}`,
                 method: "GET",
                 headers: {
                     "X-Loblaw-Tenant-ID": "JOE_FRESH",
