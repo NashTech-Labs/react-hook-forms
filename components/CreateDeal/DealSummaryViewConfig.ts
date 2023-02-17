@@ -64,16 +64,21 @@ const config: IConfig = {
     {
         title: 'Type',
         getValue: (formData: ICreateDealFormState) => {
-            const {dollarOff, percentageOff, fixedPriceOff} = formData
+            const {dollarOff, percentageOff, fixedPriceOff, dealLevel, basketDealType} = formData
+            if (dealLevel === 'basket') return  basketDealType === 'dollar' ? 'Dollar ($) off' : 'Percentage (%) off'
             if(dollarOff) return 'Dollar ($) off'
             if(percentageOff) return 'Percentage (%) off'
-            if(fixedPriceOff) return 'Dollar ($) off'
+            if(fixedPriceOff) return 'Fixed price' 
         }
     },
     {
         title: 'Value',
         getValue: (formData: ICreateDealFormState) => {
-            const {dollarOff, percentageOff, fixedPriceOff, customPercentageOff} = formData
+            const {dollarOff, percentageOff, fixedPriceOff, customPercentageOff, dealLevel, basketDealType, basketDiscount} = formData
+            if (dealLevel === 'basket') {
+                return basketDealType === 'dollar' ? `$${basketDiscount}` : `${basketDiscount}%`  
+            }
+            
             if(dollarOff || fixedPriceOff){
                 return `$${dollarOff || fixedPriceOff}`
             } 
@@ -86,7 +91,7 @@ const config: IConfig = {
         getValue: (formData: ICreateDealFormState) => {
             const {dollarOff, percentageOff, fixedPriceOff, basketSpend, basketDiscount, basketDealType} = formData
             if(basketSpend) return `Spend $${basketSpend} Get ${basketDealType === 'dollar' ? '$' : ''}${basketDiscount}${basketDealType === 'percentage' ? '%' : ''} off`
-            if(dollarOff || fixedPriceOff) return `$${dollarOff || fixedPriceOff} off prodcts(s)`
+            if(dollarOff || fixedPriceOff) return `$${dollarOff || fixedPriceOff} off product(s)`
             if(percentageOff) return `${percentageOff}% off product(s)`
         }
     }

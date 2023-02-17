@@ -7,7 +7,8 @@ import { useGetDealPreviewQuery } from "../../api/dealPreview";
 import { updatedDealId } from "../../store/feature/deal/dealSlice";
 import { useAppSelector } from "../../store/index";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
-import { dateTimeFormat } from "../../util/format";
+import { dateTimeFormat, dateTimeFormatPreview, CapitalizeWords } from "../../util/format";
+import DownloadIcon from '@mui/icons-material/Download';
 
 function Summary() {
     const dealId = useAppSelector(updatedDealId);
@@ -40,8 +41,8 @@ function Summary() {
                 <Grid container display="flex" justifyContent='space-around' mb={4} mt={5}>
                     <Grid item lg={9} className={styles.titleContainer} >
                         <Typography variant="h4" className={styles.title}>{data?.createDealRequest?.title}</Typography>
-                        <Typography mt={2} className={styles["sub-title"]}>Draft created on {data?.createDealRequest?.created_at ? dateTimeFormat(data?.createDealRequest?.created_at) : null}</Typography>
-                        <Chip className={styles.Chip} label={data?.createDealRequest?.status} />
+                        <Typography mt={2} className={styles["sub-title"]} >Draft created on {data?.createDealRequest?.created_at ? dateTimeFormat(data?.createDealRequest?.created_at) : null}</Typography>
+                        <Chip className={styles.Chip} label={data?.createDealRequest?.status ? CapitalizeWords(data?.createDealRequest?.status) : null} />
                     </Grid>
                     <Typography></Typography>
                 </Grid>
@@ -49,7 +50,7 @@ function Summary() {
                 <Card className={styles["step-card-container"]}>
                     <StepTitle title={"Deal type"} />
                     <Typography variant="h4" className={styles.heading} mt={4}>Type</Typography>
-                    <Typography >{data?.createDealRequest?.type}</Typography>
+                    <Typography >{data?.createDealRequest?.type ? CapitalizeWords(data?.createDealRequest?.type) : null}</Typography>
                 </Card>
 
                 <Card className={styles["step-card-container"]}>
@@ -117,8 +118,8 @@ function Summary() {
                                 <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
                                     Value
                                 </Typography>
-                                <Typography className={styles.content}>{data?.dealValue?.rewardsValue[0]?.value}{data?.dealValue?.rewardType === "$_OFF" ?
-                                    '$' : data?.dealValue?.rewardType === '%_OFF' ? '%' : null} </Typography>
+                                <Typography className={styles.content}>{data?.dealValue?.rewardsValue[0]?.value}{data?.dealValue?.rewardType === "$_OFF" || data?.dealValue?.rewardType === "FIXED_OFF" ?
+                                    '$' : data?.dealValue?.rewardType === '%_OFF' ? '%' : null}</Typography>
 
                                 <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
                                     Customer preview
@@ -139,17 +140,17 @@ function Summary() {
                                 <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
                                     Start Date
                                 </Typography>
-                                <Typography className={styles.content} >March 12, 2023  12:00pm EST</Typography>
+                                <Typography className={styles.content} >{data?.createDealRequest?.valid_from ? dateTimeFormat(data?.createDealRequest?.valid_from) : null}</Typography>
 
                                 <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
                                     End Date
                                 </Typography>
-                                <Typography className={styles.content} >March 12, 2023  12:00pm EST</Typography>
+                                <Typography className={styles.content} >{data?.createDealRequest?.valid_to ? dateTimeFormat(data?.createDealRequest?.valid_to) : null}</Typography>
 
                                 <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
                                     Customer preview
                                 </Typography>
-                                <Typography className={styles.content}>Starts March 1 (7:00 AM EST) and ends March 7 (4:00 PM EST)</Typography>
+                                <Typography className={styles.content}>Starts {dateTimeFormatPreview(data?.createDealRequest?.valid_from)} and {dateTimeFormatPreview(data?.createDealRequest?.valid_to)}</Typography>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -166,7 +167,10 @@ function Summary() {
                                     <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
                                         Collection
                                     </Typography>
-                                    <Typography className={styles.content} onClick={() => downloadExcel(data?.dealValue?.scopeValue?.product_code)} >ProductList.csv</Typography>
+                                    <Grid className={styles.downloadSection}>
+                                        <Typography className={styles.content} onClick={() => downloadExcel(data?.dealValue?.scopeValue?.product_code)} >ProductList.csv</Typography>
+                                        <DownloadIcon className={styles.downloadIcon} />
+                                    </Grid>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -218,7 +222,7 @@ function Summary() {
                 </Card>
 
                 <Grid display="flex" justifyContent='space-around' ml={4} mb={4}>
-                    <Button onClick={() => router.push('/deals')} variant="contained">Go Back</Button>
+                    <Button onClick={() => router.push('/deals')} className={styles.btn} variant="contained">Go Back</Button>
                     <Typography></Typography>
                 </Grid>
 

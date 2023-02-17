@@ -22,9 +22,20 @@
     line-height: 26px;
 }
 
+.downloadSection {
+    display: flex;
+    cursor: pointer;
+}
+
 .content {
-    font-size: 16px;
-    line-height: 16px;
+    font-size: 18px;
+    line-height: 18px;
+}
+
+.downloadIcon {
+    color: #276ADD;
+    margin-left: 2%;
+    font-size: 24px;
 }
 
 .title {
@@ -74,4 +85,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-}
+  }
+
+  .btn {
+    text-transform: capitalize;
+  }
