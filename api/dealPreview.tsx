@@ -2,7 +2,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import { CustomQuery } from "../httpInterceptors";
 
 export interface dealPreview {
-    dealGeneralInfo: any;
+    createDealRequest: any;
     applicableProduct: any;
     exclusion: any;
     dealValue: any;
@@ -14,7 +14,7 @@ export const dealPreview = createApi({
     endpoints: (builder) => ({
         getDealPreview: builder.query<dealPreview, any>({
             query: (data) => ({
-                url: `/v1/deal/${data}/deals`,
+                url: `/v1/deal/${data}`,
                 method: "GET",
                 headers: {
                     "X-Loblaw-Tenant-ID": "JOE_FRESH",

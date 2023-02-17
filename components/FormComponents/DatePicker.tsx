@@ -17,7 +17,7 @@ interface IDatePickerProps {
 
 function DatePicker({ disabled, name, minDate }: IDatePickerProps) {
   const [open, setOpen] = useState(false);
-  const { control, setValue } = useFormContext();
+  const { control } = useFormContext();
   const {
     field,
     fieldState: { error },
@@ -25,12 +25,7 @@ function DatePicker({ disabled, name, minDate }: IDatePickerProps) {
     control,
     name,
   });
-  const { onChange, onBlur, ref, value } = field;
-
-  const onPickerOpen = ()=>{
-    setOpen(true);
-    minDate ? setValue("endDatePicker", minDate) : null
-  }
+  const { onChange, onBlur, value } = field;
 
   return (
     <LocalizationProvider dateAdapter={AdapterMoment}>
@@ -63,7 +58,7 @@ function DatePicker({ disabled, name, minDate }: IDatePickerProps) {
                     sx={{
                       marginRight: "-12px",
                     }}
-                    onClick={onPickerOpen}
+                    onClick={()=>setOpen(true)}
                     disabled={disabled}
                   >
                     <CalendarMonthIcon

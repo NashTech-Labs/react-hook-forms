@@ -24,9 +24,9 @@ export interface ICreateDealFormState {
     liam: string[]
     exliam: string[]
     fileMCH: string[]
-    exfileMCH: string[]
+    exFileMCH: string[]
     fileLIAM: string[]
-    exfileLIAM: string[]
+    exFileLIAM: string[]
     fileName: string
     exFileName: string
     startDatePicker: object | null
@@ -35,4 +35,5 @@ export interface ICreateDealFormState {
     endTimePicker: object | null
     collectionFileName: string
     basketDealType: string
+    draftCreatedTimestamp: object | null
 }

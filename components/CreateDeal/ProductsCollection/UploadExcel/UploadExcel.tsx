@@ -40,12 +40,16 @@ function UploadExcel({ uploadStep }: any) {
                 const json = XLSX.utils.sheet_to_json(worksheet);
                 const mchData: string[] = []
                 const liamData: string[] = []
-                json.forEach(({ mch, liam }: any) => {
-                    mchData.push(mch)
-                    liamData.push(liam)
+                json.forEach(({ MCH, LIAM }: any) => {
+                    if (MCH) {
+                        mchData.push(MCH)
+                    }
+                    if (LIAM) {
+                        liamData.push(LIAM)
+                    }
                 })
-                setValue(uploadStep === 'file' ? 'fileMCH' : 'exfileMCH', mchData)
-                setValue(uploadStep === 'file' ? 'fileLIAM' : 'exfileLIAM', liamData)
+                setValue(uploadStep === 'file' ? 'fileMCH' : 'exFileMCH', mchData)
+                setValue(uploadStep === 'file' ? 'fileLIAM' : 'exFileLIAM', liamData)
             };
             reader.readAsBinaryString(f);
         }
@@ -54,8 +58,8 @@ function UploadExcel({ uploadStep }: any) {
     const handleDelete = (e: any) => {
         e.stopPropagation();
         setValue(uploadStep, null)
-        setValue(uploadStep === 'file' ? 'fileMCH' : 'exfileMCH', [])
-        setValue(uploadStep === 'file' ? 'fileLIAM' : 'exfileLIAM', [])
+        setValue(uploadStep === 'file' ? 'fileMCH' : 'exFileMCH', [])
+        setValue(uploadStep === 'file' ? 'fileLIAM' : 'exFileLIAM', [])
     };
 
     return (

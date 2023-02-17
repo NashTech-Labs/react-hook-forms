@@ -9,8 +9,11 @@
 .img {
     width: 240px;
     height: 230px;
-    border: 2px dashed #276ADD;
+    border: 2px solid #276ADD;
     border-radius: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .heading {
@@ -29,6 +32,14 @@
     font-size: 36px;
     line-height: 42px;
     font-style: italic;
+    color: #333333;
+}
+
+.sub-title {
+    color: #666B73;
+    margin-bottom: 15px;
+    font-weight: 400;
+    font-size: 14px;
 }
 
 .titleContainer {
@@ -52,3 +63,14 @@
     justify-content: center;
     margin-top: 35%;
 }
+
+.no-image{
+    width: 100px !important;
+    height: 100px;
+    border:1px solid #F0F0F0;
+    border-radius: 5px;
+    background-color: #F0F0F0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }

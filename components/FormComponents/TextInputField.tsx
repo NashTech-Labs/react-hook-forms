@@ -52,12 +52,6 @@ const TextInputField = ({ title, description, placeholder, tooltip, required, mu
         </InputAdornment>
     }
 
-    if(displayPercentageFormat) {
-        startAdornment = <InputAdornment position='start'>
-           {value && '%'}
-        </InputAdornment>
-    }
-
     const sxOverrides: any = {
         '&.Mui-disabled': {
             backgroundColor: disabled ? '#F0F0F0' : '#ffffff'
@@ -113,7 +107,7 @@ const TextInputField = ({ title, description, placeholder, tooltip, required, mu
                     />
                 </div>
                 <div>
-                    {error && <FieldErrorMessage message={error.message} />}
+                    {error ? <FieldErrorMessage message={error.message} /> : <div style={{ height: '20px' }}/>}
                 </div>
             </div>
         </div>

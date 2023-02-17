@@ -1,16 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Card, Divider, Grid, Typography } from "@mui/material";
 import StepLabel from "../../StepLabel";
 import StepTitle from "../../StepTitle";
 import commonStyles from "../Steps.module.css";
 import FormCardPreview from "../../FormCardPreview";
 import styles from "./DateInEffect.module.css";
-import { useWatch } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import DatePicker from "../../FormComponents/DatePicker";
 import InputTimePicker from "../../FormComponents/TimePicker";
+import moment from "moment";
 
 function DateInEffect() {
-  
+  const { setValue, trigger } = useFormContext();
+
   const startDateValue = useWatch({
     name: "startDatePicker",
   });
@@ -19,9 +21,50 @@ function DateInEffect() {
     name: "endDatePicker",
   });
 
+  const endTimeValue = useWatch({
+    name: "endTimePicker",
+  });
+
   const startTimeValue = useWatch({
     name: "startTimePicker",
   });
+
+  let desc = null;
+
+  if (startDateValue && startTimeValue && endDateValue && endTimeValue) {
+    let description = `${moment(startDateValue).format("ll")} from ${moment(
+      startTimeValue
+    ).format("LT")} EST to ${moment(endDateValue).format("ll")} at ${moment(
+      endTimeValue
+    ).format("LT")} EST`;
+    desc = description;
+  } else {
+    desc = "Preview will generate after inputs are completed";
+  }
+  
+
+  useEffect(() => {
+    if (startDateValue && startTimeValue && endDateValue && endTimeValue) {
+      setValue("startTimePicker", startDateValue, { shouldValidate: true });
+      trigger("endDatePicker");
+      trigger("endTimePicker");
+    }
+    if (startDateValue) {
+      setValue("startTimePicker", startDateValue, { shouldValidate: true });
+    }
+  }, [startDateValue]);
+
+  useEffect(() => {
+    if (endDateValue) {
+      setValue("endTimePicker", endDateValue, { shouldValidate: true });
+    }
+  }, [endDateValue]);
+
+  useEffect(() => {
+    if (startDateValue && startTimeValue && endDateValue && endTimeValue) {
+      trigger("endTimePicker");
+    }
+  }, [startTimeValue]);
 
   return (
     <Card className={commonStyles["step-card-container"]}>
@@ -51,7 +94,7 @@ function DateInEffect() {
               >
                 Time
               </Typography>
-              <InputTimePicker name="startTimePicker" dateValue={startDateValue} required />
+              <InputTimePicker name="startTimePicker" required />
             </Grid>
           </Grid>
         </Grid>
@@ -78,7 +121,7 @@ function DateInEffect() {
               </Typography>
               <DatePicker
                 name="endDatePicker"
-                disabled={(startDateValue && startTimeValue)=== null}
+                disabled={(startDateValue && startTimeValue) === null}
                 minDate={startDateValue}
                 required
               />
@@ -94,17 +137,13 @@ function DateInEffect() {
               <InputTimePicker
                 name="endTimePicker"
                 disabled={(startDateValue && startTimeValue) === null}
-                dateValue={endDateValue}
                 required
               />
             </Grid>
           </Grid>
         </Grid>
       </Grid>
-      <FormCardPreview
-        title="Customer preview"
-        description="Preview will generate after inputs are completed"
-      />
+      <FormCardPreview title="Customer preview" description={desc} />
     </Card>
   );
 }

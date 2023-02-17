@@ -8,10 +8,33 @@ import StepTitle from "../../StepTitle";
 import commonStyles from "../Steps.module.css";
 import styles from "./PromotionalMessages.module.css";
 import UndoIcon from "@mui/icons-material/Undo";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 
-function PromotionalMessages() {
+function PromotionalMessages({ dealLevelName }: any) {
   const { resetField } = useFormContext();
+
+  const englishMessage = useWatch({
+    name: "englishMessage",
+  });
+
+  const frenchMessage = useWatch({
+    name:"frenchMessage"
+  })
+
+  let englishDesc = null;
+  let frenchDesc = null;
+
+  if(englishMessage){
+    englishDesc = englishMessage
+  }else{
+    englishDesc = "Preview will generate after inputs are completed"
+  }
+
+  if(frenchMessage){
+    frenchDesc = frenchMessage
+  }else{
+    frenchDesc = "Preview will generate after inputs are completed"
+  }
 
   const handleResetClick = (fieldName: string) => {
     resetField(fieldName);
@@ -19,7 +42,7 @@ function PromotionalMessages() {
 
   return (
     <Card className={commonStyles["step-card-container"]}>
-      <StepLabel currentStep={7} totalSteps={7} />
+      <StepLabel currentStep={dealLevelName === 'product' ? 7 : 6} totalSteps={dealLevelName === 'product' ? 7 : 6} />
       <StepTitle title={"Promotional Messages"} />
       <Grid container>
         <Grid item lg={12}>
@@ -36,7 +59,7 @@ function PromotionalMessages() {
           <Box mt={5}>
             <FormCardPreview
               title="Customer preview"
-              description="Preview will generate after inputs are completed"
+              description={englishDesc}
             />
           </Box>
           <Button
@@ -70,7 +93,7 @@ function PromotionalMessages() {
           <Box mt={5}>
             <FormCardPreview
               title="Customer preview"
-              description="Preview will generate after inputs are completed"
+              description={frenchDesc}
             />
           </Box>
           <Button

@@ -10,10 +10,10 @@ export interface AllDealsList {
   status: string;
   dealValue: [
     {
-        rewardType: string,
-        rewardValue: string
+      rewardType: string,
+      rewardValue: string
     }
-],
+  ],
   identifier: string;
 }
 
@@ -23,11 +23,11 @@ export const viewAllDeals = createApi({
   endpoints: (builder) => ({
     getAllList: builder.query<AllDealsList[], void>({
       query: () => ({
-        url: `/v1/deal/viewAllDeals`,
+        url: `/v1/deals`,
         method: "GET",
         headers: {
           "X-Loblaw-Tenant-ID": "JOE_FRESH",
-          "x-apikey":"cGxlYXNlLWktcmVhbGx5LXdhbnQtdG8tYWNjZXNzLXBwZS1zdGFnaW5nLWFwaQo="
+          "x-apikey": "cGxlYXNlLWktcmVhbGx5LXdhbnQtdG8tYWNjZXNzLXBwZS1zdGFnaW5nLWFwaQo="
         },
       }),
     }),
