@@ -15,8 +15,6 @@ import SelectField from '../../FormComponents/SelectField';
 import { productCollectionTabs, dealLevelExclusionOptions } from '../../../constants/FormOptions'
 
 const Exclusions = ({ dealLevelName }: any) => {
-    const [dealItems, setDealItems] = useState<string>('')
-    const [activeTab, setActiveTab] = useState(productCollectionTabs[0]?.value);
 
     const { control, setValue } = useFormContext()
 
@@ -25,18 +23,36 @@ const Exclusions = ({ dealLevelName }: any) => {
         name: 'dealLevelOptions'
     })
 
+    const productExclusionsCollectionTab = useWatch({
+        control,
+        name: 'productExclusionsCollectionTab'
+    })
+
     const handleChange = ({ target: { value } }: SelectChangeEvent) => {
-        setDealItems(value);
+        if(value === 'no'){
+            setValue('exmch', [])
+            setValue('exliam', [])
+            setValue('exfile', null)
+            setValue("productExclusionsCollectionTab", 'uploadProduct')
+        }
     };
 
     const handleTabUpdate = (newTab: string): void => {
-        setActiveTab(newTab)
+        if(newTab === 'uploadProduct') {
+            setValue('exmch', [])
+            setValue('exliam', [])
+        } else {
+            setValue('exFileMCH', [])
+            setValue('exFileLIAM', [])
+            setValue('exfile', null)
+            setValue('exFileName', '')
+        }
         setValue('productExclusionsCollectionTab', newTab, { shouldValidate: true })
     }
 
     let content = null
 
-    if (activeTab === "uploadProduct") {
+    if (productExclusionsCollectionTab === "uploadProduct") {
         content = (
             <>
                 <UploadExcel uploadStep="exfile" />
@@ -44,7 +60,7 @@ const Exclusions = ({ dealLevelName }: any) => {
         );
     }
 
-    if (activeTab === "addProduct") {
+    if (productExclusionsCollectionTab === "addProduct") {
         content = (
             <>
                 <ManuallyAdd mchValue="exmch" liamValue="exliam" />
@@ -54,14 +70,14 @@ const Exclusions = ({ dealLevelName }: any) => {
 
     return <Card className={commonStyles["step-card-container"]}>
         <StepLabel currentStep={dealLevelName === 'product' ? 6 : 5} totalSteps={dealLevelName === 'product' ? 7 : 6} />
-        <StepTitle title={dealLevelName === 'product' ? "Exclusions" : "Product applicability"} />
+        <StepTitle title={dealLevelName === 'product' ? "Exclusions" : "Product Applicability"} />
         <Tag label="Internal facing" />
         <Grid display="grid">
             <SelectField options={dealApplyOptions} name="dealApplyType" title="What items does this deal apply to?" required />
             {dealLevelName === 'product' ?
                 <>
                     <RadioGroupField options={dealLevelExclusionOptions} label="Will there be additional products excluded from this deal?" name="dealLevelOptions" required={true} handleChange={handleChange} />
-                    {dealOptions === 'yes' ? <><StyledTabs tabs={productCollectionTabs} handleTabUpdate={handleTabUpdate} />
+                    {dealOptions === 'yes' ? <><StyledTabs tabs={productCollectionTabs} handleTabUpdate={handleTabUpdate} defaultValue={productExclusionsCollectionTab} />
                         <Divider sx={{ border: "1px solid rgba(0, 0, 0, 0.25)" }}></Divider>
                         {content}</>
                         : null}

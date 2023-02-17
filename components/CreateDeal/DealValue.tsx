@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useEffect } from 'react'
+import React, { ChangeEvent, useEffect } from 'react'
 import { useFormContext, useWatch } from "react-hook-form";
 import Card from "@mui/material/Card";
 import Typography from '@mui/material/Typography';
@@ -18,11 +18,34 @@ import { updateDealLevel } from '../../store/feature/deal/dealSlice';
 
 const DealValue = () => {
     const dispatch = useAppDispatch();
-    const [activeTab, setActiveTab] = useState(dealTabs[0]?.value)
     const { control, setValue, clearErrors, setFocus } = useFormContext()
+    const dealDiscountTab = useWatch({
+        control,
+        name: 'dealDiscountTab'
+    })
     const percentageOff = useWatch({
         control,
         name: 'percentageOff'
+    })
+    const dollarOff = useWatch({
+        control,
+        name: 'dollarOff'
+    })
+    const fixedPriceOff = useWatch({
+        control,
+        name: 'fixedPriceOff'
+    })
+    const customPercentageOff = useWatch({
+        control,
+        name: 'customPercentageOff'
+    })
+    const basketSpend = useWatch({
+        control,
+        name: 'basketSpend'
+    })
+    const basketDiscount = useWatch({
+        control,
+        name: 'basketDiscount'
     })
     const dealLevel = useWatch({
         control,
@@ -55,6 +78,8 @@ const DealValue = () => {
                 setValue('dollarOff', '')
                 setValue('fixedPriceOff', '')
             } else {
+                setValue('dollarOff', '')
+                setValue('fixedPriceOff', '')
                 setValue('percentageOff', 10)
                 setValue('customPercentageOff', '')
             }
@@ -64,7 +89,6 @@ const DealValue = () => {
             setValue('fixedPriceOff', '')
             setValue('customPercentageOff', '')
         }
-        setActiveTab(newTab)
         setValue('dealDiscountTab', newTab)
     }
 
@@ -81,10 +105,9 @@ const DealValue = () => {
         if (dealLevel === 'basket') {
             dispatch(updateDealLevel('basket'))
         }
-    }, [dealLevel])
+    }, [dealLevel, dispatch])
 
     const handleChange = (e: any) => {
-        console.log(e.target.value)
         const level = e.target.value
         dispatch(updateDealLevel(level))
         if(level === 'product') {
@@ -95,13 +118,21 @@ const DealValue = () => {
             setValue('dollarOff', '')
             setValue('fixedPriceOff', '')
             setValue('customPercentageOff', '')
+            setValue('dealApplyType', '')
+            setValue('dealLevelOptions', 'no')
+            setValue('productExclusionsCollectionTab', 'uploadProduct')
+            setValue('exFileName', null)
+            setValue('exFileMCH', [])
+            setValue('exFileLIAM', [])
+            setValue('exliam',[])
+            setValue('exmch', [])
         }
     }
 
     let content = null
 
     if (dealLevel === 'product') {
-        if (activeTab === 'dollar') {
+        if (dealDiscountTab === 'dollar') {
             content = <TextInputField
                 title="Enter dollar ($) off"
                 description="Must be numeric values only"
@@ -113,7 +144,7 @@ const DealValue = () => {
             />
         }
 
-        if (activeTab === 'percentage') {
+        if (dealDiscountTab === 'percentage') {
             content = <>
                 <RadioGroupField options={percentageOptions} label="Select percentage" name='percentageOff' required handleChange={handleCustomPercentageChange} />
                 <div className={styles['cutom-percentage']}>
@@ -128,7 +159,7 @@ const DealValue = () => {
             </>
         }
 
-        if (activeTab === 'fixed') {
+        if (dealDiscountTab === 'fixed') {
             content = <TextInputField
                 title="Enter fixed price value"
                 description="Must be numeric values only"
@@ -175,13 +206,25 @@ const DealValue = () => {
         </div>
     }
 
+    let customerPreview = 'Preview will generate after inputs are completed'
+
+    if(dealLevel === 'product'){
+        if(dealDiscountTab === 'percentage' && percentageOff){
+            customerPreview = `${percentageOff === 'custom' ? customPercentageOff : percentageOff}% off product(s)`
+        } else if(dollarOff || fixedPriceOff) {
+            customerPreview = `$${dollarOff || fixedPriceOff} off product(s)`
+        }
+    } else if(basketSpend && basketDiscount) {
+        customerPreview = `Spend $${basketSpend} and get ${basketDealType === 'dollar' ? '$' : ''}${basketDiscount}${basketDealType === 'percentage' ? '%' : ''} off product(s)`
+    }
+
     return <Card className={commonStyles["step-card-container"]}>
         <StepLabel currentStep={3} totalSteps={7} />
         <StepTitle title={"Deal Value"} />
         <RadioGroupField options={dealLevelOptions} label="Is this at a basket level or product level?" name="dealLevel" required handleChange={handleChange} />
-        {dealLevel === 'product' && < StyledTabs tabs={dealTabs} handleTabUpdate={handleTabUpdate} />}
+        {dealLevel === 'product' && < StyledTabs tabs={dealTabs} handleTabUpdate={handleTabUpdate} defaultValue={dealDiscountTab} />}
         {content}
-        <FormCardPreview title="Customer preview" description="Preview will generate after inputs are completed" />
+        <FormCardPreview title="Customer preview" description={customerPreview} />
     </Card>
 }
 

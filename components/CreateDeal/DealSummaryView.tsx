@@ -52,7 +52,7 @@ const DealSummaryView = () => {
       });
   }
 
-  const { title, draftCreatedTimestamp } = newDealData
+  const { title, draftCreatedTimestamp, dealLevel } = newDealData
 
   return <>
     <Grid container justifyContent="center" sx={{ marginTop: "50px" }}>
@@ -65,7 +65,7 @@ const DealSummaryView = () => {
     {
       Object.keys(config).map((stepTitle: string) => {
         return <Card className={commonStyles["step-card-container"]} key={stepTitle}>
-          <StepTitle title={stepTitle} />
+          <StepTitle title={stepTitle === 'Exclusions' ? dealLevel === 'basket' ? 'Product Applicability' : stepTitle : stepTitle} />
           {
             config[stepTitle].map(({ title, getValue, shouldHide }) => {
               if(shouldHide && shouldHide(newDealData)){

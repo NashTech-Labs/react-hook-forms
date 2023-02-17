@@ -13,10 +13,22 @@ interface ITab {
 interface IStyledTabsProps {
     tabs: ITab[]
     handleTabUpdate: Function
+    defaultValue?: string
 }
 
-const StyledTabs = ({ tabs, handleTabUpdate }: IStyledTabsProps) => {
-    const [tab, setTab] = useState<number>(0)
+const StyledTabs = ({ tabs, handleTabUpdate, defaultValue }: IStyledTabsProps) => {
+    const [tab, setTab] = useState<number | Function>(() => {
+        if(!defaultValue) return 0
+        let index = 0
+        for(let i= 0; i < tabs.length; i++){
+            if(tabs[i]?.value === defaultValue){
+                index = i
+                break;
+            }
+        }
+        return index
+      }
+    )
 
     const handleChange = (e: SyntheticEvent, newTab: number) => {
         setTab(newTab)
