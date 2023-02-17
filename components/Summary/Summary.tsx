@@ -40,7 +40,7 @@ function Summary() {
                 <Grid container display="flex" justifyContent='space-around' mb={4} mt={5}>
                     <Grid item lg={9} className={styles.titleContainer} >
                         <Typography variant="h4" className={styles.title}>{data?.createDealRequest?.title}</Typography>
-                        <Typography mt={2} >Draft created on {data?.createDealRequest?.created_at ? dateTimeFormat(data?.createDealRequest?.created_at) : null}</Typography>
+                        <Typography mt={2} className={styles["sub-title"]}>Draft created on {data?.createDealRequest?.created_at ? dateTimeFormat(data?.createDealRequest?.created_at) : null}</Typography>
                         <Chip className={styles.Chip} label={data?.createDealRequest?.status} />
                     </Grid>
                     <Typography></Typography>
