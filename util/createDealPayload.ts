@@ -6,7 +6,7 @@ const getRewardType = ({ dealDiscountTab, dollarOff, percentageOff, fixedPriceOf
     let rewardValue = null
     
     if(dealDiscountTab === 'dollar'){
-        rewardType = '%_OFF'
+        rewardType = '$_OFF'
         rewardValue = dollarOff
     }
     if(dealDiscountTab === 'percentage'){
@@ -69,8 +69,7 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
         "reward_type": rewardType,
         "rewards": [
             {
-                // "value": rewardValue,
-                "value": "10",
+                "value": rewardValue,
                 "restrictions": null
             }
         ],

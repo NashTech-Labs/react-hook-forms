@@ -20,3 +20,20 @@ export function dateTimeFormat(date: string) {
     " EST "
   );
 }
+
+export function dateTimeFormatPreview(date: string) {
+  return (
+    new Date(date).toDateString().slice(4, 10) + " (" +
+    new Date(date).toLocaleString("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    }) + " EST) "
+  );
+}
+
+export function CapitalizeWords(string: string) {
+  return (string.slice(0, 1).toUpperCase() + string.slice(1).toLowerCase())
+}
+
+

@@ -7,7 +7,7 @@ export const deleteDeal = createApi({
   endpoints: (builder) => ({
     deleteDeal: builder.mutation<any, Number[]>({
       query: (deal_Ids) => ({
-        url: `v1/deal/deals`,
+        url: `v1/deals`,
         method: "DELETE",
         body: {
           "ids": deal_Ids
