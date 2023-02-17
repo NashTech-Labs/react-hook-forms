@@ -1,6 +1,6 @@
 import moment from 'moment'
 import {ICreateDealFormState} from '../../constants/CreateDealFormStateType'
-import { dealLevelExclusionOptions, dealApplyOptions } from '../../constants/FormOptions'
+import { dealLevelExclusionOptions, dealApplyOptions , stackTypeOptions} from '../../constants/FormOptions'
 
 const getFormattedDate = (date: any, time: any) => `${moment(date).format('MMMM DD, YYYY')} ${moment(time).format('H:mm a z')}`
 
@@ -50,7 +50,7 @@ const config: IConfig = {
         {
             title: 'Stacking Type', getValue: (formData: ICreateDealFormState) => {
                 const {stackingType} = formData
-                return stackingType
+                return stackTypeOptions[stackingType]
             }
         }
     ],
@@ -84,8 +84,8 @@ const config: IConfig = {
     {
         title: 'Customer preview',
         getValue: (formData: ICreateDealFormState) => {
-            const {dollarOff, percentageOff, fixedPriceOff, basketSpend, basketDiscount} = formData
-            if(basketSpend) return `replace proper message here`
+            const {dollarOff, percentageOff, fixedPriceOff, basketSpend, basketDiscount, basketDealType} = formData
+            if(basketSpend) return `Spend $${basketSpend} and get ${basketDealType === 'dollar' ? '$' : ''}${basketDiscount}${basketDealType === 'percentage' ? '%' : ''} off product(s)`
             if(dollarOff || fixedPriceOff) return `$${dollarOff || fixedPriceOff} off prodcts(s)`
             if(percentageOff) return `${percentageOff}% off product(s)`
         }
@@ -118,6 +118,32 @@ const config: IConfig = {
             getValue: (formData: ICreateDealFormState) => {
                 const {fileName} = formData
                 return fileName
+            },
+            shouldHide: (formData: ICreateDealFormState) => {
+                const {productsCollectionTab} = formData
+                return productsCollectionTab === 'addProduct'
+            }
+        },
+        {
+            title: 'Mch',
+            getValue: (formData: ICreateDealFormState) => {
+                const {mch} = formData
+                return mch.length > 0 ? mch.join(', ') : 'None'
+            },
+            shouldHide: (formData: ICreateDealFormState) => {
+                const {productsCollectionTab} = formData
+                return productsCollectionTab === 'uploadProduct'
+            }
+        },
+        {
+            title: 'Liam',
+            getValue: (formData: ICreateDealFormState) => {
+                const {liam} = formData
+                return liam.length > 0 ? liam.join(', ') : 'None'
+            },
+            shouldHide: (formData: ICreateDealFormState) => {
+                const {productsCollectionTab} = formData
+                return productsCollectionTab === 'uploadProduct'
             }
         }
     ],
@@ -134,7 +160,11 @@ const config: IConfig = {
             getValue: (formData: ICreateDealFormState) => {
                 const {dealLevelOptions} = formData
                 return dealLevelExclusionOptions.find(({value})=> value === dealLevelOptions)?.label
-            }
+            },
+            shouldHide : (formData: ICreateDealFormState) => {
+                const {dealLevel} = formData
+                return dealLevel === "basket"
+            },
         },
         {
             title: 'Collection',
@@ -143,9 +173,31 @@ const config: IConfig = {
                 return exFileName
             },
             shouldHide : (formData: ICreateDealFormState) => {
-                const {dealLevelOptions} = formData
-                return dealLevelOptions === 'no'
+                const {dealLevelOptions, productExclusionsCollectionTab, dealLevel} = formData
+                return dealLevel === "basket" || dealLevelOptions === 'no' || (dealLevelOptions === 'yes' &&  productExclusionsCollectionTab === 'addProduct')
             },
+        },
+        {
+            title: 'Mch',
+            getValue: (formData: ICreateDealFormState) => {
+                const {exmch} = formData
+                return exmch.length > 0 ? exmch.join(', ') : 'None'
+            },
+            shouldHide: (formData: ICreateDealFormState) => {
+                const {dealLevelOptions, productExclusionsCollectionTab,dealLevel} = formData
+                return dealLevel === "basket" || dealLevelOptions === 'no' || (dealLevelOptions === 'yes' && productExclusionsCollectionTab === 'uploadProduct')
+            }
+        },
+        {
+            title: 'Liam',
+            getValue: (formData: ICreateDealFormState) => {
+                const {exliam} = formData
+                return exliam.length > 0 ? exliam.join(', ') : 'None'
+            },
+            shouldHide: (formData: ICreateDealFormState) => {
+                const {dealLevelOptions, productExclusionsCollectionTab,dealLevel} = formData
+                return dealLevel === "basket" || dealLevelOptions === 'no' || (dealLevelOptions === 'yes' && productExclusionsCollectionTab === 'uploadProduct')
+            }
         }
     ],
     'Promotional messages': [

@@ -25,9 +25,9 @@ const createDealDefaultFormState: ICreateDealFormState = {
     liam: [],
     exliam: [],
     fileMCH: [],
-    exfileMCH: [],
+    exFileMCH: [],
     fileLIAM: [],
-    exfileLIAM: [],
+    exFileLIAM: [],
     productExclusionsCollectionTab: 'uploadProduct',
     fileName: '',
     exFileName: '',
@@ -37,7 +37,7 @@ const createDealDefaultFormState: ICreateDealFormState = {
     endTimePicker: null,
     collectionFileName: '',
     basketDealType: 'dollar',
-    draftCreatedTimestamp: null
+    draftCreatedTimestamp: null,
 }
 
 export default createDealDefaultFormState

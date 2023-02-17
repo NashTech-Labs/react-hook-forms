@@ -48,8 +48,8 @@ function UploadExcel({ uploadStep }: any) {
                         liamData.push(LIAM)
                     }
                 })
-                setValue(uploadStep === 'file' ? 'fileMCH' : 'exfileMCH', mchData)
-                setValue(uploadStep === 'file' ? 'fileLIAM' : 'exfileLIAM', liamData)
+                setValue(uploadStep === 'file' ? 'fileMCH' : 'exFileMCH', mchData)
+                setValue(uploadStep === 'file' ? 'fileLIAM' : 'exFileLIAM', liamData)
             };
             reader.readAsBinaryString(f);
         }
@@ -58,8 +58,8 @@ function UploadExcel({ uploadStep }: any) {
     const handleDelete = (e: any) => {
         e.stopPropagation();
         setValue(uploadStep, null)
-        setValue(uploadStep === 'file' ? 'fileMCH' : 'exfileMCH', [])
-        setValue(uploadStep === 'file' ? 'fileLIAM' : 'exfileLIAM', [])
+        setValue(uploadStep === 'file' ? 'fileMCH' : 'exFileMCH', [])
+        setValue(uploadStep === 'file' ? 'fileLIAM' : 'exFileLIAM', [])
     };
 
     return (

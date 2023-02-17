@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useFormContext } from "react-hook-form";
+import React from "react";
+import { useFormContext, useWatch } from "react-hook-form";
 import {
     Card,
     Divider
@@ -14,17 +14,29 @@ import ManuallyAdd from "./ManuallyAdd/ManuallyAdd";
 import { productCollectionTabs } from '../../../constants/FormOptions'
 
 function ProductsCollection() {
-    const { setValue } = useFormContext()
-    const [activeTab, setActiveTab] = useState(productCollectionTabs[0]?.value);
+    const { setValue, control } = useFormContext()
+
+    const productsCollectionTab = useWatch({
+        control,
+        name: 'productsCollectionTab'
+    })
 
     const handleTabUpdate = (newTab: string): void => {
-        setActiveTab(newTab)
+        if(newTab === 'uploadProduct') {
+            setValue('mch', [])
+            setValue('liam', [])
+        } else {
+            setValue('fileMCH', [])
+            setValue('fileLIAM', [])
+            setValue('file', null)
+            setValue('fileName', '')
+        }
         setValue('productsCollectionTab', newTab, { shouldValidate: true })
     }
 
     let content = null;
 
-    if (activeTab === "uploadProduct") {
+    if (productsCollectionTab === "uploadProduct") {
         content = (
             <>
                 <UploadExcel uploadStep="file" />
@@ -32,7 +44,7 @@ function ProductsCollection() {
         );
     }
 
-    if (activeTab === "addProduct") {
+    if (productsCollectionTab === "addProduct") {
         content = (
             <>
                 <ManuallyAdd mchValue="mch" liamValue="liam" />
@@ -46,8 +58,7 @@ function ProductsCollection() {
                 <StepLabel currentStep={5} totalSteps={7} />
                 <StepTitle title={"Products and Collections"} />
                 <Tag label="Internal facing" />
-
-                <StyledTabs tabs={productCollectionTabs} handleTabUpdate={handleTabUpdate} />
+                <StyledTabs tabs={productCollectionTabs} handleTabUpdate={handleTabUpdate} defaultValue={productsCollectionTab} />
                 <Divider sx={{ border: "1px solid rgba(0, 0, 0, 0.25)" }}></Divider>
                 {content}
             </Card>
