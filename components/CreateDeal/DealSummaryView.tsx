@@ -17,7 +17,7 @@ import { useCreateDealsMutation } from '../../api/createDeal';
 import { notifyError, notifySuccess } from '../../util/Notification/Notification';
 import { updateDealStep } from '../../store/feature/deal/dealSlice';
 import CreateDealDefaultFormState from '../../constants/CreateDealDefaultFormState'
-import Tag from '../Tag'
+import { Chip } from '@mui/material';
 
 const DealSummaryView = () => {
   const router = useRouter();
@@ -58,8 +58,8 @@ const DealSummaryView = () => {
     <Grid container justifyContent="center" sx={{ marginTop: "50px" }}>
       <Grid item lg={6} md={8} sm={9}>
           <Typography variant="h4" className={summaryStyles.title}>{title}</Typography>
-          <Typography mt={2} className={summaryStyles['sub-title']}>Draft created on {moment(draftCreatedTimestamp).format('MMMM Do YYYY [at] h:mm A z')}</Typography>
-          <Tag label="Draft" />
+          <Typography mt={2} className={summaryStyles['sub-title']}>Draft created on {moment(draftCreatedTimestamp).format('MMMM D, YYYY [at] h:mm A z [EST]')}</Typography>
+          <Chip label="Draft" className={summaryStyles.Chip}/>
       </Grid>
     </Grid>
     {

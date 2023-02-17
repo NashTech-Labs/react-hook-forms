@@ -2,7 +2,7 @@ import moment from 'moment'
 import {ICreateDealFormState} from '../../constants/CreateDealFormStateType'
 import { dealLevelExclusionOptions, dealApplyOptions , stackTypeOptions} from '../../constants/FormOptions'
 
-const getFormattedDate = (date: any, time: any) => `${moment(date).format('MMMM DD, YYYY')} ${moment(time).format('H:mm a z')}`
+const getFormattedDate = (date: any, time: any) => `${moment(date).format('MMMM DD, YYYY')} ${moment(time).format('hh:mma z')} EST`
 
 interface IConfigValue {
     title: string
@@ -112,7 +112,7 @@ const config: IConfig = {
             return `Starts ${getFormattedDate(startDatePicker, startTimePicker)} and ends ${getFormattedDate(endDatePicker, endTimePicker)}`
         }
     }],
-    'Prodcuts and Collections': [
+    'Products and Collections': [
         {
             title: 'Collection',
             getValue: (formData: ICreateDealFormState) => {

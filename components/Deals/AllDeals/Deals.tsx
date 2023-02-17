@@ -26,8 +26,8 @@ function Deals() {
   const [selectedRows, setSelectedRows] = useState<any>([]);
 
   useEffect(() => {
-    if(error){
-      notifyError("Oops! Something went wrong","all-deal-error")
+    if (error) {
+      notifyError("Oops! Something went wrong", "all-deal-error");
     }
   }, [error]);
 
@@ -129,7 +129,10 @@ function Deals() {
       {
         name: "Value",
         selector: (row: any) => {
-          if (row.dealValue[0].rewardType === "$_OFF") {
+          if (
+            row.dealValue[0].rewardType === "$_OFF" ||
+            row.dealValue[0].rewardType === "FIXED_OFF"
+          ) {
             return `$${row.dealValue[0].rewardValue} Off`;
           }
           if (row.dealValue[0].rewardType === "%_OFF") {
@@ -167,8 +170,8 @@ function Deals() {
 
   const viewDetails = (value: Number) => {
     router.push("deals/view");
-    dispatch(updateDealId(value))
-  }
+    dispatch(updateDealId(value));
+  };
 
   const handleSelectionCriteria = useMemo(() => {
     return (row: any) => {
