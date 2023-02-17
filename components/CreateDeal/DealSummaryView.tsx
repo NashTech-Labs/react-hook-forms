@@ -27,6 +27,7 @@ const DealSummaryView = () => {
 
   const [createDeals] = useCreateDealsMutation();
   const [submitting, setSubmitting] = useState(false)
+  const excludeSteps : string[] = []
 
   const handleCreateDeal = async () => {
     const formattedPayload = generateCreateDealPayload(newDealData)
@@ -58,6 +59,10 @@ const DealSummaryView = () => {
 
   const { title, draftCreatedTimestamp, dealLevel } = newDealData
 
+  if(dealLevel === 'basket') {
+    excludeSteps.push('Products and Collections')
+  }
+
   return <>
     <Grid container justifyContent="center" sx={{ marginTop: "50px" }}>
       <Grid item lg={6} md={8} sm={9}>
@@ -67,7 +72,7 @@ const DealSummaryView = () => {
       </Grid>
     </Grid>
     {
-      Object.keys(config).map((stepTitle: string) => {
+      Object.keys(config).filter(step => !excludeSteps.includes(step)).map((stepTitle: string) => {
         return <Card className={commonStyles["step-card-container"]} key={stepTitle}>
           <StepTitle title={stepTitle === 'Exclusions' ? dealLevel === 'basket' ? 'Product Applicability' : stepTitle : stepTitle} />
           {
