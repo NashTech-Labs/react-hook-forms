@@ -89,10 +89,10 @@ const config: IConfig = {
     {
         title: 'Customer preview',
         getValue: (formData: ICreateDealFormState) => {
-            const {dollarOff, percentageOff, fixedPriceOff, basketSpend, basketDiscount, basketDealType} = formData
+            const {dollarOff, percentageOff, fixedPriceOff, basketSpend, basketDiscount, basketDealType,customPercentageOff} = formData
             if(basketSpend) return `Spend $${basketSpend} Get ${basketDealType === 'dollar' ? '$' : ''}${basketDiscount}${basketDealType === 'percentage' ? '%' : ''} off`
             if(dollarOff || fixedPriceOff) return `$${dollarOff || fixedPriceOff} off product(s)`
-            if(percentageOff) return `${percentageOff}% off product(s)`
+            if(percentageOff) return `${percentageOff === 'custom' ? customPercentageOff : percentageOff}% off product(s)`
         }
     }
     ],
