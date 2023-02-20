@@ -71,7 +71,8 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
          exFileMCH,
          fileLIAM,
          exFileLIAM,
-         productsCollectionTab
+         productsCollectionTab,
+         productExclusionsCollectionTab
         } = formData
     const { rewardType, rewardValue } = getRewardType(formData)
 
@@ -101,8 +102,8 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
         "valid_to": convertDateTime(endDatePicker,endTimePicker),
         "promo_restrictions": {
             "product_code": {
-               "liam": productsCollectionTab === "uploadProduct" ? exFileLIAM : exliam,
-                "mch": productsCollectionTab === "uploadProduct" ? exFileMCH : exmch
+               "liam": productExclusionsCollectionTab === "uploadProduct" ? exFileLIAM : exliam,
+                "mch": productExclusionsCollectionTab === "uploadProduct" ? exFileMCH : exmch
             },
             "price_applicability": {
                 "value": dealApplyType
