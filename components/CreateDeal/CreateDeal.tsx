@@ -68,6 +68,7 @@ function CreateDeal() {
         <Grid
           className={commonStyles["deal-card-container"]}
           bgcolor={"#EBEBE4"}
+          sx={{cursor:"not-allowed !important"}}
         >
           <LocalShippingOutlinedIcon className={commonStyles.Discount} />
           <Grid className={commonStyles.dealTitle}>
@@ -81,6 +82,7 @@ function CreateDeal() {
         <Grid
           className={commonStyles["deal-card-container"]}
           bgcolor={"#EBEBE4"}
+          sx={{cursor:"not-allowed !important"}}
         >
           <PaidOutlinedIcon className={commonStyles.Discount} />
           <Grid className={commonStyles.dealTitle}>
