@@ -1,22 +1,46 @@
 import { ICreateDealFormState } from '../constants/CreateDealFormStateType'
 import { convertDateTime } from './ConvertDateTime'
 
-const getRewardType = ({ dealDiscountTab, dollarOff, percentageOff, fixedPriceOff }: ICreateDealFormState) => {
+const getRewardType = ({ dealDiscountTab, dollarOff, percentageOff, fixedPriceOff, customPercentageOff, dealLevel, basketDealType, basketDiscount }: ICreateDealFormState) => {
     let rewardType = '$_OFF'
     let rewardValue = null
+
+    if (dealLevel === 'basket') { 
+        if (basketDealType === 'dollar') {
+            rewardType = '$_OFF'
+            rewardValue = basketDiscount    
+        }
+
+        if (basketDealType === 'percentage')
+        {
+            rewardType = '%_OFF'
+            rewardValue = basketDiscount
+        }
+    }
+
+    else {
     
     if(dealDiscountTab === 'dollar'){
         rewardType = '$_OFF'
         rewardValue = dollarOff
     }
     if(dealDiscountTab === 'percentage'){
-        rewardType = '%_OFF'
-        rewardValue = percentageOff
+
+        if (percentageOff === "custom") {
+            rewardType = '%_OFF'
+            rewardValue = customPercentageOff
+        }
+        else {
+            rewardType = '%_OFF'
+            rewardValue = percentageOff
+        }
     }
 
     if(dealDiscountTab === 'fixed') {
         rewardType = 'FIXED_OFF'
         rewardValue = fixedPriceOff
+    }
+
     }
 
     return {
