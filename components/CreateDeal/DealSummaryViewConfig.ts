@@ -55,7 +55,7 @@ const config: IConfig = {
         }
     ],
     'Deal value': [{
-        title: 'is this at a basket level or product level?',
+        title: 'Is this at a basket level or product level?',
         getValue: (formData: ICreateDealFormState) => {
             const {dealLevel} = formData
             return dealLevel

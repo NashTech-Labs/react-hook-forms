@@ -34,6 +34,11 @@ function Summary() {
         x.click();
     }
 
+    const ToProperCase = (string:string)=>{
+        let str  = string.replace(/_/g," ")
+        return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase())
+    }
+
     return (
         <Grid container>
             <Grid item lg={12} md={9} sm={6}>
@@ -82,7 +87,7 @@ function Summary() {
                                 <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
                                     Stacking type
                                 </Typography>
-                                <Typography className={styles.content}>{data?.createDealRequest?.stacking_type}</Typography>
+                                <Typography className={styles.content}>{ToProperCase(data?.createDealRequest?.stacking_type || '')}</Typography>
                             </Grid>
                             <Grid mt={3}>
                                 <Typography>Media</Typography>
@@ -106,7 +111,7 @@ function Summary() {
                                 <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
                                     Is this at a basket level or product level?
                                 </Typography>
-                                <Typography className={styles.content} >{data?.dealValue?.scopeType}</Typography>
+                                <Typography className={styles.content} >{CapitalizeWords(data?.dealValue?.scopeType || '')}</Typography>
 
                                 <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
                                     Type
