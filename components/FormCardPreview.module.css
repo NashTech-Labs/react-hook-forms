@@ -15,6 +15,7 @@
     font-weight: 600 !important;
     font-size: 18px !important;
     color: #043385;
+    word-break: break-word;
 }
 
 .description-container {
