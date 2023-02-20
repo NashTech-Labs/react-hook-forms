@@ -8,17 +8,26 @@ interface ITableLoader {
 const SkeletonComponent = () => (
   <Skeleton
     variant="rectangular"
-    width={150}
+    width={160}
     height={20}
     sx={{ borderRadius: "30px" }}
   />
 );
 
+const SkeletonBox = () => (
+  <Skeleton
+    variant="rectangular"
+    width={60}
+    height={60}
+    sx={{ borderRadius: "12px" }}
+  />
+);
+
 const SkeletonRow = () => {
   const rows = [];
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < 5; i++) {
     rows.push(
-      <Grid item lg={2}>
+      <Grid mr={1} item lg={2}>
         <SkeletonComponent />
       </Grid>
     );
@@ -30,9 +39,12 @@ const SkeletonRow = () => {
 const SkeletonRows = () => {
   const rows = [];
 
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 5; i++) {
     rows.push(
-      <Grid container sx={{ mb: 2, mt: 2 }}>
+      <Grid container sx={{ mb: 4, mt: 3 }}>
+        <Grid mr={3}>
+          <SkeletonBox />
+        </Grid>
         <SkeletonRow />
       </Grid>
     );
@@ -49,10 +61,19 @@ const TableLoader = ({ noBorder }: ITableLoader) => {
         boxShadow: noBorder ? 'none' : "0px 4px 4px rgba(0, 0, 0, 0.25)",
         borderRadius: "12px",
         padding: "24px 20px 8px",
+        width: "66%"
       }}
     >
       <CardContent sx={{ padding: "0px" }}>
-        <SkeletonComponent />
+        <Grid display="flex" justifyContent="space-between">
+          <SkeletonComponent />
+          <Skeleton
+            variant="rectangular"
+            width={90}
+            height={20}
+            sx={{ borderRadius: "30px" }}
+          />
+        </Grid>
         <Divider sx={{ mt: 3, mb: 3 }} />
         <SkeletonRows />
       </CardContent>
