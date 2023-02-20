@@ -120,6 +120,12 @@ const schema = yup.object().shape({
         }),
     exfile: yup
         .mixed()
+        .test("ex-file-required", "Error: FIle required", (value, context) => {
+            if (value?.size > 0 && context?.parent?.dealLevelOptions === 'yes' || context?.parent?.dealLevelOptions === 'no' ||
+                context?.parent?.productExclusionsCollectionTab === "addProduct") {
+                return true
+            } else return false
+        })
         .test("not-valid-size", "Error: Max allowed size is 1 MB", (value, context) => {
             if (context?.parent?.productExclusionsCollectionTab === 'uploadProduct' && context?.parent?.dealLevelOptions === 'yes') {
                 return value?.size && value.size < MAX_FILE_SIZE

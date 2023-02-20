@@ -199,7 +199,7 @@ function Summary() {
                                                     Collection
                                                 </Typography>
                                                 <Grid className={styles.downloadSection}>
-                                                    <Typography className={styles.content} onClick={() => downloadExcel(data?.dealValue?.scopeValue?.product_code)} >ProductList.csv</Typography>
+                                                    <Typography className={styles.content} onClick={() => downloadExcel(data?.exclusion?.product)} >ProductList.csv</Typography>
                                                     <DownloadIcon className={styles.downloadIcon} />
                                                 </Grid>
                                             </>
