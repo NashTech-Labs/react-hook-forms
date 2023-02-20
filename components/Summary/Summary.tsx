@@ -188,14 +188,22 @@ function Summary() {
                                 <Typography className={styles.content} >{data?.applicableProduct?.priceApplicability?.value === 'REGULAR_ONLY' ? 'Regular priced items only' : 'All'}</Typography>
                                 {data?.dealValue?.scopeType === 'product' ?
                                     <>
-                                        <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
-                                            Will there be additional products excluded from this deal?
-                                        </Typography>
-                                        <Typography className={styles.content} >Yes</Typography>
-                                        <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
-                                            Collection
-                                        </Typography>
-                                        <Typography className={styles.content} >Disney-Clothing-Oct 4.xcel</Typography>
+                                        {data?.exclusion?.product.liam.length > 0 || data?.exclusion?.product?.mch?.length > 0
+                                            ?
+                                            <>
+                                                <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
+                                                    Will there be additional products excluded from this deal?
+                                                </Typography>
+                                                <Typography className={styles.content} >Yes</Typography>
+                                                <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
+                                                    Collection
+                                                </Typography>
+                                                <Grid className={styles.downloadSection}>
+                                                    <Typography className={styles.content} onClick={() => downloadExcel(data?.dealValue?.scopeValue?.product_code)} >ProductList.csv</Typography>
+                                                    <DownloadIcon className={styles.downloadIcon} />
+                                                </Grid>
+                                            </>
+                                            : null}
                                     </> : null}
                             </Grid>
                         </Grid>
@@ -226,8 +234,8 @@ function Summary() {
                     <Typography></Typography>
                 </Grid>
 
-            </Grid>
-        </Grid>
+            </Grid >
+        </Grid >
     );
 }
 
