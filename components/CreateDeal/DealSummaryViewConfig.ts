@@ -68,7 +68,7 @@ const config: IConfig = {
             if (dealLevel === 'basket') return  basketDealType === 'dollar' ? 'Dollar ($) off' : 'Percentage (%) off'
             if(dollarOff) return 'Dollar ($) off'
             if(percentageOff) return 'Percentage (%) off'
-            if(fixedPriceOff) return 'Fixed price' 
+            if(fixedPriceOff) return 'Fixed off' 
         }
     },
     {
