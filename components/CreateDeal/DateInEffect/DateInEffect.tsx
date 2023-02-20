@@ -8,7 +8,7 @@ import styles from "./DateInEffect.module.css";
 import { useFormContext, useWatch } from "react-hook-form";
 import DatePicker from "../../FormComponents/DatePicker";
 import InputTimePicker from "../../FormComponents/TimePicker";
-import moment from "moment";
+import { dateTimePreviewGenerator } from "../../../util/ConvertDateTime";
 
 function DateInEffect() {
   const { setValue, trigger } = useFormContext();
@@ -29,19 +29,16 @@ function DateInEffect() {
     name: "startTimePicker",
   });
 
-  let desc = null;
+  let desc = "Preview will generate after inputs are completed";
 
   if (startDateValue && startTimeValue && endDateValue && endTimeValue) {
-    let description = `${moment(startDateValue).format("ll")} from ${moment(
-      startTimeValue
-    ).format("LT")} EST to ${moment(endDateValue).format("ll")} at ${moment(
+    desc = dateTimePreviewGenerator(
+      startDateValue,
+      startTimeValue,
+      endDateValue,
       endTimeValue
-    ).format("LT")} EST`;
-    desc = description;
-  } else {
-    desc = "Preview will generate after inputs are completed";
+    );
   }
-  
 
   useEffect(() => {
     if (startDateValue && startTimeValue && endDateValue && endTimeValue) {

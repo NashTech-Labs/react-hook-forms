@@ -9,7 +9,7 @@
 .img {
     width: 240px;
     height: 230px;
-    border: 2px solid #276ADD;
+    border: 2px solid #276add;
     border-radius: 14px;
     display: flex;
     justify-content: center;
@@ -22,9 +22,20 @@
     line-height: 26px;
 }
 
+.downloadSection {
+    display: flex;
+    cursor: pointer;
+}
+
 .content {
-    font-size: 16px;
-    line-height: 16px;
+    font-size: 18px;
+    line-height: 18px;
+}
+
+.downloadIcon {
+    color: #276ADD;
+    margin-left: 2%;
+    font-size: 24px;
 }
 
 .title {
@@ -36,7 +47,7 @@
 }
 
 .sub-title {
-    color: #666B73;
+    color: #666b73;
     margin-bottom: 15px;
     font-weight: 400;
     font-size: 14px;
@@ -47,12 +58,13 @@
 }
 
 .Chip {
-    border-radius: 8px;
-    background-color: #666B73;
-    color: #FFF;
-    font-weight: 600;
-    margin-top: 2%;
-    font-size: 14px;
+  background-color: #666b73;
+  font-weight: 600;
+  color: #ffffff;
+  border-radius: 5px;
+  font-size: 12px;
+  margin-top: 0.7rem;
+  height: 23px;
 }
 
 .imgContainer {
@@ -64,13 +76,17 @@
     margin-top: 35%;
 }
 
-.no-image{
+.no-image {
     width: 100px !important;
     height: 100px;
-    border:1px solid #F0F0F0;
+    border: 1px solid #f0f0f0;
     border-radius: 5px;
-    background-color: #F0F0F0;
+    background-color: #f0f0f0;
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .btn {
+    text-transform: capitalize;
   }

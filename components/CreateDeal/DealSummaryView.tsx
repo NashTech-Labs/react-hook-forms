@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import moment from 'moment'
 import { useRouter } from "next/router";
 import Card from '@mui/material/Card'
@@ -17,7 +17,7 @@ import { useCreateDealsMutation } from '../../api/createDeal';
 import { notifyError, notifySuccess } from '../../util/Notification/Notification';
 import { updateDealStep } from '../../store/feature/deal/dealSlice';
 import CreateDealDefaultFormState from '../../constants/CreateDealDefaultFormState'
-import Tag from '../Tag'
+import { Chip } from '@mui/material';
 
 const DealSummaryView = () => {
   const router = useRouter();
@@ -26,6 +26,8 @@ const DealSummaryView = () => {
   const user = useAppSelector(userProfileState)
 
   const [createDeals] = useCreateDealsMutation();
+  const [submitting, setSubmitting] = useState(false)
+  const excludeSteps : string[] = []
 
   const handleCreateDeal = async () => {
     const formattedPayload = generateCreateDealPayload(newDealData)
@@ -34,6 +36,7 @@ const DealSummaryView = () => {
       username: user?.name
     }
     console.log("Create deal payload", formattedPayloadWithUser)
+    setSubmitting(true)
     await createDeals(formattedPayloadWithUser)
       .unwrap()
       .then((data) => {
@@ -49,21 +52,27 @@ const DealSummaryView = () => {
           error.data?.details ? error.data?.details : "Something went wrong",
           "deal-failed"
         )
+      }).finally(()=>{
+        setSubmitting(false)
       });
   }
 
   const { title, draftCreatedTimestamp, dealLevel } = newDealData
 
+  if(dealLevel === 'basket') {
+    excludeSteps.push('Products and Collections')
+  }
+
   return <>
     <Grid container justifyContent="center" sx={{ marginTop: "50px" }}>
       <Grid item lg={6} md={8} sm={9}>
           <Typography variant="h4" className={summaryStyles.title}>{title}</Typography>
-          <Typography mt={2} className={summaryStyles['sub-title']}>Draft created on {moment(draftCreatedTimestamp).format('MMMM Do YYYY [at] h:mm A z')}</Typography>
-          <Tag label="Draft" />
+          <Typography mt={2} className={summaryStyles['sub-title']}>Draft created on {moment(draftCreatedTimestamp).format('MMMM D, YYYY [at] h:mm A z [EST]')}</Typography>
+          <Chip label="Draft" className={summaryStyles.Chip}/>
       </Grid>
     </Grid>
     {
-      Object.keys(config).map((stepTitle: string) => {
+      Object.keys(config).filter(step => !excludeSteps.includes(step)).map((stepTitle: string) => {
         return <Card className={commonStyles["step-card-container"]} key={stepTitle}>
           <StepTitle title={stepTitle === 'Exclusions' ? dealLevel === 'basket' ? 'Product Applicability' : stepTitle : stepTitle} />
           {
@@ -103,6 +112,7 @@ const DealSummaryView = () => {
               onClick={() => handleCreateDeal()}
               variant="contained"
               className={commonStyles.continueBtn}
+              disabled={submitting}
             >
               Create
             </Button>

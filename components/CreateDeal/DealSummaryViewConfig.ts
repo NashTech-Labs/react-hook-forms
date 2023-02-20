@@ -2,7 +2,7 @@ import moment from 'moment'
 import {ICreateDealFormState} from '../../constants/CreateDealFormStateType'
 import { dealLevelExclusionOptions, dealApplyOptions , stackTypeOptions} from '../../constants/FormOptions'
 
-const getFormattedDate = (date: any, time: any) => `${moment(date).format('MMMM DD, YYYY')} ${moment(time).format('H:mm a z')}`
+const getFormattedDate = (date: any, time: any) => `${moment(date).format('MMMM DD, YYYY')} ${moment(time).format('hh:mma z')} EST`
 
 interface IConfigValue {
     title: string
@@ -64,16 +64,21 @@ const config: IConfig = {
     {
         title: 'Type',
         getValue: (formData: ICreateDealFormState) => {
-            const {dollarOff, percentageOff, fixedPriceOff} = formData
+            const {dollarOff, percentageOff, fixedPriceOff, dealLevel, basketDealType} = formData
+            if (dealLevel === 'basket') return  basketDealType === 'dollar' ? 'Dollar ($) off' : 'Percentage (%) off'
             if(dollarOff) return 'Dollar ($) off'
             if(percentageOff) return 'Percentage (%) off'
-            if(fixedPriceOff) return 'Dollar ($) off'
+            if(fixedPriceOff) return 'Fixed price' 
         }
     },
     {
         title: 'Value',
         getValue: (formData: ICreateDealFormState) => {
-            const {dollarOff, percentageOff, fixedPriceOff, customPercentageOff} = formData
+            const {dollarOff, percentageOff, fixedPriceOff, customPercentageOff, dealLevel, basketDealType, basketDiscount} = formData
+            if (dealLevel === 'basket') {
+                return basketDealType === 'dollar' ? `$${basketDiscount}` : `${basketDiscount}%`  
+            }
+            
             if(dollarOff || fixedPriceOff){
                 return `$${dollarOff || fixedPriceOff}`
             } 
@@ -84,10 +89,10 @@ const config: IConfig = {
     {
         title: 'Customer preview',
         getValue: (formData: ICreateDealFormState) => {
-            const {dollarOff, percentageOff, fixedPriceOff, basketSpend, basketDiscount, basketDealType} = formData
-            if(basketSpend) return `Spend $${basketSpend} and get ${basketDealType === 'dollar' ? '$' : ''}${basketDiscount}${basketDealType === 'percentage' ? '%' : ''} off product(s)`
-            if(dollarOff || fixedPriceOff) return `$${dollarOff || fixedPriceOff} off prodcts(s)`
-            if(percentageOff) return `${percentageOff}% off product(s)`
+            const {dollarOff, percentageOff, fixedPriceOff, basketSpend, basketDiscount, basketDealType,customPercentageOff} = formData
+            if(basketSpend) return `Spend $${basketSpend} Get ${basketDealType === 'dollar' ? '$' : ''}${basketDiscount}${basketDealType === 'percentage' ? '%' : ''} off`
+            if(dollarOff || fixedPriceOff) return `$${dollarOff || fixedPriceOff} off product(s)`
+            if(percentageOff) return `${percentageOff === 'custom' ? customPercentageOff : percentageOff}% off product(s)`
         }
     }
     ],
@@ -112,7 +117,7 @@ const config: IConfig = {
             return `Starts ${getFormattedDate(startDatePicker, startTimePicker)} and ends ${getFormattedDate(endDatePicker, endTimePicker)}`
         }
     }],
-    'Prodcuts and Collections': [
+    'Products and Collections': [
         {
             title: 'Collection',
             getValue: (formData: ICreateDealFormState) => {

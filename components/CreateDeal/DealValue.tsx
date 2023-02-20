@@ -72,9 +72,13 @@ const DealValue = () => {
         clearErrors('basketDiscount')
     }
 
+    useEffect(() => {
+        setValue('dealDiscountTab', dealDiscountTab)
+    }, [dealDiscountTab])
+
     const handleTabUpdate = (newTab: string): void => {
         if (newTab === 'percentage') {
-            if(percentageOff === 'custom'){
+            if (percentageOff === 'custom') {
                 setValue('dollarOff', '')
                 setValue('fixedPriceOff', '')
             } else {
@@ -95,7 +99,7 @@ const DealValue = () => {
     const handleCustomPercentageChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.value !== 'custom') {
             setValue('customPercentageOff', '', { shouldValidate: true })
-        } 
+        }
     }
 
     useEffect(() => {
@@ -110,9 +114,9 @@ const DealValue = () => {
     const handleChange = (e: any) => {
         const level = e.target.value
         dispatch(updateDealLevel(level))
-        if(level === 'product') {
-            setValue('basketSpend','')
-            setValue('basketDiscount','')
+        if (level === 'product') {
+            setValue('basketSpend', '')
+            setValue('basketDiscount', '')
         } else {
             setValue('percentageOff', 10)
             setValue('dollarOff', '')
@@ -124,7 +128,7 @@ const DealValue = () => {
             setValue('exFileName', null)
             setValue('exFileMCH', [])
             setValue('exFileLIAM', [])
-            setValue('exliam',[])
+            setValue('exliam', [])
             setValue('exmch', [])
         }
     }
@@ -199,7 +203,7 @@ const DealValue = () => {
                     required
                     displayDollarFormat={displayDollarFormat}
                     displayPercentageFormat={displayPercentageFormat}
-                    endAdornment={displayDollarFormat ? undefined : <div style={{ position: 'absolute', left: '60px' }}>%</div>}
+                    endAdornment={basketDiscount ? displayDollarFormat ? undefined : <div style={{ position: 'absolute', left: '60px'}}>%</div> : undefined}
                 />
             </div>
             <Typography>Off</Typography>
@@ -208,14 +212,20 @@ const DealValue = () => {
 
     let customerPreview = 'Preview will generate after inputs are completed'
 
-    if(dealLevel === 'product'){
-        if(dealDiscountTab === 'percentage' && percentageOff){
-            customerPreview = `${percentageOff === 'custom' ? customPercentageOff : percentageOff}% off product(s)`
-        } else if(dollarOff || fixedPriceOff) {
+    if (dealLevel === 'product') {
+        if (dealDiscountTab === 'percentage' && percentageOff) {
+            if (percentageOff === 'custom') {
+                if (customPercentageOff) {
+                    customerPreview = `${customPercentageOff}% off products(s)`
+                }
+            } else {
+                customerPreview = `${percentageOff}% off products(s)`
+            }
+        } else if (dollarOff || fixedPriceOff) {
             customerPreview = `$${dollarOff || fixedPriceOff} off product(s)`
         }
-    } else if(basketSpend && basketDiscount) {
-        customerPreview = `Spend $${basketSpend} and get ${basketDealType === 'dollar' ? '$' : ''}${basketDiscount}${basketDealType === 'percentage' ? '%' : ''} off product(s)`
+    } else if (basketSpend && basketDiscount) {
+        customerPreview = `Spend $${basketSpend}, Get ${basketDealType === 'dollar' ? '$' : ''}${basketDiscount}${basketDealType === 'percentage' ? '%' : ''} off`
     }
 
     return <Card className={commonStyles["step-card-container"]}>
