@@ -112,7 +112,7 @@ function Summary() {
                                     Type
                                 </Typography>
                                 <Typography className={styles.content} >{data?.dealValue?.rewardType === "$_OFF" ?
-                                    'Dollar ($) off' : data?.dealValue?.rewardType === '%_OFF' ? 'Percentage (%) off' : 'Fixed price'}
+                                    'Dollar ($) off' : data?.dealValue?.rewardType === '%_OFF' ? 'Percentage (%) off' : 'Fixed off'}
                                 </Typography>
 
                                 <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
