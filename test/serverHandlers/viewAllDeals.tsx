@@ -1,7 +1,7 @@
 import { rest } from 'msw'
 
 export const handlers = [
-    rest.get(`https://cs-bo-panel-bff-dev.loblaw.digital/v1/deal/viewAllDeals`, (req, res, ctx) => {
+    rest.get(`https://cs-bo-panel-bff-dev.loblaw.digital/v1/deals`, (req, res, ctx) => {
         const mockApiResponse = [
             {
                 dealTitle:"Test deal",

@@ -32,7 +32,7 @@ export function dateTimeFormatPreview(date: string) {
   );
 }
 
-export function CapitalizeWords(string: string) {
+export function capitalizeWords(string: string) {
   return (string.slice(0, 1).toUpperCase() + string.slice(1).toLowerCase())
 }
 

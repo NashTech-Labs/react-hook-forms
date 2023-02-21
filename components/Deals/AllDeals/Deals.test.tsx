@@ -42,7 +42,7 @@ describe("All Deals tests", () => {
     const store = generateStore();
     server.use(
       rest.get(
-        `https://cs-bo-panel-bff-dev.loblaw.digital/v1/deal/viewAllDeals`,
+        `https://cs-bo-panel-bff-dev.loblaw.digital/v1/deals`,
         (req, res, ctx) => {
           return res(ctx.status(404));
         }
@@ -71,7 +71,7 @@ describe("All Deals tests", () => {
 
     server.use(
       rest.get(
-        `https://cs-bo-panel-bff-dev.loblaw.digital/v1/deal/viewAllDeals`,
+        `https://cs-bo-panel-bff-dev.loblaw.digital/v1/deals`,
         (req, res, ctx) => {
           return res(ctx.status(404));
         }

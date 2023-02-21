@@ -7,7 +7,7 @@ import { useGetDealPreviewQuery } from "../../api/dealPreview";
 import { updatedDealId } from "../../store/feature/deal/dealSlice";
 import { useAppSelector } from "../../store/index";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
-import { dateTimeFormat, dateTimeFormatPreview, CapitalizeWords } from "../../util/format";
+import { dateTimeFormat, dateTimeFormatPreview, capitalizeWords } from "../../util/format";
 import DownloadIcon from '@mui/icons-material/Download';
 
 function Summary() {
@@ -34,9 +34,25 @@ function Summary() {
         x.click();
     }
 
-    const ToProperCase = (string:string)=>{
-        let str  = string.replace(/_/g," ")
+
+    const ToProperCase = (string: string) => {
+        let str = string.replace(/_/g, " ")
         return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase())
+    }
+
+    const dealValue = (value: string, type: string) => {
+
+        if (type === "$_OFF" || type === "FIXED_OFF") {
+            return `$${value}`
+        }
+
+        if (type === "%_OFF") {
+            return `${value}%`
+        }
+
+        else {
+            return value
+        }
     }
 
     return (
@@ -47,7 +63,7 @@ function Summary() {
                     <Grid item lg={9} className={styles.titleContainer} >
                         <Typography variant="h4" className={styles.title}>{data?.createDealRequest?.title}</Typography>
                         <Typography mt={2} className={styles["sub-title"]} >Draft created on {data?.createDealRequest?.created_at ? dateTimeFormat(data?.createDealRequest?.created_at) : null}</Typography>
-                        <Chip className={styles.Chip} label={data?.createDealRequest?.status ? CapitalizeWords(data?.createDealRequest?.status) : null} />
+                        <Chip className={styles.Chip} label={data?.createDealRequest?.status ? capitalizeWords(data?.createDealRequest?.status) : null} />
                     </Grid>
                     <Typography></Typography>
                 </Grid>
@@ -55,7 +71,7 @@ function Summary() {
                 <Card className={styles["step-card-container"]}>
                     <StepTitle title={"Deal type"} />
                     <Typography variant="h4" className={styles.heading} mt={4}>Type</Typography>
-                    <Typography >{data?.createDealRequest?.type ? CapitalizeWords(data?.createDealRequest?.type) : null}</Typography>
+                    <Typography >{data?.createDealRequest?.type ? capitalizeWords(data?.createDealRequest?.type) : null}</Typography>
                 </Card>
 
                 <Card className={styles["step-card-container"]}>
@@ -111,7 +127,7 @@ function Summary() {
                                 <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
                                     Is this at a basket level or product level?
                                 </Typography>
-                                <Typography className={styles.content} >{CapitalizeWords(data?.dealValue?.scopeType || '')}</Typography>
+                                <Typography className={styles.content} >{capitalizeWords(data?.dealValue?.scopeType || '')}</Typography>
 
                                 <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
                                     Type
@@ -123,14 +139,15 @@ function Summary() {
                                 <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
                                     Value
                                 </Typography>
-                                <Typography className={styles.content}>{data?.dealValue?.rewardsValue[0]?.value}{data?.dealValue?.rewardType === "$_OFF" || data?.dealValue?.rewardType === "FIXED_OFF" ?
-                                    '$' : data?.dealValue?.rewardType === '%_OFF' ? '%' : null}</Typography>
+
+                                <Typography className={styles.content}>{data?.dealValue?.rewardsValue[0]?.value ?
+                                    dealValue(data?.dealValue?.rewardsValue[0]?.value, data?.dealValue?.rewardType) : null}</Typography>
 
                                 <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
                                     Customer preview
                                 </Typography>
-                                <Typography className={styles.content}>{data?.dealValue?.rewardsValue[0]?.value}{data?.dealValue?.rewardType === "$_OFF" ?
-                                    '$' : data?.dealValue?.rewardType === '%_OFF' ? '%' : null} off product(s)</Typography>
+                                <Typography className={styles.content}>{data?.dealValue?.rewardsValue[0]?.value ?
+                                    dealValue(data?.dealValue?.rewardsValue[0]?.value, data?.dealValue?.rewardType) : null} off product(s)</Typography>
                             </Grid>
                         </Grid>
                     </Grid>
