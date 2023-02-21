@@ -1,6 +1,7 @@
 import moment from 'moment'
 import {ICreateDealFormState} from '../../constants/CreateDealFormStateType'
 import { dealLevelExclusionOptions, dealApplyOptions , stackTypeOptions} from '../../constants/FormOptions'
+import { capitalizeWords } from '../../util/format'
 
 const getFormattedDate = (date: any, time: any) => `${moment(date).format('MMMM DD, YYYY')} ${moment(time).format('hh:mma z')} EST`
 
@@ -58,7 +59,7 @@ const config: IConfig = {
         title: 'Is this at a basket level or product level?',
         getValue: (formData: ICreateDealFormState) => {
             const {dealLevel} = formData
-            return dealLevel
+            return capitalizeWords(dealLevel || '')
         }
     },
     {
