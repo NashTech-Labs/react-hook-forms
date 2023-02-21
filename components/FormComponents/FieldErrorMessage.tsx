@@ -4,10 +4,11 @@ import styles from './FormComponents.module.css'
 
 interface IFieldErrorMessage {
     message : string | undefined
+    testId : string
 }
 
-const FieldErrorMessage = ({ message }: IFieldErrorMessage) => {
- return <FormHelperText className={styles['error-text']}>{message}</FormHelperText>
+const FieldErrorMessage = ({ message, testId }: IFieldErrorMessage) => {
+ return <FormHelperText className={styles['error-text']} data-testid={testId}>{message}</FormHelperText>
 }
 
 export default FieldErrorMessage
