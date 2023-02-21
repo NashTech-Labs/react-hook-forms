@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { useController, useFormContext } from "react-hook-form";
-import { IconButton,InputAdornment, TextField } from "@mui/material";
+import { IconButton, InputAdornment, TextField } from "@mui/material";
 import styles from "./FormComponents.module.css";
 import FieldErrorMessage from "./FieldErrorMessage";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
@@ -58,7 +58,7 @@ function DatePicker({ disabled, name, minDate }: IDatePickerProps) {
                     sx={{
                       marginRight: "-12px",
                     }}
-                    onClick={()=>setOpen(true)}
+                    onClick={() => setOpen(true)}
                     disabled={disabled}
                   >
                     <CalendarMonthIcon
@@ -75,7 +75,7 @@ function DatePicker({ disabled, name, minDate }: IDatePickerProps) {
           />
         )}
       />
-      {error && <FieldErrorMessage message={error.message} />}
+      {error && <FieldErrorMessage testId={`${name}-field-error`} message={error.message} />}
     </LocalizationProvider>
   );
 }

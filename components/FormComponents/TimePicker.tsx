@@ -35,7 +35,7 @@ function InputTimePicker({ disabled, name }: ITimePickerProps) {
         disabled={disabled}
         open={open}
         onChange={onChange}
-        onClose = {()=>{
+        onClose={() => {
           setOpen(false)
           onBlur()
         }}
@@ -44,7 +44,7 @@ function InputTimePicker({ disabled, name }: ITimePickerProps) {
             {...params}
             id={name}
             onBlur={onBlur}
-            error={error?true:false}
+            error={error ? true : false}
             InputLabelProps={{ shrink: false }}
             InputProps={{
               endAdornment: (
@@ -54,7 +54,7 @@ function InputTimePicker({ disabled, name }: ITimePickerProps) {
                     sx={{
                       marginRight: "-12px",
                     }}
-                    onClick={()=>setOpen(true)}
+                    onClick={() => setOpen(true)}
                     disabled={disabled}
                   >
                     <AccessTimeIcon
@@ -71,7 +71,7 @@ function InputTimePicker({ disabled, name }: ITimePickerProps) {
           />
         )}
       />
-      {error && <FieldErrorMessage message={error.message} />}
+      {error && <FieldErrorMessage testId={`${name}-field-error`} message={error.message} />}
     </LocalizationProvider>
   );
 }

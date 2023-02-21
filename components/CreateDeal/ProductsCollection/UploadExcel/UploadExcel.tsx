@@ -166,7 +166,7 @@ function UploadExcel({ uploadStep }: any) {
                 </Grid>
             }
             <Grid>
-                {error && <FieldErrorMessage message={error.message} />}
+                {error && <FieldErrorMessage testId={`${uploadStep}-field-error`} message={error.message} />}
             </Grid>
         </>
     )
