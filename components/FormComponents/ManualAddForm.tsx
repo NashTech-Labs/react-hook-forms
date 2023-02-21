@@ -49,7 +49,7 @@ function ManualAddForm({ name, placeholder }: AddFieldProps) {
                 error={Boolean(error)}
             />
             <Grid>
-                {error && <FieldErrorMessage message={error.message} />}
+                {error && <FieldErrorMessage testId={`${name}-field-error`} message={error.message} />}
             </Grid>
         </FormControl>
     )
