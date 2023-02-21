@@ -67,6 +67,7 @@ function PromotionalMessages({ dealLevelName }: any) {
             startIcon={<UndoIcon />}
             className={styles["resetBtn"]}
             onClick={() => handleResetClick("englishMessage")}
+            data-testid="englishMsgReset"
           >
             Reset to default
           </Button>
@@ -101,6 +102,7 @@ function PromotionalMessages({ dealLevelName }: any) {
             startIcon={<UndoIcon />}
             className={styles["resetBtn"]}
             onClick={() => handleResetClick("frenchMessage")}
+            data-testid="frenchMsgReset"
           >
             Reset to default
           </Button>
