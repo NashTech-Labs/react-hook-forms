@@ -17,23 +17,30 @@ function Summary() {
 
     const router = useRouter();
 
-    const downloadExcel = (value: any) => {
-        let Results = [[value?.liam], [value?.mch]]
-        var CsvString = "";
-        Results.forEach((RowItem: any, RowIndex: any) => {
-            RowItem.forEach((ColItem: any, ColIndex: any) => {
-                CsvString += ColItem + ',';
-            });
-            CsvString += "\r\n";
-        });
-        CsvString = "data:application/csv," + encodeURIComponent(CsvString);
+    const downloadExcel = (value = {}) => {
+        const { mch, liam }: any = value
+        const csvMapping: string[] = []
+        if (mch) {
+            mch.forEach((value: string) => {
+                csvMapping.push(value)
+            })
+        }
+
+        if (liam) {
+            liam.forEach((value: string, index: number) => {
+                const currentValue = csvMapping[index]
+                csvMapping[index] = currentValue ? `${currentValue},${value}` : `,${value}`
+            })
+        }
+
+        let csvString = csvMapping.reduce((acc, cur) => `${acc}\n${cur}`);
+        csvString = "data:application/csv," + encodeURIComponent(csvString);
         var x = document.createElement("A");
-        x.setAttribute("href", CsvString);
+        x.setAttribute("href", csvString);
         x.setAttribute("download", "productList.csv");
         document.body.appendChild(x);
         x.click();
     }
-
 
     const ToProperCase = (string: string) => {
         let str = string.replace(/_/g, " ")

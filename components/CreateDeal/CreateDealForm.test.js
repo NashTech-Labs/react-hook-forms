@@ -105,4 +105,42 @@ describe("Create deal form tests", () => {
       await waitFor(() =>  expect(screen.queryByTestId("stackingType-field-error")).not.toBeInTheDocument())
     })
   })
+
+  //Promotional Message Tests
+
+  describe("Promotional Message Tests", () => {
+    test("Proper error messages are displayed for empty english message field", async () => {
+      fireEvent.change(screen.getByTestId('englishMessage'), { target: { value : '' }})
+      fireEvent.focusOut(screen.getByTestId('englishMessage'))
+      await waitFor(() =>  expect(screen.getByTestId("englishMessage-field-error")).toHaveTextContent('Error: English message required'))
+    })
+
+    test("No error messages are displayed for english message field when message is there", async () => {
+      fireEvent.change(screen.getByTestId('englishMessage'), { target: { value : 'Sample English Message' }})
+      fireEvent.focusOut(screen.getByTestId('englishMessage'))
+      await waitFor(() =>  expect(screen.queryByTestId("englishMessage-field-error")).not.toBeInTheDocument())
+    })
+
+    test("Proper error messages are displayed for empty French message field", async () => {
+      fireEvent.change(screen.getByTestId('frenchMessage'), { target: { value : '' }})
+      fireEvent.focusOut(screen.getByTestId('frenchMessage'))
+      await waitFor(() =>  expect(screen.getByTestId("frenchMessage-field-error")).toHaveTextContent('Error: French message required'))
+    })
+
+    test("No error messages are displayed for French message field when message is there", async () => {
+      fireEvent.change(screen.getByTestId('frenchMessage'), { target: { value : 'Sample English Message' }})
+      fireEvent.focusOut(screen.getByTestId('frenchMessage'))
+      await waitFor(() =>  expect(screen.queryByTestId("frenchMessage-field-error")).not.toBeInTheDocument())
+    })
+
+    test("should reset the english Message field on reset to default button click", () => {
+      fireEvent.click(screen.getByTestId('englishMsgReset'))
+      expect(screen.getByTestId("englishMessage").value).toBe('')
+    })
+
+    test("should reset the french Message field on reset to default button click", () => {
+      fireEvent.click(screen.getByTestId('frenchMsgReset'))
+      expect(screen.getByTestId("frenchMessage").value).toBe('')
+    })
+  })
 });
