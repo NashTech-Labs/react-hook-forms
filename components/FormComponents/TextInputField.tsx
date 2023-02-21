@@ -45,6 +45,7 @@ const TextInputField = ({ title, description, placeholder, tooltip, required, mu
     noTopGutters && classNames.push(styles['no-top-margin'])
     inline && classNames.push(styles['inline'])
     required && !inline && titleClassNames.push(styles['required'])
+    const errorDataTestId = `${name}-field-error`
 
     if (displayDollarFormat) {
         startAdornment = <InputAdornment position='start'>
@@ -104,10 +105,13 @@ const TextInputField = ({ title, description, placeholder, tooltip, required, mu
                         }
                         startAdornment={startAdornment}
                         error={Boolean(error)}
+                        inputProps={{
+                            "data-testid": name
+                        }}
                     />
                 </div>
                 <div>
-                    {error ? <FieldErrorMessage message={error.message} /> : <div style={{ height: '20px' }}/>}
+                    {error ? <FieldErrorMessage message={error.message} testId={errorDataTestId}/> : <div style={{ height: '20px' }}/>}
                 </div>
             </div>
         </div>
@@ -140,8 +144,11 @@ const TextInputField = ({ title, description, placeholder, tooltip, required, mu
             error={Boolean(error)}
             minRows={3}
             startAdornment={startAdornment}
+            inputProps={{
+                "data-testid": name
+            }}
         />
-        {error && <FieldErrorMessage message={error.message} />}
+        {error && <FieldErrorMessage message={error.message} testId={errorDataTestId} />}
     </div>
 }
 

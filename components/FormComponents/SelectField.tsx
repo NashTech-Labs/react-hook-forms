@@ -64,6 +64,10 @@ const SelectField = ({ options, name, required, title }: ISelectFieldProps) => {
           color: value ? '#000000' : '#666B73'
         }
       }}
+      data-testid={name}
+      inputProps = {{
+        'data-testid': `${name}-input`
+      }}
     >
       {Object.keys(options).map((key) => (
         <MenuItem key={key} value={key}>
@@ -71,7 +75,7 @@ const SelectField = ({ options, name, required, title }: ISelectFieldProps) => {
         </MenuItem>
       ))}
     </Select>
-    {error && <FieldErrorMessage message={error.message} />}
+    {error && <FieldErrorMessage message={error.message} testId={`${name}-field-error`} />}
   </FormControl>
 }
 
