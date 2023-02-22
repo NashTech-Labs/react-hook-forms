@@ -143,4 +143,36 @@ describe("Create deal form tests", () => {
       expect(screen.getByTestId("frenchMessage").value).toBe('')
     })
   })
+
+  // Date-In-Effect Test cases
+
+  describe('Date-In-Effect field tests', () => {
+    test("Proper error messages are displayed for empty start date field", async () => {
+      fireEvent.click(screen.getByTestId('startDatePicker-icon'))
+      fireEvent.change(screen.getByTestId('startDatePicker'), { target: { value : '' }})
+      fireEvent.focusOut(screen.getByTestId('startDatePicker'))
+      await waitFor(() =>  expect(screen.getByTestId("startDatePicker-field-error")).toHaveTextContent('Error: Date required'))
+    })
+
+    test("Proper error messages are displayed for empty start time field", async () => {
+      fireEvent.click(screen.getByTestId('startTimePicker-icon'))
+      fireEvent.change(screen.getByTestId('startTimePicker'), { target: { value : '' }})
+      fireEvent.focusOut(screen.getByTestId('startTimePicker'))
+      await waitFor(() =>  expect(screen.getByTestId("startTimePicker-field-error")).toHaveTextContent('Error: Time required'))
+    })
+
+    test("Proper error messages are displayed for empty end date field", async () => {
+      fireEvent.click(screen.getByTestId('endDatePicker-icon'))
+      fireEvent.change(screen.getByTestId('endDatePicker'), { target: { value : '' }})
+      fireEvent.focusOut(screen.getByTestId('endDatePicker'))
+      await waitFor(() =>  expect(screen.getByTestId("endDatePicker-field-error")).toHaveTextContent('Error: Date required'))
+    })
+
+    test("Proper error messages are displayed for empty end time field", async () => {
+      fireEvent.click(screen.getByTestId('endTimePicker-icon'))
+      fireEvent.change(screen.getByTestId('endTimePicker'), { target: { value : '' }})
+      fireEvent.focusOut(screen.getByTestId('endTimePicker'))
+      await waitFor(() =>  expect(screen.getByTestId("endTimePicker-field-error")).toHaveTextContent('Error: Time required'))
+    })
+  })
 });

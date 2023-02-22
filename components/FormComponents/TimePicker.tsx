@@ -56,6 +56,7 @@ function InputTimePicker({ disabled, name }: ITimePickerProps) {
                     }}
                     onClick={() => setOpen(true)}
                     disabled={disabled}
+                    data-testid = {`${name}-icon`}
                   >
                     <AccessTimeIcon
                       sx={
@@ -68,6 +69,9 @@ function InputTimePicker({ disabled, name }: ITimePickerProps) {
                 </InputAdornment>
               ),
             }}
+            inputProps={{
+              "data-testid": name
+          }}
           />
         )}
       />
