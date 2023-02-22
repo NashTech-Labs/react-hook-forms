@@ -60,6 +60,7 @@ function DatePicker({ disabled, name, minDate }: IDatePickerProps) {
                     }}
                     onClick={() => setOpen(true)}
                     disabled={disabled}
+                    data-testid={`${name}-icon`}
                   >
                     <CalendarMonthIcon
                       sx={
@@ -72,6 +73,9 @@ function DatePicker({ disabled, name, minDate }: IDatePickerProps) {
                 </InputAdornment>
               ),
             }}
+            inputProps={{
+              "data-testid": name
+          }}
           />
         )}
       />
