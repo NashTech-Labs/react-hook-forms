@@ -224,3 +224,4 @@ DEPLOY_PROD:
 #     - sonar-scanner -Dsonar.qualitygate.wait=true
 #   allow_failure: true
 #   when: manual
+
