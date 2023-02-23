@@ -205,8 +205,8 @@ DEPLOY_PROD:
       helm upgrade --install --namespace ${NAMESPACE} ${HELM_RELEASE_NAME} ${HELM_CHART_PATH} -f ${HELM_VALUES}
       --set image.tag=$CI_COMMIT_SHORT_SHA
       --wait
-only:
-  - production
+  only:
+    - production
 # SONAR:
 #   stage: SONAR
 #   image:
