@@ -119,38 +119,40 @@ const config: IConfig = {
         }
     }],
     'Products and Collections': [
-        {
-            title: 'Collection',
-            getValue: (formData: ICreateDealFormState) => {
-                const {fileName} = formData
-                return fileName
-            },
-            shouldHide: (formData: ICreateDealFormState) => {
-                const {productsCollectionTab} = formData
-                return productsCollectionTab === 'addProduct'
-            }
-        },
+        // {
+        //     title: 'Collection',
+        //     getValue: (formData: ICreateDealFormState) => {
+        //         const {fileName} = formData
+        //         return fileName
+        //     },
+        //     shouldHide: (formData: ICreateDealFormState) => {
+        //         const {productsCollectionTab} = formData
+        //         return productsCollectionTab === 'addProduct'
+        //     }
+        // },
         {
             title: 'Mch',
             getValue: (formData: ICreateDealFormState) => {
-                const {mch} = formData
-                return mch.length > 0 ? mch.join(', ') : 'None'
+                const {mch, fileMCH, productsCollectionTab} = formData
+                const data = productsCollectionTab === 'uploadProduct' ? fileMCH : mch
+                return data.length > 0 ? data.map(value => String(value).toUpperCase()).join(', ') : 'None'
             },
-            shouldHide: (formData: ICreateDealFormState) => {
-                const {productsCollectionTab} = formData
-                return productsCollectionTab === 'uploadProduct'
-            }
+            // shouldHide: (formData: ICreateDealFormState) => {
+            //     const {productsCollectionTab} = formData
+            //     return productsCollectionTab === 'uploadProduct'
+            // }
         },
         {
             title: 'Liam',
             getValue: (formData: ICreateDealFormState) => {
-                const {liam} = formData
-                return liam.length > 0 ? liam.join(', ') : 'None'
+                const {liam, fileLIAM, productsCollectionTab} = formData
+                const data = productsCollectionTab === 'uploadProduct' ? fileLIAM : liam
+                return data.length > 0 ? data.map(value => String(value).toUpperCase()).join(', ') : 'None'
             },
-            shouldHide: (formData: ICreateDealFormState) => {
-                const {productsCollectionTab} = formData
-                return productsCollectionTab === 'uploadProduct'
-            }
+            // shouldHide: (formData: ICreateDealFormState) => {
+            //     const {productsCollectionTab} = formData
+            //     return productsCollectionTab === 'uploadProduct'
+            // }
         }
     ],
     'Exclusions': [
@@ -172,37 +174,39 @@ const config: IConfig = {
                 return dealLevel === "basket"
             },
         },
-        {
-            title: 'Collection',
-            getValue: (formData: ICreateDealFormState) => {
-                const {exFileName} = formData
-                return exFileName
-            },
-            shouldHide : (formData: ICreateDealFormState) => {
-                const {dealLevelOptions, productExclusionsCollectionTab, dealLevel} = formData
-                return dealLevel === "basket" || dealLevelOptions === 'no' || (dealLevelOptions === 'yes' &&  productExclusionsCollectionTab === 'addProduct')
-            },
-        },
+        // {
+        //     title: 'Collection',
+        //     getValue: (formData: ICreateDealFormState) => {
+        //         const {exFileName} = formData
+        //         return exFileName
+        //     },
+        //     shouldHide : (formData: ICreateDealFormState) => {
+        //         const {dealLevelOptions, productExclusionsCollectionTab, dealLevel} = formData
+        //         return dealLevel === "basket" || dealLevelOptions === 'no' || (dealLevelOptions === 'yes' &&  productExclusionsCollectionTab === 'addProduct')
+        //     },
+        // },
         {
             title: 'Mch',
             getValue: (formData: ICreateDealFormState) => {
-                const {exmch} = formData
-                return exmch.length > 0 ? exmch.join(', ') : 'None'
+                const {exmch,exFileMCH, productExclusionsCollectionTab} = formData
+                const data = productExclusionsCollectionTab === 'uploadProduct' ? exFileMCH : exmch
+                return data.length > 0 ? data.map(value => String(value).toUpperCase()).join(', ') : 'None'
             },
             shouldHide: (formData: ICreateDealFormState) => {
-                const {dealLevelOptions, productExclusionsCollectionTab,dealLevel} = formData
-                return dealLevel === "basket" || dealLevelOptions === 'no' || (dealLevelOptions === 'yes' && productExclusionsCollectionTab === 'uploadProduct')
+                const {dealLevelOptions,dealLevel} = formData
+                return dealLevel === "basket" || dealLevelOptions === 'no'
             }
         },
         {
             title: 'Liam',
             getValue: (formData: ICreateDealFormState) => {
-                const {exliam} = formData
-                return exliam.length > 0 ? exliam.join(', ') : 'None'
+                const {exliam,exFileLIAM, productExclusionsCollectionTab} = formData
+                const data = productExclusionsCollectionTab === 'uploadProduct' ? exFileLIAM : exliam
+                return data.length > 0 ? data.map(value => String(value).toUpperCase()).join(', ') : 'None'
             },
             shouldHide: (formData: ICreateDealFormState) => {
-                const {dealLevelOptions, productExclusionsCollectionTab,dealLevel} = formData
-                return dealLevel === "basket" || dealLevelOptions === 'no' || (dealLevelOptions === 'yes' && productExclusionsCollectionTab === 'uploadProduct')
+                const {dealLevelOptions,dealLevel} = formData
+                return dealLevel === "basket" || dealLevelOptions === 'no'
             }
         }
     ],

@@ -49,6 +49,7 @@ function DatePicker({ disabled, name, minDate }: IDatePickerProps) {
             id={name}
             error={error ? true : false}
             onBlur={onBlur}
+            inputProps={{...params.inputProps, "data-testid":name}}
             InputLabelProps={{ shrink: false }}
             InputProps={{
               endAdornment: (
@@ -60,6 +61,7 @@ function DatePicker({ disabled, name, minDate }: IDatePickerProps) {
                     }}
                     onClick={() => setOpen(true)}
                     disabled={disabled}
+                    data-testid={`${name}-icon`}
                   >
                     <CalendarMonthIcon
                       sx={
