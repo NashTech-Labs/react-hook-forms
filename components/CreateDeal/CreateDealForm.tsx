@@ -42,12 +42,12 @@ const schema = yup.object().shape({
     title: yup.string().max(80, 'Error: Title should be less than 80 characters').required('Error: Title is required'),
     //  identifier: yup.string().max(15, 'Error: Identifier should be less than 15 characters').required('Error: Identifier is required'),
     priority: yup
-     .number()
-     .typeError('Error: Priority is required')
-     .min(1, 'Error: Priority should be between 1 and 100')
-     .max(100, 'Error: Priority should be between 1 and 100')
-     .test('priority', 'Error: Priority should be whole number', (value: number) => value && value % 1 === 0)
-     .required('Error: Priority is required'),
+        .number()
+        .typeError('Error: Priority is required')
+        .min(1, 'Error: Priority should be between 1 and 100')
+        .max(100, 'Error: Priority should be between 1 and 100')
+        .test('priority', 'Error: Priority should be whole number', (value: any) => value && value % 1 === 0)
+        .required('Error: Priority is required'),
     stackingType: yup.string().required('Error: Stacking type is required'),
     dollarOff: yup
         .number()
