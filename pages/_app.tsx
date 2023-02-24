@@ -19,7 +19,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <Provider store={store}>
       <StyledEngineProvider injectFirst>
         <GoogleOAuthProvider
-          clientId={process.env.NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID_PROD || ""}
+          clientId={process.env.NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID || ""}
         >
           <ToastContainer className="toast-container" />
           <TopHeader />
