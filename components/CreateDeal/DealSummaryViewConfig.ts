@@ -134,7 +134,7 @@ const config: IConfig = {
             title: 'Mch',
             getValue: (formData: ICreateDealFormState) => {
                 const {mch} = formData
-                return mch.length > 0 ? mch.join(', ') : 'None'
+                return mch.length > 0 ?  mch.join(', ').toUpperCase() : 'None'
             },
             shouldHide: (formData: ICreateDealFormState) => {
                 const {productsCollectionTab} = formData
@@ -145,7 +145,7 @@ const config: IConfig = {
             title: 'Liam',
             getValue: (formData: ICreateDealFormState) => {
                 const {liam} = formData
-                return liam.length > 0 ? liam.join(', ') : 'None'
+                return liam.length > 0 ? liam.join(', ').toUpperCase() : 'None'
             },
             shouldHide: (formData: ICreateDealFormState) => {
                 const {productsCollectionTab} = formData
@@ -187,7 +187,7 @@ const config: IConfig = {
             title: 'Mch',
             getValue: (formData: ICreateDealFormState) => {
                 const {exmch} = formData
-                return exmch.length > 0 ? exmch.join(', ') : 'None'
+                return exmch.length > 0 ? exmch.join(', ').toUpperCase() : 'None'
             },
             shouldHide: (formData: ICreateDealFormState) => {
                 const {dealLevelOptions, productExclusionsCollectionTab,dealLevel} = formData
@@ -198,7 +198,7 @@ const config: IConfig = {
             title: 'Liam',
             getValue: (formData: ICreateDealFormState) => {
                 const {exliam} = formData
-                return exliam.length > 0 ? exliam.join(', ') : 'None'
+                return exliam.length > 0 ? exliam.join(', ').toUpperCase() : 'None'
             },
             shouldHide: (formData: ICreateDealFormState) => {
                 const {dealLevelOptions, productExclusionsCollectionTab,dealLevel} = formData
