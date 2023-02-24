@@ -197,8 +197,10 @@ function Summary() {
                                         Collection
                                     </Typography>
                                     <Grid className={styles.downloadSection}>
-                                        <Typography className={styles.content} onClick={() => downloadExcel(data?.dealValue?.scopeValue?.product_code)} >ProductList.csv</Typography>
-                                        <DownloadIcon className={styles.downloadIcon} />
+                                        <Typography className={styles.content} >
+                                            {parseInt(data?.dealValue?.scopeValue?.product_code?.liam.length) +
+                                                parseInt(data?.dealValue?.scopeValue?.product_code?.mch.length)} products</Typography>
+                                        <DownloadIcon onClick={() => downloadExcel(data?.dealValue?.scopeValue?.product_code)} className={styles.downloadIcon} />
                                     </Grid>
                                 </Grid>
                             </Grid>
@@ -228,8 +230,10 @@ function Summary() {
                                                     Collection
                                                 </Typography>
                                                 <Grid className={styles.downloadSection}>
-                                                    <Typography className={styles.content} onClick={() => downloadExcel(data?.exclusion?.product)} >ProductList.csv</Typography>
-                                                    <DownloadIcon className={styles.downloadIcon} />
+                                                    <Typography className={styles.content} >
+                                                        {parseInt(data?.exclusion?.product?.liam.length) +
+                                                            parseInt(data?.exclusion?.product?.mch.length)} products</Typography>
+                                                    <DownloadIcon onClick={() => downloadExcel(data?.exclusion?.product)} className={styles.downloadIcon} />
                                                 </Grid>
                                             </>
                                             : null}
