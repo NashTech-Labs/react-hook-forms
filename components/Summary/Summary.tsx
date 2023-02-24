@@ -113,12 +113,12 @@ function Summary() {
                                 <Typography className={styles.content}>{ToProperCase(data?.createDealRequest?.stacking_type || '')}</Typography>
                             </Grid>
                             <Grid mt={3}>
-                                <Typography>Media</Typography>
+                                {/* <Typography>Media</Typography>
                                 <Grid className={styles.img} >
                                     <Box className={styles["no-image"]}>
                                         <LocalOfferIcon sx={{ color: "#CCCCCC" }} />
                                     </Box>
-                                </Grid>
+                                </Grid> */}
                             </Grid>
                         </Grid>
                     </Grid>
