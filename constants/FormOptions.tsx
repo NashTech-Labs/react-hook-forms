@@ -39,3 +39,9 @@ export const dealLevelExclusionOptions = [
     { value: 'no', label: 'No' },
     { value: 'yes', label: 'Yes' }
 ]
+
+export const STACKING_TYPES: { [index: string]: string } = {
+    'override' : 'OVERRIDE',
+    'always_apply': 'ALWAYS_APPLY',
+    'best_apply': 'BEST_APPLIES'
+}
