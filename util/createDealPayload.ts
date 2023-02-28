@@ -1,4 +1,5 @@
 import { ICreateDealFormState } from '../constants/CreateDealFormStateType'
+import { STACKING_TYPES } from '../constants/FormOptions'
 import { convertDateTime } from './ConvertDateTime'
 
 const getRewardType = ({ dealDiscountTab, dollarOff, percentageOff, fixedPriceOff, customPercentageOff, dealLevel, basketDealType, basketDiscount }: ICreateDealFormState) => {
@@ -80,7 +81,7 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
         "title": title,
         "description": description,
         "priority": priority,
-        "stacking_type": stackingType,
+        "stacking_type": STACKING_TYPES[stackingType],
         "scope_type": dealLevel,
         "scopes": {
             "product_code": {
