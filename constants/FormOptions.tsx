@@ -39,3 +39,8 @@ export const dealLevelExclusionOptions = [
     { value: 'no', label: 'No' },
     { value: 'yes', label: 'Yes' }
 ]
+
+export const DEAL_APPLY_TYPE: { [index: string]: string } = {
+    'all': 'ALL',
+    'regular_priced_only': 'REGULAR_ONLY'
+}
