@@ -17,6 +17,21 @@ function Summary() {
 
     const router = useRouter();
 
+    const downloadExcelForExclusions = (records = {}) => {
+        downloadExcel(records)
+    }
+
+
+    const downloadExcelForProductsAndCollections = (records = []) => {
+        const mch: string[] = []
+        const liam: string[] = []
+        records.forEach(({ value, sub_type }) => {
+            if(sub_type === 'MCH') mch.push(value)
+            if(sub_type === 'LIAM') liam.push(value)
+        })
+        downloadExcel({ mch, liam})
+    }
+
     const downloadExcel = (value = {}) => {
         const { mch, liam }: any = value
         const csvMapping: string[] = []
@@ -47,7 +62,7 @@ function Summary() {
         return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase())
     }
 
-    const dealValue = (value: string, type: string) => {
+    const getDealValue = (value: string, type: string) => {
 
         if (type === "$_OFF" || type === "FIXED_OFF") {
             return `$${value}`
@@ -62,15 +77,54 @@ function Summary() {
         }
     }
 
+    const getMCHLength = (values : [{ sub_type: string }]) : number => {
+        if(!values) return 0
+
+        return values.filter(({ sub_type }) => sub_type === 'MCH').length
+    }
+
+    const getLIAMLength = (values : [{ sub_type: string }]) : number => {
+        if(!values) return 0
+
+        return values.filter(({ sub_type }) => sub_type === 'LIAM').length
+    }
+
+    const {
+        title,
+        created_at,
+        status,
+        type,
+        description,
+        code,
+        priority,
+        stacking_type,
+        valid_from,
+        valid_to,
+        promotion_message_english,
+        promotion_message_french
+    } = data?.createDealRequest?.[0] || {}
+
+    const {
+        scopeType,
+        rewardType,
+        rewardsValue,
+        scopeValue
+    } = data?.dealValue?.[0] || {}
+
+    const { 
+        applicableProduct,
+        exclusion
+    } = data || {}
+
     return (
         <Grid container>
             <Grid item lg={12} md={9} sm={6}>
 
                 <Grid container display="flex" justifyContent='space-around' mb={4} mt={5}>
                     <Grid item lg={9} className={styles.titleContainer} >
-                        <Typography variant="h4" className={styles.title}>{data?.createDealRequest?.title}</Typography>
-                        <Typography mt={2} className={styles["sub-title"]} >Draft created on {data?.createDealRequest?.created_at ? dateTimeFormat(data?.createDealRequest?.created_at) : null}</Typography>
-                        <Chip className={styles.Chip} label={data?.createDealRequest?.status ? capitalizeWords(data?.createDealRequest?.status) : null} />
+                        <Typography variant="h4" className={styles.title}>{title}</Typography>
+                        <Typography mt={2} className={styles["sub-title"]} >Draft created on {created_at ? dateTimeFormat(created_at) : null}</Typography>
+                        <Chip className={styles.Chip} label={status ? capitalizeWords(status) : null} />
                     </Grid>
                     <Typography></Typography>
                 </Grid>
@@ -78,7 +132,7 @@ function Summary() {
                 <Card className={styles["step-card-container"]}>
                     <StepTitle title={"Deal type"} />
                     <Typography variant="h4" className={styles.heading} mt={4}>Type</Typography>
-                    <Typography >{data?.createDealRequest?.type ? capitalizeWords(data?.createDealRequest?.type) : null}</Typography>
+                    <Typography >{type ? capitalizeWords(type) : null}</Typography>
                 </Card>
 
                 <Card className={styles["step-card-container"]}>
@@ -90,35 +144,35 @@ function Summary() {
                                 <Typography variant="h4" className={styles.heading} mt={4} mb={1}>
                                     Title
                                 </Typography>
-                                <Typography className={styles.content} >{data?.createDealRequest?.title}</Typography>
+                                <Typography className={styles.content} >{title}</Typography>
 
                                 <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
                                     Description
                                 </Typography>
-                                <Typography className={styles.content} >{data?.createDealRequest?.description}</Typography>
+                                <Typography className={styles.content} >{description}</Typography>
 
                                 <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
                                     Identifier
                                 </Typography>
-                                <Typography className={styles.content}>{data?.createDealRequest?.code}</Typography>
+                                <Typography className={styles.content}>{code}</Typography>
 
                                 <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
                                     Priority
                                 </Typography>
-                                <Typography className={styles.content}>{data?.createDealRequest?.priority}</Typography>
+                                <Typography className={styles.content}>{priority}</Typography>
 
                                 <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
                                     Stacking type
                                 </Typography>
-                                <Typography className={styles.content}>{ToProperCase(data?.createDealRequest?.stacking_type || '')}</Typography>
+                                <Typography className={styles.content}>{ToProperCase(stacking_type || '')}</Typography>
                             </Grid>
                             <Grid mt={3}>
-                                <Typography>Media</Typography>
+                                {/* <Typography>Media</Typography>
                                 <Grid className={styles.img} >
                                     <Box className={styles["no-image"]}>
                                         <LocalOfferIcon sx={{ color: "#CCCCCC" }} />
                                     </Box>
-                                </Grid>
+                                </Grid> */}
                             </Grid>
                         </Grid>
                     </Grid>
@@ -134,27 +188,27 @@ function Summary() {
                                 <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
                                     Is this at a basket level or product level?
                                 </Typography>
-                                <Typography className={styles.content} >{capitalizeWords(data?.dealValue?.scopeType || '')}</Typography>
+                                <Typography className={styles.content} >{capitalizeWords(scopeType || '')}</Typography>
 
                                 <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
                                     Type
                                 </Typography>
-                                <Typography className={styles.content} >{data?.dealValue?.rewardType === "$_OFF" ?
-                                    'Dollar ($) off' : data?.dealValue?.rewardType === '%_OFF' ? 'Percentage (%) off' : 'Fixed off'}
+                                <Typography className={styles.content} >{rewardType === "$_OFF" ?
+                                    'Dollar ($) off' : rewardType === '%_OFF' ? 'Percentage (%) off' : 'Fixed off'}
                                 </Typography>
 
                                 <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
                                     Value
                                 </Typography>
 
-                                <Typography className={styles.content}>{data?.dealValue?.rewardsValue[0]?.value ?
-                                    dealValue(data?.dealValue?.rewardsValue[0]?.value, data?.dealValue?.rewardType) : null}</Typography>
+                                <Typography className={styles.content}>{rewardsValue[0]?.value ?
+                                    getDealValue(rewardsValue[0]?.value, rewardType) : null}</Typography>
 
                                 <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
                                     Customer preview
                                 </Typography>
-                                <Typography className={styles.content}>{data?.dealValue?.rewardsValue[0]?.value ?
-                                    dealValue(data?.dealValue?.rewardsValue[0]?.value, data?.dealValue?.rewardType) : null} off product(s)</Typography>
+                                <Typography className={styles.content}>{rewardsValue[0]?.value ?
+                                    getDealValue(rewardsValue[0]?.value, rewardType) : null} off product(s)</Typography>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -169,23 +223,23 @@ function Summary() {
                                 <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
                                     Start Date
                                 </Typography>
-                                <Typography className={styles.content} >{data?.createDealRequest?.valid_from ? dateTimeFormat(data?.createDealRequest?.valid_from) : null}</Typography>
+                                <Typography className={styles.content} >{valid_from ? dateTimeFormat(valid_from) : null}</Typography>
 
                                 <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
                                     End Date
                                 </Typography>
-                                <Typography className={styles.content} >{data?.createDealRequest?.valid_to ? dateTimeFormat(data?.createDealRequest?.valid_to) : null}</Typography>
+                                <Typography className={styles.content} >{valid_to ? dateTimeFormat(valid_to) : null}</Typography>
 
                                 <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
                                     Customer preview
                                 </Typography>
-                                <Typography className={styles.content}>Starts {dateTimeFormatPreview(data?.createDealRequest?.valid_from)} and {dateTimeFormatPreview(data?.createDealRequest?.valid_to)}</Typography>
+                                <Typography className={styles.content}>Starts {dateTimeFormatPreview(valid_from)} and {dateTimeFormatPreview(valid_to)}</Typography>
                             </Grid>
                         </Grid>
                     </Grid>
                 </Card>
 
-                {data?.dealValue?.scopeType === 'product' ?
+                {scopeType === 'PRODUCT' ?
 
                     <Card className={styles["step-card-container"]}>
                         <StepTitle title={"Products and Collections"} />
@@ -198,9 +252,8 @@ function Summary() {
                                     </Typography>
                                     <Grid className={styles.downloadSection}>
                                         <Typography className={styles.content} >
-                                            {parseInt(data?.dealValue?.scopeValue?.product_code?.liam.length) +
-                                                parseInt(data?.dealValue?.scopeValue?.product_code?.mch.length)} products</Typography>
-                                        <DownloadIcon onClick={() => downloadExcel(data?.dealValue?.scopeValue?.product_code)} className={styles.downloadIcon} />
+                                            {getMCHLength(scopeValue) + getLIAMLength(scopeValue)} products</Typography>
+                                        <DownloadIcon onClick={() => downloadExcelForProductsAndCollections(scopeValue)} className={styles.downloadIcon} />
                                     </Grid>
                                 </Grid>
                             </Grid>
@@ -208,7 +261,7 @@ function Summary() {
                     </Card> : null}
 
                 <Card className={styles["step-card-container"]}>
-                    <StepTitle title={data?.dealValue?.scopeType === 'product' ? "Exclusions" : "Product applicability"} />
+                    <StepTitle title={scopeType === 'PRODUCT' ? "Exclusions" : "Product applicability"} />
 
                     <Grid container>
                         <Grid item lg={12} md={9} sm={6}>
@@ -216,10 +269,10 @@ function Summary() {
                                 <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
                                     What items does this deal apply to?
                                 </Typography>
-                                <Typography className={styles.content} >{data?.applicableProduct?.priceApplicability?.value === 'REGULAR_ONLY' ? 'Regular priced items only' : 'All'}</Typography>
-                                {data?.dealValue?.scopeType === 'product' ?
+                                <Typography className={styles.content} >{applicableProduct?.priceApplicability?.value === 'REGULAR_ONLY' ? 'Regular priced items only' : 'All'}</Typography>
+                                {scopeType === 'PRODUCT' ?
                                     <>
-                                        {data?.exclusion?.product.liam.length > 0 || data?.exclusion?.product?.mch?.length > 0
+                                        {exclusion?.product.liam.length > 0 || exclusion?.product?.mch?.length > 0
                                             ?
                                             <>
                                                 <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
@@ -231,9 +284,9 @@ function Summary() {
                                                 </Typography>
                                                 <Grid className={styles.downloadSection}>
                                                     <Typography className={styles.content} >
-                                                        {parseInt(data?.exclusion?.product?.liam.length) +
-                                                            parseInt(data?.exclusion?.product?.mch.length)} products</Typography>
-                                                    <DownloadIcon onClick={() => downloadExcel(data?.exclusion?.product)} className={styles.downloadIcon} />
+                                                        {parseInt(exclusion?.product?.liam.length) +
+                                                            parseInt(exclusion?.product?.mch.length)} products</Typography>
+                                                    <DownloadIcon onClick={() => downloadExcelForExclusions(data?.exclusion?.product)} className={styles.downloadIcon} />
                                                 </Grid>
                                             </>
                                             : null}
@@ -252,11 +305,11 @@ function Summary() {
                                 <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
                                     English message
                                 </Typography>
-                                <Typography className={styles.content} >{data?.createDealRequest?.promotion_message_english}</Typography>
+                                <Typography className={styles.content} >{promotion_message_english}</Typography>
                                 <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
                                     French message
                                 </Typography>
-                                <Typography className={styles.content} >{data?.createDealRequest?.promotion_message_french}</Typography>
+                                <Typography className={styles.content} >{promotion_message_french}</Typography>
                             </Grid>
                         </Grid>
                     </Grid>
