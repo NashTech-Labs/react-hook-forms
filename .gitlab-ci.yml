@@ -60,7 +60,7 @@ BUILD_DEV:
     PROJECT: loblaw-gcr
     IMAGE_NAME: bo-panel-ui
   before_script:
-     - echo NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID=$NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID  >> .env
+    - echo NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID=$NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID  >> .env
     # - echo NEXT_PUBLIC_SESSION_COUNT_DOWN_TIME=$NEXT_PUBLIC_SESSION_COUNT_DOWN_TIME  >> .env
     # - echo NEXT_PUBLIC_SESSION_IDLE_TIME_LIMIT=$NEXT_PUBLIC_SESSION_IDLE_TIME_LIMIT  >> .env
     # - echo NEXT_PUBLIC_BFF_ENDPOINT=$NEXT_PUBLIC_BFF_DEV_ENDPOINT  >> .env
@@ -73,6 +73,59 @@ BUILD_DEV:
     - docker push gcr.io/${PROJECT}/${IMAGE_NAME}:${TAG}
   only:
     - develop
+
+BUILD_QA:
+  tags:
+    - gcp-secure
+  image: gcr.io/loblaw-gcr/google-sdk-docker
+  stage: BUILD
+  dependencies:
+    - INSTALL
+  variables:
+    PROJECT: loblaw-gcr
+    IMAGE_NAME: bo-panel-ui
+  before_script:
+    - echo NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID=$NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID  >> .env
+    # - echo NEXT_PUBLIC_SESSION_COUNT_DOWN_TIME=$NEXT_PUBLIC_SESSION_COUNT_DOWN_TIME  >> .env
+    # - echo NEXT_PUBLIC_SESSION_IDLE_TIME_LIMIT=$NEXT_PUBLIC_SESSION_IDLE_TIME_LIMIT  >> .env
+    # - echo NEXT_PUBLIC_BFF_ENDPOINT=$NEXT_PUBLIC_BFF_DEV_ENDPOINT  >> .env
+    # - cat .env
+  script:
+    - export TAG=$CI_COMMIT_SHORT_SHA
+    - docker build . -t gcr.io/${PROJECT}/${IMAGE_NAME}:${TAG}
+    - gcloud auth activate-service-account --key-file=${service_account_key}
+    - gcloud auth configure-docker
+    - docker push gcr.io/${PROJECT}/${IMAGE_NAME}:${TAG}
+  only:
+    - qa
+
+DEPLOY_QA:
+  image: gcr.io/loblaw-gcr/helm3:v1
+  stage: DEPLOY
+  dependencies:
+    - INSTALL
+  tags:
+    - gcp-secure
+  services:
+    - docker:dind
+  variables:
+    NAMESPACE: platform-backoffice-domain-qa
+    HELM_RELEASE_NAME: bo-panel-ui
+    HELM_CHART_PATH: helm
+    HELM_VALUES: helm/values-qa.yaml
+  before_script:
+    - gcloud auth activate-service-account --key-file=${service_account_key}
+    - gcloud auth configure-docker
+    - gcloud container clusters get-credentials bluenose --region us-east1 --project ld-shipyard
+  script:
+    - export TAG=$CI_COMMIT_SHORT_SHA
+    - kubectl get service -o wide
+    - >
+      helm upgrade --install --namespace ${NAMESPACE} ${HELM_RELEASE_NAME} ${HELM_CHART_PATH} -f ${HELM_VALUES}
+      --set image.tag=$CI_COMMIT_SHORT_SHA
+      --wait
+  only:
+    - qa
 
 DEPLOY_DEV:
   image: gcr.io/loblaw-gcr/helm3:v1
