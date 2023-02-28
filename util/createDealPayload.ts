@@ -1,5 +1,5 @@
 import { ICreateDealFormState } from '../constants/CreateDealFormStateType'
-import { STACKING_TYPES } from '../constants/FormOptions'
+import { DEAL_APPLY_TYPE, STACKING_TYPES} from '../constants/FormOptions'
 import { convertDateTime } from './ConvertDateTime'
 
 const getRewardType = ({ dealDiscountTab, dollarOff, percentageOff, fixedPriceOff, customPercentageOff, dealLevel, basketDealType, basketDiscount }: ICreateDealFormState) => {
@@ -50,6 +50,8 @@ const getRewardType = ({ dealDiscountTab, dollarOff, percentageOff, fixedPriceOf
     }
 }
 
+const getDealApplyType = (dealApplyType: string) => DEAL_APPLY_TYPE[dealApplyType]
+
 const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
     const { 
          title,
@@ -82,21 +84,17 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
         "description": description,
         "priority": priority,
         "stacking_type": STACKING_TYPES[stackingType],
-        "scope_type": dealLevel,
+        "scope_type": dealLevel?.toUpperCase(),
         "scopes": {
             "product_code": {
                "liam": productsCollectionTab === "uploadProduct" ? fileLIAM : liam,
                 "mch": productsCollectionTab === "uploadProduct" ? fileMCH : mch
-            },
-            "price_applicability": {
-                "value": dealApplyType
             }
         },
         "reward_type": rewardType,
         "rewards": [
             {
-                "value": rewardValue,
-                "restrictions": null
+                "value": String(rewardValue)
             }
         ],
         "valid_from": convertDateTime(startDatePicker,startTimePicker),
@@ -104,17 +102,16 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
         "promo_restrictions": {
             "product_code": {
                "liam": productExclusionsCollectionTab === "uploadProduct" ? exFileLIAM : exliam,
-                "mch": productExclusionsCollectionTab === "uploadProduct" ? exFileMCH : exmch
+               "mch": productExclusionsCollectionTab === "uploadProduct" ? exFileMCH : exmch
             },
             "price_applicability": {
-                "value": dealApplyType
+                "value": getDealApplyType(dealApplyType)
             }
         },
         "store_id": "5264",
         "promotion_message_english": englishMessage,
         "promotion_message_french": frenchMessage,
         "status": "DRAFT",
-        "username": "Alex"
     }
 
 }

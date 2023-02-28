@@ -40,6 +40,11 @@ export const dealLevelExclusionOptions = [
     { value: 'yes', label: 'Yes' }
 ]
 
+export const DEAL_APPLY_TYPE: { [index: string]: string } = {
+    'all': 'ALL',
+    'regular_priced_only': 'REGULAR_ONLY'
+}
+
 export const STACKING_TYPES: { [index: string]: string } = {
     'override' : 'OVERRIDE',
     'always_apply': 'ALWAYS_APPLY',
