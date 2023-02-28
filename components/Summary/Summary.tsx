@@ -201,13 +201,13 @@ function Summary() {
                                     Value
                                 </Typography>
 
-                                <Typography className={styles.content}>{rewardsValue[0]?.value ?
+                                <Typography className={styles.content}>{rewardsValue?.[0]?.value ?
                                     getDealValue(rewardsValue[0]?.value, rewardType) : null}</Typography>
 
                                 <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
                                     Customer preview
                                 </Typography>
-                                <Typography className={styles.content}>{rewardsValue[0]?.value ?
+                                <Typography className={styles.content}>{rewardsValue?.[0]?.value ?
                                     getDealValue(rewardsValue[0]?.value, rewardType) : null} off product(s)</Typography>
                             </Grid>
                         </Grid>
