@@ -4,7 +4,7 @@ import type { RootState } from "./store/index";
 //  const baseURL = "http://localhost:8080"
 // const baseURL = "https://cs-bo-panel-bff-sit.loblaw.digital"
 
-const baseURL = process.env.NEXT_PUBLIC_BFF_ENDPOINT
+const baseURL = process.env.NEXT_PUBLIC_BFF_PROD_ENDPOINT
 
 export const CustomQuery = () =>
     fetchBaseQuery({
