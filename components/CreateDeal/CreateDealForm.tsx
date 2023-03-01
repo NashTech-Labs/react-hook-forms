@@ -40,6 +40,7 @@ const isEndDateTimeValid = (endDateOrTime: any, startDateOrTime: object, operati
 
 const schema = yup.object().shape({
     title: yup.string().max(80, 'Error: Title should be less than 80 characters').required('Error: Title is required'),
+    description:yup.string().max(250,'Error: Description should be less than 250 characters'),
     //  identifier: yup.string().max(15, 'Error: Identifier should be less than 15 characters').required('Error: Identifier is required'),
     priority: yup
         .number()
@@ -110,8 +111,8 @@ const schema = yup.object().shape({
                 return value !== undefined && value > 0 && value < 100
             } else return true
         }),
-    englishMessage: yup.string().required('Error: English message required'),
-    frenchMessage: yup.string().required('Error: French message required'),
+    englishMessage: yup.string().required('Error: English message required').max(250, 'Error: Message should be less than 250 characters'),
+    frenchMessage: yup.string().required('Error: French message required').max(250, 'Error: Message should be less than 250 characters'),
     mch: yup.array().of(yup.string().required('Error: MCH field required').matches(/^[mM]/, "Error: Must start with M").min(9, "Error: Valid MCH required").max(9, "Error: Valid MCH required")),
     exmch: yup.array().of(yup.string().required('Error: MCH field required').matches(/^[mM]/, "Error: Must start with M").min(9, "Error: Valid MCH required").max(9, "Error: Valid MCH required")),
     liam: yup.array().of(yup.string().required('Error: LIAM field required').matches(/^[a-zA-Z]/, "Error: Must start with letter").min(13, "Error: Valid LIAM required").max(13, "Error: Valid LIAM required")),
