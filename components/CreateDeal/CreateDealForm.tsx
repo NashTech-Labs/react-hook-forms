@@ -101,11 +101,6 @@ const schema = yup.object().shape({
                 return value !== undefined
             } else return true
         })
-        .test('basket-discount', 'Error: Dollar($) value must be between 1-99', (value, context) => {
-            if (context?.parent?.dealLevel === 'basket' && context?.parent?.basketDealType === 'dollar') {
-                return value !== undefined && value > 0 && value < 100
-            } else return true
-        })
         .test('basket-discount', 'Error: Percentage(%) must be between 1-99', (value, context) => {
             if (context?.parent?.dealLevel === 'basket' && context?.parent?.basketDealType === 'percentage') {
                 return value !== undefined && value > 0 && value < 100
