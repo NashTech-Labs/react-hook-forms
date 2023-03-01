@@ -1,12 +1,10 @@
 import moment from "moment";
 
 export function convertDateTime(date: object | null, time: object | null) {
-  let utcTimestamp =
-    `${moment(date).format("YYYY-MM-DD")}` +
-    "T" +
-    `${moment(time).format("HH:mm:ss")}`;
-
-  return utcTimestamp;
+  const timestamp =
+    `${moment(date).format("YYYY-MM-DD")} ${moment(time).format("HH:mm")}`;
+  const utc = (new Date(timestamp)).toUTCString()
+  return (new Date(utc)).toISOString()
 }
 
 export function dateTimePreviewGenerator(startDate: object | null, startTime: object | null, endDate: object | null, endTime: object | null){
