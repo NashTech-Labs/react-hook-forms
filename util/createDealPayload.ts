@@ -52,6 +52,50 @@ const getRewardType = ({ dealDiscountTab, dollarOff, percentageOff, fixedPriceOf
 
 const getDealApplyType = (dealApplyType: string) => DEAL_APPLY_TYPE[dealApplyType]
 
+const getScopeData = (productsCollectionTab: string, fileLIAM: string[], fileMCH: string[], liam: string[], mch: string[]) => {
+    let data: any = []
+
+    if (productsCollectionTab === "uploadProduct")
+    {
+        fileLIAM.map((value: string, index: Number) => {
+            data.push({
+                    "type": "PRODUCT_CODE",
+                    "sub_type": "LIAM",
+                    "value": value,
+            })
+        })
+
+        fileMCH.map((value: string, index: Number) => {
+            data.push({
+                    "type": "CATEGORY",
+                    "sub_type": "MCH",
+                    "value": value,
+            })
+        })
+    }
+
+    if (productsCollectionTab !== "uploadProduct")
+    {
+        liam.map((value: string, index: Number) => {
+            data.push({
+                    "type": "PRODUCT_CODE",
+                    "sub_type": "LIAM",
+                    "value": value,
+            })
+        })
+
+        mch.map((value: string, index: Number) => {
+            data.push({
+                    "type": "CATEGORY",
+                    "sub_type": "MCH",
+                    "value": value,
+            })
+        })
+    }
+
+    return data
+} 
+
 const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
     const { 
          title,
@@ -85,12 +129,7 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
         "priority": priority,
         "stacking_type": STACKING_TYPES[stackingType],
         "scope_type": dealLevel?.toUpperCase(),
-        "scopes": {
-            "product_code": {
-               "liam": productsCollectionTab === "uploadProduct" ? fileLIAM : liam,
-                "mch": productsCollectionTab === "uploadProduct" ? fileMCH : mch
-            }
-        },
+        "scopes": getScopeData(productsCollectionTab, fileLIAM, fileMCH, liam, mch),
         "reward_type": rewardType,
         "rewards": [
             {
@@ -101,11 +140,16 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
         "valid_to": convertDateTime(endDatePicker,endTimePicker),
         "promo_restrictions": {
             "product_code": {
-               "liam": productExclusionsCollectionTab === "uploadProduct" ? exFileLIAM : exliam,
-               "mch": productExclusionsCollectionTab === "uploadProduct" ? exFileMCH : exmch
+                "liam": productExclusionsCollectionTab === "uploadProduct" ? exFileLIAM : exliam
             },
+            "category": {
+                "mch": productExclusionsCollectionTab === "uploadProduct" ? exFileMCH : exmch
+            },
+            // "price_applicability": {
+            //     "value": getDealApplyType(dealApplyType)
+            // }
             "price_applicability": {
-                "value": getDealApplyType(dealApplyType)
+                "value": "REGULAR_ONLY"
             }
         },
         "store_id": "5264",
