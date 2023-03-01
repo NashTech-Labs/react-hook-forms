@@ -131,7 +131,7 @@ function Deals() {
         selector: (row: any) => {
           if (
             row.dealValue[0].rewardType === "$_OFF" ||
-            row.dealValue[0].rewardType === "FIXED_OFF"
+            row.dealValue[0].rewardType === "$_FIXED"
           ) {
             return `$${row.dealValue[0].rewardValue} Off`;
           }
