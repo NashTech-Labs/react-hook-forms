@@ -154,7 +154,7 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
     }
 
     if(dealApplyTypeEnum === 'REGULAR_ONLY') {
-        payload['price_applicability'] = {
+        payload["promo_restrictions"]['price_applicability'] = {
             "value": dealApplyTypeEnum
         }
     }
