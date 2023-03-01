@@ -26,10 +26,10 @@ function Summary() {
         const mch: string[] = []
         const liam: string[] = []
         records.forEach(({ value, sub_type }) => {
-            if(sub_type === 'MCH') mch.push(value)
-            if(sub_type === 'LIAM') liam.push(value)
+            if (sub_type === 'MCH') mch.push(value)
+            if (sub_type === 'LIAM') liam.push(value)
         })
-        downloadExcel({ mch, liam})
+        downloadExcel({ mch, liam })
     }
 
     const downloadExcel = (value = {}) => {
@@ -77,14 +77,14 @@ function Summary() {
         }
     }
 
-    const getMCHLength = (values : [{ sub_type: string }]) : number => {
-        if(!values) return 0
+    const getMCHLength = (values: [{ sub_type: string }]): number => {
+        if (!values) return 0
 
         return values.filter(({ sub_type }) => sub_type === 'MCH').length
     }
 
-    const getLIAMLength = (values : [{ sub_type: string }]) : number => {
-        if(!values) return 0
+    const getLIAMLength = (values: [{ sub_type: string }]): number => {
+        if (!values) return 0
 
         return values.filter(({ sub_type }) => sub_type === 'LIAM').length
     }
@@ -111,7 +111,7 @@ function Summary() {
         scopeValue
     } = data?.dealValue?.[0] || {}
 
-    const { 
+    const {
         applicableProduct,
         exclusion
     } = data || {}
@@ -284,8 +284,8 @@ function Summary() {
                                                 </Typography>
                                                 <Grid className={styles.downloadSection}>
                                                     <Typography className={styles.content} >
-                                                        {parseInt(exclusion?.product?.liam.length) +
-                                                            parseInt(exclusion?.product?.mch.length)} products</Typography>
+                                                        {parseInt(exclusion?.product?.liam?.length) +
+                                                            parseInt(exclusion?.product?.mch?.length)} products</Typography>
                                                     <DownloadIcon onClick={() => downloadExcelForExclusions(data?.exclusion?.product)} className={styles.downloadIcon} />
                                                 </Grid>
                                             </>
