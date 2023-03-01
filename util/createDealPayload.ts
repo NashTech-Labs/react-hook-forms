@@ -122,8 +122,9 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
          productExclusionsCollectionTab
         } = formData
     const { rewardType, rewardValue } = getRewardType(formData)
+    const dealApplyTypeEnum = getDealApplyType(dealApplyType)
 
-    return {
+    const payload: any = {
         "title": title,
         "description": description,
         "priority": priority,
@@ -144,12 +145,6 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
             },
             "category": {
                 "mch": productExclusionsCollectionTab === "uploadProduct" ? exFileMCH : exmch
-            },
-            // "price_applicability": {
-            //     "value": getDealApplyType(dealApplyType)
-            // }
-            "price_applicability": {
-                "value": "REGULAR_ONLY"
             }
         },
         "store_id": "5264",
@@ -157,6 +152,14 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
         "promotion_message_french": frenchMessage,
         "status": "DRAFT",
     }
+
+    if(dealApplyTypeEnum === 'REGULAR_ONLY') {
+        payload['price_applicability'] = {
+            "value": dealApplyTypeEnum
+        }
+    }
+
+    return payload
 
 }
 
