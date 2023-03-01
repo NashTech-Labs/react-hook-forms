@@ -7,7 +7,7 @@ export const createDeals = createApi({
     endpoints: (builder) => ({
         createDeals: builder.mutation<any, any>({
             query: ({ ...value }) => ({
-                url: "/v1/deals",
+                url: "/v1/deal",
                 method: "POST",
                 body: value,
                 headers: {

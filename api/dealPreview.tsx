@@ -2,7 +2,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import { CustomQuery } from "../httpInterceptors";
 
 export interface dealPreview {
-    createDealRequest: any;
+    generalDealInfo: any;
     applicableProduct: any;
     exclusion: any;
     dealValue: any;

@@ -38,7 +38,7 @@ const getRewardType = ({ dealDiscountTab, dollarOff, percentageOff, fixedPriceOf
     }
 
     if(dealDiscountTab === 'fixed') {
-        rewardType = 'FIXED_OFF'
+        rewardType = '$_FIXED'
         rewardValue = fixedPriceOff
     }
 
