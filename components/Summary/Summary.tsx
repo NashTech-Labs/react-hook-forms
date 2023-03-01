@@ -207,7 +207,7 @@ function Summary() {
                     </Card> : null}
 
                 <Card className={styles["step-card-container"]}>
-                    <StepTitle title={data?.dealValue?.scopeType === 'product' ? "Exclusions" : "Product applicability"} />
+                    <StepTitle title={data?.dealValue?.scopeType === 'PRODUCT' ? "Exclusions" : "Product applicability"} />
 
                     <Grid container>
                         <Grid item lg={12} md={9} sm={6}>
