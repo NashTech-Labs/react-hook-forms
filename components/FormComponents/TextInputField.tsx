@@ -132,6 +132,9 @@ const TextInputField = ({ title, description, placeholder, tooltip, required, mu
             type={type}
             disabled={disabled}
             onChange={onChange}
+            onKeyDown={(event)=>{if(type==="number" && event.key==="e"){
+                event.preventDefault();
+            }}}
             onBlur={displayDollarFormat ? handleBlur : onBlur}
             inputRef={ref}
             name={name}
