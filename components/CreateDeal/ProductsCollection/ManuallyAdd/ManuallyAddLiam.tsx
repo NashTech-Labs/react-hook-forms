@@ -54,7 +54,7 @@ function ManuallyAddLiam({ liamValue }: any) {
                     <>
                         <Typography className={commonStyles.required}>Products</Typography>
                         <Typography>
-                            Must be 13 characters beginning with a letter
+                            Must be 16 characters beginning with a letter
                         </Typography>
                     </>
                 ) : null
