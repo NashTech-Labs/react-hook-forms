@@ -22,7 +22,7 @@ const GeneralInformation = () => {
 
   return (
     <>
-      <Grid container justifyContent="center">
+      <Grid container className={commonStyles["title"]}>
         <Grid item lg={8} md={8} sm={9}>
           <Grid display="flex" justifyContent="space-between" mt={8}>
             <Typography variant="h3" className={styles.heading} data-testid="form-title">
