@@ -15,17 +15,6 @@ a {
   box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-
-  body {
-    color: white;
-    background: white;
-  }
-}
-
 .kEIRkz div:first-child{
   white-space: pre-line !important;
   width: 100%;

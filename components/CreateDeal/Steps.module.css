@@ -5,6 +5,10 @@
     line-height: 42px;
 }
 
+.title {
+    margin: 3% 25%;
+}
+
 .step-card-container {
     padding: 20px;
     margin: 3% 25%;
