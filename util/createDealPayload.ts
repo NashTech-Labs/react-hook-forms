@@ -9,7 +9,7 @@ const getRewardType = ({ dealDiscountTab, dollarOff, percentageOff, fixedPriceOf
     if (dealLevel === 'basket') { 
         if (basketDealType === 'dollar') {
             rewardType = '$_OFF'
-            rewardValue = basketDiscount ? Number(basketDiscount) * 100 : basketDiscount
+            rewardValue = basketDiscount ? (Number(basketDiscount) * 100).toFixed() : basketDiscount
         }
 
         if (basketDealType === 'percentage')
@@ -23,7 +23,7 @@ const getRewardType = ({ dealDiscountTab, dollarOff, percentageOff, fixedPriceOf
     
     if(dealDiscountTab === 'dollar'){
         rewardType = '$_OFF'
-        rewardValue = dollarOff ? Number(dollarOff) * 100 : dollarOff
+        rewardValue = dollarOff ? (Number(dollarOff) * 100).toFixed() : dollarOff
     }
     if(dealDiscountTab === 'percentage'){
 
@@ -39,7 +39,7 @@ const getRewardType = ({ dealDiscountTab, dollarOff, percentageOff, fixedPriceOf
 
     if(dealDiscountTab === 'fixed') {
         rewardType = '$_FIXED'
-        rewardValue = fixedPriceOff ? Number(fixedPriceOff) * 100 : fixedPriceOff
+        rewardValue = fixedPriceOff ? (Number(fixedPriceOff) * 100).toFixed() : fixedPriceOff
     }
 
     }
