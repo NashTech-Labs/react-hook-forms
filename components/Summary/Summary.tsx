@@ -9,6 +9,7 @@ import { useAppSelector } from "../../store/index";
 import { capitalizeWords } from "../../util/format";
 import DownloadIcon from '@mui/icons-material/Download';
 import { convertToEST } from "../../util/ConvertDateTime";
+import { dealStatus } from "../../constants/DealStatus";
 
 function Summary() {
     const dealId = useAppSelector(updatedDealId);
@@ -70,7 +71,9 @@ function Summary() {
                     <Grid item lg={9} className={styles.titleContainer} >
                         <Typography variant="h4" className={styles.title}>{data?.generalDealInfo?.title}</Typography>
                         <Typography mt={2} className={styles["sub-title"]} >Draft created on {data?.generalDealInfo?.created_at ? convertToEST(data?.generalDealInfo?.created_at).format("MMMM D, YYYY [at] h:mm A z") : null}</Typography>
-                        <Chip className={styles.Chip} label={data?.generalDealInfo?.status ? capitalizeWords(data?.generalDealInfo?.status) : null} />
+                        <Chip className={styles.Chip} 
+                        sx={{backgroundColor:dealStatus[data?.generalDealInfo?.status]}} 
+                        label={data?.generalDealInfo?.status ? capitalizeWords(data?.generalDealInfo?.status) : null} />
                     </Grid>
                     <Typography></Typography>
                 </Grid>
