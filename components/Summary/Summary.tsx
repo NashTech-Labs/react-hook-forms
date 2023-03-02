@@ -50,7 +50,7 @@ function Summary() {
     const dealValue = (value: string, type: string) => {
 
         if (type === "$_OFF" || type === "$_FIXED") {
-            return `$${Number(value) / 100}`
+            return `$${(Number(value) / 100).toFixed(2)}`
         }
 
         if (type === "%_OFF") {
@@ -58,7 +58,7 @@ function Summary() {
         }
 
         else {
-            return (Number(value) / 100)
+            return (Number(value) / 100).toFixed(2)
         }
     }
 
