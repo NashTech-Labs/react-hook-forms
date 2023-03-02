@@ -17,13 +17,7 @@ import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import { notifyError } from "../../../util/Notification/Notification";
 import { useAppDispatch } from "../../../store";
 import { updateDealId } from "../../../store/feature/deal/dealSlice";
-
-interface statusColors {
-  ACTIVE: string;
-  READY: string;
-  DRAFT: string;
-  ENDED: string;
-}
+import { dealStatus } from "../../../constants/DealStatus";
 
 function Deals() {
   const router = useRouter();
@@ -41,13 +35,6 @@ function Deals() {
   const handleChange = useCallback((state: any) => {
     setSelectedRows(state.selectedRows);
   }, []);
-
-  const dealsStatusColor: statusColors = {
-    ACTIVE: "#467E1B",
-    READY: "#194B9F",
-    ENDED: "#AC342A",
-    DRAFT: "#666B73",
-  };
 
   const deleteDealStyles = {
     content: {
@@ -125,7 +112,7 @@ function Deals() {
                 className={styles["chip"]}
                 sx={{
                   backgroundColor:
-                    dealsStatusColor[row.status as keyof statusColors],
+                    dealStatus[row.status],
                 }}
                 label={
                   row.status.charAt(0).toUpperCase() +
