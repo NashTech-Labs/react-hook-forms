@@ -68,7 +68,7 @@ const DealSummaryView = () => {
       <Grid item lg={6} md={8} sm={9}>
           <Typography variant="h4" className={summaryStyles.title}>{title}</Typography>
           <Typography mt={2} className={summaryStyles['sub-title']}>Draft created on {moment(draftCreatedTimestamp).format('MMMM D, YYYY [at] h:mm A z [EST]')}</Typography>
-          <Chip label="Draft" className={summaryStyles.Chip}/>
+          <Chip label="Draft" className={summaryStyles.Chip} sx={{backgroundColor:"#666B73"}}/>
       </Grid>
     </Grid>
     {
