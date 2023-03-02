@@ -57,3 +57,6 @@
 .labelHeading {
     color: black;
 }
+.padded {
+    margin: 4px 0px;
+}

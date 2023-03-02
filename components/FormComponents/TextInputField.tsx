@@ -45,6 +45,7 @@ const TextInputField = ({ title, description, placeholder, tooltip, required, mu
     noTopGutters && classNames.push(styles['no-top-margin'])
     inline && classNames.push(styles['inline'])
     required && !inline && titleClassNames.push(styles['required'])
+    !description && titleClassNames.push(styles['padded'])
     const errorDataTestId = `${name}-field-error`
 
     if (displayDollarFormat) {
