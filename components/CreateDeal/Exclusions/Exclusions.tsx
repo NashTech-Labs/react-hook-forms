@@ -29,7 +29,7 @@ const Exclusions = ({ dealLevelName }: any) => {
     })
 
     const handleChange = ({ target: { value } }: SelectChangeEvent) => {
-        if(value === 'no'){
+        if (value === 'no') {
             setValue('exmch', [])
             setValue('exliam', [])
             setValue('exfile', null)
@@ -38,15 +38,6 @@ const Exclusions = ({ dealLevelName }: any) => {
     };
 
     const handleTabUpdate = (newTab: string): void => {
-        if(newTab === 'uploadProduct') {
-            setValue('exmch', [])
-            setValue('exliam', [])
-        } else {
-            setValue('exFileMCH', [])
-            setValue('exFileLIAM', [])
-            setValue('exfile', null)
-            setValue('exFileName', '')
-        }
         setValue('productExclusionsCollectionTab', newTab, { shouldValidate: true })
     }
 

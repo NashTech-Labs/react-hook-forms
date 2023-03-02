@@ -58,6 +58,12 @@ function UploadExcel({ uploadStep }: any) {
     const handleDelete = (e: any) => {
         e.stopPropagation();
         setValue(uploadStep, null)
+        if (uploadStep === 'file') {
+            setValue('fileName', '')
+        }
+        if (uploadStep === "exfile") {
+            setValue('exFileName', '')
+        }
         setValue(uploadStep === 'file' ? 'fileMCH' : 'exFileMCH', [])
         setValue(uploadStep === 'file' ? 'fileLIAM' : 'exFileLIAM', [])
     };
