@@ -22,15 +22,6 @@ function ProductsCollection() {
     })
 
     const handleTabUpdate = (newTab: string): void => {
-        if(newTab === 'uploadProduct') {
-            setValue('mch', [])
-            setValue('liam', [])
-        } else {
-            setValue('fileMCH', [])
-            setValue('fileLIAM', [])
-            setValue('file', null)
-            setValue('fileName', '')
-        }
         setValue('productsCollectionTab', newTab, { shouldValidate: true })
     }
 

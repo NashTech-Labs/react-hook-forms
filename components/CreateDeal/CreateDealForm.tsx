@@ -120,37 +120,50 @@ const schema = yup.object().shape({
     file: yup
         .mixed()
         .test("file-required", "Error: FIle required", (value, context) => {
-            if (value?.size > 0 || context?.parent?.productsCollectionTab === "addProduct" || context?.parent?.dealLevel === 'basket') {
+            if (value?.size > 0 || context?.parent?.dealLevel === 'basket' ||
+                context?.parent?.mch?.length > 0 || context?.parent?.liam.length > 0) {
                 return true
             } else return false
         })
         .test("not-valid-size", "Error: Max allowed size is 1 MB", (value, context) => {
-            if (context?.parent?.productsCollectionTab === 'uploadProduct' && context?.parent?.dealLevel === 'product') {
-                return value?.size && value.size < MAX_FILE_SIZE
-            } else return true
+            if (context?.parent?.mch?.length < 1 && context?.parent?.liam.length < 1) {
+                if (context?.parent?.productsCollectionTab === 'uploadProduct' && context?.parent?.dealLevel === 'product') {
+                    return value?.size && value.size < MAX_FILE_SIZE
+                } else return true
+            }
+            else return true
         })
         .test("is-valid-type", "Error: File Type not accepted", (value, context) => {
-            if (context?.parent?.productsCollectionTab === 'uploadProduct' && context?.parent?.dealLevel === 'product') {
-                return isValidFileType(value && value?.name?.toLowerCase())
-            } else return true
+            if (context?.parent?.mch?.length < 1 && context?.parent?.liam.length < 1) {
+                if (context?.parent?.productsCollectionTab === 'uploadProduct' && context?.parent?.dealLevel === 'product') {
+                    return isValidFileType(value && value?.name?.toLowerCase())
+                } else return true
+            }
+            else return true
         }),
     exfile: yup
         .mixed()
         .test("ex-file-required", "Error: FIle required", (value, context) => {
             if (value?.size > 0 && context?.parent?.dealLevelOptions === 'yes' || context?.parent?.dealLevelOptions === 'no' ||
-                context?.parent?.productExclusionsCollectionTab === "addProduct") {
+                context?.parent?.exmch?.length > 0 || context?.parent?.exliam.length > 0) {
                 return true
             } else return false
         })
         .test("not-valid-size", "Error: Max allowed size is 1 MB", (value, context) => {
-            if (context?.parent?.productExclusionsCollectionTab === 'uploadProduct' && context?.parent?.dealLevelOptions === 'yes') {
-                return value?.size && value.size < MAX_FILE_SIZE
-            } else return true
+            if (context?.parent?.exmch?.length < 1 && context?.parent?.exliam.length < 1) {
+                if (context?.parent?.productExclusionsCollectionTab === 'uploadProduct' && context?.parent?.dealLevelOptions === 'yes') {
+                    return value?.size && value.size < MAX_FILE_SIZE
+                } else return true
+            }
+            else return true
         })
         .test("is-valid-type", "Error: File Type not accepted", (value, context) => {
-            if (context?.parent?.productExclusionsCollectionTab === 'uploadProduct' && context?.parent?.dealLevelOptions === 'yes') {
-                return isValidFileType(value && value?.name?.toLowerCase())
-            } else return true
+            if (context?.parent?.exmch?.length < 1 && context?.parent?.exliam.length < 1) {
+                if (context?.parent?.productExclusionsCollectionTab === 'uploadProduct' && context?.parent?.dealLevelOptions === 'yes') {
+                    return isValidFileType(value && value?.name?.toLowerCase())
+                } else return true
+            }
+            else return true
         }),
     dealApplyType: yup.string().required('Error: Select applicable products'),
     startDatePicker: yup.date().typeError("Error: Valid date required").min(new Date().toJSON().slice(0, 10), "Error: You cannot add date before today").required('Error: Date required').nullable(),
