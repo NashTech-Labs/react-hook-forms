@@ -3,7 +3,8 @@ import moment from "moment-timezone";
 export function convertDateTime(date: object | null, time: object | null) {
   const timestamp =
     `${moment(date).format("YYYY-MM-DD")} ${moment(time).format("HH:mm")}`;
-  const utc = (new Date(timestamp)).toUTCString()
+    const estTime = moment.tz(timestamp,"America/New_York").format();
+  const utc = (new Date(estTime)).toUTCString()
   return (new Date(utc)).toISOString()
 }
 
