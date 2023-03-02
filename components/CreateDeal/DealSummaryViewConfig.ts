@@ -126,8 +126,8 @@ const config: IConfig = {
                 return fileName
             },
             shouldHide: (formData: ICreateDealFormState) => {
-                const {productsCollectionTab} = formData
-                return productsCollectionTab === 'addProduct'
+                const {fileName} = formData
+                return !fileName ? true : false
             }
         },
         {
@@ -137,8 +137,8 @@ const config: IConfig = {
                 return mch.length > 0 ?  mch.join(', ').toUpperCase() : 'None'
             },
             shouldHide: (formData: ICreateDealFormState) => {
-                const {productsCollectionTab} = formData
-                return productsCollectionTab === 'uploadProduct'
+                const {mch} = formData
+                return mch.length < 1 ? true : false
             }
         },
         {
@@ -148,8 +148,8 @@ const config: IConfig = {
                 return liam.length > 0 ? liam.join(', ').toUpperCase() : 'None'
             },
             shouldHide: (formData: ICreateDealFormState) => {
-                const {productsCollectionTab} = formData
-                return productsCollectionTab === 'uploadProduct'
+                const {liam} = formData
+                return liam.length < 1 ? true : false
             }
         }
     ],
@@ -179,8 +179,8 @@ const config: IConfig = {
                 return exFileName
             },
             shouldHide : (formData: ICreateDealFormState) => {
-                const {dealLevelOptions, productExclusionsCollectionTab, dealLevel} = formData
-                return dealLevel === "basket" || dealLevelOptions === 'no' || (dealLevelOptions === 'yes' &&  productExclusionsCollectionTab === 'addProduct')
+                const {dealLevelOptions, exFileName, dealLevel} = formData
+                return dealLevel === "basket" || dealLevelOptions === 'no' || !exFileName ? true : false
             },
         },
         {
@@ -190,8 +190,8 @@ const config: IConfig = {
                 return exmch.length > 0 ? exmch.join(', ').toUpperCase() : 'None'
             },
             shouldHide: (formData: ICreateDealFormState) => {
-                const {dealLevelOptions, productExclusionsCollectionTab,dealLevel} = formData
-                return dealLevel === "basket" || dealLevelOptions === 'no' || (dealLevelOptions === 'yes' && productExclusionsCollectionTab === 'uploadProduct')
+                const {dealLevelOptions, dealLevel, exmch} = formData
+                return dealLevel === "basket" || dealLevelOptions === 'no' || exmch.length < 1 ? true : false
             }
         },
         {
@@ -201,8 +201,8 @@ const config: IConfig = {
                 return exliam.length > 0 ? exliam.join(', ').toUpperCase() : 'None'
             },
             shouldHide: (formData: ICreateDealFormState) => {
-                const {dealLevelOptions, productExclusionsCollectionTab,dealLevel} = formData
-                return dealLevel === "basket" || dealLevelOptions === 'no' || (dealLevelOptions === 'yes' && productExclusionsCollectionTab === 'uploadProduct')
+                const {dealLevelOptions, dealLevel, exliam} = formData
+                return dealLevel === "basket" || dealLevelOptions === 'no' || exliam.length < 1 ? true : false
             }
         }
     ],

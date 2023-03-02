@@ -55,8 +55,6 @@ const getDealApplyType = (dealApplyType: string) => DEAL_APPLY_TYPE[dealApplyTyp
 const getScopeData = (productsCollectionTab: string, fileLIAM: string[], fileMCH: string[], liam: string[], mch: string[]) => {
     let data: any = []
 
-    if (productsCollectionTab === "uploadProduct")
-    {
         fileLIAM.map((value: string, index: Number) => {
             data.push({
                     "type": "PRODUCT_CODE",
@@ -72,10 +70,7 @@ const getScopeData = (productsCollectionTab: string, fileLIAM: string[], fileMCH
                     "value": value,
             })
         })
-    }
-
-    if (productsCollectionTab !== "uploadProduct")
-    {
+    
         liam.map((value: string, index: Number) => {
             data.push({
                     "type": "PRODUCT_CODE",
@@ -91,7 +86,6 @@ const getScopeData = (productsCollectionTab: string, fileLIAM: string[], fileMCH
                     "value": value,
             })
         })
-    }
 
     return data
 } 
@@ -141,10 +135,10 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
         "valid_to": convertDateTime(endDatePicker,endTimePicker),
         "promo_restrictions": {
             "product_code": {
-                "liam": productExclusionsCollectionTab === "uploadProduct" ? exFileLIAM : exliam
+                "liam": [...exFileLIAM, ...exliam]
             },
             "category": {
-                "mch": productExclusionsCollectionTab === "uploadProduct" ? exFileMCH : exmch
+                "mch": [...exFileMCH, ...exmch]
             }
         },
         "store_id": "5264",
