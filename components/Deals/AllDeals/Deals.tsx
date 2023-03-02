@@ -151,7 +151,7 @@ function Deals() {
             row.dealValue[0].rewardType === "$_OFF" ||
             row.dealValue[0].rewardType === "$_FIXED"
           ) {
-            return `$${row.dealValue[0].rewardValue} Off`;
+            return `$${Number(row.dealValue[0].rewardValue) / 100} Off`;
           }
           if (row.dealValue[0].rewardType === "%_OFF") {
             return `${row.dealValue[0].rewardValue}% Off`;
