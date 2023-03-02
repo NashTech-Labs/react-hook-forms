@@ -1,4 +1,4 @@
-import moment from "moment";
+import moment from "moment-timezone";
 
 export function convertDateTime(date: object | null, time: object | null) {
   const timestamp =
@@ -15,4 +15,10 @@ export function dateTimePreviewGenerator(startDate: object | null, startTime: ob
   ).format("LT")} EST`
 
   return customerPreview
+}
+
+export function convertToEST(date: string) {
+  const estTime = moment.utc(date).tz("America/New_York");
+
+  return estTime;
 }
