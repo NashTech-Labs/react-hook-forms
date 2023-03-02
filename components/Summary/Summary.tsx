@@ -6,9 +6,9 @@ import styles from "./Summary.module.css";
 import { useGetDealPreviewQuery } from "../../api/dealPreview";
 import { updatedDealId } from "../../store/feature/deal/dealSlice";
 import { useAppSelector } from "../../store/index";
-import { dateTimeFormat, dateTimeFormatPreview, capitalizeWords } from "../../util/format";
+import { capitalizeWords } from "../../util/format";
 import DownloadIcon from '@mui/icons-material/Download';
-import moment from 'moment'
+import { convertToEST } from "../../util/ConvertDateTime";
 
 function Summary() {
     const dealId = useAppSelector(updatedDealId);
@@ -69,7 +69,7 @@ function Summary() {
                 <Grid container display="flex" justifyContent='space-around' mb={4} mt={5}>
                     <Grid item lg={9} className={styles.titleContainer} >
                         <Typography variant="h4" className={styles.title}>{data?.generalDealInfo?.title}</Typography>
-                        <Typography mt={2} className={styles["sub-title"]} >Draft created on {data?.generalDealInfo?.created_at ? moment(data?.generalDealInfo?.created_at).format('MMMM D, YYYY [at] h:mm A z [EST]') : null}</Typography>
+                        <Typography mt={2} className={styles["sub-title"]} >Draft created on {data?.generalDealInfo?.created_at ? convertToEST(data?.generalDealInfo?.created_at).format("MMMM D, YYYY [at] h:mm A z") : null}</Typography>
                         <Chip className={styles.Chip} label={data?.generalDealInfo?.status ? capitalizeWords(data?.generalDealInfo?.status) : null} />
                     </Grid>
                     <Typography></Typography>
@@ -165,21 +165,21 @@ function Summary() {
 
                     <Grid container>
                         <Grid item lg={12} md={9} sm={6}>
-                            <Grid item lg={7}>
+                            <Grid item lg={12}>
                                 <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
                                     Start Date
                                 </Typography>
-                                <Typography className={styles.content} >{data?.generalDealInfo?.valid_from ? dateTimeFormat(data?.generalDealInfo?.valid_from) : null}</Typography>
+                                <Typography className={styles.content} >{data?.generalDealInfo?.valid_from ? convertToEST(data?.generalDealInfo?.valid_from).format("MMMM D, YYYY [at] h:mm A z") : null}</Typography>
 
                                 <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
                                     End Date
                                 </Typography>
-                                <Typography className={styles.content} >{data?.generalDealInfo?.valid_to ? dateTimeFormat(data?.generalDealInfo?.valid_to) : null}</Typography>
+                                <Typography className={styles.content} >{data?.generalDealInfo?.valid_to ? convertToEST(data?.generalDealInfo?.valid_to).format("MMMM D, YYYY [at] h:mm A z") : null}</Typography>
 
                                 <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
                                     Customer preview
                                 </Typography>
-                                <Typography className={styles.content}>Starts {dateTimeFormatPreview(data?.generalDealInfo?.valid_from)} and {dateTimeFormatPreview(data?.generalDealInfo?.valid_to)}</Typography>
+                                <Typography className={styles.content}>Starts {convertToEST(data?.generalDealInfo?.valid_from).format("MMMM D (h:mm A z)")} and ends {convertToEST(data?.generalDealInfo?.valid_to).format("MMMM D (h:mm A z)")}</Typography>
                             </Grid>
                         </Grid>
                     </Grid>
