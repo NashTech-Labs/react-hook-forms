@@ -97,7 +97,7 @@ function CreateDeal() {
       </Card>
 
       <Grid container justifyContent="center">
-        <Grid item lg={6} md={8} sm={9}>
+        <Grid item lg={6} md={8} sm={9} mt={5}>
           <Grid className={commonStyles.btnSection}>
             <Button
               variant="contained"
