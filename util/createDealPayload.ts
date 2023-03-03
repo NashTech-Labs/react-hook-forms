@@ -113,7 +113,7 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
          fileLIAM,
          exFileLIAM,
          productsCollectionTab,
-         productExclusionsCollectionTab
+         basketSpend
         } = formData
     const { rewardType, rewardValue } = getRewardType(formData)
     const dealApplyTypeEnum = getDealApplyType(dealApplyType)
@@ -150,6 +150,13 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
     if(dealApplyTypeEnum === 'REGULAR_ONLY') {
         payload["promo_restrictions"]['price_applicability'] = {
             "value": dealApplyTypeEnum
+        }
+    }
+
+    if(dealLevel?.toUpperCase() === 'BASKET') {
+        payload["promo_restrictions"]['spend'] = {
+            "minimum": (Number(basketSpend) * 100).toFixed(),
+            "maximum": null
         }
     }
 
