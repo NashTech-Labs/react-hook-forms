@@ -18,6 +18,43 @@ function Summary() {
 
     const router = useRouter();
 
+    const downloadScopeExcel = (data: any) => {
+
+        let mch: string[] = []
+        let liam: string[] = []
+
+        data.map((data: any) => {
+            if (data.sub_type === "LIAM") {
+                mch.push(data.value)
+            }
+            if (data.sub_type === "MCH") {
+                liam.push(data.value)
+            }
+        })
+
+        const csvMapping: string[] = []
+        if (mch) {
+            mch.forEach((value: string) => {
+                csvMapping.push(value)
+            })
+        }
+
+        if (liam) {
+            liam.forEach((value: string, index: number) => {
+                const currentValue = csvMapping[index]
+                csvMapping[index] = currentValue ? `${currentValue},${value}` : `,${value}`
+            })
+        }
+
+        let csvString = csvMapping.reduce((acc, cur) => `${acc}\n${cur}`);
+        csvString = "data:application/csv," + encodeURIComponent(csvString);
+        var x = document.createElement("A");
+        x.setAttribute("href", csvString);
+        x.setAttribute("download", "productList.csv");
+        document.body.appendChild(x);
+        x.click();
+    }
+
     const downloadExcel = (value = {}) => {
         const { mch, liam }: any = value
         const csvMapping: string[] = []
@@ -71,9 +108,9 @@ function Summary() {
                     <Grid item lg={9} className={styles.titleContainer} >
                         <Typography variant="h4" className={styles.title}>{data?.generalDealInfo?.title}</Typography>
                         <Typography mt={2} className={styles["sub-title"]} >Draft created on {data?.generalDealInfo?.created_at ? convertToEST(data?.generalDealInfo?.created_at).format("MMMM D, YYYY [at] h:mm A z") : null}</Typography>
-                        <Chip className={styles.Chip} 
-                        sx={{backgroundColor:dealStatus[data?.generalDealInfo?.status],mb:1}} 
-                        label={data?.generalDealInfo?.status ? capitalizeWords(data?.generalDealInfo?.status) : null} />
+                        <Chip className={styles.Chip}
+                            sx={{ backgroundColor: dealStatus[data?.generalDealInfo?.status], mb: 1 }}
+                            label={data?.generalDealInfo?.status ? capitalizeWords(data?.generalDealInfo?.status) : null} />
                     </Grid>
                     <Typography></Typography>
                 </Grid>
@@ -202,7 +239,7 @@ function Summary() {
                                     <Grid className={styles.downloadSection}>
                                         <Typography className={styles.content} >
                                             {parseInt(data?.dealValue?.scopeValue?.length)} products</Typography>
-                                        {/* <DownloadIcon onClick={() => downloadExcel(data?.dealValue?.scopeValue?.product_code)} className={styles.downloadIcon} /> */}
+                                        <DownloadIcon onClick={() => downloadScopeExcel(data?.dealValue?.scopeValue)} className={styles.downloadIcon} />
                                     </Grid>
                                 </Grid>
                             </Grid>
@@ -233,7 +270,7 @@ function Summary() {
                                             <Typography className={styles.content} >
                                                 {parseInt(data?.exclusion?.product?.liam?.length) +
                                                     parseInt(data?.exclusion?.product?.mch?.length)} products</Typography>
-                                            {/* <DownloadIcon onClick={() => downloadExcel(data?.exclusion?.product)} className={styles.downloadIcon} /> */}
+                                            <DownloadIcon onClick={() => downloadExcel(data?.exclusion?.product)} className={styles.downloadIcon} />
                                         </Grid>
                                     </>
                                     : null}
