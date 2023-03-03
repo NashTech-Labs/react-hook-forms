@@ -67,12 +67,12 @@ function Summary() {
         <Grid container>
             <Grid item lg={12} md={9} sm={6}>
 
-                <Grid container display="flex" justifyContent='space-around' mb={4} mt={5}>
+                <Grid container display="flex" justifyContent='space-around' mb={4} mt={4}>
                     <Grid item lg={9} className={styles.titleContainer} >
                         <Typography variant="h4" className={styles.title}>{data?.generalDealInfo?.title}</Typography>
                         <Typography mt={2} className={styles["sub-title"]} >Draft created on {data?.generalDealInfo?.created_at ? convertToEST(data?.generalDealInfo?.created_at).format("MMMM D, YYYY [at] h:mm A z") : null}</Typography>
                         <Chip className={styles.Chip} 
-                        sx={{backgroundColor:dealStatus[data?.generalDealInfo?.status]}} 
+                        sx={{backgroundColor:dealStatus[data?.generalDealInfo?.status],mb:1}} 
                         label={data?.generalDealInfo?.status ? capitalizeWords(data?.generalDealInfo?.status) : null} />
                     </Grid>
                     <Typography></Typography>
@@ -261,7 +261,7 @@ function Summary() {
                     </Grid>
                 </Card>
 
-                <Grid display="flex" justifyContent='space-around' ml={4} mb={4}>
+                <Grid display="flex" justifyContent='space-around' ml={4} mb={4} mt={5}>
                     <Button onClick={() => router.push('/deals')} className={styles.btn} variant="contained">Go Back</Button>
                     <Typography></Typography>
                 </Grid>

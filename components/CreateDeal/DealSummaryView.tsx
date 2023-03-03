@@ -64,11 +64,11 @@ const DealSummaryView = () => {
   }
 
   return <>
-    <Grid container justifyContent="center" sx={{ marginTop: "50px" }}>
+    <Grid container justifyContent="center" sx={{ marginTop: "32px" }}>
       <Grid item lg={6} md={8} sm={9}>
           <Typography variant="h4" className={summaryStyles.title}>{title}</Typography>
           <Typography mt={2} className={summaryStyles['sub-title']}>Draft created on {moment(draftCreatedTimestamp).format('MMMM D, YYYY [at] h:mm A z [EST]')}</Typography>
-          <Chip label="Draft" className={summaryStyles.Chip} sx={{backgroundColor:"#666B73"}}/>
+          <Chip label="Draft" className={summaryStyles.Chip} sx={{backgroundColor:"#666B73",marginBottom:"16px"}}/>
       </Grid>
     </Grid>
     {
@@ -91,7 +91,7 @@ const DealSummaryView = () => {
       })
     }
     <Grid container justifyContent="center">
-      <Grid item lg={6} md={8} sm={9}>
+      <Grid item lg={6} md={8} sm={9} my={5}>
         <Grid className={commonStyles.btnSection}>
           <Button
             variant="contained"
