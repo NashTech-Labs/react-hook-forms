@@ -46,6 +46,11 @@ const RadioGroupField = ({ options, label, name, required, handleChange }: IRadi
             onBlur={onBlur}
             name={name}
             value={value}
+            sx={{
+                ".MuiFormControlLabel-root": {
+                    height: '33px'
+                }
+            }}
         >
             {
                 options.map(({ value, label }) => <FormControlLabel key={value} value={value} control={<Radio />} label={label} />)

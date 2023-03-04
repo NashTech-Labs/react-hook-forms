@@ -79,7 +79,9 @@ const TextInputField = ({ title, description, placeholder, tooltip, required, mu
 
     if (inline) {
         return <div className={classNames.join(' ')}>
-            {title && <Typography variant='body1' className={titleClassNames.join(' ')}>
+            {title && <Typography variant='body1' className={titleClassNames.join(' ')} sx={{
+                paddingBottom : inline ? '20px': '0px'
+            }}>
                 {title}
             </Typography>}
             {description && <Typography variant="caption" display="block" gutterBottom>
