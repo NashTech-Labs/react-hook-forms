@@ -100,6 +100,16 @@ function Summary() {
         }
     }
 
+    const getDealValuePreview = (data: any) => {
+      const value =  dealValue(data?.dealValue?.rewardsValue[0]?.value, data?.dealValue?.rewardType)
+
+      if(data?.dealValue?.scopeType === 'BASKET'){
+        return `Spend $${(Number(data?.dealValue?.spend?.minimum) / 100).toFixed(2)} Get ${value} off`
+      }
+
+      return `${value} off product(s)`
+    }
+
     return (
         <Grid container>
             <Grid item lg={12} md={9} sm={6}>
@@ -193,8 +203,7 @@ function Summary() {
                                 <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
                                     Customer preview
                                 </Typography>
-                                <Typography className={styles.content}>{data?.dealValue?.rewardsValue[0]?.value ?
-                                    dealValue(data?.dealValue?.rewardsValue[0]?.value, data?.dealValue?.rewardType) : null} off product(s)</Typography>
+                                <Typography className={styles.content}>{getDealValuePreview(data)}</Typography>
                             </Grid>
                         </Grid>
                     </Grid>

@@ -62,7 +62,7 @@ const Exclusions = ({ dealLevelName }: any) => {
     return <Card className={commonStyles["step-card-container"]}>
         <StepLabel currentStep={dealLevelName === 'product' ? 6 : 5} totalSteps={dealLevelName === 'product' ? 7 : 6} />
         <StepTitle title={dealLevelName === 'product' ? "Exclusions" : "Product Applicability"} />
-        <Tag label="Internal facing" />
+        <Tag label="Internal facing" extraSpacing/>
         <Grid display="grid">
             <SelectField options={dealApplyOptions} name="dealApplyType" title="What items does this deal apply to?" required />
             {dealLevelName === 'product' ?
