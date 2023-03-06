@@ -28,6 +28,7 @@ function ManualAddForm({ name, placeholder }: AddFieldProps) {
                     "&": {
                         border: "1px solid #FFF",
                         borderRadius: "4px",
+                        backgroundColor: "#FFFFFF"
                     },
                     "&.Mui-focused fieldset": {
                         border: "1px solid #FFF",

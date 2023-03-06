@@ -5,7 +5,7 @@ const createDealDefaultFormState: ICreateDealFormState = {
     title: '',
     description: '',
     identifier: '',
-    priority: '',
+    priority: '50',
     stackingType: '',
     dealLevel: 'product',
     dealDiscountTab: 'dollar',
