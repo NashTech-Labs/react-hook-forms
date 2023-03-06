@@ -166,8 +166,8 @@ const schema = yup.object().shape({
             else return true
         }),
     dealApplyType: yup.string().required('Error: Select applicable products'),
-    startDatePicker: yup.date().typeError("Error: Valid date required").min(new Date().toJSON().slice(0, 10), "Error: You cannot add date before today").required('Error: Date required').nullable(),
-    startTimePicker: yup.date().typeError("Error: Valid time required").min(new Date(), "Error: You cannot select time before current time").required('Error: Time required').nullable(),
+    startDatePicker: yup.date().typeError("Error: Valid date required").min(moment().subtract(1, "days").format("YYYY-MM-DD"), "Error: You cannot add date before yesterday").required('Error: Date required').nullable(),
+    startTimePicker: yup.date().typeError("Error: Valid time required").required('Error: Time required').nullable(),
     endDatePicker: yup.date().typeError("Error: Valid date required").required('Error: Date required').nullable()
         .test("test-end-date", "Error: End date smaller than start date", function (value, context) {
             return isEndDateTimeValid(value, context.parent.startDatePicker, ">=");
