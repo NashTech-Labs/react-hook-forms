@@ -96,7 +96,12 @@ const schema = yup.object().shape({
                 return value !== undefined
             } else return true
         })
-        .test('basket-discount', 'Error: Must be a minimum of $1.00', (value, context) => {
+        .test('basket-discount', "Error: Discount amount can't be greater than or equal to the spending amount", (value, context) => {
+            if (context?.parent?.dealLevel === 'basket' && context?.parent?.basketDealType === 'dollar') {
+                return value !== undefined && value >= 1 && value < context?.parent?.basketSpend
+            } else return true
+        })
+        .test('basket-discount-smaller', 'Error: Must be a minimum of $1.00', (value, context) => {
             if (context?.parent?.dealLevel === 'basket' && context?.parent?.basketDealType === 'dollar') {
                 return value !== undefined && value >= 1
             } else return true
