@@ -33,7 +33,6 @@ function DatePicker({ disabled, name, minDate }: IDatePickerProps) {
         label={value ? "" : "MM/DD/YYYY"}
         inputFormat="MM/DD/YYYY"
         className={styles["date-picker"]}
-        disablePast
         disabled={disabled}
         open={open}
         onClose={() => {

@@ -9,6 +9,7 @@ import { useFormContext, useWatch } from "react-hook-form";
 import DatePicker from "../../FormComponents/DatePicker";
 import InputTimePicker from "../../FormComponents/TimePicker";
 import { dateTimePreviewGenerator } from "../../../util/ConvertDateTime";
+import moment from "moment";
 
 function DateInEffect() {
   const { setValue, trigger } = useFormContext();
@@ -81,7 +82,7 @@ function DateInEffect() {
               >
                 Date
               </Typography>
-              <DatePicker name="startDatePicker" required />
+              <DatePicker name="startDatePicker" required minDate={moment().subtract(1, "days")}/>
             </Grid>
             <Grid item lg={6}>
               <Typography
