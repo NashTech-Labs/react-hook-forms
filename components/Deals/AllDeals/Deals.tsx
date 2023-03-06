@@ -138,10 +138,20 @@ function Deals() {
             if (
               row.dealValue[0].rewardType === "$_OFF"
             ) {
-              return `Spend $${(Number(row?.spend?.minimum) / 100).toFixed(2)} get $${(Number(row.dealValue[0].rewardValue) / 100).toFixed(2)} Off`;
+              return (
+                <Grid display="grid">
+                  <Grid> Spend ${(Number(row?.spend?.minimum) / 100).toFixed(2)} </Grid>
+                  <Grid> Get ${(Number(row.dealValue[0].rewardValue) / 100).toFixed(2)} Off </Grid>
+                </Grid>
+              )
             }
             if (row.dealValue[0].rewardType === "%_OFF") {
-              return `Spend $${(Number(row?.spend?.minimum) / 100).toFixed(2)} get ${row.dealValue[0].rewardValue}% Off`;
+              return (
+                <Grid display="grid">
+                  <Grid> Spend ${(Number(row?.spend?.minimum) / 100).toFixed(2)} </Grid>
+                  <Grid> Get {row.dealValue[0].rewardValue}% Off </Grid>
+                </Grid>
+              )
             }
           }
           else {
