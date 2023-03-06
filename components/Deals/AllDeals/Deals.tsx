@@ -134,14 +134,26 @@ function Deals() {
       {
         name: "Value",
         selector: (row: any) => {
-          if (
-            row.dealValue[0].rewardType === "$_OFF" ||
-            row.dealValue[0].rewardType === "$_FIXED"
-          ) {
-            return `$${(Number(row.dealValue[0].rewardValue) / 100).toFixed(2)} Off`;
+          if (row?.spend?.minimum > 0) {
+            if (
+              row.dealValue[0].rewardType === "$_OFF"
+            ) {
+              return `Spend $${(Number(row?.spend?.minimum) / 100).toFixed(2)} get $${(Number(row.dealValue[0].rewardValue) / 100).toFixed(2)} Off`;
+            }
+            if (row.dealValue[0].rewardType === "%_OFF") {
+              return `Spend $${(Number(row?.spend?.minimum) / 100).toFixed(2)} get ${row.dealValue[0].rewardValue}% Off`;
+            }
           }
-          if (row.dealValue[0].rewardType === "%_OFF") {
-            return `${row.dealValue[0].rewardValue}% Off`;
+          else {
+            if (
+              row.dealValue[0].rewardType === "$_OFF" ||
+              row.dealValue[0].rewardType === "$_FIXED"
+            ) {
+              return `$${(Number(row.dealValue[0].rewardValue) / 100).toFixed(2)} Off`;
+            }
+            if (row.dealValue[0].rewardType === "%_OFF") {
+              return `${row.dealValue[0].rewardValue}% Off`;
+            }
           }
         },
       },
