@@ -66,30 +66,30 @@ function CreateDeal() {
         </Grid>
 
         <Grid
-          className={commonStyles["deal-card-container"]}
-          bgcolor={"#EBEBE4"}
-          sx={{cursor:"not-allowed !important"}}
+          className={commonStyles["disable-deal-card-container"]}
+          bgcolor={"#F0F0F0"}
+          sx={{ cursor: "not-allowed !important" }}
         >
-          <LocalShippingOutlinedIcon className={commonStyles.Discount} />
+          <LocalShippingOutlinedIcon className={commonStyles.disableDeals} />
           <Grid className={commonStyles.dealTitle}>
-            <Typography variant="h6" className={commonStyles.dealType}>
+            <Typography variant="h6" className={commonStyles.disableDealType}>
               Free Shipping
             </Typography>
-            <Typography>Create a free shipping deal.</Typography>
+            <Typography color="#CCCCCC" >Create a free shipping deal.</Typography>
           </Grid>
         </Grid>
 
         <Grid
-          className={commonStyles["deal-card-container"]}
-          bgcolor={"#EBEBE4"}
-          sx={{cursor:"not-allowed !important"}}
+          className={commonStyles["disable-deal-card-container"]}
+          bgcolor={"#F0F0F0"}
+          sx={{ cursor: "not-allowed !important" }}
         >
-          <PaidOutlinedIcon className={commonStyles.Discount} />
+          <PaidOutlinedIcon className={commonStyles.disableDeals} />
           <Grid className={commonStyles.dealTitle}>
-            <Typography variant="h6" className={commonStyles.dealType}>
+            <Typography variant="h6" className={commonStyles.disableDealType}>
               Multi-Buy
             </Typography>
-            <Typography>
+            <Typography color="#CCCCCC" >
               Create either a single-tier deal or multi-tier deal.
             </Typography>
           </Grid>
