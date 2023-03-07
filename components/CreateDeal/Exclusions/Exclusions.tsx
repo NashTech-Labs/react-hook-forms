@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Card from "@mui/material/Card";
-import { Divider, Grid, SelectChangeEvent } from '@mui/material'
+import { Grid, SelectChangeEvent } from '@mui/material'
 import StepTitle from "../../StepTitle";
 import StepLabel from "../../StepLabel";
 import RadioGroupField from '../../FormComponents/RadioGroupField'
@@ -13,6 +13,7 @@ import StyledTabs from '../../StyledTabs';
 import { useFormContext, useWatch } from 'react-hook-form';
 import SelectField from '../../FormComponents/SelectField';
 import { productCollectionTabs, dealLevelExclusionOptions } from '../../../constants/FormOptions'
+import exclusionStyles from './Exclusions.module.css'
 
 const Exclusions = ({ dealLevelName }: any) => {
 
@@ -64,13 +65,16 @@ const Exclusions = ({ dealLevelName }: any) => {
         <StepTitle title={dealLevelName === 'product' ? "Exclusions" : "Product Applicability"} />
         <Tag label="Internal facing" extraSpacing/>
         <Grid display="grid">
+        <div className={exclusionStyles['deal-apply-container']}>
             <SelectField options={dealApplyOptions} name="dealApplyType" title="What items does this deal apply to?" required />
+         </div>   
             {dealLevelName === 'product' ?
                 <>
-                    <RadioGroupField options={dealLevelExclusionOptions} label="Will there be additional products excluded from this deal?" name="dealLevelOptions" required={true} handleChange={handleChange} />
-                    {dealOptions === 'yes' ? <><StyledTabs tabs={productCollectionTabs} handleTabUpdate={handleTabUpdate} defaultValue={productExclusionsCollectionTab} />
-                        <Divider sx={{ border: "1px solid rgba(0, 0, 0, 0.25)" }}></Divider>
-                        {content}</>
+                    <RadioGroupField noBottomGutters options={dealLevelExclusionOptions} label="Will there be additional products excluded from this deal?" name="dealLevelOptions" required={true} handleChange={handleChange} />
+                    {dealOptions === 'yes' ? <>
+                     <StyledTabs tabs={productCollectionTabs} handleTabUpdate={handleTabUpdate} defaultValue={productExclusionsCollectionTab} />
+                        {content}
+                    </>
                         : null}
                 </> : null}
         </Grid>

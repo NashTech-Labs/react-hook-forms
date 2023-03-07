@@ -51,6 +51,9 @@ const StyledTabs = ({ tabs, handleTabUpdate, defaultValue }: IStyledTabsProps) =
                 fontSize: '16px',
                 color: '#000000',
                 opacity: 1
+            },
+            '.MuiTabs-flexContainer': {
+                borderBottom: '1px solid #CCCCCC'
             }
         }}
     >

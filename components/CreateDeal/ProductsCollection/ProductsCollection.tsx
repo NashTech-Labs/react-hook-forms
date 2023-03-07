@@ -1,8 +1,7 @@
 import React from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import {
-    Card,
-    Divider
+    Card
 } from "@mui/material";
 import StepLabel from "../../StepLabel";
 import StepTitle from "../../StepTitle";
@@ -50,7 +49,6 @@ function ProductsCollection() {
                 <StepTitle title={"Products and Collections"} />
                 <Tag label="Internal facing" />
                 <StyledTabs tabs={productCollectionTabs} handleTabUpdate={handleTabUpdate} defaultValue={productsCollectionTab} />
-                <Divider sx={{ border: "1px solid rgba(0, 0, 0, 0.25)" }}></Divider>
                 {content}
             </Card>
         </>
