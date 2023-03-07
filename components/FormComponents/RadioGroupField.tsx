@@ -18,9 +18,10 @@ interface IRadioGroupFieldProps {
     name: string
     required?: boolean
     handleChange?: Function
+    noBottomGutters?: boolean
 }
 
-const RadioGroupField = ({ options, label, name, required, handleChange }: IRadioGroupFieldProps) => {
+const RadioGroupField = ({ options, label, name, required, handleChange, noBottomGutters }: IRadioGroupFieldProps) => {
     const { control } = useFormContext()
     const { field } = useController({
         control,
@@ -28,10 +29,12 @@ const RadioGroupField = ({ options, label, name, required, handleChange }: IRadi
     })
     const { onChange, onBlur, value } = field
     const titleClassNames = []
+    const fieldClasses = [styles["form-field"]]
     titleClassNames.push(styles['labelHeading'])
     required && titleClassNames.push(styles['required'])
+    noBottomGutters && fieldClasses.push(styles['no-bottom-margin'])
 
-    return <FormControl className={styles["form-field"]}>
+    return <FormControl className={fieldClasses.join(' ')}>
         <FormLabel sx={{
             '&.Mui-focused': {
                 color: 'black'
