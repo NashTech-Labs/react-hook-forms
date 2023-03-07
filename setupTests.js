@@ -10,7 +10,10 @@ global.AbortController = AbortController;
 
 beforeAll(() => server.listen())
 afterEach(() => server.resetHandlers())
-afterAll(() => server.close())
+afterAll(() => {
+    server.close()
+    done()
+})
 
 process.env.NEXT_PUBLIC_BFF_ENDPOINT = 'https://cs-bo-panel-bff-dev.loblaw.digital'
 process.env.NEXT_PUBLIC_SESSION_COUNT_DOWN_TIME = 0.5
