@@ -10,7 +10,7 @@ global.AbortController = AbortController;
 
 beforeAll(() => server.listen())
 afterEach(() => server.resetHandlers())
-afterAll(() => {
+afterAll(done => {
     server.close()
     done()
 })
