@@ -20,5 +20,11 @@ export const handlers = [
 
         return res(ctx.json(mockApiResponse))
     }),
+    rest.post(`https://cs-bo-panel-bff-dev.loblaw.digital/v1/roles/add`, (req, res, ctx) => {
+        return res(ctx.json({}))
+    }),
+    rest.patch(`https://cs-bo-panel-bff-dev.loblaw.digital/v1/roles/undefined/updateRoles`, (req, res, ctx) => {
+        return res(ctx.json({}))
+    }),
 ]
 
