@@ -8,7 +8,10 @@ global.Request = Request;
 global.Response = Response;
 global.AbortController = AbortController;
 
-beforeAll(() => server.listen())
+beforeAll(done => {
+    server.listen()
+    done()
+})
 afterEach(() => server.resetHandlers())
 afterAll(done => {
     server.close()
