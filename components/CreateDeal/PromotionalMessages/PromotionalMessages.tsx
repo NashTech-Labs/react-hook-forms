@@ -18,21 +18,21 @@ function PromotionalMessages({ dealLevelName }: any) {
   });
 
   const frenchMessage = useWatch({
-    name:"frenchMessage"
+    name: "frenchMessage"
   })
 
   let englishDesc = null;
   let frenchDesc = null;
 
-  if(englishMessage){
+  if (englishMessage) {
     englishDesc = englishMessage
-  }else{
+  } else {
     englishDesc = "Preview will generate after inputs are completed"
   }
 
-  if(frenchMessage){
+  if (frenchMessage) {
     frenchDesc = frenchMessage
-  }else{
+  } else {
     frenchDesc = "Preview will generate after inputs are completed"
   }
 
@@ -55,6 +55,7 @@ function PromotionalMessages({ dealLevelName }: any) {
             name="englishMessage"
             regular
             required
+            inputHeight={true}
           />
           <Box mt={5}>
             <FormCardPreview
@@ -90,6 +91,7 @@ function PromotionalMessages({ dealLevelName }: any) {
             name="frenchMessage"
             regular
             required
+            inputHeight={true}
           />
           <Box mt={5}>
             <FormCardPreview

@@ -44,11 +44,12 @@ function DatePicker({ disabled, name, minDate }: IDatePickerProps) {
         onChange={onChange}
         renderInput={(params) => (
           <TextField
+            size="small"
             {...params}
             id={name}
             error={error ? true : false}
             onBlur={onBlur}
-            inputProps={{...params.inputProps, "data-testid":name}}
+            inputProps={{ ...params.inputProps, "data-testid": name }}
             InputLabelProps={{ shrink: false }}
             InputProps={{
               endAdornment: (

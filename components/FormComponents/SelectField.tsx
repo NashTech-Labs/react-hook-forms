@@ -15,11 +15,12 @@ interface ISelectFieldProps {
   options: { [index: string]: string }
   name: string
   required?: boolean
+  inputHeight?: boolean
 }
 
 const EmptyIconComponent = () => <div />
 
-const SelectField = ({ options, name, required, title }: ISelectFieldProps) => {
+const SelectField = ({ options, name, required, title, inputHeight }: ISelectFieldProps) => {
   const { control } = useFormContext()
   const { field, fieldState: { error } } = useController({
     control,
@@ -62,10 +63,11 @@ const SelectField = ({ options, name, required, title }: ISelectFieldProps) => {
         },
         '.MuiSelect-select': {
           color: value ? '#000000' : '#666B73'
-        }
+        },
+        height: inputHeight ? "40px" : "auto"
       }}
       data-testid={name}
-      inputProps = {{
+      inputProps={{
         'data-testid': `${name}-input`
       }}
     >
