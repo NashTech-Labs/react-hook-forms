@@ -36,6 +36,10 @@ function Deals() {
     setSelectedRows(state.selectedRows);
   }, []);
 
+  useEffect(() => {
+    refetch();
+  }, [])
+
   const deleteDealStyles = {
     content: {
       width: "27%",
@@ -271,51 +275,103 @@ function Deals() {
   }
 
   if (data) {
-    content = (
-      <Grid item lg={8} md={9} sm={9} mt={2}>
-        <Card className={styles["deal-card"]}>
-          <CardContent sx={{ padding: "0px" }}>
-            <Typography
-              variant="h5"
-              sx={{ mb: 3 }}
-              className={styles["deal-card-header"]}
-            >
-              All
-            </Typography>
-            <DataTable
-              persistTableHead
-              data={data}
-              highlightOnHover
-              columns={columns}
-              customStyles={customStyles}
-              selectableRows
-              onSelectedRowsChange={handleChange}
-              selectableRowSelected={handleSelectionCriteria}
-            />
-          </CardContent>
 
-          <Grid container alignItems="center">
-            <Grid item>
-              <Button
-                variant="outlined"
-                startIcon={<DeleteOutlineIcon sx={{ fontSize: "16px" }} />}
-                className={styles["delete-btn"]}
-                disabled={selectedRows.length < 1}
-                onClick={handleDeleteClick}
-                data-testid="delete-btn"
+    if (data.length > 0) {
+      content = (
+        <Grid item lg={8} md={9} sm={9} mt={2}>
+          <Card className={styles["deal-card"]}>
+            <CardContent sx={{ padding: "0px" }}>
+              <Typography
+                variant="h5"
+                sx={{ mb: 3 }}
+                className={styles["deal-card-header"]}
               >
-                Delete
-              </Button>
-            </Grid>
-            {selectedRows.length > 0 && (
+                All
+              </Typography>
+              <DataTable
+                persistTableHead
+                data={data}
+                highlightOnHover
+                columns={columns}
+                customStyles={customStyles}
+                selectableRows
+                onSelectedRowsChange={handleChange}
+                selectableRowSelected={handleSelectionCriteria}
+              />
+            </CardContent>
+
+            <Grid container alignItems="center">
               <Grid item>
-                <Typography variant="body2">{`(${selectedRows.length} selected)`}</Typography>
+                <Button
+                  variant="outlined"
+                  startIcon={<DeleteOutlineIcon sx={{ fontSize: "16px" }} />}
+                  className={styles["delete-btn"]}
+                  disabled={selectedRows.length < 1}
+                  onClick={handleDeleteClick}
+                  data-testid="delete-btn"
+                >
+                  Delete
+                </Button>
               </Grid>
-            )}
+              {selectedRows.length > 0 && (
+                <Grid item>
+                  <Typography variant="body2">{`(${selectedRows.length} selected)`}</Typography>
+                </Grid>
+              )}
+            </Grid>
+          </Card>
+        </Grid>
+      );
+    }
+
+    else {
+      content = (
+        <>
+          <Grid item lg={8} md={9} sm={9} mt={2}>
+            <Card className={styles["deal-card"]}>
+              <CardContent sx={{ padding: "0px" }}>
+                <Typography
+                  variant="h5"
+                  sx={{ mb: 3 }}
+                  className={styles["deal-card-header"]}
+                >
+                  All
+                </Typography>
+                <DataTable
+                  persistTableHead
+                  data={[]}
+                  noDataComponent={
+                    <Box className={styles["no-data-box"]}>
+                      <Typography
+                        variant="body2"
+                        className={styles["no-data-text"]}
+                      >
+                        There are currently no deals to view
+                      </Typography>
+                      <Button
+                        onClick={() => router.push("/deals/create")}
+                        variant="outlined"
+                        className={styles["create-new-btn"]}
+                        data-testid="createNew-btn"
+                      >
+                        <CreateIcon sx={{ marginRight: "5px" }} />
+                        Create new
+                      </Button>
+                    </Box>
+                  }
+                  highlightOnHover
+                  columns={columns}
+                  customStyles={customStyles}
+                  selectableRows
+                />
+                <Divider sx={{ margin: "0px -20px 25px -20px" }} />
+              </CardContent>
+            </Card>
           </Grid>
-        </Card>
-      </Grid>
-    );
+        </>
+      );
+    }
+
   }
 
   return (

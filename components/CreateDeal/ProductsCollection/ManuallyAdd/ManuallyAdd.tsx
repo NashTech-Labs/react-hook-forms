@@ -58,7 +58,7 @@ function ManuallyAdd({ mchValue, liamValue }: any) {
             {mch.length > 0 ? (
                 <>
                     <Typography className={commonStyles.required} >Products</Typography>
-                    <Typography>
+                    <Typography className={commonStyles.validationHeading} >
                         Must be 9 characters beginning with the letter ‘M’
                     </Typography>
                 </>
