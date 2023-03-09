@@ -23,10 +23,11 @@ interface ITextFieldProps {
     inline?: boolean
     displayDollarFormat?: boolean,
     regular?: boolean
-    displayPercentageFormat? : boolean
+    displayPercentageFormat?: boolean
+    inputHeight?: boolean
 }
 
-const TextInputField = ({ title, description, placeholder, tooltip, required, multiline, type, noBottomGutters, noTopGutters, disabled, name, endAdornment, inline, displayDollarFormat, regular, displayPercentageFormat }: ITextFieldProps) => {
+const TextInputField = ({ title, description, placeholder, tooltip, required, multiline, type, noBottomGutters, noTopGutters, disabled, name, endAdornment, inline, displayDollarFormat, regular, displayPercentageFormat, inputHeight }: ITextFieldProps) => {
     const { control, setValue } = useFormContext()
     const { field, fieldState: { error } } = useController({
         control,
@@ -67,6 +68,9 @@ const TextInputField = ({ title, description, placeholder, tooltip, required, mu
         '& input[type=number]': {
             MozAppearance: 'textfield',
         },
+        '&.MuiInputBase-root': {
+            height: inputHeight ? "40px" : "auto"
+        }
     }
 
     if (!inline) {
@@ -80,7 +84,7 @@ const TextInputField = ({ title, description, placeholder, tooltip, required, mu
     if (inline) {
         return <div className={classNames.join(' ')}>
             {title && <Typography variant='body1' className={titleClassNames.join(' ')} sx={{
-                paddingBottom : inline ? '20px': '0px'
+                paddingBottom: inline ? '20px' : '0px'
             }}>
                 {title}
             </Typography>}
@@ -114,7 +118,7 @@ const TextInputField = ({ title, description, placeholder, tooltip, required, mu
                     />
                 </div>
                 <div>
-                    {error ? <FieldErrorMessage message={error.message} testId={errorDataTestId}/> : <div style={{ height: '20px' }}/>}
+                    {error ? <FieldErrorMessage message={error.message} testId={errorDataTestId} /> : <div style={{ height: '20px' }} />}
                 </div>
             </div>
         </div>
@@ -135,9 +139,11 @@ const TextInputField = ({ title, description, placeholder, tooltip, required, mu
             type={type}
             disabled={disabled}
             onChange={onChange}
-            onKeyDown={(event)=>{if(type==="number" && event.key==="e"){
-                event.preventDefault();
-            }}}
+            onKeyDown={(event) => {
+                if (type === "number" && event.key === "e") {
+                    event.preventDefault();
+                }
+            }}
             onBlur={displayDollarFormat ? handleBlur : onBlur}
             inputRef={ref}
             name={name}

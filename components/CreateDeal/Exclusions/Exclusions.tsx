@@ -63,16 +63,16 @@ const Exclusions = ({ dealLevelName }: any) => {
     return <Card className={commonStyles["step-card-container"]}>
         <StepLabel currentStep={dealLevelName === 'product' ? 6 : 5} totalSteps={dealLevelName === 'product' ? 7 : 6} />
         <StepTitle title={dealLevelName === 'product' ? "Exclusions" : "Product Applicability"} />
-        <Tag label="Internal facing" extraSpacing/>
+        <Tag label="Internal facing" extraSpacing />
         <Grid display="grid">
-        <div className={exclusionStyles['deal-apply-container']}>
-            <SelectField options={dealApplyOptions} name="dealApplyType" title="What items does this deal apply to?" required />
-         </div>   
+            <div className={exclusionStyles['deal-apply-container']}>
+                <SelectField options={dealApplyOptions} name="dealApplyType" title="What items does this deal apply to?" required inputHeight={true} />
+            </div>
             {dealLevelName === 'product' ?
                 <>
                     <RadioGroupField noBottomGutters options={dealLevelExclusionOptions} label="Will there be additional products excluded from this deal?" name="dealLevelOptions" required={true} handleChange={handleChange} />
                     {dealOptions === 'yes' ? <>
-                     <StyledTabs tabs={productCollectionTabs} handleTabUpdate={handleTabUpdate} defaultValue={productExclusionsCollectionTab} />
+                        <StyledTabs tabs={productCollectionTabs} handleTabUpdate={handleTabUpdate} defaultValue={productExclusionsCollectionTab} />
                         {content}
                     </>
                         : null}

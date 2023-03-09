@@ -41,12 +41,13 @@ function InputTimePicker({ disabled, name }: ITimePickerProps) {
         }}
         renderInput={(params) => (
           <TextField
+            size="small"
             {...params}
             id={name}
             onBlur={onBlur}
             error={error ? true : false}
             InputLabelProps={{ shrink: false }}
-            inputProps={{...params.inputProps, "data-testid":name}}
+            inputProps={{ ...params.inputProps, "data-testid": name }}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -57,7 +58,7 @@ function InputTimePicker({ disabled, name }: ITimePickerProps) {
                     }}
                     onClick={() => setOpen(true)}
                     disabled={disabled}
-                    data-testid = {`${name}-icon`}
+                    data-testid={`${name}-icon`}
                   >
                     <AccessTimeIcon
                       sx={

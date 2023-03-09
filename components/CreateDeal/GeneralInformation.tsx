@@ -14,34 +14,35 @@ import generateIdentifier from '../../util/generateIdentifier'
 import SelectField from '../FormComponents/SelectField'
 
 const GeneralInformation = () => {
-  const {setValue} = useFormContext()
+  const { setValue } = useFormContext()
 
   const handleGenerateIdentifier = () => {
-    setValue('identifier', generateIdentifier(),{ shouldValidate: true })
+    setValue('identifier', generateIdentifier(), { shouldValidate: true })
   }
 
   return (<>
-      <Typography variant="h3" className={styles.heading} data-testid="form-title">
-        Create New Discount Deal
-      </Typography>
-      <Card className={commonStyles["step-card-container"]}>
-        <StepLabel currentStep={2} totalSteps={7} />
-        <StepTitle title={"General Information"} />
-        <Tag label="Internal facing" />
-        <TextInputField
-          title="Title"
-          description="Max 80 characters"
-          placeholder="eg. WK10 20% Off On All Sale Items"
-          name="title"
-          required
-        />
-        <TextInputField
-          title="Description"
-          placeholder="Enter description for deal"
-          multiline
-          name="description"
-        />
-        {/* <TextInputField
+    <Typography variant="h3" className={styles.heading} data-testid="form-title">
+      Create New Discount Deal
+    </Typography>
+    <Card className={commonStyles["step-card-container"]}>
+      <StepLabel currentStep={2} totalSteps={7} />
+      <StepTitle title={"General Information"} />
+      <Tag label="Internal facing" />
+      <TextInputField
+        title="Title"
+        description="Max 80 characters"
+        placeholder="eg. WK10 20% Off On All Sale Items"
+        name="title"
+        required
+        inputHeight={true}
+      />
+      <TextInputField
+        title="Description"
+        placeholder="Enter description for deal"
+        multiline
+        name="description"
+      />
+      {/* <TextInputField
           title="Identifier"
           description="Max 15 characters alphanumeric values"
           placeholder="eg. 00000-00000-00000"
@@ -49,17 +50,18 @@ const GeneralInformation = () => {
           endAdornment={<div className={styles['generate-link']} onClick={handleGenerateIdentifier}>Generate</div>}
           required
         /> */}
-        <TextInputField
-          title="Priority"
-          description="Numeric value must be 1 to 100"
-          placeholder="eg 100"
-          name="priority"
-          required
-          type="number"
-        />
-        <SelectField options={stackTypeOptions} name='stackingType' title="Stacking Type" required/>
-      </Card>
-    </>
+      <TextInputField
+        title="Priority"
+        description="Numeric value must be 1 to 100"
+        placeholder="eg 100"
+        name="priority"
+        required
+        type="number"
+        inputHeight={true}
+      />
+      <SelectField options={stackTypeOptions} name='stackingType' title="Stacking Type" required inputHeight={true} />
+    </Card>
+  </>
   );
 };
 

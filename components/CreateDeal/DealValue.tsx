@@ -145,6 +145,7 @@ const DealValue = () => {
                 name="dollarOff"
                 required
                 displayDollarFormat
+                inputHeight={true}
             />
         }
 
@@ -172,6 +173,7 @@ const DealValue = () => {
                 name="fixedPriceOff"
                 required
                 displayDollarFormat
+                inputHeight={true}
             />
         }
     }
@@ -187,6 +189,7 @@ const DealValue = () => {
                     inline
                     required
                     displayDollarFormat
+                    inputHeight={true}
                 />
             </div>
             <Typography>Get</Typography>
@@ -203,7 +206,8 @@ const DealValue = () => {
                     required
                     displayDollarFormat={displayDollarFormat}
                     displayPercentageFormat={displayPercentageFormat}
-                    endAdornment={basketDiscount ? displayDollarFormat ? undefined : <div style={{ position: 'absolute', left: '60px'}}>%</div> : undefined}
+                    endAdornment={basketDiscount ? displayDollarFormat ? undefined : <div style={{ position: 'absolute', left: '60px' }}>%</div> : undefined}
+                    inputHeight={true}
                 />
             </div>
             <Typography>Off</Typography>
