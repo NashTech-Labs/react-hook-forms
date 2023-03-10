@@ -70,6 +70,13 @@ const TextInputField = ({ title, description, placeholder, tooltip, required, mu
         },
         '&.MuiInputBase-root': {
             height: inputHeight ? "40px" : "auto"
+        },
+        '& ::placeholder': {
+            color: '#666B73 !important',
+            opacity: "1 !important",
+            fontWeight: "400 !important ",
+            fontSize: "16px !important",
+            lineHeight: "120% !important",
         }
     }
 
@@ -128,7 +135,7 @@ const TextInputField = ({ title, description, placeholder, tooltip, required, mu
         {title && <Typography variant='body1' className={titleClassNames.join(' ')}>
             {title}
         </Typography>}
-        {description && <Typography variant="caption" display="block" gutterBottom>
+        {description && <Typography className={styles.description} variant="caption" display="block" gutterBottom>
             {description}
         </Typography>}
         <OutlinedInput

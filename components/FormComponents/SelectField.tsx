@@ -64,7 +64,14 @@ const SelectField = ({ options, name, required, title, inputHeight }: ISelectFie
         '.MuiSelect-select': {
           color: value ? '#000000' : '#666B73'
         },
-        height: inputHeight ? "40px" : "auto"
+        height: inputHeight ? "40px" : "auto",
+        "::placeholder": {
+          color: '#666B73 !important',
+          opacity: "1 !important",
+          fontWeight: "400 !important ",
+          fontSize: "16px !important",
+          lineHeight: "120% !important",
+        }
       }}
       data-testid={name}
       inputProps={{

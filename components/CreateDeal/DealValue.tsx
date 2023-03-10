@@ -158,6 +158,7 @@ const DealValue = () => {
                         noTopGutters
                         disabled={percentageOff !== 'custom'}
                         name="customPercentageOff"
+                        inputHeight={true}
                     />
                     <div className={styles['percentage-icon-container']}>%</div>
                 </div>
