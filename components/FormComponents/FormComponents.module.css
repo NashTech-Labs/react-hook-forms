@@ -60,3 +60,10 @@
 .padded {
     margin: 4px 0px;
 }
+
+.description {
+    color: #666B73;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 120%;
+}
