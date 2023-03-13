@@ -72,4 +72,30 @@ describe("RolesPermissions tests", () => {
     const modalOutput  = screen.queryByTestId("addUserModal");
     expect(modalOutput).toBeNull();
   });
+
+  test("should open edit access modal edit click", async() => {
+    render(
+      <Provider store={store}>
+        <GoogleOAuthProvider clientId={""}>
+        <UserList />
+        </GoogleOAuthProvider>
+      </Provider>
+    );
+    fireEvent.click(await screen.getByTestId("edit-user-access-btn"));
+    expect(screen.getByTestId("exit-edit-modal-btn")).toBeInTheDocument();
+  });
+
+  test("should close modal when cross exit click", async() => {
+    render(
+      <Provider store={store}>
+        <GoogleOAuthProvider clientId={""}>
+        <UserList />
+        </GoogleOAuthProvider>
+      </Provider>
+    );
+    fireEvent.click(await screen.getByTestId("edit-user-access-btn"));
+    expect(screen.getByTestId("exit-edit-modal-btn")).toBeInTheDocument();
+    fireEvent.click(screen.getByTestId("exit-edit-modal-btn"));
+    expect(screen.queryByTestId("exit-edit-modal-btn")).toBeNull();
+  });
 });
