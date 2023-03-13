@@ -1,4 +1,4 @@
-import { Box, Button, Card, Chip, Grid, Typography } from "@mui/material";
+import { Box, Button, Card, Chip, Grid, IconButton, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import React from "react";
 import StepTitle from "../StepTitle";
@@ -101,13 +101,13 @@ function Summary() {
     }
 
     const getDealValuePreview = (data: any) => {
-      const value =  dealValue(data?.dealValue?.rewardsValue[0]?.value, data?.dealValue?.rewardType)
+        const value = dealValue(data?.dealValue?.rewardsValue[0]?.value, data?.dealValue?.rewardType)
 
-      if(data?.dealValue?.scopeType === 'BASKET'){
-        return `Spend $${(Number(data?.dealValue?.spend?.minimum) / 100).toFixed(2)} Get ${value} off`
-      }
+        if (data?.dealValue?.scopeType === 'BASKET') {
+            return `Spend $${(Number(data?.dealValue?.spend?.minimum) / 100).toFixed(2)} Get ${value} off`
+        }
 
-      return `${value} off product(s)`
+        return `${value} off product(s)`
     }
 
     return (
@@ -137,7 +137,7 @@ function Summary() {
                     <Grid container>
                         <Grid item lg={12} md={9} sm={6} display="flex">
                             <Grid item lg={7}>
-                                <Typography variant="h4" className={styles.heading} mt={4} mb={1}>
+                                <Typography data-testid="title" variant="h4" className={styles.heading} mt={4} mb={1}>
                                     Title
                                 </Typography>
                                 <Typography className={styles.content} >{data?.generalDealInfo?.title}</Typography>
@@ -242,13 +242,18 @@ function Summary() {
                         <Grid container>
                             <Grid item lg={12} md={9} sm={6}>
                                 <Grid item lg={7}>
-                                    <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
+                                    <Typography data-testId="collection" variant="h5" className={styles.heading} mt={4} mb={1}>
                                         Collection
                                     </Typography>
                                     <Grid className={styles.downloadSection}>
                                         <Typography className={styles.content} >
                                             {parseInt(data?.dealValue?.scopeValue?.length)} products</Typography>
-                                        <DownloadIcon onClick={() => downloadScopeExcel(data?.dealValue?.scopeValue)} className={styles.downloadIcon} />
+                                        <IconButton
+                                            data-testId="btn"
+                                            onClick={() => downloadScopeExcel(data?.dealValue?.scopeValue)}
+                                        >
+                                            <DownloadIcon className={styles.downloadIcon} />
+                                        </IconButton>
                                     </Grid>
                                 </Grid>
                             </Grid>
@@ -279,7 +284,12 @@ function Summary() {
                                             <Typography className={styles.content} >
                                                 {parseInt(data?.exclusion?.product?.liam?.length) +
                                                     parseInt(data?.exclusion?.product?.mch?.length)} products</Typography>
-                                            <DownloadIcon onClick={() => downloadExcel(data?.exclusion?.product)} className={styles.downloadIcon} />
+                                            <IconButton
+                                                data-testId="exbtn"
+                                                onClick={() => downloadExcel(data?.exclusion?.product)}
+                                            >
+                                                <DownloadIcon className={styles.downloadIcon} />
+                                            </IconButton>
                                         </Grid>
                                     </>
                                     : null}
@@ -308,7 +318,7 @@ function Summary() {
                 </Card>
 
                 <Grid display="flex" justifyContent='space-around' ml={4} mb={4} mt={5}>
-                    <Button onClick={() => router.push('/deals')} className={styles.btn} variant="contained">Go Back</Button>
+                    <Button data-testId='back' onClick={() => router.push('/deals')} className={styles.btn} variant="contained">Go Back</Button>
                     <Typography></Typography>
                 </Grid>
 

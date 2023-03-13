@@ -28,7 +28,7 @@ export const SearchError = () => {
 
 export const SearchEmptyError = () => {
   return (
-    <Grid container justifyContent="center" data-testid="searchError">
+    <Grid container justifyContent="center" data-testid="emptySearch">
       <Grid item lg={8}>
         <Typography variant="body2" className={styles["error-text"]}>
           This page is temporarily unavailable

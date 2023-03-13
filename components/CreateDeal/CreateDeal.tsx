@@ -35,7 +35,7 @@ function CreateDeal() {
       <Grid container justifyContent="center">
         <Grid item lg={6} md={8} sm={9}>
           <Grid display="flex" justifyContent="space-between" mt={8}>
-            <Typography variant="h3" className={commonStyles.heading}>
+            <Typography data-testid="createDealTitle" variant="h3" className={commonStyles.heading}>
               Create New Deal
             </Typography>
             <Typography></Typography>
@@ -48,6 +48,7 @@ function CreateDeal() {
         <StepTitle title={"Select deal type"} />
 
         <Grid
+          data-testid="dealBtn"
           onClick={() => {
             handleDealValue(1);
           }}
@@ -100,6 +101,7 @@ function CreateDeal() {
         <Grid item lg={6} md={8} sm={9} mt={5}>
           <Grid className={commonStyles.btnSection}>
             <Button
+              data-testid="CancelBtn"
               variant="contained"
               className={commonStyles.cancelBtn}
               onClick={() => router.push("/deals")}
@@ -107,6 +109,7 @@ function CreateDeal() {
               Cancel
             </Button>
             <Button
+              data-testid="ContinueBtn"
               onClick={() => ContinueDeal()}
               variant="contained"
               disabled={!discountDealSelected}
