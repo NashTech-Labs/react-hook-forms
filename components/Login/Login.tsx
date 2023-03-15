@@ -30,6 +30,7 @@ function Login() {
       alignItems="center"
       justifyContent="center"
       style={{ minHeight: "60vh" }}
+      color="#333333"
     >
       <div>
         <h1>Welcome to Back Office</h1>
