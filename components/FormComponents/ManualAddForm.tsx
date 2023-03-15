@@ -33,6 +33,13 @@ function ManualAddForm({ name, placeholder }: AddFieldProps) {
                     "&.Mui-focused fieldset": {
                         border: "1px solid #FFF",
                     },
+                    '& ::placeholder': {
+                        color: '#666B73 !important',
+                        opacity: "1 !important",
+                        fontWeight: "400 !important ",
+                        fontSize: "16px !important",
+                        lineHeight: "120% !important",
+                    }
                 }}
                 size="small"
                 placeholder={placeholder}
