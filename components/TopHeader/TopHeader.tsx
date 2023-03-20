@@ -47,7 +47,7 @@ function TopHeader() {
     handleClose();
     googleLogout();
     dispatch(userToken(""));
-    dispatch(updateDealStep(0));
+    dispatch(updateDealStep(""));
     router.push("/");
   };
 
@@ -68,7 +68,7 @@ function TopHeader() {
 
   const homefn = () => {
     handleClose();
-    dispatch(updateDealStep(0));
+    dispatch(updateDealStep(""));
     router.push("/deals");
   };
 

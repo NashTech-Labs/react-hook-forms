@@ -27,7 +27,7 @@ const DealSummaryView = () => {
 
   const [createDeals] = useCreateDealsMutation();
   const [submitting, setSubmitting] = useState(false)
-  const excludeSteps : string[] = []
+  const excludeSteps: string[] = []
 
   const handleCreateDeal = async () => {
     const formattedPayload = generateCreateDealPayload(newDealData)
@@ -42,7 +42,7 @@ const DealSummaryView = () => {
       .then((data) => {
         if (data) {
           dispatch(updateNewDeal(CreateDealDefaultFormState))
-          dispatch(updateDealStep(0));
+          dispatch(updateDealStep(""));
           router.push("/deals");
           notifySuccess("Deal successfully created")
         }
@@ -52,23 +52,23 @@ const DealSummaryView = () => {
           error.data?.details ? error.data?.details : "Something went wrong",
           "deal-failed"
         )
-      }).finally(()=>{
+      }).finally(() => {
         setSubmitting(false)
       });
   }
 
   const { title, draftCreatedTimestamp, dealLevel } = newDealData
 
-  if(dealLevel === 'basket') {
+  if (dealLevel === 'basket') {
     excludeSteps.push('Products and Collections')
   }
 
   return <>
     <Grid container justifyContent="center" sx={{ marginTop: "32px" }}>
       <Grid item lg={6} md={8} sm={9}>
-          <Typography variant="h4" className={summaryStyles.title}>{title}</Typography>
-          <Typography mt={2} className={summaryStyles['sub-title']}>Draft created on {moment(draftCreatedTimestamp).format('MMMM D, YYYY [at] h:mm A z [EST]')}</Typography>
-          <Chip label="Draft" className={summaryStyles.Chip} sx={{backgroundColor:"#666B73",marginBottom:"16px"}}/>
+        <Typography variant="h4" className={summaryStyles.title}>{title}</Typography>
+        <Typography mt={2} className={summaryStyles['sub-title']}>Draft created on {moment(draftCreatedTimestamp).format('MMMM D, YYYY [at] h:mm A z [EST]')}</Typography>
+        <Chip label="Draft" className={summaryStyles.Chip} sx={{ backgroundColor: "#666B73", marginBottom: "16px" }} />
       </Grid>
     </Grid>
     {
@@ -77,7 +77,7 @@ const DealSummaryView = () => {
           <StepTitle title={stepTitle === 'Exclusions' ? dealLevel === 'basket' ? 'Product Applicability' : stepTitle : stepTitle} />
           {
             config[stepTitle].map(({ title, getValue, shouldHide }) => {
-              if(shouldHide && shouldHide(newDealData)){
+              if (shouldHide && shouldHide(newDealData)) {
                 return null
               }
               return <>

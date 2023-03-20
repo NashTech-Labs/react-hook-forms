@@ -21,13 +21,16 @@ function CreateDeal() {
 
   const [discountDealSelected, setDiscountDealSelected] = useState(false);
 
-  const handleDealValue = (value: any) => {
-    setDealCount(value);
-    setDiscountDealSelected(!discountDealSelected);
+  const [dealType, setDealType] = useState("")
+
+  const handleDealValue = (type: string) => {
+    // setDealCount(value);
+    // setDiscountDealSelected(!discountDealSelected);
+    setDealType(type)
   };
 
   const ContinueDeal = () => {
-    dispatch(updateDealStep(dealCount));
+    dispatch(updateDealStep(dealType));
   };
 
   return (
@@ -50,10 +53,10 @@ function CreateDeal() {
         <Grid
           data-testid="dealBtn"
           onClick={() => {
-            handleDealValue(1);
+            handleDealValue("discount");
           }}
           className={commonStyles["deal-card-container"]}
-          bgcolor={discountDealSelected ? "#E6ECF6" : "#fff"}
+          bgcolor={dealType === "discount" ? "#E6ECF6" : "#fff"}
         >
           <DiscountOutlinedIcon className={commonStyles.Discount} />
           <Grid className={commonStyles.dealTitle}>
@@ -81,16 +84,19 @@ function CreateDeal() {
         </Grid>
 
         <Grid
-          className={commonStyles["disable-deal-card-container"]}
-          bgcolor={"#F0F0F0"}
-          sx={{ cursor: "not-allowed !important" }}
+          data-testid="dealBtn"
+          onClick={() => {
+            handleDealValue("multi-buy");
+          }}
+          className={commonStyles["deal-card-container"]}
+          bgcolor={dealType === "multi-buy" ? "#E6ECF6" : "#fff"}
         >
-          <PaidOutlinedIcon className={commonStyles.disableDeals} />
+          <DiscountOutlinedIcon className={commonStyles.Discount} />
           <Grid className={commonStyles.dealTitle}>
-            <Typography variant="h6" className={commonStyles.disableDealType}>
+            <Typography variant="h6" className={commonStyles.dealType}>
               Multi-Buy
             </Typography>
-            <Typography color="#CCCCCC" >
+            <Typography>
               Create either a single-tier deal or multi-tier deal.
             </Typography>
           </Grid>
@@ -112,7 +118,7 @@ function CreateDeal() {
               data-testid="ContinueBtn"
               onClick={() => ContinueDeal()}
               variant="contained"
-              disabled={!discountDealSelected}
+              disabled={dealType === "discount" || dealType === "multi-buy" ? false : true}
               className={commonStyles.continueBtn}
             >
               Continue

@@ -222,3 +222,24 @@
     color: #666B73;
     margin-bottom: 1%;
   }
+
+  .buyText {
+    margin-top: 28px;
+    margin-right: 2%;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 120%;
+  }
+
+  .getText {
+    margin-left: 2%;
+    margin-top: 28px;
+    margin-right: 2%;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 120%;
+  }
+
+  .buyPlace {
+    margin-top: 13px;
+  }
