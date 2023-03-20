@@ -5,11 +5,11 @@ import { updatedDealStep } from "../../../store/feature/deal/dealSlice";
 import { useAppSelector } from "../../../store/index";
 
 const CreateNewDeal = () => {
-  const stepCount = useAppSelector(updatedDealStep);
+  const dealName = useAppSelector(updatedDealStep);
 
   return (
     <>
-      {stepCount === 1 ? (
+      {dealName === "discount" || dealName === "multi-buy" ? (
         <>
           <CreateDealForm />
         </>

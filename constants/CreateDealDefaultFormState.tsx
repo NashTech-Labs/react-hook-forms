@@ -38,6 +38,11 @@ const createDealDefaultFormState: ICreateDealFormState = {
     collectionFileName: '',
     basketDealType: 'dollar',
     draftCreatedTimestamp: null,
+    dealCriteria: [{
+        buy: '',
+        get: ''
+    }],
+    dealCriteriaType: "%_OFF"
 }
 
 export default createDealDefaultFormState

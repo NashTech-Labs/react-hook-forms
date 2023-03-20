@@ -15,9 +15,10 @@ import PromotionalMessages from './PromotionalMessages/PromotionalMessages';
 import styles from './CreateDealForm.module.css'
 import commonStyles from "./Steps.module.css";
 import { useAppDispatch, useAppSelector } from "../../store/index";
-import { updatedDealLevel, updateDealStep } from "../../store/feature/deal/dealSlice";
+import { updatedDealLevel, updatedDealStep, updateDealStep } from "../../store/feature/deal/dealSlice";
 import { updateNewDeal, getNewDealData } from '../../store/feature/deal/newDealSlice'
 import DateInEffect from './DateInEffect/DateInEffect';
+import DealCriteria from './DealCriteria/DealCriteria';
 
 const MAX_FILE_SIZE = 1000000; //1MB
 
@@ -181,6 +182,8 @@ const schema = yup.object().shape({
         .test("test-end-time", "Error: End time must be greater than start time", function (value, context) {
             return isEndDateTimeValid(value, context.parent.startTimePicker, ">");
         }),
+    addTier: yup.array().of(yup.string().required('Error: MCH field required')),
+    dealCriteriaType: yup.string().required('Error: Deal Type is required'),
 }).required();
 
 const CreateDealForm = () => {
@@ -188,6 +191,8 @@ const CreateDealForm = () => {
     const dispatch = useAppDispatch();
     const draftFormValues = useAppSelector(getNewDealData)
     const dealLevelName = useAppSelector(updatedDealLevel)
+
+    const dealName = useAppSelector(updatedDealStep);
 
     const formMethods = useForm<ICreateDealFormState>({
         defaultValues: draftFormValues || createDealDefaultFormState,
@@ -207,13 +212,13 @@ const CreateDealForm = () => {
     }
 
     const handleBack = () => {
-        dispatch(updateDealStep(0));
+        dispatch(updateDealStep(""));
     }
 
     return <FormProvider {...formMethods}>
         <form id="test">
             <GeneralInformation />
-            <DealValue />
+            {dealName === "discount" ? <DealValue /> : <DealCriteria />}
             <DateInEffect />
             {dealLevelName === 'product' ? <ProductsCollection /> : null}
             <Exclusions dealLevelName={dealLevelName} />

@@ -36,4 +36,6 @@ export interface ICreateDealFormState {
     collectionFileName: string
     basketDealType: string
     draftCreatedTimestamp: object | null
+    dealCriteria: any
+    dealCriteriaType: string
 }
