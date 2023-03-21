@@ -16,11 +16,12 @@ interface ISelectFieldProps {
   name: string
   required?: boolean
   inputHeight?: boolean
+  dealCriteria?: boolean
 }
 
 const EmptyIconComponent = () => <div />
 
-const SelectField = ({ options, name, required, title, inputHeight }: ISelectFieldProps) => {
+const SelectField = ({ options, name, required, title, inputHeight, dealCriteria }: ISelectFieldProps) => {
   const { control } = useFormContext()
   const { field, fieldState: { error } } = useController({
     control,
@@ -30,7 +31,7 @@ const SelectField = ({ options, name, required, title, inputHeight }: ISelectFie
   const titleClassNames = []
   required && titleClassNames.push(styles['required'])
 
-  return <FormControl className={styles["stack-type-form-control"]}>
+  return <FormControl className={dealCriteria ? styles["stack-type-form-control-deal-criteria"] : styles["stack-type-form-control"]}>
     <Typography variant="body1" gutterBottom className={titleClassNames.join(' ')}>
       {title}
     </Typography>
@@ -44,7 +45,7 @@ const SelectField = ({ options, name, required, title, inputHeight }: ISelectFie
       renderValue={(value) =>
         value ? options[String(value)] : "Select Type"
       }
-      className={styles["select"]}
+      className={dealCriteria ? styles["select-deal-criteria"] : styles["select"]}
       inputRef={ref}
       name={name}
       onBlur={onBlur}

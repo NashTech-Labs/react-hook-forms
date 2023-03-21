@@ -243,3 +243,12 @@
   .buyPlace {
     margin-top: 13px;
   }
+
+  .deleteIcon {
+    margin-left: 20%;
+    margin-top: 28px;
+    margin-right: 2%;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 120%;
+  }
