@@ -19,6 +19,7 @@ import TextInputField from "../../FormComponents/TextInputField";
 import { useFormContext, useWatch } from "react-hook-form";
 import SelectField from "../../FormComponents/SelectField";
 import FormCardMultiple from "../../FormCardMultiple";
+import CloseIcon from "@mui/icons-material/Close";
 
 export const percentageOptions = [
     { value: "$_OFF", label: "Dollar ($) off" },
@@ -40,7 +41,7 @@ export const buyValue: { [index: string]: string } = {
 };
 
 function DealCriteria() {
-    const { control, setValue } = useFormContext();
+    const { control, setValue, clearErrors } = useFormContext();
 
     const dealCriteriaType = useWatch({
         control,
@@ -60,6 +61,7 @@ function DealCriteria() {
             get: "",
         }]
         setValue("dealCriteria", value)
+        clearErrors("dealCriteria")
     };
 
     const addTier = () => {
@@ -69,8 +71,6 @@ function DealCriteria() {
         });
         setValue("dealCriteria", dealCriteria);
     };
-
-    console.log(dealCriteria, dealCriteriaType);
 
     let customerPreview: string[] = []
 
@@ -87,11 +87,14 @@ function DealCriteria() {
         }
 
         else if (dealCriteria.length === 1) {
-            customerPreview.push('Preview will generate after inputs are completed')
+            if (data.buy && data.get) {
+                return
+            }
+            else {
+                customerPreview.push('Preview will generate after inputs are completed')
+            }
         }
     });
-
-    console.log(customerPreview)
 
     return (
         <Card className={commonStyles["step-card-container"]}>
@@ -125,6 +128,7 @@ function DealCriteria() {
                                     options={buyValue}
                                     name={`dealCriteria.${index}.buy`}
                                     inputHeight={true}
+                                    dealCriteria={true}
                                 />
                             </Grid>
 
@@ -160,6 +164,10 @@ function DealCriteria() {
                                     displayDollarFormat
                                     inputHeight={true}
                                 /> : null}
+
+                            <Typography className={commonStyles.getText}>Off</Typography>
+
+                            {index > 0 ? <Grid className={commonStyles.deleteIcon} > <CloseIcon /> </Grid> : null}
 
                         </Grid>
                     );

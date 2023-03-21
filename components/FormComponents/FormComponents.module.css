@@ -24,8 +24,17 @@
     width: 350px;
 }
 
+.stack-type-form-control-deal-criteria {
+    width: 200px;
+}
+
 .select {
     padding: 10px 0px;
+}
+
+.select-deal-criteria {
+    padding: 10px 0px;
+    width: 200px;
 }
 
 .select-error-icon {
