@@ -15,15 +15,22 @@ import Modal from "react-modal";
 import DeleteDeal from "../../DeleteDeal/DeleteDeal";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import { notifyError } from "../../../util/Notification/Notification";
-import { useAppDispatch } from "../../../store";
+import { useAppDispatch, useAppSelector } from "../../../store";
 import { updateDealId } from "../../../store/feature/deal/dealSlice";
 import { dealStatus } from "../../../constants/DealStatus";
+import FilterSection from './FilterSection'
+import {getFilters} from "../../../store/feature/filters/filtersSlice";
 
-function Deals() {
+interface IDealsProps {
+  search : string
+}
+
+function Deals({ search }: IDealsProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const filters = useAppSelector(getFilters)
   const [isOpen, setIsOpen] = useState(false);
-  const { data, isLoading, error, refetch } = useGetAllListQuery();
+  const { data, isLoading, error, refetch } = useGetAllListQuery({search , filters});
   const [selectedRows, setSelectedRows] = useState<any>([]);
 
   useEffect(() => {
@@ -281,13 +288,7 @@ function Deals() {
         <Grid item lg={8} md={9} sm={9} mt={2}>
           <Card className={styles["deal-card"]}>
             <CardContent sx={{ padding: "0px" }}>
-              <Typography
-                variant="h5"
-                sx={{ mb: 3 }}
-                className={styles["deal-card-header"]}
-              >
-                All
-              </Typography>
+              <FilterSection />
               <DataTable
                 persistTableHead
                 data={data}
@@ -330,12 +331,13 @@ function Deals() {
           <Grid item lg={8} md={9} sm={9} mt={2}>
             <Card className={styles["deal-card"]}>
               <CardContent sx={{ padding: "0px" }}>
+                <FilterSection />
                 <Typography
                   variant="h5"
                   sx={{ mb: 3 }}
                   className={styles["deal-card-header"]}
                 >
-                  All
+                  {search ? `0 Results for ${search}` : ''}
                 </Typography>
                 <DataTable
                   persistTableHead
@@ -346,17 +348,8 @@ function Deals() {
                         variant="body2"
                         className={styles["no-data-text"]}
                       >
-                        There are currently no deals to view
+                       {search ? `No results for ${search}. Try another search.`: '' }
                       </Typography>
-                      <Button
-                        onClick={() => router.push("/deals/create")}
-                        variant="outlined"
-                        className={styles["create-new-btn"]}
-                        data-testid="createNew-btn"
-                      >
-                        <CreateIcon sx={{ marginRight: "5px" }} />
-                        Create new
-                      </Button>
                     </Box>
                   }
                   highlightOnHover
