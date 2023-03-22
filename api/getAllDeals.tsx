@@ -27,7 +27,7 @@ const getUrl = (params: IGetAllList): string => {
   let url = '/v1/deals?'
   const { search, filters } = params
   if(search){
-    url = `${url}search=${search}`
+    url = `${url}search_text=${search}`
   }
 
   if(filters) {
