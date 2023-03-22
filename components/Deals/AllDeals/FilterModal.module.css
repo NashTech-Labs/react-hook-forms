@@ -1,0 +1,32 @@
+.deal-type-field {
+    margin-top: 32px;
+}
+
+.submit-btn {
+    margin-left: 10px;
+    text-transform: none;
+}
+
+.clear-filter-btn,
+.exit-btn {
+    color:  #333333;
+    border: 1px solid #CCCCCC;
+    text-transform: none;
+}
+
+.date-field-container {
+    display: flex;
+    margin-top: 35px;
+}
+
+.date-label {
+ font-weight: 400;
+ font-size: 16px;
+}
+
+.date-sub-label {
+ color: #666B73;
+ font-weight: 400;
+ font-size: 14px;
+ margin-bottom: 10px;
+}

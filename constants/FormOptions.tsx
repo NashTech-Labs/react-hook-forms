@@ -50,3 +50,16 @@ export const STACKING_TYPES: { [index: string]: string } = {
     'always_apply': 'ALWAYS_APPLY',
     'best_apply': 'BEST_APPLIES'
 }
+
+export const statusOptions : { [index: string]: string } = {
+    'ACTIVE': 'Active',
+    'READY': 'Ready',
+    'DRAFT': 'Draft',
+    'ENDED': 'Ended'
+}
+
+export const dealTypeOptions : { [index: string]: string } = {
+    'MULTI_BUY': 'Multi-buy',
+    'DISCOUNT': 'Discount',
+    'FREE_SHIPPING': 'Free shipping',
+}

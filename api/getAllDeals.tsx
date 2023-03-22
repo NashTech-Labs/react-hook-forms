@@ -1,5 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { CustomQuery } from "../httpInterceptors";
+import { IFilters  } from '../store/feature/filters/filtersSlice'
 
 export interface AllDealsList {
   mediaUrl: string;
@@ -17,13 +18,44 @@ export interface AllDealsList {
   identifier: string;
 }
 
+interface IGetAllList {
+  search: string,
+  filters: IFilters
+}
+
+const getUrl = (params: IGetAllList): string => {
+  let url = '/v1/deals?'
+  const { search, filters } = params
+  if(search){
+    url = `${url}search=${search}`
+  }
+
+  if(filters) {
+    const { status, dealType, endDate, startDate } = filters
+    if(status && status.length > 0) {
+      url = `${url}&statuses=${status.join(',')}`
+    }
+    if(dealType && dealType.length > 0) {
+      url = `${url}&deal_types=${dealType.join(',')}`
+    }
+    if(startDate) {
+      url = `${url}&valid_from=${startDate}`
+    }
+    if(endDate) {
+      url = `${url}&valid_to=${endDate}`
+    }
+  }
+
+  return url
+}
+
 export const viewAllDeals = createApi({
   reducerPath: "viewAllDeals",
   baseQuery: CustomQuery(),
   endpoints: (builder) => ({
-    getAllList: builder.query<AllDealsList[], void>({
-      query: () => ({
-        url: `/v1/deals`,
+    getAllList: builder.query<AllDealsList[], IGetAllList>({
+      query: (params) => ({
+        url: getUrl(params),
         method: "GET",
         headers: {
           "X-Loblaw-Tenant-ID": "JOE_FRESH",
