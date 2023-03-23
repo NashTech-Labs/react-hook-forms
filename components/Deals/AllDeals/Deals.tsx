@@ -19,10 +19,10 @@ import { useAppDispatch, useAppSelector } from "../../../store";
 import { updateDealId } from "../../../store/feature/deal/dealSlice";
 import { dealStatus } from "../../../constants/DealStatus";
 import FilterSection from './FilterSection'
-import {getFilters} from "../../../store/feature/filters/filtersSlice";
+import { getFilters } from "../../../store/feature/filters/filtersSlice";
 
 interface IDealsProps {
-  search : string
+  search: string
 }
 
 function Deals({ search }: IDealsProps) {
@@ -30,7 +30,7 @@ function Deals({ search }: IDealsProps) {
   const dispatch = useAppDispatch();
   const filters = useAppSelector(getFilters)
   const [isOpen, setIsOpen] = useState(false);
-  const { data, isLoading, error, refetch } = useGetAllListQuery({search , filters});
+  const { data, isLoading, error, refetch } = useGetAllListQuery({ search, filters });
   const [selectedRows, setSelectedRows] = useState<any>([]);
 
   useEffect(() => {
@@ -283,7 +283,7 @@ function Deals({ search }: IDealsProps) {
 
   if (data) {
 
-    if (data.length > 0) {
+    if (data.deals.length > 0) {
       content = (
         <Grid item lg={8} md={9} sm={9} mt={2}>
           <Card className={styles["deal-card"]}>
@@ -291,7 +291,7 @@ function Deals({ search }: IDealsProps) {
               <FilterSection />
               <DataTable
                 persistTableHead
-                data={data}
+                data={data.deals}
                 highlightOnHover
                 columns={columns}
                 customStyles={customStyles}
@@ -348,7 +348,7 @@ function Deals({ search }: IDealsProps) {
                         variant="body2"
                         className={styles["no-data-text"]}
                       >
-                       {search ? `No results for ${search}. Try another search.`: '' }
+                        {search ? `No results for ${search}. Try another search.` : ''}
                       </Typography>
                     </Box>
                   }

@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { CustomQuery } from "../httpInterceptors";
-import { IFilters  } from '../store/feature/filters/filtersSlice'
+import { IFilters } from '../store/feature/filters/filtersSlice'
 
 export interface AllDealsList {
   mediaUrl: string;
@@ -18,6 +18,11 @@ export interface AllDealsList {
   identifier: string;
 }
 
+export interface newAllDealsList {
+  deals: AllDealsList[];
+  paginationInfo: any;
+}
+
 interface IGetAllList {
   search: string,
   filters: IFilters
@@ -26,22 +31,22 @@ interface IGetAllList {
 const getUrl = (params: IGetAllList): string => {
   let url = '/v1/deals?'
   const { search, filters } = params
-  if(search){
+  if (search) {
     url = `${url}search_text=${search}`
   }
 
-  if(filters) {
+  if (filters) {
     const { status, dealType, endDate, startDate } = filters
-    if(status && status.length > 0) {
+    if (status && status.length > 0) {
       url = `${url}&statuses=${status.join(',')}`
     }
-    if(dealType && dealType.length > 0) {
+    if (dealType && dealType.length > 0) {
       url = `${url}&deal_types=${dealType.join(',')}`
     }
-    if(startDate) {
+    if (startDate) {
       url = `${url}&valid_from=${startDate}`
     }
-    if(endDate) {
+    if (endDate) {
       url = `${url}&valid_to=${endDate}`
     }
   }
@@ -53,7 +58,7 @@ export const viewAllDeals = createApi({
   reducerPath: "viewAllDeals",
   baseQuery: CustomQuery(),
   endpoints: (builder) => ({
-    getAllList: builder.query<AllDealsList[], IGetAllList>({
+    getAllList: builder.query<newAllDealsList, IGetAllList>({
       query: (params) => ({
         url: getUrl(params),
         method: "GET",
