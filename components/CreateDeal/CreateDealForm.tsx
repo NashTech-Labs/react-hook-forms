@@ -182,51 +182,51 @@ const schema = yup.object().shape({
         .test("test-end-time", "Error: End time must be greater than start time", function (value, context) {
             return isEndDateTimeValid(value, context.parent.startTimePicker, ">");
         }),
-    dealCriteria: yup.array().of(yup.object().shape({
-        buy: yup.string().required('Error: Items required').nullable()
-            .test("test-valid-list-items", "Error: Enter valid items", (value: any, context: any) => {
-                let data = context?.from[1]?.value?.dealCriteria
-                if (data.length > 1) {
-                    if (value > data[data.length - 2].buy) {
-                        return true
-                    } else return false
-                } else return true
-            }),
-        get: yup.mixed()
-            .test("dollar-value-required", "Error: Dollar ($) value required", (value: any, context: any) => {
-                if (context?.from[1]?.value?.dealCriteriaType === "%_OFF" || context?.from[1]?.value?.dealCriteriaType === "$_FIXED" ||
-                    value > 0 && context?.from[1]?.value?.dealCriteriaType === "$_OFF") {
-                    return true
-                } return false
-            })
-            .test("fixed-value-required", "Error: Dollar ($) value required", (value: any, context: any) => {
-                if (context?.from[1]?.value?.dealCriteriaType === "%_OFF" || context?.from[1]?.value?.dealCriteriaType === "$_OFF" ||
-                    value > 0 && context?.from[1]?.value?.dealCriteriaType === "$_FIXED") {
-                    return true
-                } return false
-            })
-            .test("percent-value-required", "Error: Percentage (%) value required", (value: any, context: any) => {
-                if (context?.from[1]?.value?.dealCriteriaType === "$_OFF" || context?.from[1]?.value?.dealCriteriaType === "$_FIXED" ||
-                    value > 0 && context?.from[1]?.value?.dealCriteriaType === "%_OFF") {
-                    return true
-                } return false
-            })
-            .test("percent-value-required-value", "Error: Percentage value should be between 1-99", (value: any, context: any) => {
-                if (context?.from[1]?.value?.dealCriteriaType === "$_OFF" || context?.from[1]?.value?.dealCriteriaType === "$_FIXED" ||
-                    value > 0 && value < 100 && context?.from[1]?.value?.dealCriteriaType === "%_OFF") {
-                    return true
-                } return false
-            })
-            .test("valid-value-required", "Error: Enter valid value", (value: any, context: any) => {
-                let data = context?.from[1]?.value?.dealCriteria
-                if (data.length > 1) {
-                    if (value > data[data.length - 2].get) {
-                        return true
-                    } else return false
-                } else return true
-            }),
-    })
-    ),
+    // dealCriteria: yup.array().of(yup.object().shape({
+    //     buy: yup.string().required('Error: Items required').nullable()
+    //         .test("test-valid-list-items", "Error: Enter valid items", (value: any, context: any) => {
+    //             let data = context?.from[1]?.value?.dealCriteria
+    //             if (data.length > 1) {
+    //                 if (value > data[data.length - 2].buy) {
+    //                     return true
+    //                 } else return false
+    //             } else return true
+    //         }),
+    //     get: yup.mixed()
+    //         .test("dollar-value-required", "Error: Dollar ($) value required", (value: any, context: any) => {
+    //             if (context?.from[1]?.value?.dealCriteriaType === "%_OFF" || context?.from[1]?.value?.dealCriteriaType === "$_FIXED" ||
+    //                 value > 0 && context?.from[1]?.value?.dealCriteriaType === "$_OFF") {
+    //                 return true
+    //             } return false
+    //         })
+    //         .test("fixed-value-required", "Error: Dollar ($) value required", (value: any, context: any) => {
+    //             if (context?.from[1]?.value?.dealCriteriaType === "%_OFF" || context?.from[1]?.value?.dealCriteriaType === "$_OFF" ||
+    //                 value > 0 && context?.from[1]?.value?.dealCriteriaType === "$_FIXED") {
+    //                 return true
+    //             } return false
+    //         })
+    //         .test("percent-value-required", "Error: Percentage (%) value required", (value: any, context: any) => {
+    //             if (context?.from[1]?.value?.dealCriteriaType === "$_OFF" || context?.from[1]?.value?.dealCriteriaType === "$_FIXED" ||
+    //                 value > 0 && context?.from[1]?.value?.dealCriteriaType === "%_OFF") {
+    //                 return true
+    //             } return false
+    //         })
+    //         .test("percent-value-required-value", "Error: Percentage value should be between 1-99", (value: any, context: any) => {
+    //             if (context?.from[1]?.value?.dealCriteriaType === "$_OFF" || context?.from[1]?.value?.dealCriteriaType === "$_FIXED" ||
+    //                 value > 0 && value < 100 && context?.from[1]?.value?.dealCriteriaType === "%_OFF") {
+    //                 return true
+    //             } return false
+    //         })
+    //         .test("valid-value-required", "Error: Enter valid value", (value: any, context: any) => {
+    //             let data = context?.from[1]?.value?.dealCriteria
+    //             if (data.length > 1) {
+    //                 if (value > data[data.length - 2].get) {
+    //                     return true
+    //                 } else return false
+    //             } else return true
+    //         }),
+    // })
+    // ),
     // dealCriteriaType: yup.string().required('Error: Select applicable products'),
 }).required();
 
@@ -243,11 +243,11 @@ const CreateDealForm = () => {
         resolver: yupResolver(schema),
         mode: 'all'
     });
-    const { getValues, trigger, setValue } = formMethods
+    const { getValues, trigger, setValue, formState: { errors } } = formMethods
     const handleFormSubmit = async (e: MouseEvent) => {
         e.preventDefault()
         const cleanForm = await trigger(undefined, { shouldFocus: true })
-
+console.log(errors)
         if (cleanForm) {
             setValue('draftCreatedTimestamp', moment())
             dispatch(updateNewDeal(getValues()))
