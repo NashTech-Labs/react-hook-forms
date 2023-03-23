@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useFormContext } from 'react-hook-form'
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
@@ -23,6 +23,12 @@ const GeneralInformation = () => {
   const handleGenerateIdentifier = () => {
     setValue('identifier', generateIdentifier(), { shouldValidate: true })
   }
+
+  useEffect(() => {
+    if (dealName === "multi-buy") {
+      setValue('dealType', dealName)
+    }
+  }, [])
 
   return (<>
     {dealName === "discount" ?
