@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useCallback, useMemo, ChangeEvent } from "react";
 import Card from "@mui/material/Card";
-import { Box, CardContent, Divider, Grid, Typography } from "@mui/material";
+import { Box, CardContent, Divider, Grid, Typography, Pagination, PaginationItem, IconButton } from "@mui/material";
 import { useRouter } from "next/router";
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import Button from "@mui/material/Button";
 import styles from "./Deals.module.css";
 import DataTable from "react-data-table-component";
@@ -30,7 +31,8 @@ function Deals({ search }: IDealsProps) {
   const dispatch = useAppDispatch();
   const filters = useAppSelector(getFilters)
   const [isOpen, setIsOpen] = useState(false);
-  const { data, isLoading, error, refetch } = useGetAllListQuery({ search, filters });
+  const [page, setPage] = useState(1)
+  const { data, isLoading, error, refetch } = useGetAllListQuery({ search, filters, page });
   const [selectedRows, setSelectedRows] = useState<any>([]);
 
   useEffect(() => {
@@ -42,6 +44,10 @@ function Deals({ search }: IDealsProps) {
   const handleChange = useCallback((state: any) => {
     setSelectedRows(state.selectedRows);
   }, []);
+
+  const handlePagination = useCallback((e: ChangeEvent<unknown>, number: number): void => {
+    setPage(number)
+  },[])
 
   useEffect(() => {
     refetch();
@@ -301,7 +307,7 @@ function Deals({ search }: IDealsProps) {
               />
             </CardContent>
 
-            <Grid container alignItems="center">
+            <Grid container justifyContent="space-between">
               <Grid item>
                 <Button
                   variant="outlined"
@@ -311,14 +317,30 @@ function Deals({ search }: IDealsProps) {
                   onClick={handleDeleteClick}
                   data-testid="delete-btn"
                 >
-                  Delete
+                  {selectedRows.length > 0 ? `Delete (${selectedRows.length} selected)` : 'Delete' }
                 </Button>
               </Grid>
-              {selectedRows.length > 0 && (
-                <Grid item>
-                  <Typography variant="body2">{`(${selectedRows.length} selected)`}</Typography>
-                </Grid>
-              )}
+              <Grid item>
+              <Pagination
+                  count={data?.paginationInfo?.['total_pages']}
+                  hidePrevButton={page === 1}
+                  onChange={handlePagination}
+                  renderItem={(item) => (
+                    <PaginationItem
+                      slots={{ previous: undefined, next: NavigateNextIcon}}
+                      {...item}
+                    />
+                  )}
+                  sx={{
+                    '.MuiPaginationItem-text': {
+                      color: '#276ADD'
+                    },
+                    '.Mui-selected': {
+                      color: '#333333'
+                    }
+                  }}
+                />
+              </Grid>
             </Grid>
           </Card>
         </Grid>

@@ -57,7 +57,10 @@ const schema = yup.object().shape({
         // .typeError('Error: Dollar($) value required')
         .min(1, 'Error: Must be minimum of $1.00')
         .test('dollar-off', 'Error: Dollar($) value required', (value, context) => {
-            if (context?.parent?.dealDiscountTab === 'dollar' && context?.parent?.dealLevel === 'product') {
+            if (context?.parent?.dealType === "multi-buy") {
+                return true
+            }
+            else if (context?.parent?.dealDiscountTab === 'dollar' && context?.parent?.dealLevel === 'product') {
                 return value !== undefined
             } else return true
         }),
@@ -259,6 +262,11 @@ console.log(errors)
         dispatch(updateDealStep(""));
     }
 
+    const handleCancel = () => {
+        dispatch(updateDealStep(""));
+        router.push("/deals");
+    }
+
     return <FormProvider {...formMethods}>
         <form id="test">
             <GeneralInformation />
@@ -269,7 +277,7 @@ console.log(errors)
             <PromotionalMessages dealLevelName={dealLevelName} />
             <div className={styles['submit-btn-container']}>
                 <div>
-                    <Button variant="outlined" className={commonStyles['cancelBtn']} onClick={() => router.push("/deals")} data-testid="cancel-btn">Cancel</Button>
+                    <Button variant="outlined" className={commonStyles['cancelBtn']} onClick={handleCancel} ata-testid="cancel-btn">Cancel</Button>
                 </div>
                 <div className={styles['submit-container']}>
                     <Button variant="text" onClick={handleBack} className={commonStyles['text-style-btn']} data-testid="back-btn">Go Back</Button>

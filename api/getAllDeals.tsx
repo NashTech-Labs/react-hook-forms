@@ -26,11 +26,12 @@ export interface newAllDealsList {
 interface IGetAllList {
   search: string,
   filters: IFilters
+  page: number
 }
 
 const getUrl = (params: IGetAllList): string => {
   let url = '/v1/deals?'
-  const { search, filters } = params
+  const { search, filters, page } = params
   if (search) {
     url = `${url}search_text=${search}`
   }
@@ -49,6 +50,10 @@ const getUrl = (params: IGetAllList): string => {
     if (endDate) {
       url = `${url}&valid_to=${endDate}`
     }
+  }
+
+  if(page) {
+    url = `${url}&page_number=${page}`
   }
 
   return url
