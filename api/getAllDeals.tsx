@@ -29,9 +29,9 @@ interface IGetAllList {
   page: number
 }
 
-const getUrl = (params: IGetAllList): string => {
+const getUrl = (params: any): string => {
   let url = '/v1/deals?'
-  let urlParamsObj : { [index: string]: string } =  {}
+  let urlParamsObj: { [index: string]: string } = {}
   const { search, filters, page } = params
   if (search) {
     urlParamsObj = {
@@ -67,7 +67,7 @@ const getUrl = (params: IGetAllList): string => {
     }
   }
 
-  if(page) {
+  if (page) {
     urlParamsObj = {
       ...urlParamsObj,
       'page_number': String(page)
