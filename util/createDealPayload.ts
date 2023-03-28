@@ -90,14 +90,14 @@ const getScopeData = (productsCollectionTab: string, fileLIAM: string[], fileMCH
     return data
 } 
 
-const getRewardMultiBuy = (data: any) => {
+const getRewardMultiBuy = (data: any, dealCriteriaType: string) => {
     let rewardData: any = []
 
     if (data.length === 1)
     {
         data.forEach((element: any, index: number) => {
             rewardData.push({
-                value: element.get,
+                value: dealCriteriaType === '$_OFF_MULTI' || dealCriteriaType === '$_FIXED_MULTI' ? (Number(element.get) * 100).toFixed() : element.get,
                 restrictions: {
                     quantity: {
                         minimum: element.buy,
@@ -112,7 +112,8 @@ const getRewardMultiBuy = (data: any) => {
     {
         data.forEach((element: any, index: number) => {
             rewardData.push({
-                value: element.get,
+                value: dealCriteriaType === '$_OFF_MULTI' || dealCriteriaType === '$_FIXED_MULTI' ? (Number(element.get) * 100).toFixed() : element.get, 
+                // element.get,
                 restrictions: {
                     quantity: {
                         minimum: element.buy,
@@ -210,7 +211,7 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
     }
 
     if (dealType === 'Multi-buy') {
-        payload["rewards"] = getRewardMultiBuy(dealCriteria),
+        payload["rewards"] = getRewardMultiBuy(dealCriteria, dealCriteriaType),
         payload["reward_type"] = dealCriteriaType === '$_OFF' ? '$_OFF_MULTI' :  dealCriteriaType === "%_OFF" ? "%_OFF_MULTI" : "$_FIXED_MULTI";
         if (dealCriteria.length === 1)
         {
