@@ -31,32 +31,52 @@ interface IGetAllList {
 
 const getUrl = (params: IGetAllList): string => {
   let url = '/v1/deals?'
+  let urlParamsObj : { [index: string]: string } =  {}
   const { search, filters, page } = params
   if (search) {
-    url = `${url}search_text=${search}`
+    urlParamsObj = {
+      'search_text': search
+    }
   }
 
   if (filters) {
     const { status, dealType, endDate, startDate } = filters
     if (status && status.length > 0) {
-      url = `${url}&statuses=${status.join(',')}`
+      urlParamsObj = {
+        ...urlParamsObj,
+        statuses: status.join(',')
+      }
     }
     if (dealType && dealType.length > 0) {
-      url = `${url}&deal_types=${dealType.join(',')}`
+      urlParamsObj = {
+        ...urlParamsObj,
+        'deal_types': dealType.join(',')
+      }
     }
     if (startDate) {
-      url = `${url}&valid_from=${startDate}`
+      urlParamsObj = {
+        ...urlParamsObj,
+        'valid_from': startDate.format()
+      }
     }
     if (endDate) {
-      url = `${url}&valid_to=${endDate}`
+      urlParamsObj = {
+        ...urlParamsObj,
+        'valid_to': endDate.format()
+      }
     }
   }
 
   if(page) {
-    url = `${url}&page_number=${page}`
+    urlParamsObj = {
+      ...urlParamsObj,
+      'page_number': String(page)
+    }
   }
 
-  return url
+  const urlParams = new URLSearchParams([...Object.entries(urlParamsObj)])
+
+  return `${url}${urlParams.toString()}`
 }
 
 export const viewAllDeals = createApi({
