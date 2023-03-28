@@ -90,6 +90,43 @@ const getScopeData = (productsCollectionTab: string, fileLIAM: string[], fileMCH
     return data
 } 
 
+const getRewardMultiBuy = (data: any) => {
+    let rewardData: any = []
+
+    if (data.length === 1)
+    {
+        data.forEach((element: any, index: number) => {
+            rewardData.push({
+                value: element.get,
+                restrictions: {
+                    quantity: {
+                        minimum: element.buy,
+                        maximum: null
+                    }
+                }
+            }) 
+        });
+    }
+
+    else
+    {
+        data.forEach((element: any, index: number) => {
+            rewardData.push({
+                value: element.get,
+                restrictions: {
+                    quantity: {
+                        minimum: element.buy,
+                        maximum: data.length === rewardData.length ? null : Number(data[index + 1]?.buy) - 1 
+                    }
+                }
+            }) 
+        });
+    }
+
+    return rewardData
+
+}
+
 const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
     const { 
          title,
@@ -98,7 +135,10 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
          stackingType,
          dealLevel,
          mch,
-         liam ,
+         dealType,
+         dealCriteria,
+         dealCriteriaType,
+         liam,
          dealApplyType,
          exmch,
          exliam,
@@ -125,12 +165,12 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
         "stacking_type": STACKING_TYPES[stackingType],
         "scope_type": dealLevel?.toUpperCase(),
         "scopes": getScopeData(productsCollectionTab, fileLIAM, fileMCH, liam, mch),
-        "reward_type": rewardType,
-        "rewards": [
-            {
-                "value": String(rewardValue)
-            }
-        ],
+        // "reward_type": rewardType,
+        // "rewards": [
+        //     {
+        //         "value": String(rewardValue)
+        //     }
+        // ],
         "valid_from": convertDateTime(startDatePicker,startTimePicker),
         "valid_to": convertDateTime(endDatePicker,endTimePicker),
         "promo_restrictions": {
@@ -157,6 +197,27 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
         payload["promo_restrictions"]['spend'] = {
             "minimum": (Number(basketSpend) * 100).toFixed(),
             "maximum": null
+        }
+    }
+
+    if (dealType === 'Discount') {
+        payload["rewards"] = [
+            {
+                "value": String(rewardValue)
+            }
+        ],
+        payload["reward_type"] = rewardType
+    }
+
+    if (dealType === 'Multi-buy') {
+        payload["rewards"] = getRewardMultiBuy(dealCriteria),
+        payload["reward_type"] = dealCriteriaType === '$_OFF' ? '$_OFF_MULTI' :  dealCriteriaType === "%_OFF" ? "%_OFF_MULTI" : "$_FIXED_MULTI";
+        if (dealCriteria.length === 1)
+        {
+            payload["promo_restrictions"]["quantity"] = {
+                minimum: dealCriteria[dealCriteria.length - 1].buy,
+                maximum: null
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 export interface ICreateDealFormState {
     dealType: string
+    isListValid: Boolean
     title: string
     description: string
     identifier: string
