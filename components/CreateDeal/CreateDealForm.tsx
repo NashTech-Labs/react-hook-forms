@@ -15,7 +15,7 @@ import PromotionalMessages from './PromotionalMessages/PromotionalMessages';
 import styles from './CreateDealForm.module.css'
 import commonStyles from "./Steps.module.css";
 import { useAppDispatch, useAppSelector } from "../../store/index";
-import { updatedDealLevel, updatedDealStep, updateDealStep } from "../../store/feature/deal/dealSlice";
+import { updatedDealLevel, updatedDealStep, updateDealLevel, updateDealStep } from "../../store/feature/deal/dealSlice";
 import { updateNewDeal, getNewDealData } from '../../store/feature/deal/newDealSlice'
 import DateInEffect from './DateInEffect/DateInEffect';
 import DealCriteria from './DealCriteria/DealCriteria';
@@ -57,7 +57,7 @@ const schema = yup.object().shape({
         // .typeError('Error: Dollar($) value required')
         .min(1, 'Error: Must be minimum of $1.00')
         .test('dollar-off', 'Error: Dollar($) value required', (value, context) => {
-            if (context?.parent?.dealType === "multi-buy") {
+            if (context?.parent?.dealType === "Multi-buy") {
                 return true
             }
             else if (context?.parent?.dealDiscountTab === 'dollar' && context?.parent?.dealLevel === 'product') {
@@ -186,48 +186,53 @@ const schema = yup.object().shape({
             return isEndDateTimeValid(value, context.parent.startTimePicker, ">");
         }),
     dealCriteria: yup.array().of(yup.object().shape({
-        buy: yup.string().required('Error: Items required').nullable()
-            .test("test-valid-list-items", "Error: Enter valid items", (value: any, context: any) => {
-                let data = context?.from[1]?.value?.dealCriteria
-                if (data.length > 1) {
-                    if (value > data[data.length - 2].buy) {
-                        return true
-                    } else return false
-                } else return true
-            }),
+        isListValid: yup.boolean(),
+        buy: yup.string().when("isListValid", {
+            is: true,
+            then: yup.string().required('Error: Items required')
+        }),
+        // .nullable()
+        // .test("test-valid-list-items", "Error: Enter valid items", (value: any, context: any) => {
+        //     let data = context?.from[1]?.value?.dealCriteria
+        //     if (data.length > 1) {
+        //         if (value > data[data.length - 2].buy) {
+        //             return true
+        //         } else return false
+        //     } else return true
+        // }),
         get: yup.mixed()
             .test("dollar-value-required", "Error: Dollar ($) value required", (value: any, context: any) => {
                 if (context?.from[1]?.value?.dealCriteriaType === "%_OFF" || context?.from[1]?.value?.dealCriteriaType === "$_FIXED" ||
-                    value > 0 && context?.from[1]?.value?.dealCriteriaType === "$_OFF") {
+                    value > 0 && context?.from[1]?.value?.dealCriteriaType === "$_OFF" || context?.from[1]?.value?.dealType === 'Discount') {
                     return true
                 } return false
             })
             .test("fixed-value-required", "Error: Dollar ($) value required", (value: any, context: any) => {
                 if (context?.from[1]?.value?.dealCriteriaType === "%_OFF" || context?.from[1]?.value?.dealCriteriaType === "$_OFF" ||
-                    value > 0 && context?.from[1]?.value?.dealCriteriaType === "$_FIXED") {
+                    value > 0 && context?.from[1]?.value?.dealCriteriaType === "$_FIXED" || context?.from[1]?.value?.dealType === 'Discount') {
                     return true
                 } return false
             })
             .test("percent-value-required", "Error: Percentage (%) value required", (value: any, context: any) => {
                 if (context?.from[1]?.value?.dealCriteriaType === "$_OFF" || context?.from[1]?.value?.dealCriteriaType === "$_FIXED" ||
-                    value > 0 && context?.from[1]?.value?.dealCriteriaType === "%_OFF") {
+                    value > 0 && context?.from[1]?.value?.dealCriteriaType === "%_OFF" || context?.from[1]?.value?.dealType === 'Discount') {
                     return true
                 } return false
             })
             .test("percent-value-required-value", "Error: Percentage value should be between 1-99", (value: any, context: any) => {
                 if (context?.from[1]?.value?.dealCriteriaType === "$_OFF" || context?.from[1]?.value?.dealCriteriaType === "$_FIXED" ||
-                    value > 0 && value < 100 && context?.from[1]?.value?.dealCriteriaType === "%_OFF") {
+                    value > 0 && value < 100 && context?.from[1]?.value?.dealCriteriaType === "%_OFF" || context?.from[1]?.value?.dealType === 'Discount') {
                     return true
                 } return false
             })
-            .test("valid-value-required", "Error: Enter valid value", (value: any, context: any) => {
-                let data = context?.from[1]?.value?.dealCriteria
-                if (data.length > 1) {
-                    if (value > data[data.length - 2].get) {
-                        return true
-                    } else return false
-                } else return true
-            }),
+        // .test("valid-value-required", "Error: Enter valid value", (value: any, context: any) => {
+        //     let data = context?.from[1]?.value?.dealCriteria
+        //     if (data.length > 1) {
+        //         if (value > data[data.length - 2].get) {
+        //             return true
+        //         } else return false
+        //     } else return true
+        // }),
     })
     ),
     // dealCriteriaType: yup.string().required('Error: Select applicable products'),
@@ -260,6 +265,7 @@ const CreateDealForm = () => {
 
     const handleBack = () => {
         dispatch(updateDealStep(""));
+        dispatch(updateDealLevel('product'))
     }
 
     const handleCancel = () => {

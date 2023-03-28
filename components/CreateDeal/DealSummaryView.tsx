@@ -57,11 +57,35 @@ const DealSummaryView = () => {
       });
   }
 
-  const { title, draftCreatedTimestamp, dealLevel } = newDealData
+  const { title, draftCreatedTimestamp, dealLevel, dealType, dealCriteria, dealCriteriaType } = newDealData
 
   if (dealLevel === 'basket') {
     excludeSteps.push('Products and Collections')
+    excludeSteps.push('Deal Criteria')
   }
+
+  if (dealLevel === 'product' && dealType === 'Discount') {
+    excludeSteps.push('Deal Criteria')
+  }
+
+  if (dealType === 'Multi-buy') {
+    excludeSteps.push('Deal value')
+  }
+
+  let customerPreview: string[] = []
+
+  dealCriteria.forEach((data: any,) => {
+    if (dealCriteriaType === "$_OFF") {
+      customerPreview.push(`Buy ${data.buy}, Get $${data.get} Off`)
+    }
+    if (dealCriteriaType === "$_FIXED") {
+      customerPreview.push(`Buy ${data.buy}, Get $${data.get} Off`)
+    }
+
+    if (dealCriteriaType === "%_OFF") {
+      customerPreview.push(`Buy ${data.buy} Get ${data.get}% Off`)
+    }
+  });
 
   return <>
     <Grid container justifyContent="center" sx={{ marginTop: "32px" }}>
@@ -82,7 +106,8 @@ const DealSummaryView = () => {
               }
               return <>
                 <Typography variant="h4" className={summaryStyles.heading} mt={4}>{title}</Typography>
-                <Typography className={summaryStyles.content}>{getValue(newDealData)}</Typography>
+                {stepTitle === "Deal Criteria" && title === "Customer preview" ? <> {customerPreview.map((data: any) => { return <> <Typography className={summaryStyles.content}>{data}</Typography> </> })} </> :
+                  <Typography className={summaryStyles.content}>{getValue(newDealData)}</Typography>}
               </>
             })
           }

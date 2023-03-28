@@ -97,6 +97,29 @@ const config: IConfig = {
         }
     }
     ],
+    'Deal Criteria': [
+        {
+            title: 'Type',
+            getValue: (formData: ICreateDealFormState) => {
+                const {dealType} = formData
+                return dealType
+            },
+        },
+        {
+            title: 'Tiers',
+            getValue: (formData: ICreateDealFormState) => {
+                const { dealCriteria } = formData
+                return dealCriteria.length
+            },
+        },
+        {
+            title: 'Customer preview',
+            getValue: (formData: ICreateDealFormState) => {
+                const { dealCriteriaType } = formData
+                return dealCriteriaType
+            },
+        },
+    ],
     'Date in effect': [{
         title: 'Start Date',
         getValue: (formData: ICreateDealFormState) => {

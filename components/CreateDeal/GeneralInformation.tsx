@@ -26,7 +26,8 @@ const GeneralInformation = () => {
 
   useEffect(() => {
     if (dealName === "multi-buy") {
-      setValue('dealType', dealName)
+      setValue('dealType', "Multi-buy")
+      setValue('isListValid', true)
     }
   }, [])
 

@@ -8,29 +8,27 @@ import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined
 import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
 import StepTitle from "../StepTitle";
 import Button from "@mui/material/Button";
-import { updateDealStep } from "../../store/feature/deal/dealSlice";
+import { updateDealLevel, updateDealStep } from "../../store/feature/deal/dealSlice";
 import { useAppDispatch } from "../../store/index";
 import commonStyles from "./Steps.module.css";
+import CreateDealDefaultFormState from "../../constants/CreateDealDefaultFormState";
+import { getNewDealData, updateNewDeal } from "../../store/feature/deal/newDealSlice";
 
 function CreateDeal() {
   const router = useRouter();
 
   const dispatch = useAppDispatch();
 
-  const [dealCount, setDealCount] = useState(0);
-
-  const [discountDealSelected, setDiscountDealSelected] = useState(false);
-
   const [dealType, setDealType] = useState("")
 
   const handleDealValue = (type: string) => {
-    // setDealCount(value);
-    // setDiscountDealSelected(!discountDealSelected);
     setDealType(type)
   };
 
   const ContinueDeal = () => {
     dispatch(updateDealStep(dealType));
+    dispatch(updateNewDeal(CreateDealDefaultFormState))
+    dispatch(updateDealLevel('product'))
   };
 
   return (
@@ -70,20 +68,6 @@ function CreateDeal() {
         </Grid>
 
         <Grid
-          className={commonStyles["disable-deal-card-container"]}
-          bgcolor={"#F0F0F0"}
-          sx={{ cursor: "not-allowed !important" }}
-        >
-          <LocalShippingOutlinedIcon className={commonStyles.disableDeals} />
-          <Grid className={commonStyles.dealTitle}>
-            <Typography variant="h6" className={commonStyles.disableDealType}>
-              Free Shipping
-            </Typography>
-            <Typography color="#CCCCCC" >Create a free shipping deal.</Typography>
-          </Grid>
-        </Grid>
-
-        <Grid
           data-testid="dealBtn"
           onClick={() => {
             handleDealValue("multi-buy");
@@ -101,6 +85,21 @@ function CreateDeal() {
             </Typography>
           </Grid>
         </Grid>
+
+        <Grid
+          className={commonStyles["disable-deal-card-container"]}
+          bgcolor={"#F0F0F0"}
+          sx={{ cursor: "not-allowed !important" }}
+        >
+          <LocalShippingOutlinedIcon className={commonStyles.disableDeals} />
+          <Grid className={commonStyles.dealTitle}>
+            <Typography variant="h6" className={commonStyles.disableDealType}>
+              Free Shipping
+            </Typography>
+            <Typography color="#CCCCCC" >Create a free shipping deal.</Typography>
+          </Grid>
+        </Grid>
+
       </Card>
 
       <Grid container justifyContent="center">

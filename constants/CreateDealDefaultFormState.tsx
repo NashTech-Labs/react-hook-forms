@@ -20,6 +20,7 @@ const createDealDefaultFormState: ICreateDealFormState = {
     productsCollectionTab: 'uploadProduct',
     dealApplyType: '',
     dealLevelOptions: 'no',
+    isListValid: false,
     mch: [],
     exmch: [],
     liam: [],
