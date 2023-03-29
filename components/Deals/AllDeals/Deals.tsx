@@ -47,7 +47,7 @@ function Deals({ search }: IDealsProps) {
 
   const handlePagination = useCallback((e: ChangeEvent<unknown>, number: number): void => {
     setPage(number)
-  },[])
+  }, [])
 
   useEffect(() => {
     refetch();
@@ -151,35 +151,75 @@ function Deals({ search }: IDealsProps) {
       {
         name: "Value",
         selector: (row: any) => {
-          if (row?.spend?.minimum > 0) {
+
+          if (row.type === "MULTI_BUY") {
             if (
-              row.dealValue[0].rewardType === "$_OFF"
+              row.dealValue[0].rewardType === "%_OFF_MULTI"
             ) {
               return (
-                <Grid display="grid">
-                  <Grid> Spend ${(Number(row?.spend?.minimum) / 100).toFixed(2)} </Grid>
-                  <Grid> Get ${(Number(row.dealValue[0].rewardValue) / 100).toFixed(2)} Off </Grid>
-                </Grid>
+                row.dealValue.map((data: any) => {
+                  return (<Grid display="grid">
+                    <Grid> Buy {data.buyQuantity} get {parseInt(data.rewardValue)}% off</Grid>
+                  </Grid>)
+                })
               )
             }
-            if (row.dealValue[0].rewardType === "%_OFF") {
+            if (
+              row.dealValue[0].rewardType === "$_OFF_MULTI"
+            ) {
               return (
-                <Grid display="grid">
-                  <Grid> Spend ${(Number(row?.spend?.minimum) / 100).toFixed(2)} </Grid>
-                  <Grid> Get {row.dealValue[0].rewardValue}% Off </Grid>
-                </Grid>
+                row.dealValue.map((data: any) => {
+                  return (<Grid display="grid">
+                    <Grid> Buy {data.buyQuantity} get ${(Number(data.rewardValue) / 100).toFixed(2)} off</Grid>
+                  </Grid>)
+                })
+              )
+            }
+            if (
+              row.dealValue[0].rewardType === "$_FIXED_MULTI"
+            ) {
+              return (
+                row.dealValue.map((data: any) => {
+                  return (<Grid display="grid">
+                    <Grid> Buy {data.buyQuantity} get ${(Number(data.rewardValue) / 100).toFixed(2)} off</Grid>
+                  </Grid>)
+                })
               )
             }
           }
+
           else {
-            if (
-              row.dealValue[0].rewardType === "$_OFF" ||
-              row.dealValue[0].rewardType === "$_FIXED"
-            ) {
-              return `$${(Number(row.dealValue[0].rewardValue) / 100).toFixed(2)} Off`;
+
+            if (row?.spend?.minimum > 0) {
+              if (
+                row.dealValue[0].rewardType === "$_OFF"
+              ) {
+                return (
+                  <Grid display="grid">
+                    <Grid> Spend ${(Number(row?.spend?.minimum) / 100).toFixed(2)} </Grid>
+                    <Grid> Get ${(Number(row.dealValue[0].rewardValue) / 100).toFixed(2)} Off </Grid>
+                  </Grid>
+                )
+              }
+              if (row.dealValue[0].rewardType === "%_OFF") {
+                return (
+                  <Grid display="grid">
+                    <Grid> Spend ${(Number(row?.spend?.minimum) / 100).toFixed(2)} </Grid>
+                    <Grid> Get {row.dealValue[0].rewardValue}% Off </Grid>
+                  </Grid>
+                )
+              }
             }
-            if (row.dealValue[0].rewardType === "%_OFF") {
-              return `${row.dealValue[0].rewardValue}% Off`;
+            else {
+              if (
+                row.dealValue[0].rewardType === "$_OFF" ||
+                row.dealValue[0].rewardType === "$_FIXED"
+              ) {
+                return `$${(Number(row.dealValue[0].rewardValue) / 100).toFixed(2)} Off`;
+              }
+              if (row.dealValue[0].rewardType === "%_OFF") {
+                return `${row.dealValue[0].rewardValue}% Off`;
+              }
             }
           }
         },
@@ -317,17 +357,17 @@ function Deals({ search }: IDealsProps) {
                   onClick={handleDeleteClick}
                   data-testid="delete-btn"
                 >
-                  {selectedRows.length > 0 ? `Delete (${selectedRows.length} selected)` : 'Delete' }
+                  {selectedRows.length > 0 ? `Delete (${selectedRows.length} selected)` : 'Delete'}
                 </Button>
               </Grid>
               <Grid item>
-              <Pagination
+                <Pagination
                   count={data?.paginationInfo?.['total_pages']}
                   hidePrevButton={page === 1}
                   onChange={handlePagination}
                   renderItem={(item) => (
                     <PaginationItem
-                      slots={{ previous: undefined, next: NavigateNextIcon}}
+                      slots={{ previous: undefined, next: NavigateNextIcon }}
                       {...item}
                     />
                   )}
