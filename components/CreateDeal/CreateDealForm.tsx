@@ -190,16 +190,17 @@ const schema = yup.object().shape({
         buy: yup.string().when("isListValid", {
             is: true,
             then: yup.string().required('Error: Items required')
-        }),
-        // .nullable()
-        // .test("test-valid-list-items", "Error: Enter valid items", (value: any, context: any) => {
-        //     let data = context?.from[1]?.value?.dealCriteria
-        //     if (data.length > 1) {
-        //         if (value > data[data.length - 2].buy) {
-        //             return true
-        //         } else return false
-        //     } else return true
-        // }),
+        }).nullable()
+            .test("test-valid-list-items", "Error: Enter valid items", (value: any, context: any) => {
+                let data = context?.from[1]?.value?.dealCriteria
+                let index = data.findIndex((x: any) => x.buy === value);
+                if (data.length > 1) {
+                    if (value === data[data.length - 1].buy && value > data[data.length - 2].buy || index === 0 && value < data[index + 1].buy ||
+                        index > 0 && index < data.length - 1 && value > data[index - 1].buy && value < data[index + 1].buy) {
+                        return true
+                    } else return false
+                } else return true
+            }),
         get: yup.mixed()
             .test("dollar-value-required", "Error: Dollar ($) value required", (value: any, context: any) => {
                 if (context?.from[1]?.value?.dealCriteriaType === "%_OFF" || context?.from[1]?.value?.dealCriteriaType === "$_FIXED" ||
@@ -225,14 +226,16 @@ const schema = yup.object().shape({
                     return true
                 } return false
             })
-        // .test("valid-value-required", "Error: Enter valid value", (value: any, context: any) => {
-        //     let data = context?.from[1]?.value?.dealCriteria
-        //     if (data.length > 1) {
-        //         if (value > data[data.length - 2].get) {
-        //             return true
-        //         } else return false
-        //     } else return true
-        // }),
+            .test("valid-value-required", "Error: Enter valid value", (value: any, context: any) => {
+                let data = context?.from[1]?.value?.dealCriteria
+                let index = data.findIndex((x: any) => x.get === value);
+                if (data.length > 1) {
+                    if (value === data[data.length - 1].get && value > data[data.length - 2].get || index === 0 && value < data[index + 1].get ||
+                        index > 0 && index < data.length - 1 && value > data[index - 1].get && value < data[index + 1].get) {
+                        return true
+                    } else return false
+                } else return true
+            }),
     })
     ),
     // dealCriteriaType: yup.string().required('Error: Select applicable products'),
