@@ -157,8 +157,8 @@ function Deals({ search }: IDealsProps) {
               row.dealValue[0].rewardType === "%_OFF_MULTI"
             ) {
               return (
-                row.dealValue.map((data: any) => {
-                  return (<Grid display="grid">
+                row.dealValue.map((data: any, index: number) => {
+                  return (<Grid key={index} display="grid">
                     <Grid> Buy {data.buyQuantity} get {parseInt(data.rewardValue)}% off</Grid>
                   </Grid>)
                 })
@@ -168,8 +168,8 @@ function Deals({ search }: IDealsProps) {
               row.dealValue[0].rewardType === "$_OFF_MULTI"
             ) {
               return (
-                row.dealValue.map((data: any) => {
-                  return (<Grid display="grid">
+                row.dealValue.map((data: any, index: number) => {
+                  return (<Grid key={index} display="grid">
                     <Grid> Buy {data.buyQuantity} get ${(Number(data.rewardValue) / 100).toFixed(2)} off</Grid>
                   </Grid>)
                 })
@@ -179,8 +179,8 @@ function Deals({ search }: IDealsProps) {
               row.dealValue[0].rewardType === "$_FIXED_MULTI"
             ) {
               return (
-                row.dealValue.map((data: any) => {
-                  return (<Grid display="grid">
+                row.dealValue.map((data: any, index: number) => {
+                  return (<Grid key={index} display="grid">
                     <Grid> Buy {data.buyQuantity} get ${(Number(data.rewardValue) / 100).toFixed(2)} off</Grid>
                   </Grid>)
                 })
