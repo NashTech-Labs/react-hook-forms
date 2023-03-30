@@ -65,35 +65,35 @@ function DeleteDeal({ closeModal, selectedDeals, refetch }: ReceivedProp) {
       });
   };
 
-  if(selectedDeals.length > 5) {
-    return  <>
-    <Box p={1} data-testid="deleteDealModal" sx={{ padding: 0 }}>
-      <Grid container alignItems="center" my={2}>
-        <Grid item lg={11}>
-          <Typography variant="h5" className={classes["modal-heading"]}>
-            {`Delete ${selectedDeals.length}  deal(s)?`}
-          </Typography>
+  if (selectedDeals.length > 10) {
+    return <>
+      <Box p={1} data-testid="deleteDealModal" sx={{ padding: 0 }}>
+        <Grid container alignItems="center" my={2}>
+          <Grid item lg={11}>
+            <Typography variant="h5" className={classes["modal-heading"]}>
+              {`Delete ${selectedDeals.length}  deal(s)?`}
+            </Typography>
+          </Grid>
+          <Grid item lg={1} sx={{ cursor: "pointer", textAlign: "right" }}>
+            <CloseIcon onClick={closeModalfn} data-testid="closeIcon" />
+          </Grid>
         </Grid>
-        <Grid item lg={1} sx={{ cursor: "pointer", textAlign: "right" }}>
-          <CloseIcon onClick={closeModalfn} data-testid="closeIcon" />
+        <Typography variant="body2" sx={{ color: "#666B73" }} mt={4}>
+          You can delete only 10 deals in one transaction.
+        </Typography>
+        <Grid container mt={10} mb={1}>
+          <Grid item lg={6}>
+            <Button
+              className={classes["exit-btn"]}
+              onClick={closeModalfn}
+              data-testid="exitBtn"
+            >
+              Exit
+            </Button>
+          </Grid>
         </Grid>
-      </Grid>
-      <Typography variant="body2" sx={{ color: "#666B73" }} mt={4}>
-        You can delete only 5 deals in one transaction.
-      </Typography>
-      <Grid container mt={10} mb={1}>
-        <Grid item lg={6}>
-          <Button
-            className={classes["exit-btn"]}
-            onClick={closeModalfn}
-            data-testid="exitBtn"
-          >
-            Exit
-          </Button>
-        </Grid>
-      </Grid>
-    </Box>
-  </>
+      </Box>
+    </>
   }
 
   return (
