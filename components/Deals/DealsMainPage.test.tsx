@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { generateStore } from "../../store";
@@ -40,4 +40,17 @@ describe("Deals MainPage tests", () => {
     expect(screen.getByTestId("dealMain-page")).toBeInTheDocument();
   });
 
+  test("should render search box", () => {
+    render(
+      <Provider store={store}>
+        <GoogleOAuthProvider clientId={""}>
+          <DealsMainPage />
+        </GoogleOAuthProvider>
+      </Provider>
+    );
+    console.log(screen.debug())
+    waitFor(async () => {
+     await expect(screen.getByPlaceholderText("Search by title")).toBeInTheDocument();
+    })
+  });
 });

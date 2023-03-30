@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import {useSelector} from "react-redux";
 import Modal from "react-modal";
-import {  Grid, Typography, OutlinedInput, Button } from "@mui/material";
+import {  Grid, Typography, Button } from "@mui/material";
 import FilterListOutlinedIcon from '@mui/icons-material/FilterListOutlined';
 import styles from "./FilterSection.module.css";
 import FilterModal from './FilterModal'
@@ -66,6 +66,7 @@ const FilterSection = ({ }) => {
               height: '35px'
             }}
             onClick = {openFilterModal}
+            data-testId="filter-button"
             >
               <span className={styles['filter-icon']}>
                <FilterListOutlinedIcon/> 

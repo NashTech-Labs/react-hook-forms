@@ -121,6 +121,9 @@ function DealsMainPage() {
             placeholder="Search by title"
             value={search}
             onChange={handleSearchChange}
+            inputProps={{
+              "data-testId": "search"
+          }}
            />
           </Grid>
           <Deals search={search} />
