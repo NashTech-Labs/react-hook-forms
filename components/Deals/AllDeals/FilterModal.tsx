@@ -151,7 +151,7 @@ const FilterModal = ({ closeModal }: IFilterModal) => {
           </Typography>
         </Grid>
         <Grid item lg={1} sx={{ cursor: "pointer", textAlign: "right" }} >
-          <IconButton onClick={() => closeModal()}>
+          <IconButton onClick={() => closeModal()} data-testId="close-icon">
             <CloseIcon />
           </IconButton>
         </Grid>
@@ -165,7 +165,7 @@ const FilterModal = ({ closeModal }: IFilterModal) => {
                 key={key}
                 label={statusOptions[key]}
                 onClick={() => handleStatusFilterClick(key)}
-                onDelete={() => {}}
+                onDelete={() => handleStatusFilterClick(key)}
                 deleteIcon={status.includes(key) ? <DoneIcon sx={{ 
                  '&.MuiSvgIcon-root': {
                    color: '#ffffff'
@@ -173,6 +173,7 @@ const FilterModal = ({ closeModal }: IFilterModal) => {
                  }/> : <div /> }
                 sx= {ChipComponentStyleOverrides}
                 variant={status.includes(key) ? 'filled': 'outlined' }
+                data-testId={key}
               />)
         }
       </Box>
@@ -200,7 +201,12 @@ const FilterModal = ({ closeModal }: IFilterModal) => {
         <div>
          <Checkbox checked={startDateChecked} onChange={handleStartDateChecked} sx={{ padding: '0px', marginRight: '22px' }} style={{
             transform: "scale(1.25)",
-        }}/>
+        }}
+        inputProps={{
+           // @ts-ignore
+          "data-testId" : "start-date-checkbox"
+        }}
+        />
         </div>
         <div>
           <Typography className={classes['date-label']}>Start date of deal</Typography>
@@ -259,7 +265,12 @@ const FilterModal = ({ closeModal }: IFilterModal) => {
         <div>
          <Checkbox checked={endDateChecked} onChange={handleEndDateChecked} sx={{ padding: '0px', marginRight: '22px' }} style={{
             transform: "scale(1.25)",
-        }}/>
+        }}
+        inputProps={{
+           // @ts-ignore
+          "data-testId" : "end-date-checkbox"
+        }}
+        />
         </div>
         <div>
           <Typography className={classes['date-label']}>End date of deal</Typography>
@@ -322,6 +333,7 @@ const FilterModal = ({ closeModal }: IFilterModal) => {
             className={classes["exit-btn"]}
             onClick={() => closeModal()}
             variant="outlined"
+            data-testId="exit-btn"
           >
             Exit
           </Button>
@@ -332,6 +344,7 @@ const FilterModal = ({ closeModal }: IFilterModal) => {
               onClick={handleClear}
               data-testid="exitBtn"
               variant="outlined"
+              data-testId="clear-btn"
             >
               {`Clear filters(${getFilterCount()})`}
           </Button>
@@ -340,6 +353,7 @@ const FilterModal = ({ closeModal }: IFilterModal) => {
             variant="contained"
             data-testid="submitBtn"
             onClick={submitFilters}
+            data-testId="update-btn"
           >
             Update
           </Button>
