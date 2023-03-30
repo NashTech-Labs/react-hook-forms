@@ -141,6 +141,7 @@ function DealCriteria() {
                                 required
                                 displayDollarFormat
                                 inputHeight={true}
+                                dealCriteria={true}
                             /> : null}
 
                             {dealCriteriaType === '%_OFF' ?
@@ -153,6 +154,7 @@ function DealCriteria() {
                                     displayPercentageFormat={true}
                                     endAdornment={dealCriteriaType === '%_OFF' ? <div style={{ position: 'absolute', left: '45px' }}>%</div> : undefined}
                                     inputHeight={true}
+                                    dealCriteria={true}
                                 /> : null}
 
                             {dealCriteriaType === '$_FIXED' ?
@@ -163,6 +165,7 @@ function DealCriteria() {
                                     required
                                     displayDollarFormat
                                     inputHeight={true}
+                                    dealCriteria={true}
                                 /> : null}
 
                             <Typography className={commonStyles.getText}>Off</Typography>
