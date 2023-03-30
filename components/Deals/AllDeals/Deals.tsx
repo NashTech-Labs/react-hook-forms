@@ -181,7 +181,7 @@ function Deals({ search }: IDealsProps) {
               return (
                 row.dealValue.map((data: any, index: number) => {
                   return (<Grid key={index} display="grid">
-                    <Grid> Buy {data.buyQuantity} get ${(Number(data.rewardValue) / 100).toFixed(2)} off</Grid>
+                    <Grid> Buy {data.buyQuantity} For ${(Number(data.rewardValue) / 100).toFixed(2)}</Grid>
                   </Grid>)
                 })
               )

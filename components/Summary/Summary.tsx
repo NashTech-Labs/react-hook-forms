@@ -1,6 +1,6 @@
 import { Box, Button, Card, Chip, Grid, IconButton, Typography } from "@mui/material";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import StepTitle from "../StepTitle";
 import styles from "./Summary.module.css";
 import { useGetDealPreviewQuery } from "../../api/dealPreview";
@@ -17,6 +17,8 @@ function Summary() {
     const { data } = useGetDealPreviewQuery(dealId);
 
     const router = useRouter();
+
+    const [customerPreview, setCustomerPreview] = useState<string[]>([])
 
     const downloadScopeExcel = (data: any) => {
 
@@ -110,6 +112,32 @@ function Summary() {
         return `${value} off product(s)`
     }
 
+    useEffect(() => {
+        if (data) {
+            if (data?.generalDealInfo?.type === "MULTI_BUY") {
+
+                let previewData = data?.dealValue?.rewardsValue
+
+                let customerPreviewData: string[] = []
+
+                previewData.forEach((value: any,) => {
+                    if (data?.dealValue?.rewardType === "$_OFF_MULTI") {
+                        customerPreviewData.push(`Buy ${value.restrictions.quantity.minimum} Get $${(Number(value.value) / 100).toFixed(2)} Off`)
+                    }
+                    if (data?.dealValue?.rewardType === "$_FIXED_MULTI") {
+                        customerPreviewData.push(`Buy ${value.restrictions.quantity.minimum} For $${(Number(value.value) / 100).toFixed(2)}`)
+                    }
+
+                    if (data?.dealValue?.rewardType === "%_OFF_MULTI") {
+                        customerPreviewData.push(`Buy ${value.restrictions.quantity.minimum} Get ${value.value}% Off`)
+                    }
+                });
+                setCustomerPreview(customerPreviewData)
+            }
+        }
+
+    }, [data])
+
     return (
         <Grid container>
             <Grid item lg={12} md={9} sm={6}>
@@ -175,39 +203,77 @@ function Summary() {
                 </Card>
 
 
-                <Card className={styles["step-card-container"]}>
-                    <StepTitle title={"Deal value"} />
+                {data?.generalDealInfo?.type === "DISCOUNT" &&
+                    <>
+                        <Card className={styles["step-card-container"]}>
+                            <StepTitle title={"Deal value"} />
 
-                    <Grid container>
-                        <Grid item lg={12} md={9} sm={6}>
-                            <Grid item lg={7}>
-                                <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
-                                    Is this at a basket level or product level?
-                                </Typography>
-                                <Typography className={styles.content} >{capitalizeWords(data?.dealValue?.scopeType || '')}</Typography>
+                            <Grid container>
+                                <Grid item lg={12} md={9} sm={6}>
+                                    <Grid item lg={7}>
+                                        <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
+                                            Is this at a basket level or product level?
+                                        </Typography>
+                                        <Typography className={styles.content} >{capitalizeWords(data?.dealValue?.scopeType || '')}</Typography>
 
-                                <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
-                                    Type
-                                </Typography>
-                                <Typography className={styles.content} >{data?.dealValue?.rewardType === "$_OFF" ?
-                                    'Dollar ($) off' : data?.dealValue?.rewardType === '%_OFF' ? 'Percentage (%) off' : 'Fixed off'}
-                                </Typography>
+                                        <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
+                                            Type
+                                        </Typography>
+                                        <Typography className={styles.content} >{data?.dealValue?.rewardType === "$_OFF" ?
+                                            'Dollar ($) off' : data?.dealValue?.rewardType === '%_OFF' ? 'Percentage (%) off' : 'Fixed off'}
+                                        </Typography>
 
-                                <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
-                                    Value
-                                </Typography>
+                                        <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
+                                            Value
+                                        </Typography>
 
-                                <Typography className={styles.content}>{data?.dealValue?.rewardsValue[0]?.value ?
-                                    dealValue(data?.dealValue?.rewardsValue[0]?.value, data?.dealValue?.rewardType) : null}</Typography>
+                                        <Typography className={styles.content}>{data?.dealValue?.rewardsValue[0]?.value ?
+                                            dealValue(data?.dealValue?.rewardsValue[0]?.value, data?.dealValue?.rewardType) : null}</Typography>
 
-                                <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
-                                    Customer preview
-                                </Typography>
-                                <Typography className={styles.content}>{getDealValuePreview(data)}</Typography>
+                                        <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
+                                            Customer preview
+                                        </Typography>
+                                        <Typography className={styles.content}>{getDealValuePreview(data)}</Typography>
+                                    </Grid>
+                                </Grid>
                             </Grid>
-                        </Grid>
-                    </Grid>
-                </Card>
+                        </Card>
+                    </>}
+
+
+                {data?.generalDealInfo?.type === "MULTI_BUY" &&
+                    <>
+                        <Card className={styles["step-card-container"]}>
+                            <StepTitle title={"Deal criteria"} />
+
+                            <Grid container>
+                                <Grid item lg={12} md={9} sm={6}>
+                                    <Grid item lg={7}>
+                                        <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
+                                            Type
+                                        </Typography>
+                                        <Typography className={styles.content} >
+                                            Multi-buy
+                                        </Typography>
+
+                                        <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
+                                            Tiers
+                                        </Typography>
+
+                                        <Typography className={styles.content}>{data?.dealValue?.rewardsValue.length > 0 ?
+                                            data?.dealValue?.rewardsValue.length : null}</Typography>
+
+                                        <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
+                                            Customer preview
+                                        </Typography>
+                                        {customerPreview.map((data: string, index: number) => {
+                                            return <Typography key={index} className={styles.content}>{data}</Typography>
+                                        })}
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Card>
+                    </>}
 
                 <Card className={styles["step-card-container"]}>
                     <StepTitle title={"Date in effect"} />
