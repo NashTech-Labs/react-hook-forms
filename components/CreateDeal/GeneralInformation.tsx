@@ -32,13 +32,9 @@ const GeneralInformation = () => {
   }, [])
 
   return (<>
-    {dealName === "discount" ?
-      <Typography variant="h3" className={styles.heading} data-testid="form-title">
-        Create New Discount Deal
-      </Typography> :
-      <Typography variant="h3" className={styles.heading} data-testid="form-title">
-        Create New Multi-buy Deal
-      </Typography>}
+    <Typography variant="h3" className={styles.heading} data-testid="form-title">
+      Create New {dealName === "discount" ? 'Discount' : dealName === "multi-buy" ? 'Multi-buy' : 'Free Shipping'} Deal
+    </Typography>
     <Card className={commonStyles["step-card-container"]}>
       <StepLabel currentStep={2} totalSteps={7} />
       <StepTitle title={"General Information"} />
