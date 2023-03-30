@@ -97,7 +97,7 @@ const getRewardMultiBuy = (data: any, dealCriteriaType: string) => {
     {
         data.forEach((element: any, index: number) => {
             rewardData.push({
-                value: dealCriteriaType === '$_OFF_MULTI' || dealCriteriaType === '$_FIXED_MULTI' ? (Number(element.get) * 100).toFixed() : element.get,
+                value: dealCriteriaType === '$_OFF' || dealCriteriaType === '$_FIXED' ? (Number(element.get) * 100).toFixed() : element.get,
                 restrictions: {
                     quantity: {
                         minimum: element.buy,
@@ -112,7 +112,7 @@ const getRewardMultiBuy = (data: any, dealCriteriaType: string) => {
     {
         data.forEach((element: any, index: number) => {
             rewardData.push({
-                value: dealCriteriaType === '$_OFF_MULTI' || dealCriteriaType === '$_FIXED_MULTI' ? (Number(element.get) * 100).toFixed() : element.get, 
+                value: dealCriteriaType === '$_OFF_MULTI' || dealCriteriaType === '$_FIXED' ? (Number(element.get) * 100).toFixed() : element.get, 
                 // element.get,
                 restrictions: {
                     quantity: {
