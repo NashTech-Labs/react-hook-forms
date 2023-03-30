@@ -79,7 +79,7 @@ const DealSummaryView = () => {
       customerPreview.push(`Buy ${data.buy}, Get $${data.get} Off`)
     }
     if (dealCriteriaType === "$_FIXED") {
-      customerPreview.push(`Buy ${data.buy}, Get $${data.get} Off`)
+      customerPreview.push(`Buy ${data.buy} For $${data.get}`)
     }
 
     if (dealCriteriaType === "%_OFF") {
