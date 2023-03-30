@@ -25,9 +25,10 @@ interface ITextFieldProps {
     regular?: boolean
     displayPercentageFormat?: boolean
     inputHeight?: boolean
+    dealCriteria?: boolean
 }
 
-const TextInputField = ({ title, description, placeholder, tooltip, required, multiline, type, noBottomGutters, noTopGutters, disabled, name, endAdornment, inline, displayDollarFormat, regular, displayPercentageFormat, inputHeight }: ITextFieldProps) => {
+const TextInputField = ({ title, description, placeholder, tooltip, required, multiline, type, noBottomGutters, noTopGutters, disabled, name, endAdornment, inline, displayDollarFormat, regular, displayPercentageFormat, inputHeight, dealCriteria }: ITextFieldProps) => {
     const { control, setValue } = useFormContext()
     const { field, fieldState: { error } } = useController({
         control,
@@ -69,7 +70,8 @@ const TextInputField = ({ title, description, placeholder, tooltip, required, mu
             MozAppearance: 'textfield',
         },
         '&.MuiInputBase-root': {
-            height: inputHeight ? "40px" : "auto"
+            height: inputHeight ? "40px" : "auto",
+            width: dealCriteria ? "100%" : null
         },
         '& ::placeholder': {
             color: '#666B73 !important',
