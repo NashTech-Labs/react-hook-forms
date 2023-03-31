@@ -72,6 +72,11 @@ function DealCriteria() {
         setValue("dealCriteria", dealCriteria);
     };
 
+    const deleteTier = (index: number) => {
+        dealCriteria.splice(index, 1)
+        setValue("dealCriteria", dealCriteria)
+    }
+
     let customerPreview: string[] = []
 
     dealCriteria.forEach((data: any,) => {
@@ -132,7 +137,8 @@ function DealCriteria() {
                                 />
                             </Grid>
 
-                            <Typography className={commonStyles.getText}>Get</Typography>
+                            {dealCriteriaType === "$_FIXED" ? <Typography className={commonStyles.getText}>For</Typography> :
+                                <Typography className={commonStyles.getText}>Get</Typography>}
 
                             {dealCriteriaType === '$_OFF' ? <TextInputField
                                 placeholder="$ 0.00"
@@ -168,9 +174,10 @@ function DealCriteria() {
                                     dealCriteria={true}
                                 /> : null}
 
-                            <Typography className={commonStyles.getText}>Off</Typography>
+                            {dealCriteriaType === "$_FIXED" ? null :
+                                <Typography className={commonStyles.getText}>Off</Typography>}
 
-                            {index > 0 ? <Grid className={commonStyles.deleteIcon} > <CloseIcon /> </Grid> : null}
+                            {index > 0 ? <Grid className={commonStyles.deleteIcon} > <CloseIcon onClick={() => deleteTier(index)} /> </Grid> : null}
 
                         </Grid>
                     );
