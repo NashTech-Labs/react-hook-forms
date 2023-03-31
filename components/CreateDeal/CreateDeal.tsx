@@ -86,19 +86,21 @@ function CreateDeal() {
           </Grid>
         </Grid>
 
-        <Grid
-          className={commonStyles["disable-deal-card-container"]}
-          bgcolor={"#F0F0F0"}
-          sx={{ cursor: "not-allowed !important" }}
-        >
-          <LocalShippingOutlinedIcon className={commonStyles.disableDeals} />
+        {/* <Grid
+          data-testid="dealBtn"
+          onClick={() => {
+            handleDealValue("free-shipping");
+          }}
+          className={commonStyles["deal-card-container"]}
+          bgcolor={dealType === "free-shipping" ? "#E6ECF6" : "#fff"}      >
+          <LocalShippingOutlinedIcon className={commonStyles.Discount} />
           <Grid className={commonStyles.dealTitle}>
-            <Typography variant="h6" className={commonStyles.disableDealType}>
+            <Typography variant="h6" className={commonStyles.dealType}>
               Free Shipping
             </Typography>
-            <Typography color="#CCCCCC" >Create a free shipping deal.</Typography>
+            <Typography >Create a free shipping deal.</Typography>
           </Grid>
-        </Grid>
+        </Grid> */}
 
       </Card>
 
@@ -117,7 +119,7 @@ function CreateDeal() {
               data-testid="ContinueBtn"
               onClick={() => ContinueDeal()}
               variant="contained"
-              disabled={dealType === "discount" || dealType === "multi-buy" ? false : true}
+              disabled={dealType === "discount" || dealType === "multi-buy" || dealType === "free-shipping" ? false : true}
               className={commonStyles.continueBtn}
             >
               Continue

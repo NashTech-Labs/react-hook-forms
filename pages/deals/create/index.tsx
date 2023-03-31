@@ -9,7 +9,7 @@ const CreateNewDeal = () => {
 
   return (
     <>
-      {dealName === "discount" || dealName === "multi-buy" ? (
+      {dealName === "discount" || dealName === "multi-buy" || dealName === "free-shipping" ? (
         <>
           <CreateDealForm />
         </>

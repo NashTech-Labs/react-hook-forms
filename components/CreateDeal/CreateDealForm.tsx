@@ -195,8 +195,9 @@ const schema = yup.object().shape({
                 let data = context?.from[1]?.value?.dealCriteria
                 let index = data.findIndex((x: any) => x.buy === value);
                 if (data.length > 1) {
-                    if (value === data[data.length - 1].buy && value > data[data.length - 2].buy || index === 0 && value < data[index + 1].buy ||
-                        index > 0 && index < data.length - 1 && value > data[index - 1].buy && value < data[index + 1].buy) {
+                    if (parseInt(value) === parseInt(data[data.length - 1].buy) && parseInt(value) > parseInt(data[data.length - 2].buy) ||
+                        index === 0 && parseInt(value) < parseInt(data[index + 1].buy) && parseInt(value) !== parseInt(data[data.length - 1].buy) ||
+                        index > 0 && index < data.length - 1 && parseInt(value) > parseInt(data[index - 1].buy) && parseInt(value) < parseInt(data[index + 1].buy)) {
                         return true
                     } else return false
                 } else return true
@@ -227,11 +228,12 @@ const schema = yup.object().shape({
                 } return false
             })
             .test("valid-value-required", "Error: Enter valid value", (value: any, context: any) => {
-                let data = context?.from[1]?.value?.dealCriteria
-                let index = data.findIndex((x: any) => x.get === value);
-                if (data.length > 1) {
-                    if (value === data[data.length - 1].get && value > data[data.length - 2].get || index === 0 && value < data[index + 1].get ||
-                        index > 0 && index < data.length - 1 && value > data[index - 1].get && value < data[index + 1].get) {
+                let getdata = context?.from[1]?.value?.dealCriteria
+                let index = getdata.findIndex((x: any) => x.get === value);
+                if (getdata.length > 1) {
+                    if (parseInt(value) === parseInt(getdata[getdata.length - 1].get) && parseInt(value) > parseInt(getdata[getdata.length - 2].get) ||
+                        index === 0 && parseInt(value) < parseInt(getdata[index + 1].get) ||
+                        index > 0 && index < parseInt(getdata.length) - 1 && parseInt(value) > parseInt(getdata[index - 1].get) && parseInt(value) < parseInt(getdata[index + 1].get)) {
                         return true
                     } else return false
                 } else return true
