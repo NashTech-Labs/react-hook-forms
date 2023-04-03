@@ -86,7 +86,7 @@ function CreateDeal() {
           </Grid>
         </Grid>
 
-        {/* <Grid
+        <Grid
           data-testid="dealBtn"
           onClick={() => {
             handleDealValue("free-shipping");
@@ -100,7 +100,7 @@ function CreateDeal() {
             </Typography>
             <Typography >Create a free shipping deal.</Typography>
           </Grid>
-        </Grid> */}
+        </Grid>
 
       </Card>
 
