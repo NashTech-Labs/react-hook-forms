@@ -62,7 +62,7 @@ const getUrl = (params: any): string => {
     if (endDate) {
       urlParamsObj = {
         ...urlParamsObj,
-        'valid_to': endDate.format()
+        'valid_to': endDate.format().replace("T00:00:00+05:30", "T23:59:59+05:30")
       }
     }
   }
