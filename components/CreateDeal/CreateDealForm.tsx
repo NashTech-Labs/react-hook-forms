@@ -19,6 +19,7 @@ import { updatedDealLevel, updatedDealStep, updateDealLevel, updateDealStep } fr
 import { updateNewDeal, getNewDealData } from '../../store/feature/deal/newDealSlice'
 import DateInEffect from './DateInEffect/DateInEffect';
 import DealCriteria from './DealCriteria/DealCriteria';
+import SpendMinimum from './SpendMinimum'
 
 const MAX_FILE_SIZE = 1000000; //1MB
 
@@ -80,6 +81,14 @@ const schema = yup.object().shape({
         .min(1, 'Error: Must be a minimum of $1.00')
         .test('fixed-price-off', 'Error: Dollar($) value required', (value, context) => {
             if (context?.parent?.dealDiscountTab === 'fixed') {
+                return value !== undefined
+            } else return true
+        }),
+        customMinimumSpend: yup.number()
+        .transform(value => (isNaN(value) ? undefined : value))
+        .test('custom-spend-minimum', 'Error: Dollar($) value required', (value, context) => {
+            console.log(context)
+            if (context?.parent?.spendMinimum === 'CUSTOM') {
                 return value !== undefined
             } else return true
         }),
@@ -282,6 +291,7 @@ const CreateDealForm = () => {
         <form id="test">
             <GeneralInformation />
             {dealName === "discount" ? <DealValue /> : <DealCriteria />}
+            {dealName === 'free-shipping' && <SpendMinimum />}
             <DateInEffect />
             {dealLevelName === 'product' ? <ProductsCollection /> : null}
             <Exclusions dealLevelName={dealLevelName} />

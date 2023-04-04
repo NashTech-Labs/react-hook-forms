@@ -30,6 +30,14 @@ export const percentageOptions = [
     { value: 'custom', label: 'Add custom value' }
 ]
 
+export const minimumSpendOptions = [
+    { value: 'NO_MINIMUM', label: 'No minimum' },
+    { value: '30', label: '$30' },
+    { value: '50', label: '$50' },
+    { value: '100', label: '$100' },
+    { value: 'CUSTOM', label: 'Add custom value' }
+]
+
 export const productCollectionTabs = [
     { label: "Upload product(s)", value: "uploadProduct" },
     { label: "Manually add product(s)", value: "addProduct" },
