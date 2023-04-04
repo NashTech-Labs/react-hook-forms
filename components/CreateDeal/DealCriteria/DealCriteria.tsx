@@ -184,19 +184,21 @@ function DealCriteria() {
                 })}
             </Grid>
 
-            <Grid container>
-                <Grid
-                    onClick={() => addTier()}
-                    item
-                    lg={2}
-                    className={commonStyles.addbtn}
-                >
-                    <AddCircleOutlineIcon className={commonStyles.mchIcon} />
-                    <Typography ml="3px" mt="1px">
-                        Add tier
-                    </Typography>
+            {dealCriteriaType === '$_FIXED' ? null :
+                <Grid container>
+                    <Grid
+                        onClick={() => addTier()}
+                        item
+                        lg={2}
+                        className={commonStyles.addbtn}
+                    >
+                        <AddCircleOutlineIcon className={commonStyles.mchIcon} />
+                        <Typography ml="3px" mt="1px">
+                            Add tier
+                        </Typography>
+                    </Grid>
                 </Grid>
-            </Grid>
+            }
 
             <FormCardMultiple
                 title="Customer preview"

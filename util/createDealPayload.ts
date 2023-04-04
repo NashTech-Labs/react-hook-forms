@@ -166,26 +166,23 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
         "stacking_type": STACKING_TYPES[stackingType],
         "scope_type": dealLevel?.toUpperCase(),
         "scopes": getScopeData(productsCollectionTab, fileLIAM, fileMCH, liam, mch),
-        // "reward_type": rewardType,
-        // "rewards": [
-        //     {
-        //         "value": String(rewardValue)
-        //     }
-        // ],
         "valid_from": convertDateTime(startDatePicker,startTimePicker),
         "valid_to": convertDateTime(endDatePicker,endTimePicker),
         "promo_restrictions": {
-            "product_code": {
-                "liam": [...exFileLIAM, ...exliam]
-            },
-            "category": {
-                "mch": [...exFileMCH, ...exmch]
-            }
         },
         "store_id": "5264",
         "promotion_message_english": englishMessage,
         "promotion_message_french": frenchMessage,
         "status": "DRAFT",
+    }
+
+    if (dealLevel !== 'basket') {
+        payload["promo_restrictions"]['product_code'] = {
+            "liam": [...exFileLIAM, ...exliam]
+        },
+        payload["promo_restrictions"]['category'] = {
+            "mch": [...exFileMCH, ...exmch]
+        }
     }
 
     if(dealApplyTypeEnum === 'REGULAR_ONLY') {
