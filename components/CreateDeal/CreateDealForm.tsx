@@ -1,4 +1,4 @@
-import React, { MouseEvent } from 'react'
+import React, { MouseEvent, useEffect } from 'react'
 import moment from 'moment';
 import { useRouter } from "next/router";
 import { useForm, FormProvider } from "react-hook-form";
@@ -20,6 +20,7 @@ import { updateNewDeal, getNewDealData } from '../../store/feature/deal/newDealS
 import DateInEffect from './DateInEffect/DateInEffect';
 import DealCriteria from './DealCriteria/DealCriteria';
 import SpendMinimum from './SpendMinimum'
+import ShippingMethod from './ShippingMethod/ShippingMethod';
 
 const MAX_FILE_SIZE = 1000000; //1MB
 
@@ -84,7 +85,7 @@ const schema = yup.object().shape({
                 return value !== undefined
             } else return true
         }),
-        customMinimumSpend: yup.number()
+    customMinimumSpend: yup.number()
         .transform(value => (isNaN(value) ? undefined : value))
         .test('custom-spend-minimum', 'Error: Dollar($) value required', (value, context) => {
             console.log(context)
@@ -287,14 +288,16 @@ const CreateDealForm = () => {
         router.push("/deals");
     }
 
+    console.log(dealName)
+
     return <FormProvider {...formMethods}>
         <form id="test">
             <GeneralInformation />
-            {dealName === "discount" ? <DealValue /> : <DealCriteria />}
+            {dealName === "discount" ? <DealValue /> : dealName === "multi-buy" ? <DealCriteria /> : <ShippingMethod />}
             {dealName === 'free-shipping' && <SpendMinimum />}
             <DateInEffect />
-            {dealLevelName === 'product' ? <ProductsCollection /> : null}
-            <Exclusions dealLevelName={dealLevelName} />
+            {dealName === 'free-shipping' || dealLevelName === 'basket' ? null : <ProductsCollection />}
+            {dealName === 'free-shipping' ? null : <Exclusions dealLevelName={dealLevelName} />}
             <PromotionalMessages dealLevelName={dealLevelName} />
             <div className={styles['submit-btn-container']}>
                 <div>
