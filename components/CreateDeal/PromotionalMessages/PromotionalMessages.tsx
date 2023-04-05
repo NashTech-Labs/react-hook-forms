@@ -9,9 +9,12 @@ import commonStyles from "../Steps.module.css";
 import styles from "./PromotionalMessages.module.css";
 import UndoIcon from "@mui/icons-material/Undo";
 import { useFormContext, useWatch } from "react-hook-form";
+import { useAppSelector } from "../../../store";
+import { updatedDealStep } from "../../../store/feature/deal/dealSlice";
 
 function PromotionalMessages({ dealLevelName }: any) {
   const { resetField } = useFormContext();
+  const dealName = useAppSelector(updatedDealStep);
 
   const englishMessage = useWatch({
     name: "englishMessage",
@@ -42,7 +45,8 @@ function PromotionalMessages({ dealLevelName }: any) {
 
   return (
     <Card className={commonStyles["step-card-container"]}>
-      <StepLabel currentStep={dealLevelName === 'product' ? 7 : 6} totalSteps={dealLevelName === 'product' ? 7 : 6} />
+      <StepLabel currentStep={dealName === 'free-shipping' || dealLevelName === 'basket' ? 6 : 7}
+        totalSteps={dealName === 'free-shipping' || dealLevelName === 'basket' ? 6 : 7} />
       <StepTitle title={"Promotional Messages"} />
       <Grid container>
         <Grid item lg={12}>

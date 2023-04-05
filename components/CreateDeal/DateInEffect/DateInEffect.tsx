@@ -10,9 +10,13 @@ import DatePicker from "../../FormComponents/DatePicker";
 import InputTimePicker from "../../FormComponents/TimePicker";
 import { dateTimePreviewGenerator } from "../../../util/ConvertDateTime";
 import moment from "moment";
+import { useAppSelector } from "../../../store";
+import { updatedDealLevel, updatedDealStep } from "../../../store/feature/deal/dealSlice";
 
 function DateInEffect() {
   const { setValue, trigger } = useFormContext();
+  const dealName = useAppSelector(updatedDealStep);
+  const dealLevelName = useAppSelector(updatedDealLevel)
 
   const startDateValue = useWatch({
     name: "startDatePicker",
@@ -66,7 +70,7 @@ function DateInEffect() {
 
   return (
     <Card className={commonStyles["step-card-container"]}>
-      <StepLabel currentStep={4} totalSteps={7} />
+      <StepLabel currentStep={dealName === 'free-shipping' ? 5 : 4} totalSteps={dealName === 'free-shipping' || dealLevelName === 'basket' ? 6 : 7} />
       <StepTitle title={"Date in effect"} />
       <Grid container>
         <Grid item lg={12}>
