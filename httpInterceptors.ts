@@ -2,9 +2,9 @@ import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type { RootState } from "./store/index";
 
 //  const baseURL = "http://localhost:8080"
-const baseURL = "https://cs-bo-panel-bff-sit.loblaw.digital"
+// const baseURL = "https://cs-bo-panel-bff-sit.loblaw.digital"
 
-// const baseURL = process.env.NEXT_PUBLIC_BFF_ENDPOINT
+const baseURL = process.env.NEXT_PUBLIC_BFF_ENDPOINT
 
 export const CustomQuery = () =>
     fetchBaseQuery({
