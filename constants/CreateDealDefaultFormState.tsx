@@ -44,7 +44,8 @@ const createDealDefaultFormState: ICreateDealFormState = {
         get: ''
     }],
     dealCriteriaType: "%_OFF",
-    spendMinimum: 'NO_MINIMUM'
+    spendMinimum: 'NO_MINIMUM',
+    shippingMethodType: 'standard'
 }
 
 export default createDealDefaultFormState

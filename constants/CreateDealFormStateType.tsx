@@ -40,4 +40,5 @@ export interface ICreateDealFormState {
     dealCriteria: any
     dealCriteriaType: string
     spendMinimum: string
+    shippingMethodType: string
 }
