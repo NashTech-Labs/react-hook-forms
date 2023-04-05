@@ -12,11 +12,12 @@ import styles from "./GeneralInformation.module.css";
 import commonStyles from './Steps.module.css'
 import generateIdentifier from '../../util/generateIdentifier'
 import SelectField from '../FormComponents/SelectField'
-import { updatedDealStep } from "../../store/feature/deal/dealSlice";
+import { updatedDealLevel, updatedDealStep } from "../../store/feature/deal/dealSlice";
 import { useAppSelector } from "../../store/index";
 
 const GeneralInformation = () => {
   const { setValue } = useFormContext()
+  const dealLevelName = useAppSelector(updatedDealLevel)
 
   const dealName = useAppSelector(updatedDealStep);
 
@@ -36,7 +37,7 @@ const GeneralInformation = () => {
       Create New {dealName === "discount" ? 'Discount' : dealName === "multi-buy" ? 'Multi-buy' : 'Free Shipping'} Deal
     </Typography>
     <Card className={commonStyles["step-card-container"]}>
-      <StepLabel currentStep={2} totalSteps={7} />
+      <StepLabel currentStep={2} totalSteps={dealName === "free-shipping" || dealLevelName === 'basket' ? 6 : 7} />
       <StepTitle title={"General Information"} />
       <Tag label="Internal facing" />
       <TextInputField
