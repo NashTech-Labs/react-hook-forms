@@ -13,10 +13,11 @@ import styles from "./DealValue.module.css";
 import FormCardPreview from '../FormCardPreview'
 import commonStyles from './Steps.module.css'
 import { dealLevelOptions, dealTabs, percentageOptions } from '../../constants/FormOptions'
-import { useAppDispatch } from '../../store';
-import { updateDealLevel } from '../../store/feature/deal/dealSlice';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { updateDealLevel, updatedDealLevel } from '../../store/feature/deal/dealSlice';
 
 const DealValue = () => {
+    const dealLevelName = useAppSelector(updatedDealLevel)
     const dispatch = useAppDispatch();
     const { control, setValue, clearErrors, setFocus } = useFormContext()
     const dealDiscountTab = useWatch({
@@ -234,7 +235,7 @@ const DealValue = () => {
     }
 
     return <Card className={commonStyles["step-card-container"]}>
-        <StepLabel currentStep={3} totalSteps={7} />
+        <StepLabel currentStep={3} totalSteps={dealLevelName === 'basket' ? 6 : 7} />
         <StepTitle title={"Deal Value"} />
         <RadioGroupField options={dealLevelOptions} label="Is this at a basket level or product level?" name="dealLevel" required handleChange={handleChange} />
         {dealLevel === 'product' && < StyledTabs tabs={dealTabs} handleTabUpdate={handleTabUpdate} defaultValue={dealDiscountTab} />}

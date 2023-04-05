@@ -39,4 +39,6 @@ export interface ICreateDealFormState {
     draftCreatedTimestamp: object | null
     dealCriteria: any
     dealCriteriaType: string
+    spendMinimum: string
+    shippingMethodType: string
 }
