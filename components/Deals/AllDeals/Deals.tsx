@@ -53,6 +53,10 @@ function Deals({ search }: IDealsProps) {
     refetch();
   }, [])
 
+  useEffect(() => {
+    setPage(1)
+  }, [filters])
+
   const deleteDealStyles = {
     content: {
       width: "27%",
@@ -362,6 +366,7 @@ function Deals({ search }: IDealsProps) {
               </Grid>
               <Grid item>
                 <Pagination
+                  page={page}
                   count={data?.paginationInfo?.['total_pages']}
                   hidePrevButton={page === 1}
                   onChange={handlePagination}

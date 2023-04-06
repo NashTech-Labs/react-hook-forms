@@ -82,6 +82,7 @@ const getUrl = (params: any): string => {
 export const viewAllDeals = createApi({
   reducerPath: "viewAllDeals",
   baseQuery: CustomQuery(),
+  refetchOnMountOrArgChange: true,
   endpoints: (builder) => ({
     getAllList: builder.query<newAllDealsList, IGetAllList>({
       query: (params) => ({
