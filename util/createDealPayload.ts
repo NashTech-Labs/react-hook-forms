@@ -98,12 +98,6 @@ const getRewardMultiBuy = (data: any, dealCriteriaType: string) => {
         data.forEach((element: any, index: number) => {
             rewardData.push({
                 value: dealCriteriaType === '$_OFF' || dealCriteriaType === '$_FIXED' ? (Number(element.get) * 100).toFixed() : element.get,
-                restrictions: {
-                    quantity: {
-                        minimum: element.buy,
-                        maximum: null
-                    }
-                }
             }) 
         });
     }

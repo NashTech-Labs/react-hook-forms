@@ -120,18 +120,34 @@ function Summary() {
 
                 let customerPreviewData: string[] = []
 
-                previewData.forEach((value: any,) => {
-                    if (data?.dealValue?.rewardType === "$_OFF_MULTI") {
-                        customerPreviewData.push(`Buy ${value.restrictions.quantity.minimum} Get $${(Number(value.value) / 100).toFixed(2)} Off`)
-                    }
-                    if (data?.dealValue?.rewardType === "$_FIXED_MULTI") {
-                        customerPreviewData.push(`Buy ${value.restrictions.quantity.minimum} For $${(Number(value.value) / 100).toFixed(2)}`)
-                    }
+                if (previewData.length === 1) {
+                    previewData.forEach((value: any) => {
+                        if (data?.dealValue?.rewardType === "$_OFF_MULTI") {
+                            customerPreviewData.push(`Buy ${data?.dealValue?.quantity.minimum} Get $${(Number(value.value) / 100).toFixed(2)} Off`)
+                        }
+                        if (data?.dealValue?.rewardType === "$_FIXED_MULTI") {
+                            customerPreviewData.push(`Buy ${data?.dealValue?.quantity.minimum} For $${(Number(value.value) / 100).toFixed(2)}`)
+                        }
 
-                    if (data?.dealValue?.rewardType === "%_OFF_MULTI") {
-                        customerPreviewData.push(`Buy ${value.restrictions.quantity.minimum} Get ${value.value}% Off`)
-                    }
-                });
+                        if (data?.dealValue?.rewardType === "%_OFF_MULTI") {
+                            customerPreviewData.push(`Buy ${data?.dealValue?.quantity.minimum} Get ${value.value}% Off`)
+                        }
+                    });
+                }
+                else {
+                    previewData.forEach((value: any) => {
+                        if (data?.dealValue?.rewardType === "$_OFF_MULTI") {
+                            customerPreviewData.push(`Buy ${value.restrictions.quantity.minimum} Get $${(Number(value.value) / 100).toFixed(2)} Off`)
+                        }
+                        if (data?.dealValue?.rewardType === "$_FIXED_MULTI") {
+                            customerPreviewData.push(`Buy ${value.restrictions.quantity.minimum} For $${(Number(value.value) / 100).toFixed(2)}`)
+                        }
+
+                        if (data?.dealValue?.rewardType === "%_OFF_MULTI") {
+                            customerPreviewData.push(`Buy ${value.restrictions.quantity.minimum} Get ${value.value}% Off`)
+                        }
+                    });
+                }
                 setCustomerPreview(customerPreviewData)
             }
         }
