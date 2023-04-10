@@ -192,6 +192,14 @@ function Deals({ search }: IDealsProps) {
             }
           }
 
+          else if (row.type === "FREE_SHIPPING") {
+            return (
+              <Grid display="grid">
+                <Grid> {row?.spend?.minimum ? `Spend minimum of $${(Number(row.spend.minimum) / 100).toFixed(2)}` : "No minimum"}</Grid>
+              </Grid>
+            )
+          }
+
           else {
 
             if (row?.spend?.minimum > 0) {
