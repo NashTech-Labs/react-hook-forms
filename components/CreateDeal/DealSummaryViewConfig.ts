@@ -135,8 +135,17 @@ const config: IConfig = {
             getValue: (formData: ICreateDealFormState) => {
                 const {spendMinimum, customMinimumSpend} = formData
                 if (spendMinimum === 'CUSTOM') return `$${customMinimumSpend}`
-                if (spendMinimum === 'NO_MINIMUM') return `${capitalizeWords(spendMinimum || '')}`
+                if (spendMinimum === 'NO_MINIMUM') return "No minimum"
                 else return `$${spendMinimum}`
+            },
+        },
+        {
+            title: 'Customer preview',
+            getValue: (formData: ICreateDealFormState) => {
+                const {spendMinimum, customMinimumSpend} = formData
+                if (spendMinimum === 'CUSTOM') return `Spend minimum of $${customMinimumSpend}`
+                if (spendMinimum === 'NO_MINIMUM') return "Spend No Minimum"
+                else return `Spend minimum of $${spendMinimum}`
             },
         },
     ],
