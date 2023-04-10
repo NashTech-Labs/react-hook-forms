@@ -72,6 +72,10 @@ const DealSummaryView = () => {
     excludeSteps.push('Deal value')
   }
 
+  if (dealType === "Free-shipping") {
+    excludeSteps.push('Deal value', 'Deal Criteria', 'Products and Collections', 'Exclusions')
+  }
+
   let customerPreview: string[] = []
 
   dealCriteria.forEach((data: any,) => {
