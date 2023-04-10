@@ -59,7 +59,7 @@ const schema = yup.object().shape({
         // .typeError('Error: Dollar($) value required')
         .min(1, 'Error: Must be minimum of $1.00')
         .test('dollar-off', 'Error: Dollar($) value required', (value, context) => {
-            if (context?.parent?.dealType === "Multi-buy") {
+            if (context?.parent?.dealType === "Multi-buy" || context?.parent?.dealType === "Free-shipping") {
                 return true
             }
             else if (context?.parent?.dealDiscountTab === 'dollar' && context?.parent?.dealLevel === 'product') {
@@ -88,7 +88,6 @@ const schema = yup.object().shape({
     customMinimumSpend: yup.number()
         .transform(value => (isNaN(value) ? undefined : value))
         .test('custom-spend-minimum', 'Error: Dollar($) value required', (value, context) => {
-            console.log(context)
             if (context?.parent?.spendMinimum === 'CUSTOM') {
                 return value !== undefined
             } else return true
@@ -140,13 +139,13 @@ const schema = yup.object().shape({
         .mixed()
         .test("file-required", "Error: FIle required", (value, context) => {
             if (value?.size > 0 || context?.parent?.dealLevel === 'basket' ||
-                context?.parent?.mch?.length > 0 || context?.parent?.liam.length > 0) {
+                context?.parent?.mch?.length > 0 || context?.parent?.liam.length > 0 || context?.parent?.dealType === "Free-shipping") {
                 return true
             } else return false
         })
         .test("not-valid-size", "Error: Max allowed size is 1 MB", (value, context) => {
             if (context?.parent?.mch?.length < 1 && context?.parent?.liam.length < 1) {
-                if (context?.parent?.productsCollectionTab === 'uploadProduct' && context?.parent?.dealLevel === 'product') {
+                if (context?.parent?.productsCollectionTab === 'uploadProduct' && context?.parent?.dealLevel === 'product' && context?.parent?.dealType === 'Discount') {
                     return value?.size && value.size < MAX_FILE_SIZE
                 } else return true
             }
@@ -154,7 +153,7 @@ const schema = yup.object().shape({
         })
         .test("is-valid-type", "Error: File Type not accepted", (value, context) => {
             if (context?.parent?.mch?.length < 1 && context?.parent?.liam.length < 1) {
-                if (context?.parent?.productsCollectionTab === 'uploadProduct' && context?.parent?.dealLevel === 'product') {
+                if (context?.parent?.productsCollectionTab === 'uploadProduct' && context?.parent?.dealLevel === 'product' && context?.parent?.dealType === 'Discount') {
                     return isValidFileType(value && value?.name?.toLowerCase())
                 } else return true
             }
@@ -184,7 +183,14 @@ const schema = yup.object().shape({
             }
             else return true
         }),
-    dealApplyType: yup.string().required('Error: Select applicable products'),
+    dealApplyType: yup.mixed().test("dollar-value-required", 'Error: Select applicable products', (value: any, context: any) => {
+        if (context?.parent?.dealType !== "Free-shipping") {
+            if (value !== '') {
+                return true
+            } else return false
+        } else return true
+    }),
+    // yup.string().required('Error: Select applicable products'),
     startDatePicker: yup.date().typeError("Error: Valid date required").min(moment().subtract(1, "days").format("YYYY-MM-DD"), "Error: You cannot add date before yesterday").required('Error: Date required').nullable(),
     startTimePicker: yup.date().typeError("Error: Valid time required").required('Error: Time required').nullable(),
     endDatePicker: yup.date().typeError("Error: Valid date required").required('Error: Date required').nullable()
@@ -215,25 +221,25 @@ const schema = yup.object().shape({
         get: yup.mixed()
             .test("dollar-value-required", "Error: Dollar ($) value required", (value: any, context: any) => {
                 if (context?.from[1]?.value?.dealCriteriaType === "%_OFF" || context?.from[1]?.value?.dealCriteriaType === "$_FIXED" ||
-                    value > 0 && context?.from[1]?.value?.dealCriteriaType === "$_OFF" || context?.from[1]?.value?.dealType === 'Discount') {
+                    value > 0 && context?.from[1]?.value?.dealCriteriaType === "$_OFF" || context?.from[1]?.value?.dealType === 'Discount' || context?.from[1]?.value?.dealType === "Free-shipping") {
                     return true
                 } return false
             })
             .test("fixed-value-required", "Error: Dollar ($) value required", (value: any, context: any) => {
                 if (context?.from[1]?.value?.dealCriteriaType === "%_OFF" || context?.from[1]?.value?.dealCriteriaType === "$_OFF" ||
-                    value > 0 && context?.from[1]?.value?.dealCriteriaType === "$_FIXED" || context?.from[1]?.value?.dealType === 'Discount') {
+                    value > 0 && context?.from[1]?.value?.dealCriteriaType === "$_FIXED" || context?.from[1]?.value?.dealType === 'Discount' || context?.from[1]?.value?.dealType === "Free-shipping") {
                     return true
                 } return false
             })
             .test("percent-value-required", "Error: Percentage (%) value required", (value: any, context: any) => {
                 if (context?.from[1]?.value?.dealCriteriaType === "$_OFF" || context?.from[1]?.value?.dealCriteriaType === "$_FIXED" ||
-                    value > 0 && context?.from[1]?.value?.dealCriteriaType === "%_OFF" || context?.from[1]?.value?.dealType === 'Discount') {
+                    value > 0 && context?.from[1]?.value?.dealCriteriaType === "%_OFF" || context?.from[1]?.value?.dealType === 'Discount' || context?.from[1]?.value?.dealType === "Free-shipping") {
                     return true
                 } return false
             })
             .test("percent-value-required-value", "Error: Percentage value should be between 1-99", (value: any, context: any) => {
                 if (context?.from[1]?.value?.dealCriteriaType === "$_OFF" || context?.from[1]?.value?.dealCriteriaType === "$_FIXED" ||
-                    value > 0 && value < 100 && context?.from[1]?.value?.dealCriteriaType === "%_OFF" || context?.from[1]?.value?.dealType === 'Discount') {
+                    value > 0 && value < 100 && context?.from[1]?.value?.dealCriteriaType === "%_OFF" || context?.from[1]?.value?.dealType === 'Discount' || context?.from[1]?.value?.dealType === "Free-shipping") {
                     return true
                 } return false
             })
@@ -277,6 +283,8 @@ const CreateDealForm = () => {
             router.push('/deals/create/summary')
         }
     }
+
+    console.log(errors, getValues())
 
     const handleBack = () => {
         dispatch(updateDealStep(""));

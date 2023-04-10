@@ -30,6 +30,11 @@ const GeneralInformation = () => {
       setValue('dealType', "Multi-buy")
       setValue('isListValid', true)
     }
+
+    if (dealName === "free-shipping") {
+      setValue('dealType', "Free-shipping")
+    }
+
   }, [])
 
   return (<>
