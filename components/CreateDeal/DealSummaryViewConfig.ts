@@ -120,6 +120,26 @@ const config: IConfig = {
             },
         },
     ],
+    'Shipping method': [
+        {
+            title: 'Method',
+            getValue: (formData: ICreateDealFormState) => {
+                const {shippingMethodType} = formData
+                return capitalizeWords(shippingMethodType || '')
+            },
+        },
+    ],
+    'Spend minimum': [
+        {
+            title: 'Value',
+            getValue: (formData: ICreateDealFormState) => {
+                const {spendMinimum, customMinimumSpend} = formData
+                if (spendMinimum === 'CUSTOM') return `$${customMinimumSpend}`
+                if (spendMinimum === 'NO_MINIMUM') return `${capitalizeWords(spendMinimum || '')}`
+                else return `$${spendMinimum}`
+            },
+        },
+    ],
     'Date in effect': [{
         title: 'Start Date',
         getValue: (formData: ICreateDealFormState) => {

@@ -148,7 +148,9 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
          fileLIAM,
          exFileLIAM,
          productsCollectionTab,
-         basketSpend
+         basketSpend,
+         spendMinimum, 
+         customMinimumSpend
         } = formData
     const { rewardType, rewardValue } = getRewardType(formData)
     const dealApplyTypeEnum = getDealApplyType(dealApplyType)
@@ -158,7 +160,7 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
         "description": description,
         "priority": priority,
         "stacking_type": STACKING_TYPES[stackingType],
-        "scope_type": dealLevel?.toUpperCase(),
+        "scope_type": dealType === "Free-shipping" ? "BASKET" : dealLevel?.toUpperCase(),
         "scopes": getScopeData(productsCollectionTab, fileLIAM, fileMCH, liam, mch),
         "valid_from": convertDateTime(startDatePicker,startTimePicker),
         "valid_to": convertDateTime(endDatePicker,endTimePicker),
@@ -172,8 +174,7 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
         },
         "store_id": "5264",
         "promotion_message_english": englishMessage,
-        "promotion_message_french": frenchMessage,
-        "status": "DRAFT",
+        "promotion_message_french": frenchMessage
     }
 
     if (dealLevel !== 'basket') {
@@ -217,6 +218,19 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
                 minimum: dealCriteria[dealCriteria.length - 1].buy,
                 maximum: null
             }
+        }
+    }
+
+    if (dealType === "Free-shipping")
+    {
+        payload["reward_type"] = "NO_FEE",
+        payload["rewards"] = [{
+            value: "SHIPPING",
+            restrictions: {}
+        }],
+        payload["promo_restrictions"]['spend'] = {
+            "minimum": spendMinimum === 'CUSTOM' ? (Number(customMinimumSpend) * 100).toFixed() : spendMinimum === 'NO_MINIMUM' ? "0" : (Number(spendMinimum) * 100).toFixed(),
+            "maximum": null
         }
     }
 

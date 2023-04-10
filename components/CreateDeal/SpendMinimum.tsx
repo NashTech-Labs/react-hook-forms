@@ -29,18 +29,20 @@ const SpendMinimum = () => {
         }
     }
 
+    console.log(customMinimumSpend)
+
     let customerPreview = 'No Spend Minimum'
 
-    if(spendMinimum !== 'NO_MINIMUM' && spendMinimum !== 'CUSTOM'){
+    if (spendMinimum !== 'NO_MINIMUM' && spendMinimum !== 'CUSTOM') {
         customerPreview = `Spend minimum of $${spendMinimum}`
     } else if (spendMinimum === 'CUSTOM' && customMinimumSpend) {
         customerPreview = `Spend minimum of $${customMinimumSpend}`
     }
 
- return <Card className={commonStyles["step-card-container"]}>
-    <StepLabel currentStep={4} totalSteps={6} />
-    <StepTitle title={"Spend minimum"} />
-    <RadioGroupField options={minimumSpendOptions} label="Select minimum value" name="spendMinimum" required handleChange={handleCustomSpendChange} />
+    return <Card className={commonStyles["step-card-container"]}>
+        <StepLabel currentStep={4} totalSteps={6} />
+        <StepTitle title={"Spend minimum"} />
+        <RadioGroupField options={minimumSpendOptions} label="Select minimum value" name="spendMinimum" required handleChange={handleCustomSpendChange} />
         <div className={styles['cutom-percentage']}>
             <TextInputField
                 placeholder="$0.00"
@@ -51,8 +53,8 @@ const SpendMinimum = () => {
                 displayDollarFormat
             />
         </div>
-    <FormCardPreview title="Customer preview" description={customerPreview} />
-</Card>
+        <FormCardPreview title="Customer preview" description={customerPreview} />
+    </Card>
 }
 
 export default SpendMinimum
