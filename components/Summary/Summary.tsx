@@ -218,6 +218,25 @@ function Summary() {
                     </Grid>
                 </Card>
 
+                {data?.generalDealInfo?.type === 'FREE_SHIPPING' ?
+                    <Card className={styles["step-card-container"]}>
+                        <StepTitle title={"Shipping method"} />
+                        <Typography variant="h4" className={styles.heading} mt={4}>Method</Typography>
+                        <Typography >Standard</Typography>
+                    </Card> : null}
+
+                {data?.generalDealInfo?.type === 'FREE_SHIPPING' ?
+                    <Card className={styles["step-card-container"]}>
+                        <StepTitle title={"Spend minimum"} />
+                        <Typography variant="h4" className={styles.heading} mt={4}>Value</Typography>
+                        <Typography >{data?.dealValue?.spend?.minimum ? `$${(Number(data?.dealValue?.spend?.minimum) / 100).toFixed(2)}` :
+                            "No minimum"}</Typography>
+
+                        <Typography variant="h4" className={styles.heading} mt={4}>Customer preview</Typography>
+                        <Typography >{data?.dealValue?.spend?.minimum ? `Spend minimum of $${(Number(data?.dealValue?.spend?.minimum) / 100).toFixed(2)}` :
+                            "Spend No Minimum"}</Typography>
+                    </Card> : null}
+
 
                 {data?.generalDealInfo?.type === "DISCOUNT" &&
                     <>
@@ -342,43 +361,46 @@ function Summary() {
                         </Grid>
                     </Card> : null}
 
-                <Card className={styles["step-card-container"]}>
-                    <StepTitle title={data?.dealValue?.scopeType === 'PRODUCT' ? "Exclusions" : "Product applicability"} />
+                {data?.generalDealInfo?.type === 'FREE_SHIPPING' ?
+                    null :
+                    <Card className={styles["step-card-container"]}>
+                        <StepTitle title={data?.dealValue?.scopeType === 'PRODUCT' ? "Exclusions" : "Product applicability"} />
 
-                    <Grid container>
-                        <Grid item lg={12} md={9} sm={6}>
-                            <Grid item lg={7}>
-                                <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
-                                    What items does this deal apply to?
-                                </Typography>
-                                <Typography className={styles.content} >{data?.applicableProduct?.priceApplicability?.value === 'REGULAR_ONLY' ? 'Regular priced items only' : 'All'}</Typography>
-                                {data?.exclusion?.product?.liam?.length > 0 || data?.exclusion?.product?.mch?.length > 0
-                                    ?
-                                    <>
-                                        <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
-                                            Will there be additional products excluded from this deal?
-                                        </Typography>
-                                        <Typography className={styles.content} >Yes</Typography>
-                                        <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
-                                            Collection
-                                        </Typography>
-                                        <Grid className={styles.downloadSection}>
-                                            <Typography className={styles.content} >
-                                                {parseInt(data?.exclusion?.product?.liam?.length) +
-                                                    parseInt(data?.exclusion?.product?.mch?.length)} products</Typography>
-                                            <IconButton
-                                                data-testId="exbtn"
-                                                onClick={() => downloadExcel(data?.exclusion?.product)}
-                                            >
-                                                <DownloadIcon className={styles.downloadIcon} />
-                                            </IconButton>
-                                        </Grid>
-                                    </>
-                                    : null}
+                        <Grid container>
+                            <Grid item lg={12} md={9} sm={6}>
+                                <Grid item lg={7}>
+                                    <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
+                                        What items does this deal apply to?
+                                    </Typography>
+                                    <Typography className={styles.content} >{data?.applicableProduct?.priceApplicability?.value === 'REGULAR_ONLY' ? 'Regular priced items only' : 'All'}</Typography>
+                                    {data?.exclusion?.product?.liam?.length > 0 || data?.exclusion?.product?.mch?.length > 0
+                                        ?
+                                        <>
+                                            <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
+                                                Will there be additional products excluded from this deal?
+                                            </Typography>
+                                            <Typography className={styles.content} >Yes</Typography>
+                                            <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
+                                                Collection
+                                            </Typography>
+                                            <Grid className={styles.downloadSection}>
+                                                <Typography className={styles.content} >
+                                                    {parseInt(data?.exclusion?.product?.liam?.length) +
+                                                        parseInt(data?.exclusion?.product?.mch?.length)} products</Typography>
+                                                <IconButton
+                                                    data-testId="exbtn"
+                                                    onClick={() => downloadExcel(data?.exclusion?.product)}
+                                                >
+                                                    <DownloadIcon className={styles.downloadIcon} />
+                                                </IconButton>
+                                            </Grid>
+                                        </>
+                                        : null}
+                                </Grid>
                             </Grid>
                         </Grid>
-                    </Grid>
-                </Card>
+                    </Card>
+                }
 
                 <Card className={styles["step-card-container"]}>
                     <StepTitle title={"Promotional messages"} />
