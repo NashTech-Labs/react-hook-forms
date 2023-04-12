@@ -1,6 +1,7 @@
 import { Button, Card, Divider, Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
+import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
 import FormCardPreview from "../../FormCardPreview";
 import TextInputField from "../../FormComponents/TextInputField";
 import StepLabel from "../../StepLabel";
@@ -11,6 +12,8 @@ import UndoIcon from "@mui/icons-material/Undo";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useAppSelector } from "../../../store";
 import { updatedDealStep } from "../../../store/feature/deal/dealSlice";
+import StepperCard from '../StepperCard'
+
 
 function PromotionalMessages({ dealLevelName }: any) {
   const { resetField } = useFormContext();
@@ -44,7 +47,7 @@ function PromotionalMessages({ dealLevelName }: any) {
   };
 
   return (
-    <Card className={commonStyles["step-card-container"]}>
+    <StepperCard step={'PROMOTION_MESSAGES'} inProgressIcon={MessageOutlinedIcon}>
       <StepLabel currentStep={dealName === 'free-shipping' || dealLevelName === 'basket' ? 6 : 7}
         totalSteps={dealName === 'free-shipping' || dealLevelName === 'basket' ? 6 : 7} />
       <StepTitle title={"Promotional Messages"} />
@@ -114,7 +117,7 @@ function PromotionalMessages({ dealLevelName }: any) {
           </Button>
         </Grid>
       </Grid>
-    </Card>
+    </StepperCard>
   );
 }
 

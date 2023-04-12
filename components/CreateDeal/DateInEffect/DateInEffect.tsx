@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import { Card, Divider, Grid, Typography } from "@mui/material";
 import StepLabel from "../../StepLabel";
 import StepTitle from "../../StepTitle";
@@ -12,6 +13,7 @@ import { dateTimePreviewGenerator } from "../../../util/ConvertDateTime";
 import moment from "moment";
 import { useAppSelector } from "../../../store";
 import { updatedDealLevel, updatedDealStep } from "../../../store/feature/deal/dealSlice";
+import StepperCard from '../StepperCard'
 
 function DateInEffect() {
   const { setValue, trigger } = useFormContext();
@@ -69,7 +71,7 @@ function DateInEffect() {
   }, [startTimeValue]);
 
   return (
-    <Card className={commonStyles["step-card-container"]}>
+    <StepperCard step={'DATE_IN_EFFECT'} inProgressIcon={CalendarMonthOutlinedIcon}>
       <StepLabel currentStep={dealName === 'free-shipping' ? 5 : 4} totalSteps={dealName === 'free-shipping' || dealLevelName === 'basket' ? 6 : 7} />
       <StepTitle title={"Date in effect"} />
       <Grid container>
@@ -146,7 +148,7 @@ function DateInEffect() {
         </Grid>
       </Grid>
       <FormCardPreview title="Customer preview" description={desc} />
-    </Card>
+    </StepperCard>
   );
 }
 

@@ -48,7 +48,6 @@ describe("Deals MainPage tests", () => {
         </GoogleOAuthProvider>
       </Provider>
     );
-    console.log(screen.debug())
     waitFor(async () => {
      await expect(screen.getByPlaceholderText("Search by title")).toBeInTheDocument();
     })
