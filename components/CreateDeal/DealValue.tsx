@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useEffect } from 'react'
 import { useFormContext, useWatch } from "react-hook-form";
-import Card from "@mui/material/Card";
 import Typography from '@mui/material/Typography';
+import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
 import Button from '@mui/material/Button'
 import ButtonGroup from '@mui/material/ButtonGroup'
 import StepTitle from "../StepTitle";
@@ -15,6 +15,7 @@ import commonStyles from './Steps.module.css'
 import { dealLevelOptions, dealTabs, percentageOptions } from '../../constants/FormOptions'
 import { useAppDispatch, useAppSelector } from '../../store';
 import { updateDealLevel, updatedDealLevel } from '../../store/feature/deal/dealSlice';
+import StepperCard from './StepperCard'
 
 const DealValue = () => {
     const dealLevelName = useAppSelector(updatedDealLevel)
@@ -82,17 +83,20 @@ const DealValue = () => {
             if (percentageOff === 'custom') {
                 setValue('dollarOff', '')
                 setValue('fixedPriceOff', '')
+                clearErrors(['dollarOff','fixedPriceOff'])
             } else {
                 setValue('dollarOff', '')
                 setValue('fixedPriceOff', '')
-                setValue('percentageOff', 10)
+                setValue('percentageOff', '')
                 setValue('customPercentageOff', '')
+                clearErrors(['dollarOff','fixedPriceOff','percentageOff','customPercentageOff'])
             }
         } else {
             setValue('percentageOff', '')
             setValue('dollarOff', '')
             setValue('fixedPriceOff', '')
             setValue('customPercentageOff', '')
+            clearErrors(['dollarOff','fixedPriceOff','percentageOff','customPercentageOff'])
         }
         setValue('dealDiscountTab', newTab)
     }
@@ -118,8 +122,9 @@ const DealValue = () => {
         if (level === 'product') {
             setValue('basketSpend', '')
             setValue('basketDiscount', '')
+            clearErrors(['basketSpend', 'basketDiscount'])
         } else {
-            setValue('percentageOff', 10)
+            setValue('percentageOff', '')
             setValue('dollarOff', '')
             setValue('fixedPriceOff', '')
             setValue('customPercentageOff', '')
@@ -131,6 +136,7 @@ const DealValue = () => {
             setValue('exFileLIAM', [])
             setValue('exliam', [])
             setValue('exmch', [])
+            clearErrors(['dollarOff','fixedPriceOff','percentageOff','customPercentageOff'])
         }
     }
 
@@ -234,14 +240,14 @@ const DealValue = () => {
         customerPreview = `Spend $${basketSpend}, Get ${basketDealType === 'dollar' ? '$' : ''}${basketDiscount}${basketDealType === 'percentage' ? '%' : ''} off`
     }
 
-    return <Card className={commonStyles["step-card-container"]}>
+    return <StepperCard step={'DEAL_VALUE'} inProgressIcon={MonetizationOnOutlinedIcon}>
         <StepLabel currentStep={3} totalSteps={dealLevelName === 'basket' ? 6 : 7} />
         <StepTitle title={"Deal Value"} />
         <RadioGroupField options={dealLevelOptions} label="Is this at a basket level or product level?" name="dealLevel" required handleChange={handleChange} />
         {dealLevel === 'product' && < StyledTabs tabs={dealTabs} handleTabUpdate={handleTabUpdate} defaultValue={dealDiscountTab} />}
         {content}
         <FormCardPreview title="Customer preview" description={customerPreview} />
-    </Card>
+    </StepperCard>
 }
 
 export default DealValue

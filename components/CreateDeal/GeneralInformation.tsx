@@ -9,11 +9,12 @@ import Tag from "../Tag";
 import StepTitle from "../StepTitle";
 import { stackTypeOptions } from "../../constants/FormOptions";
 import styles from "./GeneralInformation.module.css";
-import commonStyles from './Steps.module.css'
 import generateIdentifier from '../../util/generateIdentifier'
 import SelectField from '../FormComponents/SelectField'
 import { updatedDealLevel, updatedDealStep } from "../../store/feature/deal/dealSlice";
 import { useAppSelector } from "../../store/index";
+import StepperCard from './StepperCard'
+import FeedIcon from '@mui/icons-material/Feed';
 
 const GeneralInformation = () => {
   const { setValue } = useFormContext()
@@ -41,7 +42,7 @@ const GeneralInformation = () => {
     <Typography variant="h3" className={styles.heading} data-testid="form-title">
       Create New {dealName === "discount" ? 'Discount' : dealName === "multi-buy" ? 'Multi-buy' : 'Free Shipping'} Deal
     </Typography>
-    <Card className={commonStyles["step-card-container"]}>
+    <StepperCard inProgressIcon={FeedIcon} error step={'GENERAL_INFORMATION'}>
       <StepLabel currentStep={2} totalSteps={dealName === "free-shipping" || dealLevelName === 'basket' ? 6 : 7} />
       <StepTitle title={"General Information"} />
       <Tag label="Internal facing" />
@@ -77,7 +78,7 @@ const GeneralInformation = () => {
         inputHeight={true}
       />
       <SelectField options={stackTypeOptions} name='stackingType' title="Stacking Type" required inputHeight={true} />
-    </Card>
+    </StepperCard>
   </>
   );
 };

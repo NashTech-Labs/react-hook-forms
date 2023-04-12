@@ -9,6 +9,7 @@ import styles from "./DealValue.module.css";
 import FormCardPreview from '../FormCardPreview'
 import commonStyles from './Steps.module.css'
 import { minimumSpendOptions } from '../../constants/FormOptions'
+import StepperCard from './StepperCard'
 
 const SpendMinimum = () => {
     const { control, setValue } = useFormContext()

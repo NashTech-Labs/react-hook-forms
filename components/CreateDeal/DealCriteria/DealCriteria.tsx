@@ -20,6 +20,7 @@ import { useFormContext, useWatch } from "react-hook-form";
 import SelectField from "../../FormComponents/SelectField";
 import FormCardMultiple from "../../FormCardMultiple";
 import CloseIcon from "@mui/icons-material/Close";
+import StepperCard from '../StepperCard'
 
 export const percentageOptions = [
     { value: "$_OFF", label: "Dollar ($) off" },

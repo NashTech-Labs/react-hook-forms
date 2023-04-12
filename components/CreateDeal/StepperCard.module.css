@@ -1,0 +1,46 @@
+.dashedLine, .solidLine {
+    height: 91%;
+    width: 0px;
+}
+
+.icon {
+    border-radius: 50%;
+    padding: 5px;
+}
+
+.icon.error {
+    border:  1px solid  #E1251B;
+    background: #E1251B;
+}
+.icon.complete {
+    border:  1px solid  #276ADD;
+    background: #276ADD;
+}
+
+.icon.inProgress  {
+    border:  1px solid  #276ADD;
+}
+
+.dashedLine.complete,
+.solidLine.complete {
+    border: 1px solid #276ADD;
+}
+
+.dashedLine.error {
+    border: 1px dashed #E1251B;
+}
+
+.dashedLine.inProgress {
+    border: 1px dashed  #276ADD;
+}
+
+.complete,
+.error {
+    font-size: 32px;
+    color: #FFFFFF;
+}
+
+.inProgress {
+    font-size: 32px;
+    color: #0744ae;
+}

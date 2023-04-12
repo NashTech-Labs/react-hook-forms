@@ -1,6 +1,7 @@
 import React from 'react'
 import Card from "@mui/material/Card";
 import { Grid, SelectChangeEvent } from '@mui/material'
+import DoDisturbOutlinedIcon from '@mui/icons-material/DoDisturbOutlined';
 import StepTitle from "../../StepTitle";
 import StepLabel from "../../StepLabel";
 import RadioGroupField from '../../FormComponents/RadioGroupField'
@@ -14,6 +15,7 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import SelectField from '../../FormComponents/SelectField';
 import { productCollectionTabs, dealLevelExclusionOptions } from '../../../constants/FormOptions'
 import exclusionStyles from './Exclusions.module.css'
+import StepperCard from '../StepperCard'
 
 const Exclusions = ({ dealLevelName }: any) => {
 
@@ -60,7 +62,7 @@ const Exclusions = ({ dealLevelName }: any) => {
         );
     }
 
-    return <Card className={commonStyles["step-card-container"]}>
+    return <StepperCard step={'EXCLUSIONS'} inProgressIcon={DoDisturbOutlinedIcon}>
         <StepLabel currentStep={dealLevelName === 'product' ? 6 : 5} totalSteps={dealLevelName === 'product' ? 7 : 6} />
         <StepTitle title={dealLevelName === 'product' ? "Exclusions" : "Product Applicability"} />
         <Tag label="Internal facing" extraSpacing />
@@ -78,7 +80,7 @@ const Exclusions = ({ dealLevelName }: any) => {
                         : null}
                 </> : null}
         </Grid>
-    </Card>
+    </StepperCard>
 }
 
 export default Exclusions
