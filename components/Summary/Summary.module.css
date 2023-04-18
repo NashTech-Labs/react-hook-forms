@@ -92,3 +92,31 @@
   .btn {
     text-transform: capitalize;
   }
+
+
+  .toggleSection {
+    background-color: #F2FAEA;
+    border: 1px solid #467E1B;
+    height: 72px;
+    border-radius: 5px;
+    display: flex;
+  }
+
+  .toggleDisabledSection {
+    background-color: #F0F0F0;;
+    border: 1px solid #333333;
+    height: 72px;
+    border-radius: 5px;
+    display: flex;
+  }
+
+  .activeHeading {
+    font-weight: 700;
+    font-size: 15px;
+  }
+
+  .activePeriod {
+    font-weight: 400;
+    font-size: 14px;
+    color: #666B73;
+  }

@@ -1,4 +1,4 @@
-import { Box, Button, Card, Chip, Grid, IconButton, Typography } from "@mui/material";
+import { Box, Button, Card, Chip, Grid, IconButton, Switch, SwitchProps, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import StepTitle from "../StepTitle";
@@ -10,15 +10,96 @@ import { capitalizeWords } from "../../util/format";
 import DownloadIcon from '@mui/icons-material/Download';
 import { convertToEST } from "../../util/ConvertDateTime";
 import { dealStatus } from "../../constants/DealStatus";
+import { styled } from '@mui/material/styles';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Modal from "react-modal";
+import EditDealModal from "./EditDealModal";
+
+const editDealStyles = {
+    content: {
+        width: "27%",
+        top: "40%",
+        left: "50%",
+        right: "auto",
+        bottom: "auto",
+        marginRight: "-50%",
+        transform: "translate(-50%, -50%)",
+        borderRadius: "2px",
+        background: "#fff",
+        boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+        padding: "16px",
+        gap: "10px",
+    },
+    overlay: {
+        zIndex: "999",
+        background: "rgba(0,0,0,0.4",
+    },
+};
+
+const IOSSwitch = styled((props: SwitchProps) => (
+    <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
+))(({ theme }) => ({
+    width: 65,
+    height: 31,
+    padding: 0,
+    '& .MuiSwitch-switchBase': {
+        padding: 0,
+        margin: 2,
+        transitionDuration: '300ms',
+        '&.Mui-checked': {
+            transform: 'translateX(16px)',
+            color: '#fff',
+            marginLeft: "22px",
+            '& + .MuiSwitch-track': {
+                backgroundColor: theme.palette.mode === 'dark' ? '#2ECA45' : '#467E1B',
+                opacity: 1,
+                border: 0,
+            },
+            '&.Mui-disabled + .MuiSwitch-track': {
+                opacity: 0.5,
+            },
+        },
+        '&.Mui-focusVisible .MuiSwitch-thumb': {
+            color: '#33cf4d',
+            border: '6px solid #fff',
+        },
+        '&.Mui-disabled .MuiSwitch-thumb': {
+            color:
+                theme.palette.mode === 'light'
+                    ? theme.palette.grey[100]
+                    : theme.palette.grey[600],
+        },
+        '&.Mui-disabled + .MuiSwitch-track': {
+            opacity: theme.palette.mode === 'light' ? 0.7 : 0.3,
+        },
+    },
+    '& .MuiSwitch-thumb': {
+        boxSizing: 'border-box',
+        width: 26,
+        height: 28,
+    },
+    '& .MuiSwitch-track': {
+        borderRadius: 26 / 2,
+        backgroundColor: theme.palette.mode === 'light' ? '#666B73' : '#39393D',
+        opacity: 1,
+        transition: theme.transitions.create(['background-color'], {
+            duration: 500,
+        }),
+    },
+}));
 
 function Summary() {
     const dealId = useAppSelector(updatedDealId);
 
-    const { data } = useGetDealPreviewQuery(dealId);
+    const { data, refetch } = useGetDealPreviewQuery(dealId);
 
     const router = useRouter();
 
     const [customerPreview, setCustomerPreview] = useState<string[]>([])
+
+    const [isOpen, setIsOpen] = useState(false);
+
+    const [isDealActive, setIsDealActive] = useState<boolean>(true)
 
     const downloadScopeExcel = (data: any) => {
 
@@ -123,28 +204,28 @@ function Summary() {
                 if (previewData.length === 1) {
                     previewData.forEach((value: any) => {
                         if (data?.dealValue?.rewardType === "$_OFF_MULTI") {
-                            customerPreviewData.push(`Buy ${data?.dealValue?.quantity.minimum} Get $${(Number(value.value) / 100).toFixed(2)} Off`)
+                            customerPreviewData.push(`Buy ${data?.dealValue?.quantity?.minimum} Get $${(Number(value.value) / 100).toFixed(2)} Off`)
                         }
                         if (data?.dealValue?.rewardType === "$_FIXED_MULTI") {
-                            customerPreviewData.push(`Buy ${data?.dealValue?.quantity.minimum} For $${(Number(value.value) / 100).toFixed(2)}`)
+                            customerPreviewData.push(`Buy ${data?.dealValue?.quantity?.minimum} For $${(Number(value.value) / 100).toFixed(2)}`)
                         }
 
                         if (data?.dealValue?.rewardType === "%_OFF_MULTI") {
-                            customerPreviewData.push(`Buy ${data?.dealValue?.quantity.minimum} Get ${value.value}% Off`)
+                            customerPreviewData.push(`Buy ${data?.dealValue?.quantity?.minimum} Get ${value.value}% Off`)
                         }
                     });
                 }
                 else {
                     previewData.forEach((value: any) => {
                         if (data?.dealValue?.rewardType === "$_OFF_MULTI") {
-                            customerPreviewData.push(`Buy ${value.restrictions.quantity.minimum} Get $${(Number(value.value) / 100).toFixed(2)} Off`)
+                            customerPreviewData.push(`Buy ${value?.restrictions?.quantity?.minimum} Get $${(Number(value.value) / 100).toFixed(2)} Off`)
                         }
                         if (data?.dealValue?.rewardType === "$_FIXED_MULTI") {
-                            customerPreviewData.push(`Buy ${value.restrictions.quantity.minimum} For $${(Number(value.value) / 100).toFixed(2)}`)
+                            customerPreviewData.push(`Buy ${value?.restrictions?.quantity?.minimum} For $${(Number(value.value) / 100).toFixed(2)}`)
                         }
 
                         if (data?.dealValue?.rewardType === "%_OFF_MULTI") {
-                            customerPreviewData.push(`Buy ${value.restrictions.quantity.minimum} Get ${value.value}% Off`)
+                            customerPreviewData.push(`Buy ${value?.restrictions?.quantity?.minimum} Get ${value.value}% Off`)
                         }
                     });
                 }
@@ -152,7 +233,28 @@ function Summary() {
             }
         }
 
+        if (data?.generalDealInfo?.status === "ACTIVE") {
+            setIsDealActive(true)
+        }
+
+        else {
+            setIsDealActive(false)
+        }
+
     }, [data])
+
+    const handleChange = () => {
+        setIsOpen(true)
+    }
+
+    const closeModal = () => {
+        setIsOpen(false);
+    };
+
+    const disableDeal = () => {
+        setIsDealActive(!isDealActive)
+    }
+
 
     return (
         <Grid container>
@@ -166,7 +268,25 @@ function Summary() {
                             sx={{ backgroundColor: dealStatus[data?.generalDealInfo?.status], mb: 1 }}
                             label={data?.generalDealInfo?.status ? capitalizeWords(data?.generalDealInfo?.status) : null} />
                     </Grid>
-                    <Typography></Typography>
+
+                    {data?.generalDealInfo?.status === "ACTIVE" || data?.generalDealInfo?.status === "INACTIVE" ?
+                        <Grid mt={3} item lg={6} className={data?.generalDealInfo?.status === "ACTIVE" ? styles.toggleSection : styles.toggleDisabledSection} >
+                            <Grid mt={1} >
+                                <FormControlLabel
+                                    control={<IOSSwitch
+                                        checked={isDealActive}
+                                        sx={{ m: 1, marginLeft: "38%" }}
+                                        onChange={handleChange}
+                                    />}
+                                    label=""
+                                />
+                            </Grid>
+                            <Grid mt={1} ml={3}>
+                                <Typography className={styles.activeHeading} >{data?.generalDealInfo?.status === "ACTIVE" ? "ACTIVE" : "DISABLED"}</Typography>
+                                <Typography className={styles.activePeriod} >As of Nov 1, 2022 at 1:20 PM EST</Typography>
+                            </Grid>
+                        </Grid>
+                        : null}
                 </Grid>
 
                 <Card className={styles["step-card-container"]}>
@@ -427,6 +547,24 @@ function Summary() {
                 </Grid>
 
             </Grid >
+
+            <Box>
+                <Modal
+                    style={editDealStyles}
+                    isOpen={isOpen}
+                    onRequestClose={closeModal}
+                >
+                    <EditDealModal
+                        closeModal={closeModal}
+                        isDealActive={isDealActive}
+                        disableDeal={disableDeal}
+                        data={data}
+                        dealId={dealId}
+                        refetch={refetch}
+                    />
+                </Modal>
+            </Box>
+
         </Grid >
     );
 }
