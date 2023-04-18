@@ -10,13 +10,15 @@ import styles from './StepperCard.module.css'
 const STEP_CONFIG : { [index: string]: any } = {
     GENERAL_INFORMATION: ['title', 'priority', 'stackingType'],
     DEAL_VALUE: ['dollarOff', 'fixedPriceOff', 'basketSpend', 'basketDiscount', ['percentageOff' , 'customPercentageOff']],
+    MULTI_BUY_DEAL_VALUE : ['dealCriteria'],
     DATE_IN_EFFECT: ['startDatePicker', 'startTimePicker', 'endTimePicker', 'endDatePicker'],
     PRODUCTS_AND_COLLECTIONS: ['mch', 'liam' , 'fileMCH', 'fileLIAM'],
     EXCLUSIONS: ['dealApplyType', 'dealLevelOptions'],
-    PROMOTION_MESSAGES: ['englishMessage', 'frenchMessage']
+    PROMOTION_MESSAGES: ['englishMessage', 'frenchMessage'],
+    FREE_SHIPPING_SPEND_MINIMUM: [['spendMinimum', 'customMinimumSpend']]
 }
 
-const anyOneValueCriteriaSections = ['PRODUCTS_AND_COLLECTIONS', 'DEAL_VALUE']
+const anyOneValueCriteriaSections = ['PRODUCTS_AND_COLLECTIONS', 'DEAL_VALUE', 'FREE_SHIPPING_SPEND_MINIMUM']
 
 const getIconProps = ({ error, complete, inProgressIcon } : any) => {
     if(error) return {style: styles['error'] , Icon: ErrorOutlineIcon}
@@ -30,6 +32,7 @@ const StepperCard = (props: any) => {
     const { errors } = formState || {}
     const allValues = useWatch({ control })
     const currentStepFields = STEP_CONFIG[step]
+  
     const error = currentStepFields?.some((field: any) => {
         if(Array.isArray(field)) {
             return field.some(value => errors[value])
@@ -48,7 +51,12 @@ const StepperCard = (props: any) => {
     } else {
         complete = currentStepFields?.every((field: any) => {
             const value = allValues[field]
-            return Array.isArray(value) ? value.length > 0 && value.every(v => v) : value
+            return Array.isArray(value) ? value.length > 0 && value.every(v => {
+                if(typeof v === 'object') {
+                    return Object.values(v).every(el =>  el)
+                }
+                return v
+            }) : value
         })
     }
     const {Icon, style } = getIconProps({ error, complete, inProgressIcon })
