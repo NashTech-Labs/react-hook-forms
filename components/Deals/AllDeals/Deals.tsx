@@ -57,6 +57,24 @@ function Deals({ search }: IDealsProps) {
     setPage(1)
   }, [filters])
 
+  const NoDealsComponent = () => <Box className={styles["no-data-box"]}>
+    <Typography
+      variant="body2"
+      className={styles["no-data-text"]}
+    >
+      There are currently no deals to view
+    </Typography>
+    <Button
+      onClick={() => router.push("/deals/create")}
+      variant="outlined"
+      className={styles["create-new-btn"]}
+      data-testid="createNew-btn"
+    >
+      <CreateIcon sx={{ marginRight: "5px" }} />
+      Create new
+    </Button>
+  </Box>
+
   const deleteDealStyles = {
     content: {
       width: "27%",
@@ -284,7 +302,7 @@ function Deals({ search }: IDealsProps) {
   const closeModal = () => {
     setIsOpen(false);
   };
-
+console.log(filters)
   let content = null;
 
   if (isLoading) {
@@ -307,25 +325,7 @@ function Deals({ search }: IDealsProps) {
               <DataTable
                 persistTableHead
                 data={[]}
-                noDataComponent={
-                  <Box className={styles["no-data-box"]}>
-                    <Typography
-                      variant="body2"
-                      className={styles["no-data-text"]}
-                    >
-                      There are currently no deals to view
-                    </Typography>
-                    <Button
-                      onClick={() => router.push("/deals/create")}
-                      variant="outlined"
-                      className={styles["create-new-btn"]}
-                      data-testid="createNew-btn"
-                    >
-                      <CreateIcon sx={{ marginRight: "5px" }} />
-                      Create new
-                    </Button>
-                  </Box>
-                }
+                noDataComponent={<NoDealsComponent />}
                 highlightOnHover
                 columns={columns}
                 customStyles={customStyles}
@@ -423,7 +423,7 @@ function Deals({ search }: IDealsProps) {
                         variant="body2"
                         className={styles["no-data-text"]}
                       >
-                        {search ? `No results for ${search}. Try another search.` : ''}
+                        {search ? `No results for ${search}. Try another search.` : <NoDealsComponent />}
                       </Typography>
                     </Box>
                   }
