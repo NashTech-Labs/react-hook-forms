@@ -13,6 +13,7 @@ import { useAppDispatch } from "../../store/index";
 import commonStyles from "./Steps.module.css";
 import CreateDealDefaultFormState from "../../constants/CreateDealDefaultFormState";
 import { getNewDealData, updateNewDeal } from "../../store/feature/deal/newDealSlice";
+import StepperCard from './StepperCard'
 
 function CreateDeal() {
   const router = useRouter();
@@ -44,7 +45,7 @@ function CreateDeal() {
         </Grid>
       </Grid>
 
-      <Card className={commonStyles["step-card-container"]}>
+      <Card className={commonStyles["card-container"]}>
         <StepLabel currentStep={1} totalSteps={7} />
         <StepTitle title={"Select deal type"} />
 

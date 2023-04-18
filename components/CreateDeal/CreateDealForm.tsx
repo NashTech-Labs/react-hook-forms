@@ -284,8 +284,6 @@ const CreateDealForm = () => {
         }
     }
 
-    console.log(errors, getValues())
-
     const handleBack = () => {
         dispatch(updateDealStep(""));
         dispatch(updateDealLevel('product'))
@@ -295,8 +293,6 @@ const CreateDealForm = () => {
         dispatch(updateDealStep(""));
         router.push("/deals");
     }
-
-    console.log(dealName)
 
     return <FormProvider {...formMethods}>
         <form id="test">

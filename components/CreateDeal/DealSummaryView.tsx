@@ -101,7 +101,7 @@ const DealSummaryView = () => {
     </Grid>
     {
       Object.keys(config).filter(step => !excludeSteps.includes(step)).map((stepTitle: string) => {
-        return <Card className={commonStyles["step-card-container"]} key={stepTitle}>
+        return <Card className={commonStyles["step-card-container-summary"]} key={stepTitle}>
           <StepTitle title={stepTitle === 'Exclusions' ? dealLevel === 'basket' ? 'Product Applicability' : stepTitle : stepTitle} />
           {
             config[stepTitle].map(({ title, getValue, shouldHide }) => {

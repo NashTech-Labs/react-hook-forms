@@ -10,7 +10,7 @@ const createDealDefaultFormState: ICreateDealFormState = {
     dealLevel: 'product',
     dealDiscountTab: 'dollar',
     dollarOff: '',
-    percentageOff: '10',
+    percentageOff: '',
     fixedPriceOff: '',
     customPercentageOff: '',
     basketSpend: '',

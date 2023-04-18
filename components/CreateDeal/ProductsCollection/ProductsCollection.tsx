@@ -1,8 +1,9 @@
 import React from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import {
-    Card
+    Card, Stepper
 } from "@mui/material";
+import CheckroomOutlinedIcon from '@mui/icons-material/CheckroomOutlined';
 import StepLabel from "../../StepLabel";
 import StepTitle from "../../StepTitle";
 import Tag from "../../Tag";
@@ -11,6 +12,7 @@ import StyledTabs from "../../StyledTabs";
 import UploadExcel from "./UploadExcel/UploadExcel"
 import ManuallyAdd from "./ManuallyAdd/ManuallyAdd";
 import { productCollectionTabs } from '../../../constants/FormOptions'
+import StepperCard from '../StepperCard'
 
 function ProductsCollection() {
     const { setValue, control } = useFormContext()
@@ -44,13 +46,13 @@ function ProductsCollection() {
 
     return (
         <>
-            <Card className={commonStyles["step-card-container"]}>
+            <StepperCard step={'PRODUCTS_AND_COLLECTIONS'} inProgressIcon={CheckroomOutlinedIcon}>
                 <StepLabel currentStep={5} totalSteps={7} />
                 <StepTitle title={"Products and Collections"} />
                 <Tag label="Internal facing" />
                 <StyledTabs tabs={productCollectionTabs} handleTabUpdate={handleTabUpdate} defaultValue={productsCollectionTab} />
                 {content}
-            </Card>
+            </StepperCard>
         </>
     );
 }

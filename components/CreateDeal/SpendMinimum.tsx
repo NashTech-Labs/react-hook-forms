@@ -1,14 +1,14 @@
 import React, { ChangeEvent } from 'react'
 import { useFormContext, useWatch } from "react-hook-form";
-import Card from "@mui/material/Card";
+import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
 import StepTitle from "../StepTitle";
 import StepLabel from "../StepLabel";
 import RadioGroupField from '../FormComponents/RadioGroupField'
 import TextInputField from '../FormComponents/TextInputField'
 import styles from "./DealValue.module.css";
 import FormCardPreview from '../FormCardPreview'
-import commonStyles from './Steps.module.css'
 import { minimumSpendOptions } from '../../constants/FormOptions'
+import StepperCard from './StepperCard'
 
 const SpendMinimum = () => {
     const { control, setValue } = useFormContext()
@@ -39,7 +39,7 @@ const SpendMinimum = () => {
         customerPreview = `Spend minimum of $${customMinimumSpend}`
     }
 
-    return <Card className={commonStyles["step-card-container"]}>
+    return <StepperCard step={'FREE_SHIPPING_SPEND_MINIMUM'} inProgressIcon={MonetizationOnOutlinedIcon}>
         <StepLabel currentStep={4} totalSteps={6} />
         <StepTitle title={"Spend minimum"} />
         <RadioGroupField options={minimumSpendOptions} label="Select minimum value" name="spendMinimum" required handleChange={handleCustomSpendChange} />
@@ -54,7 +54,7 @@ const SpendMinimum = () => {
             />
         </div>
         <FormCardPreview title="Customer preview" description={customerPreview} />
-    </Card>
+    </StepperCard>
 }
 
 export default SpendMinimum

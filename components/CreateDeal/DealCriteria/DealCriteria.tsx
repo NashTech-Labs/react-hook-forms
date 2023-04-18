@@ -1,14 +1,6 @@
-import {
-    Card,
-    FormControl,
-    Grid,
-    InputLabel,
-    MenuItem,
-    Select,
-    TextField,
-    Typography,
-} from "@mui/material";
-import React, { use, useEffect, useState } from "react";
+import React from "react";
+import { Grid, Typography } from "@mui/material";
+import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
 import RadioGroupField from "../../FormComponents/RadioGroupField";
 import StepLabel from "../../StepLabel";
 import StepTitle from "../../StepTitle";
@@ -20,6 +12,7 @@ import { useFormContext, useWatch } from "react-hook-form";
 import SelectField from "../../FormComponents/SelectField";
 import FormCardMultiple from "../../FormCardMultiple";
 import CloseIcon from "@mui/icons-material/Close";
+import StepperCard from '../StepperCard'
 
 export const percentageOptions = [
     { value: "$_OFF", label: "Dollar ($) off" },
@@ -102,7 +95,7 @@ function DealCriteria() {
     });
 
     return (
-        <Card className={commonStyles["step-card-container"]}>
+        <StepperCard step={'MULTI_BUY_DEAL_VALUE'} inProgressIcon={MonetizationOnOutlinedIcon}>
             <StepLabel currentStep={3} totalSteps={7} />
             <StepTitle title={"Deal criteria"} />
 
@@ -204,7 +197,7 @@ function DealCriteria() {
                 title="Customer preview"
                 description={customerPreview}
             />
-        </Card>
+         </StepperCard>
     );
 }
 
