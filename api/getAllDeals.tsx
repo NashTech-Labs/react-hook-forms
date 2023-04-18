@@ -17,11 +17,17 @@ export interface AllDealsList {
   identifier: string;
 }
 
+export interface newAllDealsList {
+  deals: AllDealsList[];
+  paginationInfo: any;
+}
+
+
 export const viewAllDeals = createApi({
   reducerPath: "viewAllDeals",
   baseQuery: CustomQuery(),
   endpoints: (builder) => ({
-    getAllList: builder.query<AllDealsList[], void>({
+    getAllList: builder.query<newAllDealsList, void>({
       query: () => ({
         url: `/v1/deals`,
         method: "GET",

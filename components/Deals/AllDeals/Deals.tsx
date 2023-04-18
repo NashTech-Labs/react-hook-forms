@@ -276,7 +276,7 @@ function Deals() {
 
   if (data) {
 
-    if (data.length > 0) {
+    if (data.deals.length > 0) {
       content = (
         <Grid item lg={8} md={9} sm={9} mt={2}>
           <Card className={styles["deal-card"]}>
@@ -290,7 +290,7 @@ function Deals() {
               </Typography>
               <DataTable
                 persistTableHead
-                data={data}
+                data={data.deals}
                 highlightOnHover
                 columns={columns}
                 customStyles={customStyles}
