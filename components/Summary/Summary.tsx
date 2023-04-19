@@ -184,7 +184,7 @@ function Summary() {
     }
 
     const getDealValuePreview = (data: any) => {
-        if(!data?.dealValue?.rewardsValue[0]?.value) return ''
+        if (!data?.dealValue?.rewardsValue[0]?.value) return ''
 
         const value = dealValue(data?.dealValue?.rewardsValue[0]?.value, data?.dealValue?.rewardType)
 
@@ -199,7 +199,7 @@ function Summary() {
         if (data) {
             if (data?.generalDealInfo?.type === "MULTI_BUY") {
 
-                if(!data?.dealValue?.quantity?.minimum) return 
+                if (!data?.dealValue?.quantity?.minimum) return
 
                 let previewData = data?.dealValue?.rewardsValue
 
@@ -237,12 +237,13 @@ function Summary() {
             }
         }
 
-        if (data?.generalDealInfo?.status === "ACTIVE") {
-            setIsDealActive(true)
-        }
-
-        else {
-            setIsDealActive(false)
+        if (data) {
+            if (data.generalDealInfo.status === "ACTIVE") {
+                setIsDealActive(true)
+            }
+            else {
+                setIsDealActive(false)
+            }
         }
 
     }, [data])
