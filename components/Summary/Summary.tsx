@@ -184,7 +184,7 @@ function Summary() {
     }
 
     const getDealValuePreview = (data: any) => {
-        if(!data?.dealValue?.rewardsValue[0]?.value) return ''
+        if (!data?.dealValue?.rewardsValue[0]?.value) return ''
 
         const value = dealValue(data?.dealValue?.rewardsValue[0]?.value, data?.dealValue?.rewardType)
 
@@ -198,6 +198,8 @@ function Summary() {
     useEffect(() => {
         if (data) {
             if (data?.generalDealInfo?.type === "MULTI_BUY") {
+
+                if (!data?.dealValue?.quantity?.minimum) return
 
                 let previewData = data?.dealValue?.rewardsValue
 
@@ -235,15 +237,20 @@ function Summary() {
             }
         }
 
-        if (data?.generalDealInfo?.status === "ACTIVE") {
-            setIsDealActive(true)
-        }
-
-        else {
-            setIsDealActive(false)
+        if (data) {
+            if (data.generalDealInfo.status === "ACTIVE") {
+                setIsDealActive(true)
+            }
+            else {
+                setIsDealActive(false)
+            }
         }
 
     }, [data])
+
+    useEffect(() => {
+        refetch();
+    }, [])
 
     const handleChange = () => {
         setIsOpen(true)
@@ -266,9 +273,9 @@ function Summary() {
                     <Grid item lg={9} className={styles.titleContainer} >
                         <Typography variant="h4" className={styles.title}>{data?.generalDealInfo?.title}</Typography>
                         <Typography mt={2} className={styles["sub-title"]} >Draft created on {data?.generalDealInfo?.created_at ? convertToEST(data?.generalDealInfo?.created_at).format("MMMM D, YYYY [at] h:mm A z") : null}</Typography>
-                        <Chip className={styles.Chip}
-                            sx={{ backgroundColor: dealStatus[data?.generalDealInfo?.status], mb: 1 }}
-                            label={data?.generalDealInfo?.status ? capitalizeWords(data?.generalDealInfo?.status) : null} />
+                        <Chip className={data?.generalDealInfo?.status === "INACTIVE" ? styles.inactiveChip : styles.Chip}
+                            sx={{ backgroundColor: dealStatus[data?.generalDealInfo?.status], mb: 1, fontColor: "#000000" }}
+                            label={data?.generalDealInfo?.status === "INACTIVE" ? "Ready" : data?.generalDealInfo?.status ? capitalizeWords(data?.generalDealInfo?.status) : null} />
                     </Grid>
 
                     {data?.generalDealInfo?.status === "ACTIVE" || data?.generalDealInfo?.status === "INACTIVE" ?
@@ -284,8 +291,8 @@ function Summary() {
                                 />
                             </Grid>
                             <Grid mt={1} ml={3}>
-                                <Typography className={styles.activeHeading} >{data?.generalDealInfo?.status === "ACTIVE" ? "ACTIVE" : "DISABLED"}</Typography>
-                                <Typography className={styles.activePeriod} >As of Nov 1, 2022 at 1:20 PM EST</Typography>
+                                <Typography className={styles.activeHeading} >{data?.generalDealInfo?.status === "ACTIVE" ? "ACTIVE" : "DISABLED (READY)"}</Typography>
+                                <Typography className={styles.activePeriod} >{data?.generalDealInfo?.valid_to ? convertToEST(data?.generalDealInfo?.valid_to).format("MMMM D, YYYY [at] h:mm A z") : null}</Typography>
                             </Grid>
                         </Grid>
                         : null}

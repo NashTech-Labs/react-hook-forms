@@ -337,7 +337,7 @@ const CreateDealForm = () => {
     const handleFormSubmit = async (e: MouseEvent) => {
         e.preventDefault()
         const cleanForm = await trigger(undefined, { shouldFocus: true })
-
+        
         if (cleanForm) {
             setValue('draftCreatedTimestamp', moment())
             dispatch(updateNewDeal(getValues()))

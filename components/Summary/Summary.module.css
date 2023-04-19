@@ -69,6 +69,16 @@
   height: 23px;
 }
 
+.inactiveChip {
+  font-weight: 600;
+  color: #ffffff;
+  background: #194B9F;
+  border-radius: 5px;
+  font-size: 12px;
+  margin-top: 0.7rem;
+  height: 23px;
+}
+
 .imgContainer {
     font-weight: 600;
     font-size: 24px;

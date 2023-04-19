@@ -42,6 +42,16 @@
   height: 20px;
 }
 
+.inactiveChip {
+  font-weight: 600;
+  color: #ffffff;
+  background: #194B9F;
+  border-radius: 5px;
+  font-size: 12px;
+  margin-top: 0.7rem;
+  height: 23px;
+}
+
 .create-new-btn {
   background: #ffffff;
   border: 1px solid #cccccc;
