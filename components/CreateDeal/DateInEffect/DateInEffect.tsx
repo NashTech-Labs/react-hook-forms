@@ -36,7 +36,7 @@ function DateInEffect() {
     name: "startTimePicker",
   });
 
-  let desc = "Preview will generate after inputs are completed";
+  let desc : string | null = "Preview will generate after inputs are completed";
 
   if (startDateValue && startTimeValue && endDateValue && endTimeValue) {
     desc = dateTimePreviewGenerator(
