@@ -1,5 +1,6 @@
-import React, { MouseEvent, useEffect } from 'react'
+import React, { MouseEvent, useState } from 'react'
 import moment from 'moment';
+import Modal from 'react-modal'
 import { useRouter } from "next/router";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -21,6 +22,33 @@ import DateInEffect from './DateInEffect/DateInEffect';
 import DealCriteria from './DealCriteria/DealCriteria';
 import SpendMinimum from './SpendMinimum'
 import ShippingMethod from './ShippingMethod/ShippingMethod';
+import generateCreateDealPayload from '../../util/createDealPayload'
+import { userProfileState } from '../../store/feature/auth/authSlice';
+import CreateDealDefaultFormState from '../../constants/CreateDealDefaultFormState'
+import { useCreateDealsMutation } from '../../api/createDeal';
+import { notifyError, notifySuccess } from '../../util/Notification/Notification';
+import DraftModal from './DraftModal';
+
+const draftModalcustomStyles = {
+    content: {
+      width: "500px",
+      top: "40%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+      borderRadius: "2px",
+      background: "#fff",
+      boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+      padding: "16px",
+      gap: "10px",
+    },
+    overlay: {
+      zIndex: "999",
+      background: "rgba(0,0,0,0.4",
+    },
+  };
 
 const MAX_FILE_SIZE = 1000000; //1MB
 
@@ -260,19 +288,52 @@ const schema = yup.object().shape({
 }).required();
 
 const CreateDealForm = () => {
+    const [submitting, setSubmitting] = useState(false)
+    const [showDraftModal, setShowDraftModal] = useState(false)
     const router = useRouter();
     const dispatch = useAppDispatch();
+    const user = useAppSelector(userProfileState)
     const draftFormValues = useAppSelector(getNewDealData)
     const dealLevelName = useAppSelector(updatedDealLevel)
-
     const dealName = useAppSelector(updatedDealStep);
+    const [createDeals] = useCreateDealsMutation();
 
     const formMethods = useForm<ICreateDealFormState>({
         defaultValues: draftFormValues || createDealDefaultFormState,
         resolver: yupResolver(schema),
         mode: 'all'
     });
-    const { getValues, trigger, setValue, formState: { errors } } = formMethods
+    const { getValues, trigger, setValue } = formMethods
+
+    const handleFormDraftSubmit = async () => {
+        setValue('draftCreatedTimestamp', moment())
+        dispatch(updateNewDeal(getValues()))
+        const formattedPayload = generateCreateDealPayload(getValues(), true)
+        const formattedPayloadWithUser = {
+          ...formattedPayload,
+          username: user?.name
+        }
+        console.log("Create deal payload", formattedPayloadWithUser)
+        setSubmitting(true)
+        setShowDraftModal(true)
+        await createDeals(formattedPayloadWithUser)
+          .unwrap()
+          .then((data) => {
+            if (data) {
+              dispatch(updateNewDeal(CreateDealDefaultFormState))
+              notifySuccess("Deal successfully saved")
+            }
+          })
+          .catch((error) => {
+            notifyError(
+              error.data?.details ? error.data?.details : "Something went wrong",
+              "deal-failed"
+            )
+          }).finally(() => {
+            setSubmitting(false)
+          });
+    }
+
     const handleFormSubmit = async (e: MouseEvent) => {
         e.preventDefault()
         const cleanForm = await trigger(undefined, { shouldFocus: true })
@@ -294,9 +355,13 @@ const CreateDealForm = () => {
         router.push("/deals");
     }
 
+    const closeDraftModal = () => {
+      setShowDraftModal(false)
+    }
+
     return <FormProvider {...formMethods}>
         <form id="test">
-            <GeneralInformation />
+            <GeneralInformation handleFormDraftSubmit={handleFormDraftSubmit}/>
             {dealName === "discount" ? <DealValue /> : dealName === "multi-buy" ? <DealCriteria /> : <ShippingMethod />}
             {dealName === 'free-shipping' && <SpendMinimum />}
             <DateInEffect />
@@ -313,6 +378,13 @@ const CreateDealForm = () => {
                 </div>
             </div>
         </form>
+        <Modal
+            style={draftModalcustomStyles}
+            isOpen={showDraftModal}
+            onRequestClose={closeDraftModal}
+        >
+         <DraftModal loading={submitting} closeModal={closeDraftModal}/>
+        </Modal>
     </FormProvider>
 }
 

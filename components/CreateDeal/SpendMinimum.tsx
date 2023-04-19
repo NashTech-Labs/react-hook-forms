@@ -29,8 +29,6 @@ const SpendMinimum = () => {
         }
     }
 
-    console.log(customMinimumSpend)
-
     let customerPreview = 'No Spend Minimum'
 
     if (spendMinimum !== 'NO_MINIMUM' && spendMinimum !== 'CUSTOM') {

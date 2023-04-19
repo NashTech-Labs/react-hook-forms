@@ -122,7 +122,7 @@ const getRewardMultiBuy = (data: any, dealCriteriaType: string) => {
 
 }
 
-const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
+const generateCreateDealPayload  = (formData : ICreateDealFormState, isDraft: boolean) => {
     const { 
          title,
          description,
@@ -232,6 +232,10 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState) => {
             "minimum": spendMinimum === 'CUSTOM' ? (Number(customMinimumSpend) * 100).toFixed() : spendMinimum === 'NO_MINIMUM' ? "0" : (Number(spendMinimum) * 100).toFixed(),
             "maximum": null
         }
+    }
+
+    if(isDraft) {
+        payload['status'] = 'DRAFT'
     }
 
     return payload
