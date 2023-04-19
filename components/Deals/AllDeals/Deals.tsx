@@ -148,14 +148,15 @@ function Deals({ search }: IDealsProps) {
                   : null}
               </div>
               <Chip
-                className={styles["chip"]}
+                className={row.status === "INACTIVE" ? styles["inactiveChip"] : styles["chip"]}
                 sx={{
                   backgroundColor:
                     dealStatus[row.status],
                 }}
                 label={
-                  row.status.charAt(0).toUpperCase() +
-                  row.status.slice(1).toLowerCase()
+                  row.status === "INACTIVE" ? "Ready" :
+                    row.status.charAt(0).toUpperCase() +
+                    row.status.slice(1).toLowerCase()
                 }
               />
             </Grid>
@@ -302,7 +303,7 @@ function Deals({ search }: IDealsProps) {
   const closeModal = () => {
     setIsOpen(false);
   };
-  
+
   let content = null;
 
   if (isLoading) {
