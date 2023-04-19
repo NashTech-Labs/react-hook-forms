@@ -30,7 +30,7 @@ const DealSummaryView = () => {
   const excludeSteps: string[] = []
 
   const handleCreateDeal = async () => {
-    const formattedPayload = generateCreateDealPayload(newDealData)
+    const formattedPayload = generateCreateDealPayload(newDealData, false)
     const formattedPayloadWithUser = {
       ...formattedPayload,
       username: user?.name

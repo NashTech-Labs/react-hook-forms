@@ -40,7 +40,6 @@ function CreateDeal() {
             <Typography data-testid="createDealTitle" variant="h3" className={commonStyles.heading}>
               Create New Deal
             </Typography>
-            <Typography></Typography>
           </Grid>
         </Grid>
       </Grid>

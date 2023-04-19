@@ -184,6 +184,8 @@ function Summary() {
     }
 
     const getDealValuePreview = (data: any) => {
+        if(!data?.dealValue?.rewardsValue[0]?.value) return ''
+
         const value = dealValue(data?.dealValue?.rewardsValue[0]?.value, data?.dealValue?.rewardType)
 
         if (data?.dealValue?.scopeType === 'BASKET') {
@@ -196,6 +198,8 @@ function Summary() {
     useEffect(() => {
         if (data) {
             if (data?.generalDealInfo?.type === "MULTI_BUY") {
+
+                if(!data?.dealValue?.quantity?.minimum) return 
 
                 let previewData = data?.dealValue?.rewardsValue
 
@@ -449,7 +453,7 @@ function Summary() {
                                 <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
                                     Customer preview
                                 </Typography>
-                                <Typography className={styles.content}>Starts {convertToEST(data?.generalDealInfo?.valid_from).format("MMMM D (h:mm A z)")} and ends {convertToEST(data?.generalDealInfo?.valid_to).format("MMMM D (h:mm A z)")}</Typography>
+                                {data?.generalDealInfo?.valid_from && data?.generalDealInfo?.valid_to && <Typography className={styles.content}>Starts {convertToEST(data?.generalDealInfo?.valid_from).format("MMMM D (h:mm A z)")} and ends {convertToEST(data?.generalDealInfo?.valid_to).format("MMMM D (h:mm A z)")}</Typography>}
                             </Grid>
                         </Grid>
                     </Grid>
