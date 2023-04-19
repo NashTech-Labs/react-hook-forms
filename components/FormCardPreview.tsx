@@ -6,7 +6,7 @@ import styles from './FormCardPreview.module.css'
 
 interface IFormCardPreview {
     title: string
-    description: string
+    description: string | null
 }
 
 const FormCardPreview = ({title, description}: IFormCardPreview) => {

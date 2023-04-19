@@ -302,7 +302,7 @@ function Deals({ search }: IDealsProps) {
   const closeModal = () => {
     setIsOpen(false);
   };
-console.log(filters)
+  
   let content = null;
 
   if (isLoading) {

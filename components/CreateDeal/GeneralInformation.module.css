@@ -3,11 +3,32 @@
     font-weight: 600;
     font-size: 36px;
     line-height: 42px;
-    margin: 3% 25%;
     color: #333333;
+}
+
+.heading-container {
+    margin: 3% 25%;
 }
 
 .generate-link {
     color: #276ADD;
     cursor: pointer;
+}
+
+.draftBtn {
+    background-color: #fff;
+    color: black;
+    text-transform: inherit;
+    margin-left: 15px;
+}
+
+.draftBtn:hover {
+    background-color: grey;
+    color: black;
+    text-transform: inherit;
+}
+
+.draftTime {
+    margin: 20px 25%;
+    color:  #666B73;
 }
