@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./feature/auth/authSlice";
 import dealReducer from "./feature/deal/dealSlice";
 import newDealReducer from './feature/deal/newDealSlice'
+import draftDealReducer from './feature/deal/draftDealSlice'
 import filtersReducer from './feature/filters/filtersSlice'
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
@@ -44,6 +45,7 @@ export const generateStore = (preloadedState = {}) => {
       user: persistedAuthReducer,
       deal: persistedDealReducer,
       newDeal: persistedNewDeal,
+      draftDeal: draftDealReducer,
       filters: filtersReducer,
       [RolesOfUser.reducerPath]: RolesOfUser.reducer,
       [userRoleList.reducerPath]: userRoleList.reducer,

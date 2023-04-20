@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import moment from 'moment';
 import { useFormContext } from 'react-hook-form'
-import Card from "@mui/material/Card";
 import Grid from '@mui/material/Grid'
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button"
@@ -18,6 +17,7 @@ import { updatedDealLevel, updatedDealStep } from "../../store/feature/deal/deal
 import { useAppSelector } from "../../store/index";
 import StepperCard from './StepperCard'
 import FeedIcon from '@mui/icons-material/Feed';
+import { getDraftDealData } from '../../store/feature/deal/draftDealSlice'
 
 interface IGeneralInformation {
   handleFormDraftSubmit: Function
@@ -26,8 +26,10 @@ interface IGeneralInformation {
 const GeneralInformation = ({ handleFormDraftSubmit }: IGeneralInformation) => {
   const { setValue } = useFormContext()
   const dealLevelName = useAppSelector(updatedDealLevel)
-
   const dealName = useAppSelector(updatedDealStep);
+  const draftValues = useAppSelector(getDraftDealData)
+  const id = draftValues?.generalDealInfo?.id
+  const draftButtonLabel = id ? 'Save' : 'Save as draft'
 
   const handleGenerateIdentifier = () => {
     setValue('identifier', generateIdentifier(), { shouldValidate: true })
@@ -57,10 +59,9 @@ const GeneralInformation = ({ handleFormDraftSubmit }: IGeneralInformation) => {
           data-testid="draft-btn"
           variant="contained"
           className={styles.draftBtn}
-          onClick={() => handleFormDraftSubmit()}
-          //disabled={disableDraft}
+          onClick={() => handleFormDraftSubmit(id)}
         >
-           Save as draft
+           {draftButtonLabel}
         </Button>
       </Grid>
     </Grid>
