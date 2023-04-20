@@ -5,7 +5,7 @@ export const editPayload = (data: dealPreview, name: string, isDealActive: boole
     const payload: any = {
         "title": data?.generalDealInfo?.title,
         "description": data?.generalDealInfo?.description,
-        "status": isDealActive ? "INACTIVE" : "ACTIVE",
+        "status": isDealActive ? "INACTIVE" : "PUBLISHED",
         "priority": data?.generalDealInfo?.priority,
         "stacking_type": data?.generalDealInfo?.stacking_type,
         "scope_type": data?.dealValue?.scopeType,
