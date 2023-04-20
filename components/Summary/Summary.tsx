@@ -247,7 +247,7 @@ function Summary() {
         else {
             setIsDealActive(false)
         }
-    }, [data])
+    }, [data, router])
 
     const handleChange = () => {
         setIsOpen(true)
