@@ -237,19 +237,16 @@ function Summary() {
             }
         }
 
-        if (data) {
-            if (data.generalDealInfo.status === "ACTIVE") {
-                setIsDealActive(true)
-            }
-            else {
-                setIsDealActive(false)
-            }
-        }
 
     }, [data])
 
     useEffect(() => {
-        refetch();
+        if (data?.generalDealInfo?.status === "ACTIVE") {
+            setIsDealActive(true)
+        }
+        else {
+            setIsDealActive(false)
+        }
     }, [])
 
     const handleChange = () => {
