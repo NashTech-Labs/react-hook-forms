@@ -24,10 +24,11 @@ import SpendMinimum from './SpendMinimum'
 import ShippingMethod from './ShippingMethod/ShippingMethod';
 import generateCreateDealPayload from '../../util/createDealPayload'
 import { userProfileState } from '../../store/feature/auth/authSlice';
-import CreateDealDefaultFormState from '../../constants/CreateDealDefaultFormState'
 import { useCreateDealsMutation } from '../../api/createDeal';
 import { notifyError, notifySuccess } from '../../util/Notification/Notification';
 import DraftModal from './DraftModal';
+import {updateDraftDeal} from '../../store/feature/deal/draftDealSlice';
+import { useEditDealsMutation } from "../../api/editDeal";
 
 const draftModalcustomStyles = {
     content: {
@@ -297,6 +298,7 @@ const CreateDealForm = () => {
     const dealLevelName = useAppSelector(updatedDealLevel)
     const dealName = useAppSelector(updatedDealStep);
     const [createDeals] = useCreateDealsMutation();
+    const [editDeal] = useEditDealsMutation();
 
     const formMethods = useForm<ICreateDealFormState>({
         defaultValues: draftFormValues || createDealDefaultFormState,
@@ -305,7 +307,7 @@ const CreateDealForm = () => {
     });
     const { getValues, trigger, setValue } = formMethods
 
-    const handleFormDraftSubmit = async () => {
+    const handleFormDraftSubmit = async (dealId: number) => {
         setValue('draftCreatedTimestamp', moment())
         dispatch(updateNewDeal(getValues()))
         const formattedPayload = generateCreateDealPayload(getValues(), true)
@@ -313,25 +315,47 @@ const CreateDealForm = () => {
           ...formattedPayload,
           username: user?.name
         }
-        console.log("Create deal payload", formattedPayloadWithUser)
+
         setSubmitting(true)
         setShowDraftModal(true)
-        await createDeals(formattedPayloadWithUser)
-          .unwrap()
-          .then((data) => {
-            if (data) {
-              dispatch(updateNewDeal(CreateDealDefaultFormState))
-              notifySuccess("Deal successfully saved")
+        if(dealId) {
+            const editPayload = {
+                ...formattedPayloadWithUser,
+                dealId
             }
-          })
-          .catch((error) => {
-            notifyError(
-              error.data?.details ? error.data?.details : "Something went wrong",
-              "deal-failed"
-            )
-          }).finally(() => {
-            setSubmitting(false)
-          });
+            await editDeal(editPayload)
+                .unwrap()
+                .then((data) => {
+                    if (data) {
+                        notifySuccess("Deal successfully saved")
+                    }
+                })
+                .catch((error: any) => {
+                    notifyError(
+                        error.data?.details ? error.data?.details : "Something went wrong",
+                        "deal-failed"
+                    )
+                }).finally(() => {
+                    setSubmitting(false)
+                });
+        } else {
+            await createDeals(formattedPayloadWithUser)
+            .unwrap()
+            .then((data) => {
+              if (data) {
+                dispatch(updateDraftDeal(data))
+                notifySuccess("Deal successfully saved")
+              }
+            })
+            .catch((error) => {
+              notifyError(
+                error.data?.details ? error.data?.details : "Something went wrong",
+                "deal-failed"
+              )
+            }).finally(() => {
+              setSubmitting(false)
+            });
+        }
     }
 
     const handleFormSubmit = async (e: MouseEvent) => {
