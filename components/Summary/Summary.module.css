@@ -71,8 +71,7 @@
 
 .inactiveChip {
   font-weight: 600;
-  color: #ffffff;
-  background: #194B9F;
+  color: #000;
   border-radius: 5px;
   font-size: 12px;
   margin-top: 0.7rem;

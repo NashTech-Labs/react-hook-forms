@@ -154,9 +154,8 @@ function Deals({ search }: IDealsProps) {
                     dealStatus[row.status],
                 }}
                 label={
-                  row.status === "INACTIVE" ? "Ready" :
-                    row.status.charAt(0).toUpperCase() +
-                    row.status.slice(1).toLowerCase()
+                  row.status.charAt(0).toUpperCase() +
+                  row.status.slice(1).toLowerCase()
                 }
               />
             </Grid>
@@ -303,7 +302,7 @@ function Deals({ search }: IDealsProps) {
   const closeModal = () => {
     setIsOpen(false);
   };
-  
+
   let content = null;
 
   if (isLoading) {
