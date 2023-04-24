@@ -170,7 +170,7 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState, isDraft: bo
         "promo_restrictions" : {}
     }
 
-    if (dealLevel !== 'basket') {
+    if (dealLevel === 'product' && dealType !== "FREE_SHIPPING" ) {
         payload["promo_restrictions"]['product_code'] = {
             "liam": [...exFileLIAM, ...exliam]
         },
