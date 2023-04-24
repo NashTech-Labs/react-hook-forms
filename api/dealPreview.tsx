@@ -11,6 +11,7 @@ export interface dealPreview {
 export const dealPreview = createApi({
     reducerPath: "dealPreview",
     baseQuery: CustomQuery(),
+    refetchOnMountOrArgChange : true,
     endpoints: (builder) => ({
         getDealPreview: builder.query<dealPreview, any>({
             query: (data) => ({

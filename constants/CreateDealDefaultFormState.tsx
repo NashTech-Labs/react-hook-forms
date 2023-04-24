@@ -43,7 +43,7 @@ const createDealDefaultFormState: ICreateDealFormState = {
         buy: '',
         get: ''
     }],
-    dealCriteriaType: "%_OFF",
+    dealCriteriaType: "%_OFF_MULTI",
     spendMinimum: 'NO_MINIMUM',
     customMinimumSpend: '',
     shippingMethodType: 'standard'

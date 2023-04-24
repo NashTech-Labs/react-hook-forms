@@ -16,12 +16,11 @@ import PromotionalMessages from './PromotionalMessages/PromotionalMessages';
 import styles from './CreateDealForm.module.css'
 import commonStyles from "./Steps.module.css";
 import { useAppDispatch, useAppSelector } from "../../store/index";
-import { updatedDealLevel, updatedDealStep, updateDealLevel, updateDealStep } from "../../store/feature/deal/dealSlice";
+import { updatedDealLevel, updatedDealStep, updateDealLevel, updateDealStep, getIsEditing, updateDealEditing } from "../../store/feature/deal/dealSlice";
 import { updateNewDeal, getNewDealData } from '../../store/feature/deal/newDealSlice'
 import DateInEffect from './DateInEffect/DateInEffect';
 import DealCriteria from './DealCriteria/DealCriteria';
 import SpendMinimum from './SpendMinimum'
-import ShippingMethod from './ShippingMethod/ShippingMethod';
 import generateCreateDealPayload from '../../util/createDealPayload'
 import { userProfileState } from '../../store/feature/auth/authSlice';
 import { useCreateDealsMutation } from '../../api/createDeal';
@@ -29,6 +28,12 @@ import { notifyError, notifySuccess } from '../../util/Notification/Notification
 import DraftModal from './DraftModal';
 import {updateDraftDeal} from '../../store/feature/deal/draftDealSlice';
 import { useEditDealsMutation } from "../../api/editDeal";
+import convertDealDataToFormData from '../../util/convertDealToFormData'
+import { MULTI_BUY_DEAL_TYPE, FREE_SHIPPING_DEAL_TYPE, DISCOUNT_DEAL_TYPE } from '../../constants/FormOptions'
+
+interface ICreateDealFrom {
+    deal? : object
+}
 
 const draftModalcustomStyles = {
     content: {
@@ -88,7 +93,7 @@ const schema = yup.object().shape({
         // .typeError('Error: Dollar($) value required')
         .min(1, 'Error: Must be minimum of $1.00')
         .test('dollar-off', 'Error: Dollar($) value required', (value, context) => {
-            if (context?.parent?.dealType === "Multi-buy" || context?.parent?.dealType === "Free-shipping") {
+            if (context?.parent?.dealType === MULTI_BUY_DEAL_TYPE || context?.parent?.dealType === FREE_SHIPPING_DEAL_TYPE) {
                 return true
             }
             else if (context?.parent?.dealDiscountTab === 'dollar' && context?.parent?.dealLevel === 'product') {
@@ -126,7 +131,7 @@ const schema = yup.object().shape({
         .transform(value => (isNaN(value) ? undefined : value))
         .min(1, 'Error: Must be a minimum of $1.00')
         .test('basket-spend', 'Error: Dollar($) value required', (value, context) => {
-            if (context?.parent?.dealLevel === 'basket') {
+            if (context?.parent?.dealType !== FREE_SHIPPING_DEAL_TYPE && context?.parent?.dealLevel === 'basket') {
                 return value !== undefined
             } else return true
         }),
@@ -134,27 +139,27 @@ const schema = yup.object().shape({
         .number()
         .transform(value => (isNaN(value) ? undefined : value))
         .test('basket-discount', 'Error: Dollar($) value required', (value, context) => {
-            if (context?.parent?.dealLevel === 'basket' && context?.parent?.basketDealType === 'dollar') {
+            if (context?.parent?.dealType !== FREE_SHIPPING_DEAL_TYPE && context?.parent?.dealLevel === 'basket' && context?.parent?.basketDealType === 'dollar') {
                 return value !== undefined
             } else return true
         })
         .test('basket-discount', "Error: Discount amount can't be greater than or equal to the spending amount", (value, context) => {
-            if (context?.parent?.dealLevel === 'basket' && context?.parent?.basketDealType === 'dollar') {
+            if (context?.parent?.dealType !== FREE_SHIPPING_DEAL_TYPE && context?.parent?.dealLevel === 'basket' && context?.parent?.basketDealType === 'dollar') {
                 return value !== undefined && value < context?.parent?.basketSpend
             } else return true
         })
         .test('basket-discount-smaller', 'Error: Must be a minimum of $1.00', (value, context) => {
-            if (context?.parent?.dealLevel === 'basket' && context?.parent?.basketDealType === 'dollar') {
+            if (context?.parent?.dealType !== FREE_SHIPPING_DEAL_TYPE && context?.parent?.dealLevel === 'basket' && context?.parent?.basketDealType === 'dollar') {
                 return value !== undefined && value >= 1
             } else return true
         })
         .test('basket-discount', 'Error: Percentage(%) value required', (value, context) => {
-            if (context?.parent?.dealLevel === 'basket' && context?.parent?.basketDealType === 'percentage') {
+            if (context?.parent?.dealType !== FREE_SHIPPING_DEAL_TYPE && context?.parent?.dealLevel === 'basket' && context?.parent?.basketDealType === 'percentage') {
                 return value !== undefined
             } else return true
         })
         .test('basket-discount', 'Error: Percentage(%) must be between 1-99', (value, context) => {
-            if (context?.parent?.dealLevel === 'basket' && context?.parent?.basketDealType === 'percentage') {
+            if (context?.parent?.dealType !== FREE_SHIPPING_DEAL_TYPE && context?.parent?.dealLevel === 'basket' && context?.parent?.basketDealType === 'percentage') {
                 return value !== undefined && value > 0 && value < 100
             } else return true
         }),
@@ -168,13 +173,13 @@ const schema = yup.object().shape({
         .mixed()
         .test("file-required", "Error: FIle required", (value, context) => {
             if (value?.size > 0 || context?.parent?.dealLevel === 'basket' ||
-                context?.parent?.mch?.length > 0 || context?.parent?.liam.length > 0 || context?.parent?.dealType === "Free-shipping") {
+                context?.parent?.mch?.length > 0 || context?.parent?.liam?.length > 0 || context?.parent?.dealType === FREE_SHIPPING_DEAL_TYPE) {
                 return true
             } else return false
         })
         .test("not-valid-size", "Error: Max allowed size is 1 MB", (value, context) => {
             if (context?.parent?.mch?.length < 1 && context?.parent?.liam.length < 1) {
-                if (context?.parent?.productsCollectionTab === 'uploadProduct' && context?.parent?.dealLevel === 'product' && context?.parent?.dealType === 'Discount') {
+                if (context?.parent?.productsCollectionTab === 'uploadProduct' && context?.parent?.dealLevel === 'product' && context?.parent?.dealType === DISCOUNT_DEAL_TYPE) {
                     return value?.size && value.size < MAX_FILE_SIZE
                 } else return true
             }
@@ -182,7 +187,7 @@ const schema = yup.object().shape({
         })
         .test("is-valid-type", "Error: File Type not accepted", (value, context) => {
             if (context?.parent?.mch?.length < 1 && context?.parent?.liam.length < 1) {
-                if (context?.parent?.productsCollectionTab === 'uploadProduct' && context?.parent?.dealLevel === 'product' && context?.parent?.dealType === 'Discount') {
+                if (context?.parent?.productsCollectionTab === 'uploadProduct' && context?.parent?.dealLevel === 'product' && context?.parent?.dealType === DISCOUNT_DEAL_TYPE) {
                     return isValidFileType(value && value?.name?.toLowerCase())
                 } else return true
             }
@@ -192,7 +197,7 @@ const schema = yup.object().shape({
         .mixed()
         .test("ex-file-required", "Error: FIle required", (value, context) => {
             if (value?.size > 0 && context?.parent?.dealLevelOptions === 'yes' || context?.parent?.dealLevelOptions === 'no' ||
-                context?.parent?.exmch?.length > 0 || context?.parent?.exliam.length > 0) {
+                context?.parent?.exmch?.length > 0 || context?.parent?.exliam?.length > 0) {
                 return true
             } else return false
         })
@@ -213,7 +218,7 @@ const schema = yup.object().shape({
             else return true
         }),
     dealApplyType: yup.mixed().test("dollar-value-required", 'Error: Select applicable products', (value: any, context: any) => {
-        if (context?.parent?.dealType !== "Free-shipping") {
+        if (context?.parent?.dealType !== FREE_SHIPPING_DEAL_TYPE) {
             if (value !== '') {
                 return true
             } else return false
@@ -249,26 +254,26 @@ const schema = yup.object().shape({
             }),
         get: yup.mixed()
             .test("dollar-value-required", "Error: Dollar ($) value required", (value: any, context: any) => {
-                if (context?.from[1]?.value?.dealCriteriaType === "%_OFF" || context?.from[1]?.value?.dealCriteriaType === "$_FIXED" ||
-                    value > 0 && context?.from[1]?.value?.dealCriteriaType === "$_OFF" || context?.from[1]?.value?.dealType === 'Discount' || context?.from[1]?.value?.dealType === "Free-shipping") {
+                if (context?.from[1]?.value?.dealCriteriaType === "%_OFF_MULTI" || context?.from[1]?.value?.dealCriteriaType === "$_FIXED_MULTI" ||
+                    value > 0 && context?.from[1]?.value?.dealCriteriaType === "$_OFF_MULTI" || context?.from[1]?.value?.dealType === DISCOUNT_DEAL_TYPE || context?.from[1]?.value?.dealType === FREE_SHIPPING_DEAL_TYPE) {
                     return true
                 } return false
             })
             .test("fixed-value-required", "Error: Dollar ($) value required", (value: any, context: any) => {
-                if (context?.from[1]?.value?.dealCriteriaType === "%_OFF" || context?.from[1]?.value?.dealCriteriaType === "$_OFF" ||
-                    value > 0 && context?.from[1]?.value?.dealCriteriaType === "$_FIXED" || context?.from[1]?.value?.dealType === 'Discount' || context?.from[1]?.value?.dealType === "Free-shipping") {
+                if (context?.from[1]?.value?.dealCriteriaType === "%_OFF_MULTI" || context?.from[1]?.value?.dealCriteriaType === "$_OFF_MULTI" ||
+                    value > 0 && context?.from[1]?.value?.dealCriteriaType === "$_FIXED_MULTI" || context?.from[1]?.value?.dealType === DISCOUNT_DEAL_TYPE || context?.from[1]?.value?.dealType === FREE_SHIPPING_DEAL_TYPE) {
                     return true
                 } return false
             })
             .test("percent-value-required", "Error: Percentage (%) value required", (value: any, context: any) => {
-                if (context?.from[1]?.value?.dealCriteriaType === "$_OFF" || context?.from[1]?.value?.dealCriteriaType === "$_FIXED" ||
-                    value > 0 && context?.from[1]?.value?.dealCriteriaType === "%_OFF" || context?.from[1]?.value?.dealType === 'Discount' || context?.from[1]?.value?.dealType === "Free-shipping") {
+                if (context?.from[1]?.value?.dealCriteriaType === "$_OFF_MULTI" || context?.from[1]?.value?.dealCriteriaType === "$_FIXED_MULTI" ||
+                    value > 0 && context?.from[1]?.value?.dealCriteriaType === "%_OFF_MULTI" || context?.from[1]?.value?.dealType === DISCOUNT_DEAL_TYPE || context?.from[1]?.value?.dealType === FREE_SHIPPING_DEAL_TYPE) {
                     return true
                 } return false
             })
             .test("percent-value-required-value", "Error: Percentage value should be between 1-99", (value: any, context: any) => {
-                if (context?.from[1]?.value?.dealCriteriaType === "$_OFF" || context?.from[1]?.value?.dealCriteriaType === "$_FIXED" ||
-                    value > 0 && value < 100 && context?.from[1]?.value?.dealCriteriaType === "%_OFF" || context?.from[1]?.value?.dealType === 'Discount' || context?.from[1]?.value?.dealType === "Free-shipping") {
+                if (context?.from[1]?.value?.dealCriteriaType === "$_OFF_MULTI" || context?.from[1]?.value?.dealCriteriaType === "$_FIXED_MULTI" ||
+                    value > 0 && value < 100 && context?.from[1]?.value?.dealCriteriaType === "%_OFF_MULTI" || context?.from[1]?.value?.dealType === DISCOUNT_DEAL_TYPE || context?.from[1]?.value?.dealType === FREE_SHIPPING_DEAL_TYPE) {
                     return true
                 } return false
             })
@@ -288,7 +293,7 @@ const schema = yup.object().shape({
     // dealCriteriaType: yup.string().required('Error: Select applicable products'),
 }).required();
 
-const CreateDealForm = () => {
+const CreateDealForm = ({ deal }: ICreateDealFrom) => {
     const [submitting, setSubmitting] = useState(false)
     const [showDraftModal, setShowDraftModal] = useState(false)
     const router = useRouter();
@@ -296,17 +301,22 @@ const CreateDealForm = () => {
     const user = useAppSelector(userProfileState)
     const draftFormValues = useAppSelector(getNewDealData)
     const dealLevelName = useAppSelector(updatedDealLevel)
-    const dealName = useAppSelector(updatedDealStep);
+    let dealName = useAppSelector(updatedDealStep);
+    const isEditing = useAppSelector(getIsEditing)
     const [createDeals] = useCreateDealsMutation();
     const [editDeal] = useEditDealsMutation();
-
+    const formDefaultValues =  deal ? convertDealDataToFormData(deal) : (draftFormValues || createDealDefaultFormState)
     const formMethods = useForm<ICreateDealFormState>({
-        defaultValues: draftFormValues || createDealDefaultFormState,
+        defaultValues: formDefaultValues,
         resolver: yupResolver(schema),
         mode: 'all'
     });
-    const { getValues, trigger, setValue } = formMethods
+    const { getValues, trigger, setValue, formState : { errors } } = formMethods
 
+    if(isEditing) {
+        dealName = formDefaultValues['dealType']
+    }
+    
     const handleFormDraftSubmit = async (dealId: number) => {
         setValue('draftCreatedTimestamp', moment())
         dispatch(updateNewDeal(getValues()))
@@ -361,7 +371,7 @@ const CreateDealForm = () => {
     const handleFormSubmit = async (e: MouseEvent) => {
         e.preventDefault()
         const cleanForm = await trigger(undefined, { shouldFocus: true })
-        
+        console.log(cleanForm, errors, getValues())
         if (cleanForm) {
             setValue('draftCreatedTimestamp', moment())
             dispatch(updateNewDeal(getValues()))
@@ -383,24 +393,37 @@ const CreateDealForm = () => {
       setShowDraftModal(false)
     }
 
+    let ctaContent = <div className={styles['submit-btn-container']}>
+    <div>
+        <Button variant="outlined" className={commonStyles['cancelBtn']} onClick={handleCancel} ata-testid="cancel-btn">Cancel</Button>
+    </div>
+    <div className={styles['submit-container']}>
+        <Button variant="text" onClick={handleBack} className={commonStyles['text-style-btn']} data-testid="back-btn">Go Back</Button>
+        <Button variant="contained" className={commonStyles['continueBtn']} onClick={e => handleFormSubmit(e)} data-testid="continue-btn">Continue</Button>
+    </div>
+</div>
+
+    if(isEditing) {
+        ctaContent = <div className={styles['submit-btn-container']}>
+        <div>
+            <Button variant="outlined" className={commonStyles['cancelBtn']} onClick={() => dispatch(updateDealEditing(false))} ata-testid="cancel-btn">Cancel</Button>
+        </div>
+        <div className={styles['submit-container']}>
+            <Button variant="contained" className={commonStyles['continueBtn']} onClick={e => handleFormSubmit(e)} data-testid="continue-btn">Save</Button>
+        </div>
+    </div>
+    } 
+
     return <FormProvider {...formMethods}>
         <form id="test">
-            <GeneralInformation handleFormDraftSubmit={handleFormDraftSubmit}/>
-            {dealName === "discount" ? <DealValue /> : dealName === "multi-buy" ? <DealCriteria /> : <ShippingMethod />}
-            {dealName === 'free-shipping' && <SpendMinimum />}
+            <GeneralInformation handleFormDraftSubmit={handleFormDraftSubmit} />
+            {dealName === DISCOUNT_DEAL_TYPE ? <DealValue /> : dealName === MULTI_BUY_DEAL_TYPE ? <DealCriteria /> : null}
+            {dealName === FREE_SHIPPING_DEAL_TYPE && <SpendMinimum />}
             <DateInEffect />
-            {dealName === 'free-shipping' || dealLevelName === 'basket' ? null : <ProductsCollection />}
-            {dealName === 'free-shipping' ? null : <Exclusions dealLevelName={dealLevelName} />}
+            {dealName === FREE_SHIPPING_DEAL_TYPE || dealLevelName === 'basket' ? null : <ProductsCollection />}
+            {dealName === FREE_SHIPPING_DEAL_TYPE ? null : <Exclusions dealLevelName={dealLevelName} />}
             <PromotionalMessages dealLevelName={dealLevelName} />
-            <div className={styles['submit-btn-container']}>
-                <div>
-                    <Button variant="outlined" className={commonStyles['cancelBtn']} onClick={handleCancel} ata-testid="cancel-btn">Cancel</Button>
-                </div>
-                <div className={styles['submit-container']}>
-                    <Button variant="text" onClick={handleBack} className={commonStyles['text-style-btn']} data-testid="back-btn">Go Back</Button>
-                    <Button variant="contained" className={commonStyles['continueBtn']} onClick={e => handleFormSubmit(e)} data-testid="continue-btn">Continue</Button>
-                </div>
-            </div>
+            {ctaContent}
         </form>
         <Modal
             style={draftModalcustomStyles}

@@ -18,16 +18,27 @@ import { notifyError, notifySuccess } from '../../util/Notification/Notification
 import { updateDealStep } from '../../store/feature/deal/dealSlice';
 import CreateDealDefaultFormState from '../../constants/CreateDealDefaultFormState'
 import { Chip } from '@mui/material';
+import { getIsEditing, updatedDealId, updateDealEditing  } from '../../store/feature/deal/dealSlice';
+import { useEditDealsMutation } from "../../api/editDeal";
+import {FREE_SHIPPING_DEAL_TYPE, MULTI_BUY_DEAL_TYPE} from '../../constants/FormOptions';
 
 const DealSummaryView = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const newDealData = useAppSelector(getNewDealData)
   const user = useAppSelector(userProfileState)
-
+  const isEditing = useAppSelector(getIsEditing)
+  const dealId = useAppSelector(updatedDealId)
+  
   const [createDeals] = useCreateDealsMutation();
+  const [editDeal] = useEditDealsMutation();
   const [submitting, setSubmitting] = useState(false)
   const excludeSteps: string[] = []
+
+  const handleCancel = () => {
+    dispatch(updateDealEditing(false))
+    router.push("/deals")
+  }
 
   const handleCreateDeal = async () => {
     const formattedPayload = generateCreateDealPayload(newDealData, false)
@@ -35,9 +46,28 @@ const DealSummaryView = () => {
       ...formattedPayload,
       username: user?.name
     }
-    console.log("Create deal payload", formattedPayloadWithUser)
+    if(isEditing) {
+      formattedPayloadWithUser['dealId'] = dealId
+    }
     setSubmitting(true)
-    await createDeals(formattedPayloadWithUser)
+    if(isEditing) {
+      await editDeal(formattedPayloadWithUser)
+      .unwrap()
+      .then((data) => {
+          if (data) {
+              notifySuccess("Deal successfully saved")
+          }
+      })
+      .catch((error: any) => {
+          notifyError(
+              error.data?.details ? error.data?.details : "Something went wrong",
+              "deal-failed"
+          )
+      }).finally(() => {
+        setSubmitting(false)
+      });
+    } else {
+      await createDeals(formattedPayloadWithUser)
       .unwrap()
       .then((data) => {
         if (data) {
@@ -55,6 +85,7 @@ const DealSummaryView = () => {
       }).finally(() => {
         setSubmitting(false)
       });
+    }
   }
 
   const { title, draftCreatedTimestamp, dealLevel, dealType, dealCriteria, dealCriteriaType } = newDealData
@@ -68,17 +99,17 @@ const DealSummaryView = () => {
     excludeSteps.push('Deal Criteria')
   }
 
-  if (dealType === 'Multi-buy') {
+  if (dealType === MULTI_BUY_DEAL_TYPE) {
     excludeSteps.push('Deal value')
   }
 
-  if (dealType === "Free-shipping") {
+  if (dealType === FREE_SHIPPING_DEAL_TYPE) {
     excludeSteps.push('Deal value', 'Deal Criteria', 'Products and Collections', 'Exclusions')
   }
 
   let customerPreview: string[] = []
 
-  dealCriteria.forEach((data: any,) => {
+  dealCriteria?.forEach((data: any,) => {
     if (dealCriteriaType === "$_OFF") {
       customerPreview.push(`Buy ${data.buy}, Get $${data.get} Off`)
     }
@@ -125,7 +156,7 @@ const DealSummaryView = () => {
           <Button
             variant="contained"
             className={commonStyles.cancelBtn}
-            onClick={() => router.push("/deals")}
+            onClick={() =>handleCancel()}
           >
             Cancel
           </Button>
@@ -143,7 +174,7 @@ const DealSummaryView = () => {
               className={commonStyles.continueBtn}
               disabled={submitting}
             >
-              Create
+              { isEditing ? 'Save' : 'Create' }
             </Button>
           </div>
         </Grid>

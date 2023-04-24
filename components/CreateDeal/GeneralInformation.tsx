@@ -9,11 +9,11 @@ import StepLabel from "../StepLabel";
 import Chip from "@mui/material/Chip";
 import Tag from "../Tag";
 import StepTitle from "../StepTitle";
-import { stackTypeOptions } from "../../constants/FormOptions";
+import { stackTypeOptions, FREE_SHIPPING_DEAL_TYPE, MULTI_BUY_DEAL_TYPE } from "../../constants/FormOptions";
 import styles from "./GeneralInformation.module.css";
 import generateIdentifier from '../../util/generateIdentifier'
 import SelectField from '../FormComponents/SelectField'
-import { updatedDealLevel, updatedDealStep } from "../../store/feature/deal/dealSlice";
+import { getIsEditing, updatedDealLevel, updatedDealStep } from "../../store/feature/deal/dealSlice";
 import { useAppSelector } from "../../store/index";
 import StepperCard from './StepperCard'
 import FeedIcon from '@mui/icons-material/Feed';
@@ -28,6 +28,7 @@ const GeneralInformation = ({ handleFormDraftSubmit }: IGeneralInformation) => {
   const dealLevelName = useAppSelector(updatedDealLevel)
   const dealName = useAppSelector(updatedDealStep);
   const draftValues = useAppSelector(getDraftDealData)
+  const isEditing = useAppSelector(getIsEditing)
   const id = draftValues?.generalDealInfo?.id
   const draftButtonLabel = id ? 'Save' : 'Save as draft'
 
@@ -36,22 +37,23 @@ const GeneralInformation = ({ handleFormDraftSubmit }: IGeneralInformation) => {
   }
 
   useEffect(() => {
-    if (dealName === "multi-buy") {
-      setValue('dealType', "Multi-buy")
+    if (dealName === MULTI_BUY_DEAL_TYPE) {
+      setValue('dealType', MULTI_BUY_DEAL_TYPE)
       setValue('isListValid', true)
     }
 
-    if (dealName === "free-shipping") {
-      setValue('dealType', "Free-shipping")
+    if (dealName === FREE_SHIPPING_DEAL_TYPE) {
+      setValue('dealType', FREE_SHIPPING_DEAL_TYPE)
     }
 
   }, [])
 
   return (<>
-    <Grid container justifyContent="space-between" className={styles["heading-container"]}>
+  {!isEditing &&  <>
+  <Grid container justifyContent="space-between" className={styles["heading-container"]}>
      <Grid item lg={5} md={5} sm={5}>
       <Typography variant="h3" className={styles.heading} data-testid="form-title">
-        Create New {dealName === "discount" ? 'Discount' : dealName === "multi-buy" ? 'Multi-buy' : 'Free Shipping'} Deal
+        Create New {dealName === "discount" ? 'Discount' : dealName === MULTI_BUY_DEAL_TYPE ? 'Multi-buy' : 'Free Shipping'} Deal
       </Typography>
       </Grid> 
       <Grid item lg={7} md={7} sm={7}>
@@ -67,8 +69,9 @@ const GeneralInformation = ({ handleFormDraftSubmit }: IGeneralInformation) => {
     </Grid>
     <Typography className={styles.draftTime} >{`Draft created on ${moment().format('MMMM Do YYYY, h:mm:ss a')}`}</Typography>
     <Chip label={'Draft'} sx={{margin: '0 25%', backgroundColor: '#666B73', fontWeight: '700', borderRadius: '5px', color: '#ffffff', height: '20px' }} />
+    </>}
     <StepperCard inProgressIcon={FeedIcon} error step={'GENERAL_INFORMATION'}>
-      <StepLabel currentStep={2} totalSteps={dealName === "free-shipping" || dealLevelName === 'basket' ? 6 : 7} />
+      <StepLabel currentStep={2} totalSteps={dealName === FREE_SHIPPING_DEAL_TYPE || dealLevelName === 'basket' ? 6 : 7} />
       <StepTitle title={"General Information"} />
       <Tag label="Internal facing" />
       <TextInputField

@@ -42,7 +42,7 @@ function ManuallyAdd({ mchValue, liamValue }: any) {
     }
 
     useEffect(() => {
-        if (mch.length > 5) {
+        if (mch?.length > 5) {
             setShowAllBtnMCH(true)
         }
         else {
@@ -55,7 +55,7 @@ function ManuallyAdd({ mchValue, liamValue }: any) {
         <Grid>
             <Typography className={commonStyles.mchHeading}>MCH(s)</Typography>
 
-            {mch.length > 0 ? (
+            {mch?.length > 0 ? (
                 <>
                     <Typography className={commonStyles.required} >Products</Typography>
                     <Typography className={commonStyles.validationHeading} >
@@ -64,7 +64,7 @@ function ManuallyAdd({ mchValue, liamValue }: any) {
                 </>
             ) : null}
             <Grid container mb={2}>
-                {mch.slice(0, showAllListMCH ? mch.length : 5).map((data: any, index: any) => {
+                {mch?.slice(0, showAllListMCH ? mch.length : 5).map((data: any, index: any) => {
                     return (
                         <Grid container key={index} item lg={12} className={commonStyles["mch-card-container"]}>
                             <Grid item lg={11}>
@@ -99,7 +99,7 @@ function ManuallyAdd({ mchValue, liamValue }: any) {
                     : null}
             </Grid>
 
-            {mch.length < 1 ? (
+            {mch?.length < 1 ? (
                 <Typography mb={2}>
                     There are currently no MCH(s) that have been added
                 </Typography>
