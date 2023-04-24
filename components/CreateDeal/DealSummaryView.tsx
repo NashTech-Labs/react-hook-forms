@@ -18,9 +18,9 @@ import { notifyError, notifySuccess } from '../../util/Notification/Notification
 import { updateDealStep } from '../../store/feature/deal/dealSlice';
 import CreateDealDefaultFormState from '../../constants/CreateDealDefaultFormState'
 import { Chip } from '@mui/material';
-import { getIsEditing, updatedDealId, updateDealEditing  } from '../../store/feature/deal/dealSlice';
+import { getIsEditing, updatedDealId, updateDealEditing } from '../../store/feature/deal/dealSlice';
 import { useEditDealsMutation } from "../../api/editDeal";
-import {FREE_SHIPPING_DEAL_TYPE, MULTI_BUY_DEAL_TYPE} from '../../constants/FormOptions';
+import { FREE_SHIPPING_DEAL_TYPE, MULTI_BUY_DEAL_TYPE } from '../../constants/FormOptions';
 
 const DealSummaryView = () => {
   const router = useRouter();
@@ -29,7 +29,7 @@ const DealSummaryView = () => {
   const user = useAppSelector(userProfileState)
   const isEditing = useAppSelector(getIsEditing)
   const dealId = useAppSelector(updatedDealId)
-  
+
   const [createDeals] = useCreateDealsMutation();
   const [editDeal] = useEditDealsMutation();
   const [submitting, setSubmitting] = useState(false)
@@ -46,61 +46,60 @@ const DealSummaryView = () => {
       ...formattedPayload,
       username: user?.name
     }
-    if(isEditing) {
+    if (isEditing) {
       formattedPayloadWithUser['dealId'] = dealId
     }
     setSubmitting(true)
-    if(isEditing) {
+    if (isEditing) {
       await editDeal(formattedPayloadWithUser)
-      .unwrap()
-      .then((data) => {
+        .unwrap()
+        .then((data) => {
           if (data) {
-              notifySuccess("Deal successfully saved")
+            notifySuccess("Deal successfully saved")
           }
-      })
-      .catch((error: any) => {
+        })
+        .catch((error: any) => {
           notifyError(
-              error.data?.details ? error.data?.details : "Something went wrong",
-              "deal-failed"
+            error.data?.details ? error.data?.details : "Something went wrong",
+            "deal-failed"
           )
-      }).finally(() => {
-        setSubmitting(false)
-      });
+        }).finally(() => {
+          setSubmitting(false)
+        });
     } else {
       await createDeals(formattedPayloadWithUser)
-      .unwrap()
-      .then((data) => {
-        if (data) {
-          dispatch(updateNewDeal(CreateDealDefaultFormState))
-          dispatch(updateDealStep(""));
-          router.push("/deals");
-          notifySuccess("Deal successfully created")
-        }
-      })
-      .catch((error) => {
-        notifyError(
-          error.data?.details ? error.data?.details : "Something went wrong",
-          "deal-failed"
-        )
-      }).finally(() => {
-        setSubmitting(false)
-      });
+        .unwrap()
+        .then((data) => {
+          if (data) {
+            dispatch(updateNewDeal(CreateDealDefaultFormState))
+            dispatch(updateDealStep(""));
+            router.push("/deals");
+            notifySuccess("Deal successfully created")
+          }
+        })
+        .catch((error) => {
+          notifyError(
+            error.data?.details ? error.data?.details : "Something went wrong",
+            "deal-failed"
+          )
+        }).finally(() => {
+          setSubmitting(false)
+        });
     }
   }
 
   const { title, draftCreatedTimestamp, dealLevel, dealType, dealCriteria, dealCriteriaType } = newDealData
 
   if (dealLevel === 'basket') {
-    excludeSteps.push('Products and Collections')
-    excludeSteps.push('Deal Criteria')
+    excludeSteps.push('Products and Collections', 'Deal Criteria', 'Shipping method', 'Spend minimum')
   }
 
   if (dealLevel === 'product' && dealType === 'Discount') {
-    excludeSteps.push('Deal Criteria')
+    excludeSteps.push('Deal Criteria', 'Shipping method', 'Spend minimum')
   }
 
   if (dealType === MULTI_BUY_DEAL_TYPE) {
-    excludeSteps.push('Deal value')
+    excludeSteps.push('Deal value', 'Shipping method', 'Spend minimum')
   }
 
   if (dealType === FREE_SHIPPING_DEAL_TYPE) {
@@ -110,14 +109,14 @@ const DealSummaryView = () => {
   let customerPreview: string[] = []
 
   dealCriteria?.forEach((data: any,) => {
-    if (dealCriteriaType === "$_OFF") {
+    if (dealCriteriaType === "$_OFF_MULTI") {
       customerPreview.push(`Buy ${data.buy}, Get $${data.get} Off`)
     }
-    if (dealCriteriaType === "$_FIXED") {
+    if (dealCriteriaType === "$_FIXED_MULTI") {
       customerPreview.push(`Buy ${data.buy} For $${data.get}`)
     }
 
-    if (dealCriteriaType === "%_OFF") {
+    if (dealCriteriaType === "%_OFF_MULTI") {
       customerPreview.push(`Buy ${data.buy} Get ${data.get}% Off`)
     }
   });
@@ -156,7 +155,7 @@ const DealSummaryView = () => {
           <Button
             variant="contained"
             className={commonStyles.cancelBtn}
-            onClick={() =>handleCancel()}
+            onClick={() => handleCancel()}
           >
             Cancel
           </Button>
@@ -174,7 +173,7 @@ const DealSummaryView = () => {
               className={commonStyles.continueBtn}
               disabled={submitting}
             >
-              { isEditing ? 'Save' : 'Create' }
+              {isEditing ? 'Save' : 'Create'}
             </Button>
           </div>
         </Grid>
