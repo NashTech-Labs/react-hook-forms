@@ -13,6 +13,7 @@ import { useFormContext, useWatch } from "react-hook-form";
 import { useAppSelector } from "../../../store";
 import { updatedDealStep } from "../../../store/feature/deal/dealSlice";
 import StepperCard from '../StepperCard'
+import { FREE_SHIPPING_DEAL_TYPE } from '../../../constants/FormOptions'
 
 
 function PromotionalMessages({ dealLevelName }: any) {
@@ -48,8 +49,8 @@ function PromotionalMessages({ dealLevelName }: any) {
 
   return (
     <StepperCard step={'PROMOTION_MESSAGES'} inProgressIcon={MessageOutlinedIcon}>
-      <StepLabel currentStep={dealName === 'free-shipping' || dealLevelName === 'basket' ? 6 : 7}
-        totalSteps={dealName === 'free-shipping' || dealLevelName === 'basket' ? 6 : 7} />
+      <StepLabel currentStep={dealName === FREE_SHIPPING_DEAL_TYPE || dealLevelName === 'basket' ? 6 : 7}
+        totalSteps={dealName === FREE_SHIPPING_DEAL_TYPE || dealLevelName === 'basket' ? 6 : 7} />
       <StepTitle title={"Promotional Messages"} />
       <Grid container>
         <Grid item lg={12}>

@@ -35,7 +35,7 @@ function ManuallyAddLiam({ liamValue }: any) {
     }
 
     useEffect(() => {
-        if (liam.length > 5) {
+        if (liam?.length > 5) {
             setShowAllBtnLIAM(true)
         }
         else {
@@ -50,7 +50,7 @@ function ManuallyAddLiam({ liamValue }: any) {
             <Typography className={commonStyles.mchHeading}>LIAM(s)</Typography>
 
             {
-                liam.length > 0 ? (
+                liam?.length > 0 ? (
                     <>
                         <Typography className={commonStyles.required}>Products</Typography>
                         <Typography className={commonStyles.validationHeading} >
@@ -61,7 +61,7 @@ function ManuallyAddLiam({ liamValue }: any) {
             }
 
             <Grid container mb={2}>
-                {liam.slice(0, showAllListLIAM ? liam.length : 5).map((data: any, index: any) => {
+                {liam?.slice(0, showAllListLIAM ? liam.length : 5).map((data: any, index: any) => {
                     return (
                         <Grid key={index} item lg={12} className={commonStyles["mch-card-container"]}>
                             <Grid item lg={11}>
@@ -98,7 +98,7 @@ function ManuallyAddLiam({ liamValue }: any) {
 
             </Grid>
             {
-                liam.length < 1 ?
+                liam?.length < 1 ?
                     <Typography mb={2}>
                         There are currently no LIAM(s) that have been added
                     </Typography>

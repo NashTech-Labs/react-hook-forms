@@ -5,11 +5,13 @@ export interface dealState {
   dealName: string;
   dealId: Number;
   dealLevelName: string;
+  isEditing: boolean 
 }
 const initialState: dealState = {
   dealName: "",
   dealId: 0,
-  dealLevelName: 'product'
+  dealLevelName: 'product',
+  isEditing: false
 };
 
 const dealSlice = createSlice({
@@ -25,13 +27,15 @@ const dealSlice = createSlice({
     updateDealLevel: (state, action) => {
       state.dealLevelName = action.payload;
     },
+    updateDealEditing: (state, action) => {
+      state.isEditing = action.payload;
+    },
   },
 });
 
-export const { updateDealStep } = dealSlice.actions;
-export const { updateDealId } = dealSlice.actions;
-export const { updateDealLevel } = dealSlice.actions;
+export const { updateDealStep, updateDealEditing, updateDealId, updateDealLevel  } = dealSlice.actions;
 export const updatedDealStep = (state: RootState) => state.deal.dealName;
 export const updatedDealId = (state: RootState) => state.deal.dealId;
 export const updatedDealLevel = (state: RootState) => state.deal.dealLevelName;
+export const getIsEditing = (state: RootState) => state.deal.isEditing;
 export default dealSlice.reducer;

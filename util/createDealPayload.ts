@@ -1,5 +1,5 @@
 import { ICreateDealFormState } from '../constants/CreateDealFormStateType'
-import { DEAL_APPLY_TYPE, STACKING_TYPES} from '../constants/FormOptions'
+import { DEAL_APPLY_TYPE, DISCOUNT_DEAL_TYPE, FREE_SHIPPING_DEAL_TYPE, MULTI_BUY_DEAL_TYPE, STACKING_TYPES} from '../constants/FormOptions'
 import { convertDateTime } from './ConvertDateTime'
 
 const getRewardType = ({ dealDiscountTab, dollarOff, percentageOff, fixedPriceOff, customPercentageOff, dealLevel, basketDealType, basketDiscount }: ICreateDealFormState) => {
@@ -160,21 +160,14 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState, isDraft: bo
         "description": description,
         "priority": priority,
         "stacking_type": STACKING_TYPES[stackingType],
-        "scope_type": dealType === "Free-shipping" ? "BASKET" : dealLevel?.toUpperCase(),
+        "scope_type": dealType === FREE_SHIPPING_DEAL_TYPE ? "BASKET" : dealLevel?.toUpperCase(),
         "scopes": getScopeData(productsCollectionTab, fileLIAM, fileMCH, liam, mch),
         "valid_from": convertDateTime(startDatePicker,startTimePicker),
         "valid_to": convertDateTime(endDatePicker,endTimePicker),
-        "promo_restrictions": {
-            // "product_code": {
-            //     "liam": [...exFileLIAM, ...exliam]
-            // },
-            // "category": {
-            //     "mch": [...exFileMCH, ...exmch]
-            // }
-        },
         "store_id": "5264",
         "promotion_message_english": englishMessage,
-        "promotion_message_french": frenchMessage
+        "promotion_message_french": frenchMessage,
+        "promo_restrictions" : {}
     }
 
     if (dealLevel !== 'basket') {
@@ -200,7 +193,7 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState, isDraft: bo
         }
     }
 
-    if (dealType === 'Discount') {
+    if (dealType === DISCOUNT_DEAL_TYPE) {
         payload["rewards"] = [
             {
                 "value": String(rewardValue)
@@ -209,9 +202,9 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState, isDraft: bo
         payload["reward_type"] = rewardType
     }
 
-    if (dealType === 'Multi-buy') {
+    if (dealType === MULTI_BUY_DEAL_TYPE) {
         payload["rewards"] = getRewardMultiBuy(dealCriteria, dealCriteriaType),
-        payload["reward_type"] = dealCriteriaType === '$_OFF' ? '$_OFF_MULTI' :  dealCriteriaType === "%_OFF" ? "%_OFF_MULTI" : "$_FIXED_MULTI";
+        payload["reward_type"] = dealCriteriaType;
         if (dealCriteria.length === 1)
         {
             payload["promo_restrictions"]["quantity"] = {
@@ -221,7 +214,7 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState, isDraft: bo
         }
     }
 
-    if (dealType === "Free-shipping")
+    if (dealType === FREE_SHIPPING_DEAL_TYPE)
     {
         payload["reward_type"] = "NO_FEE",
         payload["rewards"] = [{

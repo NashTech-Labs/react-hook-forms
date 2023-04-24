@@ -15,9 +15,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import StepperCard from '../StepperCard'
 
 export const percentageOptions = [
-    { value: "$_OFF", label: "Dollar ($) off" },
-    { value: "%_OFF", label: "Percentage ($) off" },
-    { value: "$_FIXED", label: "Fixed price" },
+    { value: "$_OFF_MULTI", label: "Dollar ($) off" },
+    { value: "%_OFF_MULTI", label: "Percentage ($) off" },
+    { value: "$_FIXED_MULTI", label: "Fixed price" },
 ];
 
 export const buyValue: { [index: string]: string } = {
@@ -73,14 +73,14 @@ function DealCriteria() {
     let customerPreview: string[] = []
 
     dealCriteria.forEach((data: any,) => {
-        if (data.buy && data.get && dealCriteriaType === "$_OFF") {
+        if (data.buy && data.get && dealCriteriaType === "$_OFF_MULTI") {
             customerPreview.push(`Buy ${data.buy}, Get $${data.get} Off`)
         }
-        if (data.buy && data.get && dealCriteriaType === "$_FIXED") {
+        if (data.buy && data.get && dealCriteriaType === "$_FIXED_MULTI") {
             customerPreview.push(`Buy ${data.buy} For $${data.get}`)
         }
 
-        if (data.buy && data.get && dealCriteriaType === "%_OFF") {
+        if (data.buy && data.get && dealCriteriaType === "%_OFF_MULTI") {
             customerPreview.push(`Buy ${data.buy}, Get ${data.get}% Off`)
         }
 
@@ -130,10 +130,10 @@ function DealCriteria() {
                                 />
                             </Grid>
 
-                            {dealCriteriaType === "$_FIXED" ? <Typography className={commonStyles.getText}>For</Typography> :
+                            {dealCriteriaType === "$_FIXED_MULTI" ? <Typography className={commonStyles.getText}>For</Typography> :
                                 <Typography className={commonStyles.getText}>Get</Typography>}
 
-                            {dealCriteriaType === '$_OFF' ? <TextInputField
+                            {dealCriteriaType === '$_OFF_MULTI' ? <TextInputField
                                 placeholder="$ 0.00"
                                 type="number"
                                 name={`dealCriteria.${index}.get`}
@@ -143,7 +143,7 @@ function DealCriteria() {
                                 dealCriteria={true}
                             /> : null}
 
-                            {dealCriteriaType === '%_OFF' ?
+                            {dealCriteriaType === '%_OFF_MULTI' ?
                                 <TextInputField
                                     name={`dealCriteria.${index}.get`}
                                     placeholder={'0'}
@@ -151,12 +151,12 @@ function DealCriteria() {
                                     inline
                                     required
                                     displayPercentageFormat={true}
-                                    endAdornment={dealCriteriaType === '%_OFF' ? <div style={{ position: 'absolute', left: '45px' }}>%</div> : undefined}
+                                    endAdornment={dealCriteriaType === '%_OFF_MULTI' ? <div style={{ position: 'absolute', left: '45px' }}>%</div> : undefined}
                                     inputHeight={true}
                                     dealCriteria={true}
                                 /> : null}
 
-                            {dealCriteriaType === '$_FIXED' ?
+                            {dealCriteriaType === '$_FIXED_MULTI' ?
                                 <TextInputField
                                     name={`dealCriteria.${index}.get`}
                                     placeholder="$ 0.00"
@@ -167,7 +167,7 @@ function DealCriteria() {
                                     dealCriteria={true}
                                 /> : null}
 
-                            {dealCriteriaType === "$_FIXED" ? null :
+                            {dealCriteriaType === "$_FIXED_MULTI" ? null :
                                 <Typography className={commonStyles.getText}>Off</Typography>}
 
                             {index > 0 ? <Grid className={commonStyles.deleteIcon} > <CloseIcon onClick={() => deleteTier(index)} /> </Grid> : null}

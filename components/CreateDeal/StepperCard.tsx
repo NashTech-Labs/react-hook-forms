@@ -6,6 +6,8 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import CheckIcon from '@mui/icons-material/Check';
 import commonStyles from './Steps.module.css'
 import styles from './StepperCard.module.css'
+import {useAppSelector} from '../../store';
+import {getIsEditing} from '../../store/feature/deal/dealSlice';
 
 const STEP_CONFIG : { [index: string]: any } = {
     GENERAL_INFORMATION: ['title', 'priority', 'stackingType'],
@@ -29,6 +31,7 @@ const getIconProps = ({ error, complete, inProgressIcon } : any) => {
 const StepperCard = (props: any) => {
     const { children, step, inProgressIcon } = props
     const { formState , control } = useFormContext()
+    const isEditing = useAppSelector(getIsEditing)
     const { errors } = formState || {}
     const allValues = useWatch({ control })
     const currentStepFields = STEP_CONFIG[step]
@@ -70,10 +73,10 @@ const StepperCard = (props: any) => {
   
     return  <Box> 
         <Grid container className={commonStyles["step-card-container"]} >
-            <Grid item>
+            {!isEditing && <Grid item>
                 <Icon className={`${style} ${styles['icon']}`}/>
                 <hr className={`${statusLine} ${style}`} />
-            </Grid>
+            </Grid>}
             <Grid item className={commonStyles["step-card"]} >
              {children}
             </Grid>

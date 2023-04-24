@@ -122,6 +122,7 @@ const DealValue = () => {
         if (level === 'product') {
             setValue('basketSpend', '')
             setValue('basketDiscount', '')
+            setValue('dealDiscountTab', 'dollar')
             clearErrors(['basketSpend', 'basketDiscount'])
         } else {
             setValue('percentageOff', '')

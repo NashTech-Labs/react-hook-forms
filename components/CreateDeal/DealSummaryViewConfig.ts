@@ -1,6 +1,6 @@
 import moment from 'moment'
 import {ICreateDealFormState} from '../../constants/CreateDealFormStateType'
-import { dealLevelExclusionOptions, dealApplyOptions , stackTypeOptions} from '../../constants/FormOptions'
+import { dealLevelExclusionOptions, dealApplyOptions , stackTypeOptions, dealTypeOptions} from '../../constants/FormOptions'
 import { capitalizeWords } from '../../util/format'
 
 const getFormattedDate = (date: any, time: any) => `${moment(date).format('MMMM DD, YYYY')} ${moment(time).format('hh:mma z')} EST`
@@ -20,7 +20,7 @@ const config: IConfig = {
         title: 'Type',
         getValue: (formData: ICreateDealFormState) => {
             const {dealType} = formData
-            return dealType
+            return dealTypeOptions[dealType]
         }
     }],
     'General Information': [
@@ -109,7 +109,7 @@ const config: IConfig = {
             title: 'Tiers',
             getValue: (formData: ICreateDealFormState) => {
                 const { dealCriteria } = formData
-                return dealCriteria.length
+                return dealCriteria?.length
             },
         },
         {
