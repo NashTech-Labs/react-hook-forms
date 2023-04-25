@@ -15,16 +15,6 @@ export const editPayload = (data: dealPreview, name: string, isDealActive: boole
         "valid_from": data?.generalDealInfo?.valid_from,
         "valid_to": data?.generalDealInfo?.valid_to,
         "promo_restrictions": {
-            "product_code": {
-                "liam": data?.exclusion?.product?.liam
-            },
-            "category": {
-                "mch": data?.exclusion?.product?.mch
-            },
-            // "price_applicability": {
-            //     "value": data?.applicableProduct?.priceApplicability?.value
-            // }
-
             spend: data?.dealValue?.spend
         },
         "store_id": "5264",
@@ -35,6 +25,12 @@ export const editPayload = (data: dealPreview, name: string, isDealActive: boole
 
     if (data?.generalDealInfo?.type !== "FREE_SHIPPING") {
         payload["promo_restrictions"]["price_applicability"] = data?.applicableProduct?.priceApplicability?.value
+        payload["promo_restrictions"]["product_code"] = {
+            "liam": data?.exclusion?.product?.liam
+        },
+            payload["promo_restrictions"]["category"] = {
+                "mch": data?.exclusion?.product?.mch
+            }
     }
 
     return payload
