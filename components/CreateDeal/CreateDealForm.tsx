@@ -30,6 +30,7 @@ import {updateDraftDeal} from '../../store/feature/deal/draftDealSlice';
 import { useEditDealsMutation } from "../../api/editDeal";
 import convertDealDataToFormData from '../../util/convertDealToFormData'
 import { MULTI_BUY_DEAL_TYPE, FREE_SHIPPING_DEAL_TYPE, DISCOUNT_DEAL_TYPE } from '../../constants/FormOptions'
+import ExitEditModal from './ExitEditModal'
 
 interface ICreateDealFrom {
     deal? : object
@@ -296,6 +297,7 @@ const schema = yup.object().shape({
 const CreateDealForm = ({ deal }: ICreateDealFrom) => {
     const [submitting, setSubmitting] = useState(false)
     const [showDraftModal, setShowDraftModal] = useState(false)
+    const [exitModal, setExitModal] = useState<boolean>(false)
     const router = useRouter();
     const dispatch = useAppDispatch();
     const user = useAppSelector(userProfileState)
@@ -316,7 +318,7 @@ const CreateDealForm = ({ deal }: ICreateDealFrom) => {
     if(isEditing) {
         dealName = formDefaultValues['dealType']
     }
-    
+
     const handleFormDraftSubmit = async (dealId: number) => {
         setValue('draftCreatedTimestamp', moment())
         dispatch(updateNewDeal(getValues()))
@@ -371,7 +373,6 @@ const CreateDealForm = ({ deal }: ICreateDealFrom) => {
     const handleFormSubmit = async (e: MouseEvent) => {
         e.preventDefault()
         const cleanForm = await trigger(undefined, { shouldFocus: true })
-        console.log(cleanForm, errors, getValues())
         if (cleanForm) {
             setValue('draftCreatedTimestamp', moment())
             dispatch(updateNewDeal(getValues()))
@@ -393,6 +394,14 @@ const CreateDealForm = ({ deal }: ICreateDealFrom) => {
       setShowDraftModal(false)
     }
 
+    const handleEditCancel = () => {
+       setExitModal(true)
+    }
+
+    const handleExitModalClose = () => { 
+        setExitModal(false)
+    }
+
     let ctaContent = <div className={styles['submit-btn-container']}>
     <div>
         <Button variant="outlined" className={commonStyles['cancelBtn']} onClick={handleCancel} ata-testid="cancel-btn">Cancel</Button>
@@ -406,7 +415,7 @@ const CreateDealForm = ({ deal }: ICreateDealFrom) => {
     if(isEditing) {
         ctaContent = <div className={styles['submit-btn-container']}>
         <div>
-            <Button variant="outlined" className={commonStyles['cancelBtn']} onClick={() => dispatch(updateDealEditing(false))} ata-testid="cancel-btn">Cancel</Button>
+            <Button variant="outlined" className={commonStyles['cancelBtn']} onClick={() => handleEditCancel()} ata-testid="cancel-btn">Cancel</Button>
         </div>
         <div className={styles['submit-container']}>
             <Button variant="contained" className={commonStyles['continueBtn']} onClick={e => handleFormSubmit(e)} data-testid="continue-btn">Save</Button>
@@ -431,6 +440,13 @@ const CreateDealForm = ({ deal }: ICreateDealFrom) => {
             onRequestClose={closeDraftModal}
         >
          <DraftModal loading={submitting} closeModal={closeDraftModal}/>
+        </Modal>
+        <Modal
+            style={draftModalcustomStyles}
+            isOpen={exitModal}
+            onRequestClose={handleExitModalClose}
+        >
+            <ExitEditModal closeModal={handleExitModalClose}/>
         </Modal>
     </FormProvider>
 }

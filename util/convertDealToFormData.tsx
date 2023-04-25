@@ -1,4 +1,5 @@
 import { FREE_SHIPPING_DEAL_TYPE, minimumSpendOptions, MULTI_BUY_DEAL_TYPE, percentageOptions, STACKING_TYPES } from '../constants/FormOptions'
+import {convertToEST} from './ConvertDateTime'
 
 const convertCentsToDollar = (value: number) => {
     if(value) return value/100
@@ -109,10 +110,10 @@ const convertDealDataToFormData = (deal: any) => {
  formData['dealApplyType'] = priceApplicability === null ? 'all' : 'regular_priced_only'
  formData['dealLevelOptions'] = priceApplicability === null ? 'no' : 'yes'
  formData['isListValid'] = type === MULTI_BUY_DEAL_TYPE
- formData['startDatePicker'] = valid_from
- formData['endDatePicker'] = valid_to
- formData['startTimePicker'] = valid_from
- formData['endTimePicker'] = valid_to
+ formData['startDatePicker'] = convertToEST(valid_from)
+ formData['endDatePicker'] = convertToEST(valid_to)
+ formData['startTimePicker'] = convertToEST(valid_from)
+ formData['endTimePicker'] = convertToEST(valid_to)
 
  return {
    ...formData,

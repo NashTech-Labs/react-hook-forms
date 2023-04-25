@@ -1,7 +1,8 @@
 import { ICreateDealFormState } from './CreateDealFormStateType'
+import {DISCOUNT_DEAL_TYPE} from './FormOptions'
 
 const createDealDefaultFormState: ICreateDealFormState = {
-    dealType: 'Discount',
+    dealType: DISCOUNT_DEAL_TYPE,
     title: '',
     description: '',
     identifier: '',
