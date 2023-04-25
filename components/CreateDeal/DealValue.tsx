@@ -128,6 +128,7 @@ const DealValue = () => {
             setValue('percentageOff', '')
             setValue('dollarOff', '')
             setValue('fixedPriceOff', '')
+            setValue('dealDiscountTab', '')
             setValue('customPercentageOff', '')
             setValue('dealApplyType', '')
             setValue('dealLevelOptions', 'no')

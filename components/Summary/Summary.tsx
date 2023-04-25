@@ -16,6 +16,7 @@ import Modal from "react-modal";
 import EditDealModal from "./EditDealModal";
 import CreateDealForm from "../CreateDeal/CreateDealForm";
 import {DISCOUNT_DEAL_TYPE, FREE_SHIPPING_DEAL_TYPE, MULTI_BUY_DEAL_TYPE, dealTypeOptions } from "../../constants/FormOptions";
+import NoDisableModal from './NoDisableModal'
 
 const editDealStyles = {
     content: {
@@ -95,7 +96,8 @@ function Summary() {
     const { data, refetch } = useGetDealPreviewQuery(dealId);
     const router = useRouter();
     const [customerPreview, setCustomerPreview] = useState<string[]>([])
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [noEditModal, setNoEditModal] = useState<boolean>(false);
     const [isDealActive, setIsDealActive] = useState<boolean>(true)
     const isEditing = useAppSelector(getIsEditing)
     const dispatch = useAppDispatch()
@@ -254,7 +256,8 @@ function Summary() {
     }, [data, router])
 
     const handleChange = () => {
-        setIsOpen(true)
+       !isEditing && setIsOpen(true)
+       isEditing && setNoEditModal(true)
     }
 
     const closeModal = () => {
@@ -263,6 +266,10 @@ function Summary() {
 
     const disableDeal = () => {
         setIsDealActive(!isDealActive)
+    }
+
+    const closeNoEditModal = () => {
+        setNoEditModal(false)
     }
 
     let content = null
@@ -580,7 +587,17 @@ function Summary() {
                     />
                 </Modal>
             </Box>
-
+            <Box>
+                <Modal
+                    style={editDealStyles}
+                    isOpen={noEditModal}
+                    onRequestClose={closeNoEditModal}
+                >
+                    <NoDisableModal
+                        closeModal={closeNoEditModal}
+                    />
+                </Modal>
+            </Box>
         </Grid >
     );
 }

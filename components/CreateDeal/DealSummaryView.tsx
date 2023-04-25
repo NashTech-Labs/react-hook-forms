@@ -20,7 +20,7 @@ import CreateDealDefaultFormState from '../../constants/CreateDealDefaultFormSta
 import { Chip } from '@mui/material';
 import { getIsEditing, updatedDealId, updateDealEditing } from '../../store/feature/deal/dealSlice';
 import { useEditDealsMutation } from "../../api/editDeal";
-import { FREE_SHIPPING_DEAL_TYPE, MULTI_BUY_DEAL_TYPE } from '../../constants/FormOptions';
+import { DISCOUNT_DEAL_TYPE, FREE_SHIPPING_DEAL_TYPE, MULTI_BUY_DEAL_TYPE } from '../../constants/FormOptions';
 
 const DealSummaryView = () => {
   const router = useRouter();
@@ -29,12 +29,10 @@ const DealSummaryView = () => {
   const user = useAppSelector(userProfileState)
   const isEditing = useAppSelector(getIsEditing)
   const dealId = useAppSelector(updatedDealId)
-
   const [createDeals] = useCreateDealsMutation();
   const [editDeal] = useEditDealsMutation();
   const [submitting, setSubmitting] = useState(false)
   const excludeSteps: string[] = []
-
   const handleCancel = () => {
     dispatch(updateDealEditing(false))
     router.push("/deals")
@@ -55,6 +53,10 @@ const DealSummaryView = () => {
         .unwrap()
         .then((data) => {
           if (data) {
+            router.push("/deals");
+            dispatch(updateNewDeal(CreateDealDefaultFormState))
+            dispatch(updateDealEditing(false))
+            dispatch(updateDealStep(""));
             notifySuccess("Deal successfully saved")
           }
         })
@@ -94,7 +96,7 @@ const DealSummaryView = () => {
     excludeSteps.push('Products and Collections', 'Deal Criteria', 'Shipping method', 'Spend minimum')
   }
 
-  if (dealLevel === 'product' && dealType === 'Discount') {
+  if (dealLevel === 'product' && dealType === DISCOUNT_DEAL_TYPE) {
     excludeSteps.push('Deal Criteria', 'Shipping method', 'Spend minimum')
   }
 

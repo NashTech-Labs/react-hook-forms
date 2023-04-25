@@ -69,10 +69,10 @@ export const statusOptions: { [index: string]: string } = {
 
 export const dealTypeOptions: { [index: string]: string } = {
     'MULTI_BUY': 'Multi-buy',
-    'Discount': 'Discount',
+    'DISCOUNT': 'Discount',
     'FREE_SHIPPING': 'Free shipping',
 }
 
-export const DISCOUNT_DEAL_TYPE = "Discount"
+export const DISCOUNT_DEAL_TYPE = "DISCOUNT"
 export const FREE_SHIPPING_DEAL_TYPE = 'FREE_SHIPPING'
 export const MULTI_BUY_DEAL_TYPE = "MULTI_BUY"
