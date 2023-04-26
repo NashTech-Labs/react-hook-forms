@@ -9,7 +9,7 @@ import StepLabel from "../StepLabel";
 import Chip from "@mui/material/Chip";
 import Tag from "../Tag";
 import StepTitle from "../StepTitle";
-import { stackTypeOptions, FREE_SHIPPING_DEAL_TYPE, MULTI_BUY_DEAL_TYPE } from "../../constants/FormOptions";
+import { stackTypeOptions, FREE_SHIPPING_DEAL_TYPE, MULTI_BUY_DEAL_TYPE, DISCOUNT_DEAL_TYPE } from "../../constants/FormOptions";
 import styles from "./GeneralInformation.module.css";
 import generateIdentifier from '../../util/generateIdentifier'
 import SelectField from '../FormComponents/SelectField'
@@ -49,26 +49,26 @@ const GeneralInformation = ({ handleFormDraftSubmit }: IGeneralInformation) => {
   }, [])
 
   return (<>
-  {!isEditing &&  <>
-  <Grid container justifyContent="space-between" className={styles["heading-container"]}>
-     <Grid item lg={5} md={5} sm={5}>
-      <Typography variant="h3" className={styles.heading} data-testid="form-title">
-        Create New {dealName === "discount" ? 'Discount' : dealName === MULTI_BUY_DEAL_TYPE ? 'Multi-buy' : 'Free Shipping'} Deal
-      </Typography>
-      </Grid> 
-      <Grid item lg={7} md={7} sm={7}>
-        <Button
-          data-testid="draft-btn"
-          variant="contained"
-          className={styles.draftBtn}
-          onClick={() => handleFormDraftSubmit(id)}
-        >
-           {draftButtonLabel}
-        </Button>
+    {!isEditing && <>
+      <Grid container justifyContent="space-between" className={styles["heading-container"]}>
+        <Grid item lg={5} md={5} sm={5}>
+          <Typography variant="h3" className={styles.heading} data-testid="form-title">
+            Create New {dealName === DISCOUNT_DEAL_TYPE ? 'Discount' : dealName === MULTI_BUY_DEAL_TYPE ? 'Multi-buy' : 'Free Shipping'} Deal
+          </Typography>
+        </Grid>
+        <Grid item lg={7} md={7} sm={7}>
+          <Button
+            data-testid="draft-btn"
+            variant="contained"
+            className={styles.draftBtn}
+            onClick={() => handleFormDraftSubmit(id)}
+          >
+            {draftButtonLabel}
+          </Button>
+        </Grid>
       </Grid>
-    </Grid>
-    <Typography className={styles.draftTime} >{`Draft created on ${moment().format('MMMM Do YYYY, h:mm:ss a')}`}</Typography>
-    <Chip label={'Draft'} sx={{margin: '0 25%', backgroundColor: '#666B73', fontWeight: '700', borderRadius: '5px', color: '#ffffff', height: '20px' }} />
+      <Typography className={styles.draftTime} >{`Draft created on ${moment().format('MMMM Do YYYY, h:mm:ss a')}`}</Typography>
+      <Chip label={'Draft'} sx={{ margin: '0 25%', backgroundColor: '#666B73', fontWeight: '700', borderRadius: '5px', color: '#ffffff', height: '20px' }} />
     </>}
     <StepperCard inProgressIcon={FeedIcon} error step={'GENERAL_INFORMATION'}>
       <StepLabel currentStep={2} totalSteps={dealName === FREE_SHIPPING_DEAL_TYPE || dealLevelName === 'basket' ? 6 : 7} />
