@@ -542,13 +542,13 @@ function Summary() {
         <Grid container>
             <Grid item lg={12} md={9} sm={6}>
                 <Grid container display="flex" justifyContent='space-around' mb={4} mt={4}>
-                    <Grid item lg={9} className={styles.titleContainer} >
+                  {!isEditing && <Grid item lg={9} className={styles.titleContainer} >
                         <Typography variant="h4" className={styles.title}>{data?.generalDealInfo?.title}</Typography>
                         <Typography mt={2} className={styles["sub-title"]} >Draft created on {data?.generalDealInfo?.created_at ? convertToEST(data?.generalDealInfo?.created_at).format("MMMM D, YYYY [at] h:mm A z") : null}</Typography>
                         <Chip className={data?.generalDealInfo?.status === "INACTIVE" ? styles.inactiveChip : styles.Chip}
                             sx={{ backgroundColor: dealStatus[data?.generalDealInfo?.status], mb: 1, fontColor: "#000000" }}
                             label={data?.generalDealInfo?.status ? capitalizeWords(data?.generalDealInfo?.status) : null} />
-                    </Grid>
+                    </Grid>}
 
                     {data?.generalDealInfo?.status === "ACTIVE" || data?.generalDealInfo?.status === "INACTIVE" ?
                         <Grid mt={3} item lg={6} className={data?.generalDealInfo?.status === "ACTIVE" ? styles.toggleSection : styles.toggleDisabledSection} >

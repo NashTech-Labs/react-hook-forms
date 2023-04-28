@@ -425,7 +425,7 @@ const CreateDealForm = ({ deal }: ICreateDealFrom) => {
 
     return <FormProvider {...formMethods}>
         <form id="test">
-            <GeneralInformation handleFormDraftSubmit={handleFormDraftSubmit} />
+            <GeneralInformation handleFormDraftSubmit={handleFormDraftSubmit} deal={deal}/>
             {dealName === DISCOUNT_DEAL_TYPE ? <DealValue /> : dealName === MULTI_BUY_DEAL_TYPE ? <DealCriteria /> : null}
             {dealName === FREE_SHIPPING_DEAL_TYPE && <SpendMinimum />}
             <DateInEffect />

@@ -4,6 +4,8 @@ import CircularProgress from '@mui/material/CircularProgress'
 import { useRouter } from 'next/router'
 import styles from './DraftModal.module.css'
 import commonStyles from './Steps.module.css'
+import {useAppDispatch} from '../../store'
+import {updateDraftDeal} from '../../store/feature/deal/draftDealSlice'
 
 interface IDraftModal {
     loading: boolean
@@ -12,10 +14,12 @@ interface IDraftModal {
 
 const DraftModal = ({ loading, closeModal }: IDraftModal) => {
   const router = useRouter();
+  const dispatch = useAppDispatch()
    
   const handleExit = () => {
     closeModal()
     router.push('/deals')
+    dispatch(updateDraftDeal({}))
   }
   
   const handleClose = () => {
