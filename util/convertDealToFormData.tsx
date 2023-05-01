@@ -94,10 +94,11 @@ const convertDealDataToFormData = (deal: any) => {
     productExclusionsCollectionTab: 'uploadProduct',
  }
 
- const { generalDealInfo, dealValue, applicableProduct } = deal
+ const { generalDealInfo, dealValue, applicableProduct, exclusion } = deal
  const { title, description, priority, stacking_type, type, promotion_message_english, promotion_message_french, valid_from, valid_to } = generalDealInfo
  const { scopeType } = dealValue
  const { priceApplicability } = applicableProduct
+ const { product } = exclusion
 
  formData['dealType'] = type
  formData['title'] = title
@@ -108,7 +109,7 @@ const convertDealDataToFormData = (deal: any) => {
  formData['englishMessage'] = promotion_message_english
  formData['frenchMessage'] = promotion_message_french
  formData['dealApplyType'] = priceApplicability === null ? 'all' : 'regular_priced_only'
- formData['dealLevelOptions'] = priceApplicability === null ? 'no' : 'yes'
+ formData['dealLevelOptions'] = Object.values(product).some(value => Array.isArray(value) && value.length > 0) ? 'yes' : 'no'
  formData['isListValid'] = type === MULTI_BUY_DEAL_TYPE
  formData['startDatePicker'] = convertToEST(valid_from)
  formData['endDatePicker'] = convertToEST(valid_to)

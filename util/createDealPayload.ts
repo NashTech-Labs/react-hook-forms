@@ -154,7 +154,6 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState, isDraft: bo
         } = formData
     const { rewardType, rewardValue } = getRewardType(formData)
     const dealApplyTypeEnum = getDealApplyType(dealApplyType)
-
     const payload: any = {
         "title": title,
         "description": description,
@@ -230,9 +229,9 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState, isDraft: bo
     if(isDraft) {
         payload['status'] = 'DRAFT'
     }
-
+    console.log("formData", formData, payload)
+    debugger
     return payload
-
 }
 
 export default generateCreateDealPayload

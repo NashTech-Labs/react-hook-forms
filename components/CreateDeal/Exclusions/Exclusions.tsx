@@ -1,13 +1,11 @@
 import React from 'react'
-import Card from "@mui/material/Card";
-import { Grid, SelectChangeEvent } from '@mui/material'
+import { Grid, SelectChangeEvent, Typography } from '@mui/material'
 import DoDisturbOutlinedIcon from '@mui/icons-material/DoDisturbOutlined';
 import StepTitle from "../../StepTitle";
 import StepLabel from "../../StepLabel";
 import RadioGroupField from '../../FormComponents/RadioGroupField'
 import Tag from "../../Tag";
 import { dealApplyOptions } from '../../../constants/FormOptions'
-import commonStyles from '../Steps.module.css'
 import UploadExcel from '../ProductsCollection/UploadExcel/UploadExcel';
 import ManuallyAdd from '../ProductsCollection/ManuallyAdd/ManuallyAdd';
 import StyledTabs from '../../StyledTabs';
@@ -16,11 +14,13 @@ import SelectField from '../../FormComponents/SelectField';
 import { productCollectionTabs, dealLevelExclusionOptions } from '../../../constants/FormOptions'
 import exclusionStyles from './Exclusions.module.css'
 import StepperCard from '../StepperCard'
+import {useAppSelector} from '../../../store';
+import {getIsEditing} from '../../../store/feature/deal/dealSlice';
 
 const Exclusions = ({ dealLevelName }: any) => {
 
     const { control, setValue } = useFormContext()
-
+    const isEditing = useAppSelector(getIsEditing)
     const dealOptions = useWatch({
         control,
         name: 'dealLevelOptions'
@@ -66,6 +66,7 @@ const Exclusions = ({ dealLevelName }: any) => {
         <StepLabel currentStep={dealLevelName === 'product' ? 6 : 5} totalSteps={dealLevelName === 'product' ? 7 : 6} />
         <StepTitle title={dealLevelName === 'product' ? "Exclusions" : "Product Applicability"} />
         <Tag label="Internal facing" extraSpacing />
+        {isEditing && <Typography sx={{ marginBottom: '10px'}}>The Exclusions added in this step will be appended to existing Exclusions on the deal</Typography>}
         <Grid display="grid">
             <div className={exclusionStyles['deal-apply-container']}>
                 <SelectField options={dealApplyOptions} name="dealApplyType" title="What items does this deal apply to?" required inputHeight={true} />
