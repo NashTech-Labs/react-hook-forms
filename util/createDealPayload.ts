@@ -166,7 +166,9 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState, isDraft: bo
         "store_id": "5264",
         "promotion_message_english": englishMessage,
         "promotion_message_french": frenchMessage,
-        "promo_restrictions" : {}
+        "promo_restrictions" : {},
+        "status": isDraft ? 'DRAFT' : "PUBLISHED"
+
     }
 
     if (dealLevel === 'product' && dealType !== "FREE_SHIPPING" ) {
@@ -226,11 +228,9 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState, isDraft: bo
         }
     }
 
-    if(isDraft) {
-        payload['status'] = 'DRAFT'
-    }
-    console.log("formData", formData, payload)
-    debugger
+    // if(isDraft) {
+    //     payload['status'] = 'DRAFT'
+    // }
     return payload
 }
 
