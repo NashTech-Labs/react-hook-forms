@@ -31,6 +31,7 @@ import { useEditDealsMutation } from "../../api/editDeal";
 import convertDealDataToFormData from '../../util/convertDealToFormData'
 import { MULTI_BUY_DEAL_TYPE, FREE_SHIPPING_DEAL_TYPE, DISCOUNT_DEAL_TYPE } from '../../constants/FormOptions'
 import ExitEditModal from './ExitEditModal'
+import { EDIT_SCENARIO_FILED_EXCEPTIONS } from '../../constants/FormOptions'
 
 interface ICreateDealFrom {
     deal? : object
@@ -373,7 +374,8 @@ const CreateDealForm = ({ deal }: ICreateDealFrom) => {
     const handleFormSubmit = async (e: MouseEvent) => {
         e.preventDefault()
         const cleanForm = await trigger(undefined, { shouldFocus: true })
-        if (cleanForm) {
+        const cleanFormForEditScenario = Object.keys(errors).every(error => EDIT_SCENARIO_FILED_EXCEPTIONS.includes(error))
+        if (cleanForm || (isEditing && cleanFormForEditScenario)) {
             setValue('draftCreatedTimestamp', moment())
             dispatch(updateNewDeal(getValues()))
             router.push('/deals/create/summary')

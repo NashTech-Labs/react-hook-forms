@@ -21,6 +21,8 @@ import { Chip } from '@mui/material';
 import { getIsEditing, updatedDealId, updateDealEditing } from '../../store/feature/deal/dealSlice';
 import { useEditDealsMutation } from "../../api/editDeal";
 import { DISCOUNT_DEAL_TYPE, FREE_SHIPPING_DEAL_TYPE, MULTI_BUY_DEAL_TYPE } from '../../constants/FormOptions';
+import { useGetDealPreviewQuery } from "../../api/dealPreview";
+import { addScopesForEditDealPayload, addPromoRestrictionsForEditDealPayload } from '../../util/editDealPayload'
 
 const DealSummaryView = () => {
   const router = useRouter();
@@ -29,6 +31,7 @@ const DealSummaryView = () => {
   const user = useAppSelector(userProfileState)
   const isEditing = useAppSelector(getIsEditing)
   const dealId = useAppSelector(updatedDealId)
+  const { data } = useGetDealPreviewQuery(dealId);
   const [createDeals] = useCreateDealsMutation();
   const [editDeal] = useEditDealsMutation();
   const [submitting, setSubmitting] = useState(false)
@@ -46,6 +49,8 @@ const DealSummaryView = () => {
     }
     if (isEditing) {
       formattedPayloadWithUser['dealId'] = dealId
+      formattedPayloadWithUser['scopes'] = addScopesForEditDealPayload(data, formattedPayloadWithUser)
+      formattedPayloadWithUser['promo_restrictions'] = addPromoRestrictionsForEditDealPayload(data, formattedPayloadWithUser)
     }
     setSubmitting(true)
     if (isEditing) {

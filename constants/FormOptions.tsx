@@ -76,3 +76,5 @@ export const dealTypeOptions: { [index: string]: string } = {
 export const DISCOUNT_DEAL_TYPE = "DISCOUNT"
 export const FREE_SHIPPING_DEAL_TYPE = 'FREE_SHIPPING'
 export const MULTI_BUY_DEAL_TYPE = "MULTI_BUY"
+
+export const EDIT_SCENARIO_FILED_EXCEPTIONS = ["file", "exFile", "mch", "exmch", "liam", "exliam"]
