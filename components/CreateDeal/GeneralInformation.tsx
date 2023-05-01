@@ -31,7 +31,7 @@ const GeneralInformation = ({ handleFormDraftSubmit, deal }: IGeneralInformation
   const dealLevelName = useAppSelector(updatedDealLevel)
   const dealName = useAppSelector(updatedDealStep);
   const draftValues = useAppSelector(getDraftDealData)
-  const id = draftValues?.generalDealInfo?.id
+  const id = deal ? deal?.generalDealInfo?.id : draftValues?.generalDealInfo?.id
   const draftButtonLabel = id ? 'Save' : 'Save as draft'
   const isDraftStatus = deal?.generalDealInfo?.status
 
@@ -73,30 +73,30 @@ const GeneralInformation = ({ handleFormDraftSubmit, deal }: IGeneralInformation
     <Chip label={'Draft'} sx={{ margin: '0 25%', backgroundColor: '#666B73', fontWeight: '700', borderRadius: '5px', color: '#ffffff', height: '20px' }} />
   </>
 
-  if(isDraftStatus) { 
+  if (isDraftStatus) {
     content = <>
-    <Grid container justifyContent="space-between" className={styles["heading-container"]}>
-      <Grid item lg={5} md={5} sm={5}>
-        <Typography variant="h3" className={styles.heading} data-testid="form-title">
-          {deal?.generalDealInfo?.title}
-        </Typography>
+      <Grid container justifyContent="space-between" className={styles["heading-container"]}>
+        <Grid item lg={5} md={5} sm={5}>
+          <Typography variant="h3" className={styles.heading} data-testid="form-title">
+            {deal?.generalDealInfo?.title}
+          </Typography>
+        </Grid>
+        <Grid item lg={7} md={7} sm={7}>
+          <Button
+            data-testid="draft-btn"
+            variant="contained"
+            className={styles.draftBtn}
+            onClick={() => handleFormDraftSubmit(id)}
+          >
+            {draftButtonLabel}
+          </Button>
+        </Grid>
       </Grid>
-      <Grid item lg={7} md={7} sm={7}>
-        <Button
-          data-testid="draft-btn"
-          variant="contained"
-          className={styles.draftBtn}
-          onClick={() => handleFormDraftSubmit(id)}
-        >
-          {draftButtonLabel}
-        </Button>
-      </Grid>
-    </Grid>
-    <Typography className={styles.draftTime} >{`Draft created on ${moment().format('MMMM Do YYYY, h:mm:ss a')}`}</Typography>
-    <Chip className={deal?.generalDealInfo?.status === "INACTIVE" ? styles.inactiveChip : styles.Chip}
-                            sx={{  margin: '0 25%', backgroundColor: dealStatus[deal?.generalDealInfo?.status], mb: 1, fontColor: "#000000" }}
-                            label={deal?.generalDealInfo?.status ? capitalizeWords(deal?.generalDealInfo?.status) : null} />
-  </>
+      <Typography className={styles.draftTime} >{`Draft created on ${moment().format('MMMM Do YYYY, h:mm:ss a')}`}</Typography>
+      <Chip className={deal?.generalDealInfo?.status === "INACTIVE" ? styles.inactiveChip : styles.Chip}
+        sx={{ margin: '0 25%', backgroundColor: dealStatus[deal?.generalDealInfo?.status], mb: 1, fontColor: "#000000" }}
+        label={deal?.generalDealInfo?.status ? capitalizeWords(deal?.generalDealInfo?.status) : null} />
+    </>
   }
 
   return (<>
