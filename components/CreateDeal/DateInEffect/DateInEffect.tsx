@@ -16,10 +16,10 @@ import { updatedDealLevel, updatedDealStep } from "../../../store/feature/deal/d
 import StepperCard from '../StepperCard'
 import { FREE_SHIPPING_DEAL_TYPE } from '../../../constants/FormOptions'
 
-function DateInEffect() {
+function DateInEffect({ deal: deal }: any) {
   const { setValue, trigger } = useFormContext();
   const dealName = useAppSelector(updatedDealStep);
-  const dealLevelName = useAppSelector(updatedDealLevel)
+  const dealLevelName = useAppSelector(updatedDealLevel)
 
   const startDateValue = useWatch({
     name: "startDatePicker",
@@ -37,7 +37,7 @@ function DateInEffect() {
     name: "startTimePicker",
   });
 
-  let desc : string | null = "Preview will generate after inputs are completed";
+  let desc: string | null = "Preview will generate after inputs are completed";
 
   if (startDateValue && startTimeValue && endDateValue && endTimeValue) {
     desc = dateTimePreviewGenerator(
@@ -71,6 +71,15 @@ function DateInEffect() {
     }
   }, [startTimeValue]);
 
+  useEffect(() => {
+    if (deal?.generalDealInfo?.status === "ENDED") {
+      setValue("startTimePicker", null);
+      setValue("endTimePicker", null);
+      setValue("startDatePicker", null);
+      setValue("endDatePicker", null);
+    }
+  }, [])
+
   return (
     <StepperCard step={'DATE_IN_EFFECT'} inProgressIcon={CalendarMonthOutlinedIcon}>
       <StepLabel currentStep={dealName === FREE_SHIPPING_DEAL_TYPE ? 5 : 4} totalSteps={dealName === FREE_SHIPPING_DEAL_TYPE || dealLevelName === 'basket' ? 6 : 7} />
@@ -89,7 +98,7 @@ function DateInEffect() {
               >
                 Date
               </Typography>
-              <DatePicker name="startDatePicker" required minDate={moment().subtract(1, "days")}/>
+              <DatePicker name="startDatePicker" required minDate={moment().subtract(1, "days")} />
             </Grid>
             <Grid item lg={6}>
               <Typography

@@ -15,7 +15,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Modal from "react-modal";
 import EditDealModal from "./EditDealModal";
 import CreateDealForm from "../CreateDeal/CreateDealForm";
-import {DISCOUNT_DEAL_TYPE, FREE_SHIPPING_DEAL_TYPE, MULTI_BUY_DEAL_TYPE, dealTypeOptions } from "../../constants/FormOptions";
+import { DISCOUNT_DEAL_TYPE, FREE_SHIPPING_DEAL_TYPE, MULTI_BUY_DEAL_TYPE, dealTypeOptions } from "../../constants/FormOptions";
 import NoDisableModal from './NoDisableModal'
 
 const editDealStyles = {
@@ -254,8 +254,8 @@ function Summary() {
     }, [data, router])
 
     const handleChange = () => {
-       !isEditing && setIsOpen(true)
-       isEditing && setNoEditModal(true)
+        !isEditing && setIsOpen(true)
+        isEditing && setNoEditModal(true)
     }
 
     const closeModal = () => {
@@ -272,48 +272,48 @@ function Summary() {
 
     let content = null
 
-    if(isEditing) {
-        content = <CreateDealForm deal={data}/> 
+    if (isEditing) {
+        content = <CreateDealForm deal={data} />
     } else {
-        content =  <>
-        <Card className={styles["step-card-container"]}>
-        <StepTitle title={"Deal type"} />
-        <Typography variant="h4" className={styles.heading} mt={4}>Type</Typography>
-        <Typography >{dealTypeOptions[data?.generalDealInfo?.type]}</Typography>
-    </Card>
+        content = <>
+            <Card className={styles["step-card-container"]}>
+                <StepTitle title={"Deal type"} />
+                <Typography variant="h4" className={styles.heading} mt={4}>Type</Typography>
+                <Typography >{dealTypeOptions[data?.generalDealInfo?.type]}</Typography>
+            </Card>
 
-    <Card className={styles["step-card-container"]}>
-        <StepTitle title={"General information"} />
+            <Card className={styles["step-card-container"]}>
+                <StepTitle title={"General information"} />
 
-        <Grid container>
-            <Grid item lg={12} md={9} sm={6} display="flex">
-                <Grid item lg={7}>
-                    <Typography data-testid="title" variant="h4" className={styles.heading} mt={4} mb={1}>
-                        Title
-                    </Typography>
-                    <Typography className={styles.content} >{data?.generalDealInfo?.title}</Typography>
+                <Grid container>
+                    <Grid item lg={12} md={9} sm={6} display="flex">
+                        <Grid item lg={7}>
+                            <Typography data-testid="title" variant="h4" className={styles.heading} mt={4} mb={1}>
+                                Title
+                            </Typography>
+                            <Typography className={styles.content} >{data?.generalDealInfo?.title}</Typography>
 
-                    <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
-                        Description
-                    </Typography>
-                    <Typography className={styles.content} >{data?.generalDealInfo?.description}</Typography>
+                            <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
+                                Description
+                            </Typography>
+                            <Typography className={styles.content} >{data?.generalDealInfo?.description}</Typography>
 
-                    <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
-                        Identifier
-                    </Typography>
-                    <Typography className={styles.content}>{data?.generalDealInfo?.code}</Typography>
+                            <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
+                                Identifier
+                            </Typography>
+                            <Typography className={styles.content}>{data?.generalDealInfo?.code}</Typography>
 
-                    <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
-                        Priority
-                    </Typography>
-                    <Typography className={styles.content}>{data?.generalDealInfo?.priority}</Typography>
+                            <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
+                                Priority
+                            </Typography>
+                            <Typography className={styles.content}>{data?.generalDealInfo?.priority}</Typography>
 
-                    <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
-                        Stacking type
-                    </Typography>
-                    <Typography className={styles.content}>{ToProperCase(data?.generalDealInfo?.stacking_type || '')}</Typography>
-                </Grid>
-                {/* <Grid mt={3}>
+                            <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
+                                Stacking type
+                            </Typography>
+                            <Typography className={styles.content}>{ToProperCase(data?.generalDealInfo?.stacking_type || '')}</Typography>
+                        </Grid>
+                        {/* <Grid mt={3}>
                     <Typography>Media</Typography>
                     <Grid className={styles.img} >
                         <Box className={styles["no-image"]}>
@@ -321,218 +321,218 @@ function Summary() {
                         </Box>
                     </Grid>
                 </Grid> */}
-            </Grid>
-        </Grid>
-    </Card>
+                    </Grid>
+                </Grid>
+            </Card>
 
-    {data?.generalDealInfo?.type === FREE_SHIPPING_DEAL_TYPE ?
-        <Card className={styles["step-card-container"]}>
-            <StepTitle title={"Shipping method"} />
-            <Typography variant="h4" className={styles.heading} mt={4}>Method</Typography>
-            <Typography >Standard</Typography>
-        </Card> : null}
+            {data?.generalDealInfo?.type === FREE_SHIPPING_DEAL_TYPE ?
+                <Card className={styles["step-card-container"]}>
+                    <StepTitle title={"Shipping method"} />
+                    <Typography variant="h4" className={styles.heading} mt={4}>Method</Typography>
+                    <Typography >Standard</Typography>
+                </Card> : null}
 
-    {data?.generalDealInfo?.type === FREE_SHIPPING_DEAL_TYPE ?
-        <Card className={styles["step-card-container"]}>
-            <StepTitle title={"Spend minimum"} />
-            <Typography variant="h4" className={styles.heading} mt={4}>Value</Typography>
-            <Typography >{data?.dealValue?.spend?.minimum ? `$${(Number(data?.dealValue?.spend?.minimum) / 100).toFixed(2)}` :
-                "No minimum"}</Typography>
+            {data?.generalDealInfo?.type === FREE_SHIPPING_DEAL_TYPE ?
+                <Card className={styles["step-card-container"]}>
+                    <StepTitle title={"Spend minimum"} />
+                    <Typography variant="h4" className={styles.heading} mt={4}>Value</Typography>
+                    <Typography >{data?.dealValue?.spend?.minimum ? `$${(Number(data?.dealValue?.spend?.minimum) / 100).toFixed(2)}` :
+                        "No minimum"}</Typography>
 
-            <Typography variant="h4" className={styles.heading} mt={4}>Customer preview</Typography>
-            <Typography >{data?.dealValue?.spend?.minimum ? `Spend minimum of $${(Number(data?.dealValue?.spend?.minimum) / 100).toFixed(2)}` :
-                "Spend No Minimum"}</Typography>
-        </Card> : null}
+                    <Typography variant="h4" className={styles.heading} mt={4}>Customer preview</Typography>
+                    <Typography >{data?.dealValue?.spend?.minimum ? `Spend minimum of $${(Number(data?.dealValue?.spend?.minimum) / 100).toFixed(2)}` :
+                        "Spend No Minimum"}</Typography>
+                </Card> : null}
 
 
-    {data?.generalDealInfo?.type === DISCOUNT_DEAL_TYPE &&
-        <>
+            {data?.generalDealInfo?.type === DISCOUNT_DEAL_TYPE &&
+                <>
+                    <Card className={styles["step-card-container"]}>
+                        <StepTitle title={"Deal value"} />
+
+                        <Grid container>
+                            <Grid item lg={12} md={9} sm={6}>
+                                <Grid item lg={7}>
+                                    <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
+                                        Is this at a basket level or product level?
+                                    </Typography>
+                                    <Typography className={styles.content} >{capitalizeWords(data?.dealValue?.scopeType || '')}</Typography>
+
+                                    <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
+                                        Type
+                                    </Typography>
+                                    <Typography className={styles.content} >{data?.dealValue?.rewardType === "$_OFF" ?
+                                        'Dollar ($) off' : data?.dealValue?.rewardType === '%_OFF' ? 'Percentage (%) off' : 'Fixed off'}
+                                    </Typography>
+
+                                    <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
+                                        Value
+                                    </Typography>
+
+                                    <Typography className={styles.content}>{data?.dealValue?.rewardsValue[0]?.value ?
+                                        dealValue(data?.dealValue?.rewardsValue[0]?.value, data?.dealValue?.rewardType) : null}</Typography>
+
+                                    <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
+                                        Customer preview
+                                    </Typography>
+                                    <Typography className={styles.content}>{getDealValuePreview(data)}</Typography>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </Card>
+                </>}
+
+
+            {data?.generalDealInfo?.type === MULTI_BUY_DEAL_TYPE &&
+                <>
+                    <Card className={styles["step-card-container"]}>
+                        <StepTitle title={"Deal criteria"} />
+
+                        <Grid container>
+                            <Grid item lg={12} md={9} sm={6}>
+                                <Grid item lg={7}>
+                                    <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
+                                        Type
+                                    </Typography>
+                                    <Typography className={styles.content} >
+                                        Multi-buy
+                                    </Typography>
+
+                                    <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
+                                        Tiers
+                                    </Typography>
+
+                                    <Typography className={styles.content}>{data?.dealValue?.rewardsValue.length > 0 ?
+                                        data?.dealValue?.rewardsValue.length : null}</Typography>
+
+                                    <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
+                                        Customer preview
+                                    </Typography>
+                                    {customerPreview.map((data: string, index: number) => {
+                                        return <Typography key={index} className={styles.content}>{data}</Typography>
+                                    })}
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </Card>
+                </>}
+
             <Card className={styles["step-card-container"]}>
-                <StepTitle title={"Deal value"} />
+                <StepTitle title={"Date in effect"} />
+
+                <Grid container>
+                    <Grid item lg={12} md={9} sm={6}>
+                        <Grid item lg={12}>
+                            <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
+                                Start Date
+                            </Typography>
+                            <Typography className={styles.content} >{data?.generalDealInfo?.valid_from ? convertToEST(data?.generalDealInfo?.valid_from).format("MMMM D, YYYY [at] h:mm A z") : null}</Typography>
+
+                            <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
+                                End Date
+                            </Typography>
+                            <Typography className={styles.content} >{data?.generalDealInfo?.valid_to ? convertToEST(data?.generalDealInfo?.valid_to).format("MMMM D, YYYY [at] h:mm A z") : null}</Typography>
+
+                            <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
+                                Customer preview
+                            </Typography>
+                            {data?.generalDealInfo?.valid_from && data?.generalDealInfo?.valid_to && <Typography className={styles.content}>Starts {convertToEST(data?.generalDealInfo?.valid_from).format("MMMM D (h:mm A z)")} and ends {convertToEST(data?.generalDealInfo?.valid_to).format("MMMM D (h:mm A z)")}</Typography>}
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Card>
+
+            {data?.dealValue?.scopeValue?.length > 0 ?
+
+                <Card className={styles["step-card-container"]}>
+                    <StepTitle title={"Products and Collections"} />
+
+                    <Grid container>
+                        <Grid item lg={12} md={9} sm={6}>
+                            <Grid item lg={7}>
+                                <Typography data-testId="collection" variant="h5" className={styles.heading} mt={4} mb={1}>
+                                    Collection
+                                </Typography>
+                                <Grid className={styles.downloadSection}>
+                                    <Typography className={styles.content} >
+                                        {parseInt(data?.dealValue?.scopeValue?.length)} products</Typography>
+                                    <IconButton
+                                        data-testId="btn"
+                                        onClick={() => downloadScopeExcel(data?.dealValue?.scopeValue)}
+                                    >
+                                        <DownloadIcon className={styles.downloadIcon} />
+                                    </IconButton>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Card> : null}
+
+            {data?.generalDealInfo?.type === FREE_SHIPPING_DEAL_TYPE ?
+                null :
+                <Card className={styles["step-card-container"]}>
+                    <StepTitle title={data?.dealValue?.scopeType === 'PRODUCT' ? "Exclusions" : "Product applicability"} />
+
+                    <Grid container>
+                        <Grid item lg={12} md={9} sm={6}>
+                            <Grid item lg={7}>
+                                <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
+                                    What items does this deal apply to?
+                                </Typography>
+                                <Typography className={styles.content} >{data?.applicableProduct?.priceApplicability?.value === 'REGULAR_ONLY' ? 'Regular priced items only' : 'All'}</Typography>
+                                {data?.exclusion?.product?.liam?.length > 0 || data?.exclusion?.product?.mch?.length > 0
+                                    ?
+                                    <>
+                                        <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
+                                            Will there be additional products excluded from this deal?
+                                        </Typography>
+                                        <Typography className={styles.content} >Yes</Typography>
+                                        <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
+                                            Collection
+                                        </Typography>
+                                        <Grid className={styles.downloadSection}>
+                                            <Typography className={styles.content} >
+                                                {parseInt(data?.exclusion?.product?.liam?.length) +
+                                                    parseInt(data?.exclusion?.product?.mch?.length)} products</Typography>
+                                            <IconButton
+                                                data-testId="exbtn"
+                                                onClick={() => downloadExcel(data?.exclusion?.product)}
+                                            >
+                                                <DownloadIcon className={styles.downloadIcon} />
+                                            </IconButton>
+                                        </Grid>
+                                    </>
+                                    : null}
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Card>
+            }
+
+            <Card className={styles["step-card-container"]}>
+                <StepTitle title={"Promotional messages"} />
 
                 <Grid container>
                     <Grid item lg={12} md={9} sm={6}>
                         <Grid item lg={7}>
                             <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
-                                Is this at a basket level or product level?
+                                English message
                             </Typography>
-                            <Typography className={styles.content} >{capitalizeWords(data?.dealValue?.scopeType || '')}</Typography>
-
-                            <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
-                                Type
+                            <Typography className={styles.content} >{data?.generalDealInfo?.promotion_message_english}</Typography>
+                            <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
+                                French message
                             </Typography>
-                            <Typography className={styles.content} >{data?.dealValue?.rewardType === "$_OFF" ?
-                                'Dollar ($) off' : data?.dealValue?.rewardType === '%_OFF' ? 'Percentage (%) off' : 'Fixed off'}
-                            </Typography>
-
-                            <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
-                                Value
-                            </Typography>
-
-                            <Typography className={styles.content}>{data?.dealValue?.rewardsValue[0]?.value ?
-                                dealValue(data?.dealValue?.rewardsValue[0]?.value, data?.dealValue?.rewardType) : null}</Typography>
-
-                            <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
-                                Customer preview
-                            </Typography>
-                            <Typography className={styles.content}>{getDealValuePreview(data)}</Typography>
+                            <Typography className={styles.content} >{data?.generalDealInfo?.promotion_message_french}</Typography>
                         </Grid>
                     </Grid>
                 </Grid>
             </Card>
-        </>}
 
-
-    {data?.generalDealInfo?.type === MULTI_BUY_DEAL_TYPE &&
-        <>
-            <Card className={styles["step-card-container"]}>
-                <StepTitle title={"Deal criteria"} />
-
-                <Grid container>
-                    <Grid item lg={12} md={9} sm={6}>
-                        <Grid item lg={7}>
-                            <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
-                                Type
-                            </Typography>
-                            <Typography className={styles.content} >
-                                Multi-buy
-                            </Typography>
-
-                            <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
-                                Tiers
-                            </Typography>
-
-                            <Typography className={styles.content}>{data?.dealValue?.rewardsValue.length > 0 ?
-                                data?.dealValue?.rewardsValue.length : null}</Typography>
-
-                            <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
-                                Customer preview
-                            </Typography>
-                            {customerPreview.map((data: string, index: number) => {
-                                return <Typography key={index} className={styles.content}>{data}</Typography>
-                            })}
-                        </Grid>
-                    </Grid>
-                </Grid>
-            </Card>
-        </>}
-
-    <Card className={styles["step-card-container"]}>
-        <StepTitle title={"Date in effect"} />
-
-        <Grid container>
-            <Grid item lg={12} md={9} sm={6}>
-                <Grid item lg={12}>
-                    <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
-                        Start Date
-                    </Typography>
-                    <Typography className={styles.content} >{data?.generalDealInfo?.valid_from ? convertToEST(data?.generalDealInfo?.valid_from).format("MMMM D, YYYY [at] h:mm A z") : null}</Typography>
-
-                    <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
-                        End Date
-                    </Typography>
-                    <Typography className={styles.content} >{data?.generalDealInfo?.valid_to ? convertToEST(data?.generalDealInfo?.valid_to).format("MMMM D, YYYY [at] h:mm A z") : null}</Typography>
-
-                    <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
-                        Customer preview
-                    </Typography>
-                    {data?.generalDealInfo?.valid_from && data?.generalDealInfo?.valid_to && <Typography className={styles.content}>Starts {convertToEST(data?.generalDealInfo?.valid_from).format("MMMM D (h:mm A z)")} and ends {convertToEST(data?.generalDealInfo?.valid_to).format("MMMM D (h:mm A z)")}</Typography>}
-                </Grid>
+            <Grid display="flex" justifyContent='space-between' ml={4} mb={4} mt={5} sx={{ margin: '1.3% 25%' }}>
+                <Button data-testId='back' onClick={() => router.push('/deals')} className={styles.btn} variant="outlined">Go Back</Button>
+                <Button data-testId='edit' onClick={() => handleEditClick()} className={styles.btn} variant="contained">{data?.generalDealInfo?.status === "ENDED" ? "Re-create" : "Edit"}</Button>
             </Grid>
-        </Grid>
-    </Card>
-
-    {data?.dealValue?.scopeValue?.length > 0 ?
-
-        <Card className={styles["step-card-container"]}>
-            <StepTitle title={"Products and Collections"} />
-
-            <Grid container>
-                <Grid item lg={12} md={9} sm={6}>
-                    <Grid item lg={7}>
-                        <Typography data-testId="collection" variant="h5" className={styles.heading} mt={4} mb={1}>
-                            Collection
-                        </Typography>
-                        <Grid className={styles.downloadSection}>
-                            <Typography className={styles.content} >
-                                {parseInt(data?.dealValue?.scopeValue?.length)} products</Typography>
-                            <IconButton
-                                data-testId="btn"
-                                onClick={() => downloadScopeExcel(data?.dealValue?.scopeValue)}
-                            >
-                                <DownloadIcon className={styles.downloadIcon} />
-                            </IconButton>
-                        </Grid>
-                    </Grid>
-                </Grid>
-            </Grid>
-        </Card> : null}
-
-    {data?.generalDealInfo?.type === FREE_SHIPPING_DEAL_TYPE ?
-        null :
-        <Card className={styles["step-card-container"]}>
-            <StepTitle title={data?.dealValue?.scopeType === 'PRODUCT' ? "Exclusions" : "Product applicability"} />
-
-            <Grid container>
-                <Grid item lg={12} md={9} sm={6}>
-                    <Grid item lg={7}>
-                        <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
-                            What items does this deal apply to?
-                        </Typography>
-                        <Typography className={styles.content} >{data?.applicableProduct?.priceApplicability?.value === 'REGULAR_ONLY' ? 'Regular priced items only' : 'All'}</Typography>
-                        {data?.exclusion?.product?.liam?.length > 0 || data?.exclusion?.product?.mch?.length > 0
-                            ?
-                            <>
-                                <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
-                                    Will there be additional products excluded from this deal?
-                                </Typography>
-                                <Typography className={styles.content} >Yes</Typography>
-                                <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
-                                    Collection
-                                </Typography>
-                                <Grid className={styles.downloadSection}>
-                                    <Typography className={styles.content} >
-                                        {parseInt(data?.exclusion?.product?.liam?.length) +
-                                            parseInt(data?.exclusion?.product?.mch?.length)} products</Typography>
-                                    <IconButton
-                                        data-testId="exbtn"
-                                        onClick={() => downloadExcel(data?.exclusion?.product)}
-                                    >
-                                        <DownloadIcon className={styles.downloadIcon} />
-                                    </IconButton>
-                                </Grid>
-                            </>
-                            : null}
-                    </Grid>
-                </Grid>
-            </Grid>
-        </Card>
-    }
-
-    <Card className={styles["step-card-container"]}>
-        <StepTitle title={"Promotional messages"} />
-
-        <Grid container>
-            <Grid item lg={12} md={9} sm={6}>
-                <Grid item lg={7}>
-                    <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
-                        English message
-                    </Typography>
-                    <Typography className={styles.content} >{data?.generalDealInfo?.promotion_message_english}</Typography>
-                    <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
-                        French message
-                    </Typography>
-                    <Typography className={styles.content} >{data?.generalDealInfo?.promotion_message_french}</Typography>
-                </Grid>
-            </Grid>
-        </Grid>
-    </Card>
-
-    <Grid display="flex" justifyContent='space-between' ml={4} mb={4} mt={5} sx={{ margin: '1.3% 25%' }}>
-        <Button data-testId='back' onClick={() => router.push('/deals')} className={styles.btn} variant="outlined">Go Back</Button>
-        <Button data-testId='edit' onClick={() => handleEditClick()} className={styles.btn} variant="contained">Edit</Button>
-    </Grid>
-    </>
+        </>
     }
 
 
@@ -567,7 +567,7 @@ function Summary() {
                         </Grid>
                         : null}
                 </Grid>
-               {content}
+                {content}
             </Grid >
             <Box>
                 <Modal

@@ -26,7 +26,7 @@ import { userProfileState } from '../../store/feature/auth/authSlice';
 import { useCreateDealsMutation } from '../../api/createDeal';
 import { notifyError, notifySuccess } from '../../util/Notification/Notification';
 import DraftModal from './DraftModal';
-import {updateDraftDeal} from '../../store/feature/deal/draftDealSlice';
+import { updateDraftDeal } from '../../store/feature/deal/draftDealSlice';
 import { useEditDealsMutation } from "../../api/editDeal";
 import convertDealDataToFormData from '../../util/convertDealToFormData'
 import { MULTI_BUY_DEAL_TYPE, FREE_SHIPPING_DEAL_TYPE, DISCOUNT_DEAL_TYPE } from '../../constants/FormOptions'
@@ -34,29 +34,29 @@ import ExitEditModal from './ExitEditModal'
 import { EDIT_SCENARIO_FILED_EXCEPTIONS } from '../../constants/FormOptions'
 
 interface ICreateDealFrom {
-    deal? : object
+    deal?: object
 }
 
 const draftModalcustomStyles = {
     content: {
-      width: "500px",
-      top: "40%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-      borderRadius: "2px",
-      background: "#fff",
-      boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-      padding: "16px",
-      gap: "10px",
+        width: "500px",
+        top: "40%",
+        left: "50%",
+        right: "auto",
+        bottom: "auto",
+        marginRight: "-50%",
+        transform: "translate(-50%, -50%)",
+        borderRadius: "2px",
+        background: "#fff",
+        boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+        padding: "16px",
+        gap: "10px",
     },
     overlay: {
-      zIndex: "999",
-      background: "rgba(0,0,0,0.4",
+        zIndex: "999",
+        background: "rgba(0,0,0,0.4",
     },
-  };
+};
 
 const MAX_FILE_SIZE = 1000000; //1MB
 
@@ -308,15 +308,15 @@ const CreateDealForm = ({ deal }: ICreateDealFrom) => {
     const isEditing = useAppSelector(getIsEditing)
     const [createDeals] = useCreateDealsMutation();
     const [editDeal] = useEditDealsMutation();
-    const formDefaultValues =  deal ? convertDealDataToFormData(deal) : (draftFormValues || createDealDefaultFormState)
+    const formDefaultValues = deal ? convertDealDataToFormData(deal) : (draftFormValues || createDealDefaultFormState)
     const formMethods = useForm<ICreateDealFormState>({
         defaultValues: formDefaultValues,
         resolver: yupResolver(schema),
         mode: 'all'
     });
-    const { getValues, trigger, setValue, formState : { errors } } = formMethods
+    const { getValues, trigger, setValue, formState: { errors } } = formMethods
 
-    if(isEditing) {
+    if (isEditing) {
         dealName = formDefaultValues['dealType']
     }
 
@@ -325,13 +325,13 @@ const CreateDealForm = ({ deal }: ICreateDealFrom) => {
         dispatch(updateNewDeal(getValues()))
         const formattedPayload = generateCreateDealPayload(getValues(), true)
         const formattedPayloadWithUser = {
-          ...formattedPayload,
-          username: user?.name
+            ...formattedPayload,
+            username: user?.name
         }
 
         setSubmitting(true)
         setShowDraftModal(true)
-        if(dealId) {
+        if (dealId) {
             const editPayload = {
                 ...formattedPayloadWithUser,
                 dealId
@@ -353,21 +353,21 @@ const CreateDealForm = ({ deal }: ICreateDealFrom) => {
                 });
         } else {
             await createDeals(formattedPayloadWithUser)
-            .unwrap()
-            .then((data) => {
-              if (data) {
-                dispatch(updateDraftDeal(data))
-                notifySuccess("Deal successfully saved")
-              }
-            })
-            .catch((error) => {
-              notifyError(
-                error.data?.details ? error.data?.details : "Something went wrong",
-                "deal-failed"
-              )
-            }).finally(() => {
-              setSubmitting(false)
-            });
+                .unwrap()
+                .then((data) => {
+                    if (data) {
+                        dispatch(updateDraftDeal(data))
+                        notifySuccess("Deal successfully saved")
+                    }
+                })
+                .catch((error) => {
+                    notifyError(
+                        error.data?.details ? error.data?.details : "Something went wrong",
+                        "deal-failed"
+                    )
+                }).finally(() => {
+                    setSubmitting(false)
+                });
         }
     }
 
@@ -393,44 +393,44 @@ const CreateDealForm = ({ deal }: ICreateDealFrom) => {
     }
 
     const closeDraftModal = () => {
-      setShowDraftModal(false)
+        setShowDraftModal(false)
     }
 
     const handleEditCancel = () => {
-       setExitModal(true)
+        setExitModal(true)
     }
 
-    const handleExitModalClose = () => { 
+    const handleExitModalClose = () => {
         setExitModal(false)
     }
 
     let ctaContent = <div className={styles['submit-btn-container']}>
-    <div>
-        <Button variant="outlined" className={commonStyles['cancelBtn']} onClick={handleCancel} ata-testid="cancel-btn">Cancel</Button>
-    </div>
-    <div className={styles['submit-container']}>
-        <Button variant="text" onClick={handleBack} className={commonStyles['text-style-btn']} data-testid="back-btn">Go Back</Button>
-        <Button variant="contained" className={commonStyles['continueBtn']} onClick={e => handleFormSubmit(e)} data-testid="continue-btn">Continue</Button>
-    </div>
-</div>
-
-    if(isEditing) {
-        ctaContent = <div className={styles['submit-btn-container']}>
         <div>
-            <Button variant="outlined" className={commonStyles['cancelBtn']} onClick={() => handleEditCancel()} ata-testid="cancel-btn">Cancel</Button>
+            <Button variant="outlined" className={commonStyles['cancelBtn']} onClick={handleCancel} ata-testid="cancel-btn">Cancel</Button>
         </div>
         <div className={styles['submit-container']}>
-            <Button variant="contained" className={commonStyles['continueBtn']} onClick={e => handleFormSubmit(e)} data-testid="continue-btn">Save</Button>
+            <Button variant="text" onClick={handleBack} className={commonStyles['text-style-btn']} data-testid="back-btn">Go Back</Button>
+            <Button variant="contained" className={commonStyles['continueBtn']} onClick={e => handleFormSubmit(e)} data-testid="continue-btn">Continue</Button>
         </div>
     </div>
-    } 
+
+    if (isEditing) {
+        ctaContent = <div className={styles['submit-btn-container']}>
+            <div>
+                <Button variant="outlined" className={commonStyles['cancelBtn']} onClick={() => handleEditCancel()} ata-testid="cancel-btn">Cancel</Button>
+            </div>
+            <div className={styles['submit-container']}>
+                <Button variant="contained" className={commonStyles['continueBtn']} onClick={e => handleFormSubmit(e)} data-testid="continue-btn">Save</Button>
+            </div>
+        </div>
+    }
 
     return <FormProvider {...formMethods}>
         <form id="test">
             <GeneralInformation handleFormDraftSubmit={handleFormDraftSubmit} deal={deal}/>
             {dealName === DISCOUNT_DEAL_TYPE ? <DealValue /> : dealName === MULTI_BUY_DEAL_TYPE ? <DealCriteria /> : null}
             {dealName === FREE_SHIPPING_DEAL_TYPE && <SpendMinimum />}
-            <DateInEffect />
+            <DateInEffect deal={deal} />
             {dealName === FREE_SHIPPING_DEAL_TYPE || dealLevelName === 'basket' ? null : <ProductsCollection />}
             {dealName === FREE_SHIPPING_DEAL_TYPE ? null : <Exclusions dealLevelName={dealLevelName} />}
             <PromotionalMessages dealLevelName={dealLevelName} />
@@ -441,14 +441,14 @@ const CreateDealForm = ({ deal }: ICreateDealFrom) => {
             isOpen={showDraftModal}
             onRequestClose={closeDraftModal}
         >
-         <DraftModal loading={submitting} closeModal={closeDraftModal}/>
+            <DraftModal loading={submitting} closeModal={closeDraftModal} />
         </Modal>
         <Modal
             style={draftModalcustomStyles}
             isOpen={exitModal}
             onRequestClose={handleExitModalClose}
         >
-            <ExitEditModal closeModal={handleExitModalClose}/>
+            <ExitEditModal closeModal={handleExitModalClose} />
         </Modal>
     </FormProvider>
 }
