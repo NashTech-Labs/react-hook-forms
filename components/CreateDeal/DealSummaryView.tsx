@@ -41,6 +41,8 @@ const DealSummaryView = () => {
     router.push("/deals")
   }
 
+  console.log(newDealData)
+
   const handleCreateDeal = async () => {
     const formattedPayload = generateCreateDealPayload(newDealData, false)
     const formattedPayloadWithUser = {
@@ -52,6 +54,7 @@ const DealSummaryView = () => {
       formattedPayloadWithUser['scopes'] = addScopesForEditDealPayload(data, formattedPayloadWithUser)
       formattedPayloadWithUser['promo_restrictions'] = addPromoRestrictionsForEditDealPayload(data, formattedPayloadWithUser)
     }
+    // if (isEditing)
     setSubmitting(true)
     if (isEditing) {
       await editDeal(formattedPayloadWithUser)

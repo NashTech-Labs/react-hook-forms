@@ -17,7 +17,7 @@ import DeleteDeal from "../../DeleteDeal/DeleteDeal";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import { notifyError } from "../../../util/Notification/Notification";
 import { useAppDispatch, useAppSelector } from "../../../store";
-import { updateDealId } from "../../../store/feature/deal/dealSlice";
+import { updateDealEditing, updateDealId } from "../../../store/feature/deal/dealSlice";
 import { dealStatus } from "../../../constants/DealStatus";
 import FilterSection from './FilterSection'
 import { getFilters } from "../../../store/feature/filters/filtersSlice";
@@ -283,6 +283,7 @@ function Deals({ search }: IDealsProps) {
   );
 
   const viewDetails = (value: Number) => {
+    dispatch(updateDealEditing(false))
     router.push("deals/view");
     dispatch(updateDealId(value));
   };
