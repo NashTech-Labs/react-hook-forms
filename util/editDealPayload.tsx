@@ -1,3 +1,4 @@
+import {FREE_SHIPPING_DEAL_TYPE} from "../constants/FormOptions"
 
 export const addScopesForEditDealPayload = (deal: any, payload: any): any[] => {
   const existingScopeValue = deal?.dealValue?.scopeValue || []
@@ -16,6 +17,7 @@ export const addScopesForEditDealPayload = (deal: any, payload: any): any[] => {
 }
 
 export const addPromoRestrictionsForEditDealPayload = (deal: any, payload: any): any => {
+    if(deal?.generalDealInfo?.type === FREE_SHIPPING_DEAL_TYPE) return payload?.['promo_restrictions']
     const existingLiams = deal?.exclusion?.product?.liam
     const existingMch = deal?.exclusion?.product?.mch
     const existingPriceApplicability = deal?.applicableProducts?.priceApplicability

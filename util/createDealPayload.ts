@@ -227,10 +227,7 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState, isDraft: bo
             "maximum": null
         }
     }
-
-    // if(isDraft) {
-    //     payload['status'] = 'DRAFT'
-    // }
+    
     return payload
 }
 
