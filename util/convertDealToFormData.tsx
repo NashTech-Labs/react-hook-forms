@@ -65,15 +65,16 @@ const getFreeShippingValues = (deal: any) => {
  const { generalDealInfo: { type }, dealValue } = deal
 
  if(type === FREE_SHIPPING_DEAL_TYPE) {
-   const { spend : { minimum } } = dealValue
+   const minimum = dealValue?.spend?.minimum
+   if(!minimum) return values
    const spendValue = String(convertCentsToDollar(minimum))
    const isNotCustom = minimumSpendOptions.some(({ value }) => value === spendValue)
    if(isNotCustom){
       values['spendMinimum'] = spendValue
-      values['customSpend'] = ''
+      values['customMinimumSpend'] = ''
    } else {
       values['spendMinimum'] = 'CUSTOM'
-      values['customSpend'] = spendValue
+      values['customMinimumSpend'] = spendValue
    }
  }
 

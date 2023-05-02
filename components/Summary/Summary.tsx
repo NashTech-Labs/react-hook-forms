@@ -205,8 +205,6 @@ function Summary() {
         if (data) {
             if (data?.generalDealInfo?.type === MULTI_BUY_DEAL_TYPE) {
 
-                if (!data?.dealValue?.quantity?.minimum) return
-
                 let previewData = data?.dealValue?.rewardsValue
 
                 let customerPreviewData: string[] = []
