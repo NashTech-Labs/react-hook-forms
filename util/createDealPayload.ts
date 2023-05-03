@@ -97,7 +97,7 @@ const getRewardMultiBuy = (data: any, dealCriteriaType: string) => {
     {
         data.forEach((element: any, index: number) => {
             rewardData.push({
-                value: dealCriteriaType === '$_OFF' || dealCriteriaType === '$_FIXED' ? (Number(element.get) * 100).toFixed() : element.get,
+                value: dealCriteriaType === '$_OFF_MULTI' || dealCriteriaType === '$_FIXED_MULTI' ? (Number(element.get) * 100).toFixed() : element.get,
             }) 
         });
     }
@@ -106,11 +106,11 @@ const getRewardMultiBuy = (data: any, dealCriteriaType: string) => {
     {
         data.forEach((element: any, index: number) => {
             rewardData.push({
-                value: dealCriteriaType === '$_OFF' || dealCriteriaType === '$_FIXED' ? (Number(element.get) * 100).toFixed() : element.get, 
+                value: dealCriteriaType === '$_OFF_MULTI' || dealCriteriaType === '$_FIXED_MULTI' ? (Number(element.get) * 100).toFixed() : element.get, 
                 // element.get,
                 restrictions: {
                     quantity: {
-                        minimum: element.buy,
+                        minimum: parseInt(element.buy),
                         maximum: data.length === rewardData.length ? null : Number(data[index + 1]?.buy) - 1 
                     }
                 }
@@ -209,7 +209,7 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState, isDraft: bo
         if (dealCriteria.length === 1)
         {
             payload["promo_restrictions"]["quantity"] = {
-                minimum: dealCriteria[dealCriteria.length - 1].buy,
+                minimum: parseInt(dealCriteria[dealCriteria.length - 1].buy),
                 maximum: null
             }
         }

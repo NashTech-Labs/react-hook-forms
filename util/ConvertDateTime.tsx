@@ -1,7 +1,8 @@
 import moment from "moment-timezone";
 
 export function convertDateTime(date: object | null, time: object | null) {
-  if(!date || !time) return null
+  // @ts-ignore 
+  if(!date || !time || (moment.isMoment(date) && !date?.isValid()) || (moment.isMoment(time) && !time?.isValid())) return null
   const timestamp =
     `${moment(date).format("YYYY-MM-DD")} ${moment(time).format("HH:mm")}`;
     const estTime = moment.tz(timestamp,"America/New_York").format();

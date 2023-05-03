@@ -112,10 +112,18 @@ const convertDealDataToFormData = (deal: any) => {
  formData['dealApplyType'] = priceApplicability === null ? 'all' : 'regular_priced_only'
  formData['dealLevelOptions'] = Object.values(product).some(value => Array.isArray(value) && value.length > 0) ? 'yes' : 'no'
  formData['isListValid'] = type === MULTI_BUY_DEAL_TYPE
- formData['startDatePicker'] = convertToEST(valid_from)
- formData['endDatePicker'] = convertToEST(valid_to)
- formData['startTimePicker'] = convertToEST(valid_from)
- formData['endTimePicker'] = convertToEST(valid_to)
+ formData['startDatePicker'] = convertToEST('')
+ formData['startTimePicker'] = convertToEST('')
+ formData['endDatePicker'] = convertToEST('')
+ formData['endTimePicker'] = convertToEST('')
+ if(valid_from) {
+   formData['startDatePicker'] = convertToEST(valid_from)
+   formData['startTimePicker'] = convertToEST(valid_from)
+ }
+ if(valid_to) {
+   formData['endDatePicker'] = convertToEST(valid_to)
+   formData['endTimePicker'] = convertToEST(valid_to)
+ }
 
  return {
    ...formData,
