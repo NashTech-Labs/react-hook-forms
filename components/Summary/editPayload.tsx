@@ -33,6 +33,13 @@ export const editPayload = (data: dealPreview, name: string, isDealActive: boole
             }
     }
 
+    if (data?.generalDealInfo?.type === "MULTI_BUY") {
+        if (data?.dealValue?.rewardsValue.length === 1) {
+            payload["promo_restrictions"]["quantity"] =
+                data?.dealValue?.quantity
+        }
+    }
+
     return payload
 
 }
