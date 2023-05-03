@@ -41,6 +41,9 @@ export const addPromoRestrictionsForEditDealPayload = (deal: any, payload: any):
       const editedLiam = editedPromoRestrictions?.['product_code']?.liam || []
       const editedMch = editedPromoRestrictions?.['category']?.mch || []
       const editedPriceApplicability = editedPromoRestrictions?.['price_applicability']?.value
+      if(editedPromoRestrictions?.spend) {
+        editedRestrictions['spend'] = editedPromoRestrictions?.spend
+      }
       editedRestrictions['product_code'] = {
         // @ts-ignore
         liam: [...new Set([...existingLiams, ...editedLiam ])]
