@@ -49,7 +49,7 @@ const StyledTabs = ({ tabs, handleTabUpdate, defaultValue }: IStyledTabsProps) =
             '.MuiTab-root': {
                 textTransform: 'inherit',
                 fontSize: '16px',
-                color: '#000000',
+                color: '#043385',
                 opacity: 1
             },
             '.MuiTabs-flexContainer': {
@@ -57,7 +57,7 @@ const StyledTabs = ({ tabs, handleTabUpdate, defaultValue }: IStyledTabsProps) =
             }
         }}
     >
-        {tabs.map(({ label }, index) => <Tab key={`${label}-${index}`} label={label === "Manually add product(s)" && tab === 1 ? <Typography className={styles.required}>{label}</Typography> : label} />)}
+        {tabs.map(({ label }, index) => <Tab key={`${label}-${index}`} label={label === "Manually add product(s)" && tab === 1 ? <span className={styles.required}>{label}</span> : label} />)}
     </Tabs>
 }
 

@@ -19,7 +19,7 @@
 .heading {
     font-weight: 600;
     font-size: 16px;
-    line-height: 26px;
+    line-height: 18.75px;
 }
 
 .downloadSection {
@@ -28,9 +28,10 @@
 }
 
 .content {
-    font-size: 18px;
-    line-height: 18px;
+    font-size: 16px;
+    line-height: 19.2px;
     word-break: break-word;
+    color : #333333;
 }
 
 .downloadIcon {

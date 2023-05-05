@@ -71,7 +71,8 @@ const TextInputField = ({ title, description, placeholder, tooltip, required, mu
         },
         '&.MuiInputBase-root': {
             height: inputHeight ? "40px" : "auto",
-            width: dealCriteria ? "100%" : null
+            width: dealCriteria ? "100%" : null,
+            background: 'white'
         },
         '& ::placeholder': {
             color: '#666B73 !important',
