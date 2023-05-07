@@ -177,7 +177,7 @@ function DealCriteria() {
                 })}
             </Grid>
 
-            {dealCriteriaType === '$_FIXED' ? null :
+            {dealCriteriaType === "$_FIXED_MULTI" ? null :
                 <Grid container>
                     <Grid
                         onClick={() => addTier()}
