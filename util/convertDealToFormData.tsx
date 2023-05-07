@@ -41,15 +41,17 @@ const getDealValues = (deal: any) => {
 
 const getMultibuyValues = (deal: any) => {
    const values: any = {}
-   const { generalDealInfo: { type }, dealValue : { rewardsValue, rewardType } } = deal
+   const { generalDealInfo: { type }, dealValue : { rewardsValue, rewardType, quantity } } = deal
    if(type === MULTI_BUY_DEAL_TYPE) {
       values['dealCriteria'] = rewardsValue.map(({ value, restrictions }: any) => {
          const criteria: any = {
-            get: value
+            get: rewardType === '%_OFF_MULTI' ? String(value) : String(convertCentsToDollar(value))
          }
          if(restrictions) {
             const { quantity: { minimum } } = restrictions
             criteria['buy'] = String(minimum)
+         } else if(quantity) {
+            criteria['buy'] = String(quantity.minimum)
          }
          return criteria
       })
