@@ -20,6 +20,7 @@ export const addPromoRestrictionsForEditDealPayload = (deal: any, payload: any):
     if(deal?.generalDealInfo?.type === FREE_SHIPPING_DEAL_TYPE) return payload?.['promo_restrictions']
     const existingLiams = deal?.exclusion?.product?.liam
     const existingMch = deal?.exclusion?.product?.mch
+    const existingQuantity = deal?.quantity
     const existingPriceApplicability = deal?.applicableProducts?.priceApplicability
     const editedPromoRestrictions = payload['promo_restrictions']
     if(editedPromoRestrictions && Object.values(editedPromoRestrictions).length === 0) {
@@ -35,14 +36,21 @@ export const addPromoRestrictionsForEditDealPayload = (deal: any, payload: any):
           value : existingPriceApplicability
         }
       }
+      if(existingQuantity) {
+        restrictions['quantity'] = existingQuantity
+      }
       return restrictions
     } else {
       const editedRestrictions: any = {}
       const editedLiam = editedPromoRestrictions?.['product_code']?.liam || []
       const editedMch = editedPromoRestrictions?.['category']?.mch || []
+      const editedQuantity = editedPromoRestrictions?.['quantity']
       const editedPriceApplicability = editedPromoRestrictions?.['price_applicability']?.value
       if(editedPromoRestrictions?.spend) {
         editedRestrictions['spend'] = editedPromoRestrictions?.spend
+      }
+      if(editedQuantity) {
+        editedRestrictions['quantity'] = editedQuantity
       }
       editedRestrictions['product_code'] = {
         // @ts-ignore
