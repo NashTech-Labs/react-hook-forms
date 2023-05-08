@@ -7,6 +7,8 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import ManualAddForm from "../../../FormComponents/ManualAddForm";
 import { useFormContext, useWatch } from "react-hook-form";
+import CustomTooltip from "../../../Tooltip";
+import styles from '../../../FormComponents/FormComponents.module.css'
 
 function ManuallyAddLiam({ liamValue }: any) {
 
@@ -47,8 +49,11 @@ function ManuallyAddLiam({ liamValue }: any) {
 
     return (
         <>
-            <Typography className={commonStyles.mchHeading}>LIAM(s)</Typography>
-
+           <div className={styles['title-container']}>
+             <Typography className={commonStyles.mchHeading}>LIAM(s)</Typography>
+             <CustomTooltip descriptionKey="LIAM" customStyles={{ marginTop: '17px' }}/>
+            </div>
+            
             {
                 liam?.length > 0 ? (
                     <>

@@ -155,6 +155,7 @@ const DealValue = () => {
                 required
                 displayDollarFormat
                 inputHeight={true}
+                tooltipKey={'DOLLAR_OFF'}
             />
         }
 
@@ -184,6 +185,7 @@ const DealValue = () => {
                 required
                 displayDollarFormat
                 inputHeight={true}
+                tooltipKey={'FIXED_PRICE'}
             />
         }
     }
@@ -245,7 +247,7 @@ const DealValue = () => {
     return <StepperCard step={'DEAL_VALUE'} inProgressIcon={MonetizationOnOutlinedIcon}>
         <StepLabel currentStep={3} totalSteps={dealLevelName === 'basket' ? 6 : 7} />
         <StepTitle title={"Deal Value"} />
-        <RadioGroupField options={dealLevelOptions} label="Is this at a basket level or product level?" name="dealLevel" required handleChange={handleChange} />
+        <RadioGroupField options={dealLevelOptions} label="Is this at a basket level or product level?" name="dealLevel" required handleChange={handleChange} tooltipKey={'DEAL_LEVEL'}/>
         {dealLevel === 'product' && < StyledTabs tabs={dealTabs} handleTabUpdate={handleTabUpdate} defaultValue={dealDiscountTab} />}
         {content}
         <FormCardPreview title="Customer preview" description={customerPreview} />

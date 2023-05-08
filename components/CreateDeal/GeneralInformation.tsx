@@ -112,12 +112,14 @@ const GeneralInformation = ({ handleFormDraftSubmit, deal }: IGeneralInformation
         name="title"
         required
         inputHeight={true}
+        tooltipKey={'TITLE'}
       />
       <TextInputField
         title="Description"
         placeholder="Enter description for deal"
         multiline
         name="description"
+        tooltipKey={'DESCRIPTION'}
       />
       {/* <TextInputField
           title="Identifier"
@@ -135,8 +137,9 @@ const GeneralInformation = ({ handleFormDraftSubmit, deal }: IGeneralInformation
         required
         type="number"
         inputHeight={true}
+        tooltipKey={'PRIORITY'}
       />
-      <SelectField options={stackTypeOptions} name='stackingType' title="Stacking Type" required inputHeight={true} />
+      <SelectField options={stackTypeOptions} name='stackingType' title="Stacking Type" required inputHeight={true} tooltipKey={'STACKING_TYPE'}/>
     </StepperCard>
   </>
   );

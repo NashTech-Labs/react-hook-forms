@@ -77,3 +77,8 @@
     font-size: 12px;
     line-height: 120%;
 }
+
+.title-container {
+    display: flex;
+    gap: 10px;
+}
