@@ -6,6 +6,7 @@ import RadioGroup from '@mui/material/RadioGroup'
 import Radio from '@mui/material/Radio'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import styles from './FormComponents.module.css'
+import CustomTooltip from '../Tooltip'
 
 interface IRadioControlOption {
     value: string
@@ -19,9 +20,10 @@ interface IRadioGroupFieldProps {
     required?: boolean
     handleChange?: Function
     noBottomGutters?: boolean
+    tooltipKey?: string
 }
 
-const RadioGroupField = ({ options, label, name, required, handleChange, noBottomGutters }: IRadioGroupFieldProps) => {
+const RadioGroupField = ({ options, label, name, required, handleChange, noBottomGutters, tooltipKey }: IRadioGroupFieldProps) => {
     const { control } = useFormContext()
     const { field } = useController({
         control,
@@ -35,11 +37,14 @@ const RadioGroupField = ({ options, label, name, required, handleChange, noBotto
     noBottomGutters && fieldClasses.push(styles['no-bottom-margin'])
 
     return <FormControl className={fieldClasses.join(' ')}>
+        <div className={styles['title-container']}>
         <FormLabel sx={{
             '&.Mui-focused': {
                 color: 'black'
             }
         }} id="demo-radio-buttons-group-label" className={titleClassNames.join(' ')}>{label}</FormLabel>
+        {tooltipKey && <CustomTooltip descriptionKey={tooltipKey}/>}
+        </div>
         <RadioGroup
             aria-labelledby="demo-radio-buttons-group-label"
             onChange={(e) => {

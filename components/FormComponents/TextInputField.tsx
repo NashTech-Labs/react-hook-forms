@@ -5,6 +5,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment'
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 import FieldErrorMessage from '../FormComponents/FieldErrorMessage'
+import CustomTooltip from '../Tooltip'
 import styles from './FormComponents.module.css'
 
 interface ITextFieldProps {
@@ -26,9 +27,10 @@ interface ITextFieldProps {
     displayPercentageFormat?: boolean
     inputHeight?: boolean
     dealCriteria?: boolean
+    tooltipKey? : string
 }
 
-const TextInputField = ({ title, description, placeholder, tooltip, required, multiline, type, noBottomGutters, noTopGutters, disabled, name, endAdornment, inline, displayDollarFormat, regular, displayPercentageFormat, inputHeight, dealCriteria }: ITextFieldProps) => {
+const TextInputField = ({ title, description, placeholder, tooltip, required, multiline, type, noBottomGutters, noTopGutters, disabled, name, endAdornment, inline, displayDollarFormat, regular, displayPercentageFormat, inputHeight, dealCriteria, tooltipKey }: ITextFieldProps) => {
     const { control, setValue } = useFormContext()
     const { field, fieldState: { error } } = useController({
         control,
@@ -134,9 +136,13 @@ const TextInputField = ({ title, description, placeholder, tooltip, required, mu
     }
 
     return <div className={classNames.join(' ')}>
-        {title && <Typography variant='body1' className={titleClassNames.join(' ')}>
-            {title}
-        </Typography>}
+        {title && <div className={styles['title-container']}>
+            <Typography variant='body1' className={titleClassNames.join(' ')}>
+              {title}
+            </Typography>
+            {tooltipKey && <CustomTooltip descriptionKey={tooltipKey} />}
+        </div>
+        }
         {description && <Typography className={styles.description} variant="caption" display="block" gutterBottom>
             {description}
         </Typography>}
