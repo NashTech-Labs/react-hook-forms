@@ -15,6 +15,8 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import ManualAddForm from "../../../FormComponents/ManualAddForm";
 import { useFormContext, useWatch } from "react-hook-form";
 import ManuallyAddLiam from "./ManuallyAddLiam";
+import CustomTooltip from "../../../Tooltip";
+import styles from '../../../FormComponents/FormComponents.module.css'
 
 function ManuallyAdd({ mchValue, liamValue }: any) {
     const { control, setValue } = useFormContext()
@@ -53,7 +55,10 @@ function ManuallyAdd({ mchValue, liamValue }: any) {
 
     return (
         <Grid>
-            <Typography className={commonStyles.mchHeading}>MCH(s)</Typography>
+            <div className={styles['title-container']}>
+             <Typography className={commonStyles.mchHeading}>MCH(s)</Typography>
+             <CustomTooltip descriptionKey="MCH" customStyles={{ marginTop: '17px' }}/>
+            </div>
 
             {mch?.length > 0 ? (
                 <>

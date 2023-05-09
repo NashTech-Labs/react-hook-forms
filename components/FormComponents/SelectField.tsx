@@ -9,6 +9,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import FieldErrorMessage from '../FormComponents/FieldErrorMessage'
 import styles from './FormComponents.module.css'
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import CustomTooltip from '../Tooltip'
 
 interface ISelectFieldProps {
   title?: string
@@ -17,11 +18,12 @@ interface ISelectFieldProps {
   required?: boolean
   inputHeight?: boolean
   dealCriteria?: boolean
+  tooltipKey? : string
 }
 
 const EmptyIconComponent = () => <div />
 
-const SelectField = ({ options, name, required, title, inputHeight, dealCriteria }: ISelectFieldProps) => {
+const SelectField = ({ options, name, required, title, inputHeight, dealCriteria, tooltipKey }: ISelectFieldProps) => {
   const { control } = useFormContext()
   const { field, fieldState: { error } } = useController({
     control,
@@ -32,9 +34,12 @@ const SelectField = ({ options, name, required, title, inputHeight, dealCriteria
   required && titleClassNames.push(styles['required'])
 
   return <FormControl className={dealCriteria ? styles["stack-type-form-control-deal-criteria"] : styles["stack-type-form-control"]}>
+    <div className={styles['title-container']}>
     <Typography variant="body1" gutterBottom className={titleClassNames.join(' ')}>
       {title}
     </Typography>
+    {tooltipKey && <CustomTooltip descriptionKey={tooltipKey}/>}
+    </div>
     <Select
       labelId="statcking-type-select"
       id={name}

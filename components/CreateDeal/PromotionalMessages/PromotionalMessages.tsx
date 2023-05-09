@@ -57,14 +57,15 @@ function PromotionalMessages({ dealLevelName }: any) {
           <Typography variant="body2" className={styles["subtitle"]} my={3}>
             English
           </Typography>
-          <TextInputField
-            title="Message"
-            placeholder="eg. 20% discount - You have saved 2"
-            name="englishMessage"
-            regular
-            required
-            inputHeight={true}
-          />
+            <TextInputField
+              title="Message"
+              placeholder="eg. 20% discount - You have saved 2"
+              name="englishMessage"
+              regular
+              required
+              inputHeight={true}
+              tooltipKey={'ENGLISH_PROMOTION'}
+            />
           <Box mt={5}>
             <FormCardPreview
               title="Customer preview"
@@ -89,7 +90,7 @@ function PromotionalMessages({ dealLevelName }: any) {
             }}
           ></Divider>
         </Grid>
-        <Grid item lg={12}>
+        <Grid item lg={12} alignItems="center">
           <Typography variant="body2" className={styles["subtitle"]} mb={3}>
             French
           </Typography>
@@ -100,6 +101,7 @@ function PromotionalMessages({ dealLevelName }: any) {
             regular
             required
             inputHeight={true}
+            tooltipKey={'FRENCH_PROMOTION'}
           />
           <Box mt={5}>
             <FormCardPreview

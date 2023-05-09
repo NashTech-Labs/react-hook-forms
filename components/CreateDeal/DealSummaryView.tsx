@@ -38,6 +38,7 @@ const DealSummaryView = () => {
   const excludeSteps: string[] = []
   const handleCancel = () => {
     dispatch(updateDealEditing(false))
+    dispatch(updateDealStep(""));
     router.push("/deals")
   }
 

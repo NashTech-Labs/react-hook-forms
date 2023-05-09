@@ -8,6 +8,8 @@ import * as XLSX from "xlsx";
 import { useController, useFormContext } from "react-hook-form";
 import FieldErrorMessage from "../../../FormComponents/FieldErrorMessage";
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import CustomTooltip from '../../../Tooltip'
+import styles from '../../../FormComponents/FormComponents.module.css'
 
 function UploadExcel({ uploadStep }: any) {
 
@@ -70,9 +72,12 @@ function UploadExcel({ uploadStep }: any) {
 
     return (
         <>
+         <div className={styles['title-container']}>
             <Typography className={commonStyles.required} mt={2} mb="-2%">
                 Collection
             </Typography>
+            <CustomTooltip descriptionKey="COLLECTION" customStyles={{ marginTop: '17px' }}/>
+        </div>
             {error ?
                 <>
                     <Grid
