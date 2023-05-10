@@ -1,4 +1,4 @@
-import { Box, Button, Card, Chip, Grid, IconButton, Switch, SwitchProps, Typography } from "@mui/material";
+import { Box, Button, Card, Chip, Grid, IconButton, Switch, SwitchProps, Typography, Stack } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import StepTitle from "../StepTitle";
@@ -17,6 +17,7 @@ import EditDealModal from "./EditDealModal";
 import CreateDealForm from "../CreateDeal/CreateDealForm";
 import { DISCOUNT_DEAL_TYPE, FREE_SHIPPING_DEAL_TYPE, MULTI_BUY_DEAL_TYPE, dealTypeOptions } from "../../constants/FormOptions";
 import NoDisableModal from './NoDisableModal'
+import CustomTooltip from "../Tooltip";
 
 const editDealStyles = {
     content: {
@@ -549,20 +550,33 @@ function Summary() {
                     </Grid>}
 
                     {data?.generalDealInfo?.status === "ACTIVE" || data?.generalDealInfo?.status === "INACTIVE" ?
-                        <Grid mt={3} item lg={6} className={data?.generalDealInfo?.status === "ACTIVE" ? styles.toggleSection : styles.toggleDisabledSection} >
-                            <Grid mt={1} >
-                                <FormControlLabel
-                                    control={<IOSSwitch
-                                        checked={isDealActive}
-                                        sx={{ m: 1, marginLeft: "38%" }}
-                                        onChange={handleChange}
-                                    />}
-                                    label=""
-                                />
+                        <Grid container mt={3} item lg={6} className={data?.generalDealInfo?.status === "ACTIVE" ? styles.toggleSection : styles.toggleDisabledSection} >
+                            <Grid mt={1} item lg={5}>
+                                <Stack direction={"row"} gap={2}>
+                                    <FormControlLabel
+                                        control={<IOSSwitch
+                                            checked={isDealActive}
+                                            sx={{ m: 1, marginLeft: "38%" }}
+                                            onChange={handleChange}
+                                        />}
+                                        label=""
+                                    />
+                                    <Stack>
+                                        <Typography className={styles.activeHeading} >{data?.generalDealInfo?.status === "ACTIVE" ? "ACTIVE" : "DISABLED"}</Typography>
+                                        <Typography className={styles.activePeriod} >{data?.generalDealInfo?.valid_to ? convertToEST(data?.generalDealInfo?.valid_to).format("MMMM D, YYYY [at] h:mm A z") : null}</Typography>
+                                    </Stack>
+                                </Stack>
                             </Grid>
-                            <Grid mt={1} ml={3}>
-                                <Typography className={styles.activeHeading} >{data?.generalDealInfo?.status === "ACTIVE" ? "ACTIVE" : "DISABLED"}</Typography>
-                                <Typography className={styles.activePeriod} >{data?.generalDealInfo?.valid_to ? convertToEST(data?.generalDealInfo?.valid_to).format("MMMM D, YYYY [at] h:mm A z") : null}</Typography>
+                            <Grid item lg={7}>
+                                <Box sx={{
+                                  height: '100%',
+                                  display: 'flex',
+                                  justifyContent: 'flex-end',
+                                  alignItems: 'center',
+                                  paddingRight: '20px'
+                                }}>
+                                     <CustomTooltip descriptionKey="DEAL_TOGGLE"/>
+                                </Box>
                             </Grid>
                         </Grid>
                         : null}
