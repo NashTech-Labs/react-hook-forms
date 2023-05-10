@@ -11,7 +11,7 @@ import { productCollectionTabs } from '../../../constants/FormOptions'
 import StepperCard from '../StepperCard'
 import {useAppSelector} from "../../../store";
 import {getIsEditing} from "../../../store/feature/deal/dealSlice";
-import {Typography} from "@mui/material";
+import {Typography,Box,Stack} from "@mui/material";
 
 function ProductsCollection() {
     const { setValue, control } = useFormContext()
@@ -49,7 +49,16 @@ function ProductsCollection() {
                 <StepLabel currentStep={5} totalSteps={7} />
                 <StepTitle title={"Products and Collections"} />
                 <Tag label="Internal facing" />
-                {isEditing && <Typography>The Products and Collections added in this step will be appended to existing Products and Collections on the deal</Typography>}
+                {isEditing && <Box sx={{
+                    backgroundColor: '#E6ECF6',
+                    padding: '16px',
+                    marginBottom: '24px'
+                }}>
+                     <Stack>
+                        <Typography sx={{ fontWeight: 600 }}>Please note:</Typography>
+                        <Typography sx={{ fontWeight: 400 }}>Newly added LIAMs will be appended to the existing list. If no new products are added the old list of LIAMs will be applicable after you save your changes</Typography>
+                     </Stack>
+                    </Box>}
                 <StyledTabs tabs={productCollectionTabs} handleTabUpdate={handleTabUpdate} defaultValue={productsCollectionTab} />
                 {content}
             </StepperCard>
