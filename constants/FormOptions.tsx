@@ -4,6 +4,10 @@ export const stackTypeOptions: { [index: string]: string } = {
     'override': 'Override'
 }
 
+export const stackTypeFreeShipping: { [index: string]: string } = {
+    'always_apply': 'Always Apply'
+}
+
 export const IDENTIFIER_MAX_SIZE = 15
 
 export const dealApplyOptions: { [index: string]: string } = {
