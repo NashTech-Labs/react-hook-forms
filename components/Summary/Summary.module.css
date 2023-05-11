@@ -34,11 +34,15 @@
     color : #333333;
 }
 
-.downloadIcon {
-    color: #276ADD;
-    margin-left: 2%;
-    font-size: 24px;
-    margin-top: -30%;
+.downloadButton {
+  background: #FFFFFF; 
+  color: #333333;
+  border: 1px solid #CCCCCC;
+  text-transform: capitalize;
+}
+
+.downloadButton:hover {
+  background: lightgrey;
 }
 
 .title {

@@ -9,7 +9,7 @@ import StepLabel from "../StepLabel";
 import Chip from "@mui/material/Chip";
 import Tag from "../Tag";
 import StepTitle from "../StepTitle";
-import { stackTypeOptions, FREE_SHIPPING_DEAL_TYPE, MULTI_BUY_DEAL_TYPE, DISCOUNT_DEAL_TYPE } from "../../constants/FormOptions";
+import { stackTypeOptions, stackTypeFreeShipping, FREE_SHIPPING_DEAL_TYPE, MULTI_BUY_DEAL_TYPE, DISCOUNT_DEAL_TYPE } from "../../constants/FormOptions";
 import styles from "./GeneralInformation.module.css";
 import generateIdentifier from '../../util/generateIdentifier'
 import SelectField from '../FormComponents/SelectField'
@@ -139,7 +139,7 @@ const GeneralInformation = ({ handleFormDraftSubmit, deal }: IGeneralInformation
         inputHeight={true}
         tooltipKey={'PRIORITY'}
       />
-      <SelectField options={stackTypeOptions} name='stackingType' title="Stacking Type" required inputHeight={true} tooltipKey={'STACKING_TYPE'}/>
+      <SelectField options={dealName === FREE_SHIPPING_DEAL_TYPE ? stackTypeFreeShipping : stackTypeOptions} name='stackingType' title="Stacking Type" required inputHeight={true} tooltipKey={'STACKING_TYPE'} />
     </StepperCard>
   </>
   );
