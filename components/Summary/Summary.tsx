@@ -455,14 +455,9 @@ function Summary() {
                                     Collection
                                 </Typography>
                                 <Grid className={styles.downloadSection}>
-                                    <Typography className={styles.content} >
-                                        {parseInt(data?.dealValue?.scopeValue?.length)} products</Typography>
-                                    <IconButton
-                                        data-testId="btn"
+                                    <Button data-testId="btn"
                                         onClick={() => downloadScopeExcel(data?.dealValue?.scopeValue)}
-                                    >
-                                        <DownloadIcon className={styles.downloadIcon} />
-                                    </IconButton>
+                                        className={styles.downloadButton} variant="contained" >Download products</Button>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -492,15 +487,9 @@ function Summary() {
                                             Collection
                                         </Typography>
                                         <Grid className={styles.downloadSection}>
-                                            <Typography className={styles.content} >
-                                                {parseInt(data?.exclusion?.product?.liam?.length) +
-                                                    parseInt(data?.exclusion?.product?.mch?.length)} products</Typography>
-                                            <IconButton
-                                                data-testId="exbtn"
+                                            <Button data-testId="exbtn"
                                                 onClick={() => downloadExcel(data?.exclusion?.product)}
-                                            >
-                                                <DownloadIcon className={styles.downloadIcon} />
-                                            </IconButton>
+                                                className={styles.downloadButton} variant="contained" >Download products</Button>
                                         </Grid>
                                     </>
                                     : null}
@@ -541,7 +530,7 @@ function Summary() {
         <Grid container>
             <Grid item lg={12} md={9} sm={6}>
                 <Grid container display="flex" justifyContent='space-around' mb={4} mt={4}>
-                  {!isEditing && <Grid item lg={9} className={styles.titleContainer} >
+                    {!isEditing && <Grid item lg={9} className={styles.titleContainer} >
                         <Typography variant="h4" className={styles.title}>{data?.generalDealInfo?.title}</Typography>
                         <Typography mt={2} className={styles["sub-title"]} >Draft created on {data?.generalDealInfo?.created_at ? convertToEST(data?.generalDealInfo?.created_at).format("MMMM D, YYYY [at] h:mm A z") : null}</Typography>
                         <Chip className={data?.generalDealInfo?.status === "INACTIVE" ? styles.inactiveChip : styles.Chip}
@@ -569,13 +558,13 @@ function Summary() {
                             </Grid>
                             <Grid item lg={7}>
                                 <Box sx={{
-                                  height: '100%',
-                                  display: 'flex',
-                                  justifyContent: 'flex-end',
-                                  alignItems: 'center',
-                                  paddingRight: '20px'
+                                    height: '100%',
+                                    display: 'flex',
+                                    justifyContent: 'flex-end',
+                                    alignItems: 'center',
+                                    paddingRight: '20px'
                                 }}>
-                                     <CustomTooltip descriptionKey="DEAL_TOGGLE"/>
+                                    <CustomTooltip descriptionKey="DEAL_TOGGLE" />
                                 </Box>
                             </Grid>
                         </Grid>
