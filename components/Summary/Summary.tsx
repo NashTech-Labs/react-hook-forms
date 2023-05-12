@@ -544,6 +544,7 @@ function Summary() {
                                 <Stack direction={"row"} gap={2}>
                                     <FormControlLabel
                                         control={<IOSSwitch
+                                            data-testId='toggleClick'
                                             checked={isDealActive}
                                             sx={{ m: 1, marginLeft: "38%" }}
                                             onChange={handleChange}

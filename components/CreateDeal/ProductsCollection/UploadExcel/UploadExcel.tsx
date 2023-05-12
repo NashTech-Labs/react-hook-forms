@@ -72,12 +72,12 @@ function UploadExcel({ uploadStep }: any) {
 
     return (
         <>
-         <div className={styles['title-container']}>
-            <Typography className={commonStyles.required} mt={2} mb="-2%">
-                Collection
-            </Typography>
-            <CustomTooltip descriptionKey="COLLECTION" customStyles={{ marginTop: '17px' }}/>
-        </div>
+            <div className={styles['title-container']}>
+                <Typography data-testid="collection" className={commonStyles.required} mt={2} mb="-2%">
+                    Collection
+                </Typography>
+                <CustomTooltip descriptionKey="COLLECTION" customStyles={{ marginTop: '17px' }} />
+            </div>
             {error ?
                 <>
                     <Grid
@@ -131,6 +131,7 @@ function UploadExcel({ uploadStep }: any) {
                     bgcolor={file?.name ? "#F2FAEA" : "#FFF"}
                 >
                     <input
+                        data-testid="uploadCollection"
                         type="file"
                         key={file}
                         ref={hiddenFileInput}

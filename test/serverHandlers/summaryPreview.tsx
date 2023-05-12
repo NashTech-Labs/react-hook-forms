@@ -6,7 +6,7 @@ export const handlers = [
         (req, res, ctx) => {
             const mockApiResponse = {
                 generalDealInfo: {
-                    type: "DISCOUNT",
+                    type: "MULTI_BUY",
                     id: 657,
                     title: "New Test Deal Product",
                     code: "6301dd38-f1b8-4698-88b3-3995b8053b24",
@@ -18,7 +18,7 @@ export const handlers = [
                     promotion_message_english: "English Message",
                     promotion_message_french: "French Message",
                     username: "Pushpendra Sharma",
-                    status: "READY",
+                    status: "ACTIVE",
                     created_at: "2023-03-07T10:43:16.473966",
                 },
                 applicableProduct: { priceApplicability: { value: "REGULAR_ONLY" } },
@@ -54,7 +54,35 @@ export const handlers = [
                     ],
                     rewardType: "$_OFF",
                     spend: null,
-                    rewardsValue: [{ value: "25000" }],
+                    rewardsValue: [
+                        {
+                            value: "1000",
+                            "restrictions": {
+                                "quantity": {
+                                    "minimum": 2,
+                                    "maximum": 2
+                                }
+                            }
+                        },
+                        {
+                            "value": "2000",
+                            "restrictions": {
+                                "quantity": {
+                                    "minimum": 3,
+                                    "maximum": 3
+                                }
+                            }
+                        },
+                        {
+                            "value": "3000",
+                            "restrictions": {
+                                "quantity": {
+                                    "minimum": 4,
+                                    "maximum": null
+                                }
+                            }
+                        }
+                    ],
                     dealCriteriaType: null,
                     shippingMethod: null,
                     minSpend: null,
