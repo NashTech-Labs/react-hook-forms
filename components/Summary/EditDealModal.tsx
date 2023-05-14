@@ -65,7 +65,7 @@ function EditDealModal({ closeModal, isDealActive, disableDeal, data, dealId, re
                         <CloseIcon onClick={closeModalfn} data-testid="closeIcon" />
                     </Grid>
                 </Grid>
-                <Typography variant="body2" className={classes["info-text"]} mt={4}>
+                <Typography data-testid="heading" variant="body2" className={classes["info-text"]} mt={4}>
                     {isDealActive ? "Disabling the deal will result it from customer view and access until it is enabled (made Active) again. Proceed?" :
                         "Enabling will result in customers viewing and accessing the deal again. Would you like to proceed?"}
                 </Typography>

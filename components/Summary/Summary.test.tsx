@@ -86,4 +86,30 @@ describe("Summary Page Test", () => {
         fireEvent.click(clickIndicator);
     });
 
+    test("Edit button of edit flow", async () => {
+        render(
+            <Provider store={store}>
+                <GoogleOAuthProvider clientId={""}>
+                    <Summary />
+                </GoogleOAuthProvider>
+            </Provider>
+        );
+
+        const clickIndicator = await screen.getByTestId("edit");
+        fireEvent.click(clickIndicator);
+    });
+
+    test("Toggle switch of Active Deals", async () => {
+        render(
+            <Provider store={store}>
+                <GoogleOAuthProvider clientId={""}>
+                    <Summary />
+                </GoogleOAuthProvider>
+            </Provider>
+        );
+
+        const clickIndicator = await screen.getByTestId("toggleClick");
+        fireEvent.click(clickIndicator);
+    });
+
 });

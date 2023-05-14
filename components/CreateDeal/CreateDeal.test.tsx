@@ -37,36 +37,87 @@ describe("Create Deal tests", () => {
         expect(screen.getByTestId("createDealTitle")).toBeInTheDocument();
     });
 
-    // test("Test Create Deal button", async () => {
-    //     render(
-    //         <Provider store={store}>
-    //             <GoogleOAuthProvider clientId={""}>
-    //                 <CreateDeal />
-    //             </GoogleOAuthProvider>
-    //         </Provider>
-    //     );
-    //     expect(screen.getByTestId("createDealTitle")).toBeInTheDocument();
+    test("Test Create Deal Discount button", async () => {
+        render(
+            <Provider store={store}>
+                <GoogleOAuthProvider clientId={""}>
+                    <CreateDeal />
+                </GoogleOAuthProvider>
+            </Provider>
+        );
+        expect(screen.getByTestId("createDealTitle")).toBeInTheDocument();
 
-    //     const clickIndicator = screen.getByTestId("dealBtn");
-    //     fireEvent.click(clickIndicator);
+        const clickIndicator = screen.getByTestId("discountdealBtn");
+        fireEvent.click(clickIndicator);
 
-    //     expect(screen.getByTestId("ContinueBtn")).toBeInTheDocument();
-    // });
+        expect(screen.getByTestId("ContinueBtn")).toBeInTheDocument();
+    });
 
-    // test("Test Cancel Deal button", async () => {
-    //     render(
-    //         <Provider store={store}>
-    //             <GoogleOAuthProvider clientId={""}>
-    //                 <CreateDeal />
-    //             </GoogleOAuthProvider>
-    //         </Provider>
-    //     );
-    //     expect(screen.getByTestId("createDealTitle")).toBeInTheDocument();
+    test("Test Create Deal Multi-buy button", async () => {
+        render(
+            <Provider store={store}>
+                <GoogleOAuthProvider clientId={""}>
+                    <CreateDeal />
+                </GoogleOAuthProvider>
+            </Provider>
+        );
+        expect(screen.getByTestId("createDealTitle")).toBeInTheDocument();
 
-    //     const clickIndicator = screen.getByTestId("CancelBtn");
-    //     fireEvent.click(clickIndicator);
+        const clickIndicator = screen.getByTestId("multidealBtn");
+        fireEvent.click(clickIndicator);
 
-    //     expect(screen.getByTestId("CancelBtn")).toBeInTheDocument();
-    // });
+        expect(screen.getByTestId("ContinueBtn")).toBeInTheDocument();
+    });
+
+    test("Test Create Deal Free Shipping button", async () => {
+        render(
+            <Provider store={store}>
+                <GoogleOAuthProvider clientId={""}>
+                    <CreateDeal />
+                </GoogleOAuthProvider>
+            </Provider>
+        );
+        expect(screen.getByTestId("createDealTitle")).toBeInTheDocument();
+
+        const clickIndicator = screen.getByTestId("freeShippingdealBtn");
+        fireEvent.click(clickIndicator);
+
+        expect(screen.getByTestId("ContinueBtn")).toBeInTheDocument();
+    });
+
+    test("Test Cancel Deal button", async () => {
+        render(
+            <Provider store={store}>
+                <GoogleOAuthProvider clientId={""}>
+                    <CreateDeal />
+                </GoogleOAuthProvider>
+            </Provider>
+        );
+        expect(screen.getByTestId("createDealTitle")).toBeInTheDocument();
+
+        const clickIndicator = screen.getByTestId("CancelBtn");
+        fireEvent.click(clickIndicator);
+
+        expect(screen.getByTestId("CancelBtn")).toBeInTheDocument();
+    });
+
+    test("Test Continue Deal button", async () => {
+        render(
+            <Provider store={store}>
+                <GoogleOAuthProvider clientId={""}>
+                    <CreateDeal />
+                </GoogleOAuthProvider>
+            </Provider>
+        );
+        expect(screen.getByTestId("createDealTitle")).toBeInTheDocument();
+
+        const clickIndicator = screen.getByTestId("freeShippingdealBtn");
+        fireEvent.click(clickIndicator);
+
+        const clickContinueIndicator = screen.getByTestId("ContinueBtn");
+        fireEvent.click(clickContinueIndicator);
+
+        expect(screen.getByTestId("ContinueBtn")).toBeInTheDocument();
+    });
 
 });

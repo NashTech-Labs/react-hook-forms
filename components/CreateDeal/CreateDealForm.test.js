@@ -2,7 +2,7 @@ import React from "react";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import { store } from "../../store";
+import { generateStore } from "../../store";
 import "@testing-library/jest-dom";
 import CreateDealForm from "./CreateDealForm";
 
@@ -23,6 +23,12 @@ jest.mock("next/router", () => ({
       };
     },
   }));
+
+const store = generateStore({
+    deal: {
+        dealLevelName: 'product',
+    },
+});
 
 describe("Create deal form tests", () => {
   beforeEach(()=>{
@@ -175,4 +181,19 @@ describe("Create deal form tests", () => {
       await waitFor(() =>  expect(screen.getByTestId("endTimePicker-field-error")).toHaveTextContent('Error: Time required'))
     })
   })
+
+  // Upload Component Test Cases
+
+  test("Renders create collection title", async () => {
+    expect(screen.getByTestId("collection")).toBeInTheDocument();
+  })
+
+  describe('Upload field tests', () => {
+    test("Upload input file with input fields", async () => {
+      fireEvent.click(screen.getByTestId('uploadCollection'))
+      fireEvent.change(screen.getByTestId('uploadCollection'), { target: { files: {name: "LIAMs.xlsx", lastModifiedDate: "2023-02-15T12:22:53.169Z", webkitRelativePath: "", size: 9300, type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"} } } )
+      await waitFor(() =>  expect(screen.getByTestId("file-field-error")).toHaveTextContent('Error: FIle required'))
+    })
+  })
+
 });
