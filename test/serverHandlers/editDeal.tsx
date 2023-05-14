@@ -92,4 +92,10 @@ export const handlers = [
             return res(ctx.json(mockApiResponse));
         }
     ),
+    rest.patch(
+        `https://cs-bo-panel-bff-dev.loblaw.digital/v1/deal/`,
+        (req, res, ctx) => {
+            return res(ctx.json({}));
+        }
+    ),
 ];
