@@ -1,4 +1,4 @@
-import { Button, Card, Divider, Grid, Typography } from "@mui/material";
+import { Button, Divider, Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
@@ -6,7 +6,6 @@ import FormCardPreview from "../../FormCardPreview";
 import TextInputField from "../../FormComponents/TextInputField";
 import StepLabel from "../../StepLabel";
 import StepTitle from "../../StepTitle";
-import commonStyles from "../Steps.module.css";
 import styles from "./PromotionalMessages.module.css";
 import UndoIcon from "@mui/icons-material/Undo";
 import { useFormContext, useWatch } from "react-hook-form";

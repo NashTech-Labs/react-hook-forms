@@ -142,6 +142,8 @@ const FilterModal = ({ closeModal }: IFilterModal) => {
       closeModal()
     }
 
+    const errorBackgroundColor = endDateError ? '#FEFAF9' : '#ffffff'
+
     return    <>
     <Box p={1} data-testid="deleteDealModal" sx={{ padding: 0 }}>
       <Grid container alignItems="center" my={2}>
@@ -242,7 +244,6 @@ const FilterModal = ({ closeModal }: IFilterModal) => {
                         }}
                         onClick={() => setOpenStartDate(true)}
                         disabled={startDateDisabled}
-                        data-testid={`${name}-icon`}
                       >
                         <CalendarMonthIcon
                           sx={
@@ -296,7 +297,7 @@ const FilterModal = ({ closeModal }: IFilterModal) => {
             inputProps={{ ...params.inputProps, "data-testid": 'endDate' }}
             InputLabelProps={{ shrink: false }}
             sx= {{
-              backgroundColor: endDateDisabled ? '#F0F0F0' : endDateError ? '#FEFAF9' : '#ffffff'
+              backgroundColor: endDateDisabled ? '#F0F0F0' : errorBackgroundColor
             }}
             InputProps={{
               endAdornment: (
@@ -307,7 +308,6 @@ const FilterModal = ({ closeModal }: IFilterModal) => {
                     }}
                     onClick={() => setOpenEndDate(true)}
                     disabled={endDateDisabled}
-                    data-testid={`${name}-icon`}
                   >
                     <CalendarMonthIcon
                       sx={

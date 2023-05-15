@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { Grid, Typography } from "@mui/material";
 import commonStyles from "../../Steps.module.css";
 import UploadFileIcon from "@mui/icons-material/UploadFile";

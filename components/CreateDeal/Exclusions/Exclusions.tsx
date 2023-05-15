@@ -5,13 +5,12 @@ import StepTitle from "../../StepTitle";
 import StepLabel from "../../StepLabel";
 import RadioGroupField from '../../FormComponents/RadioGroupField'
 import Tag from "../../Tag";
-import { dealApplyOptions } from '../../../constants/FormOptions'
+import { dealApplyOptions, productCollectionTabs, dealLevelExclusionOptions } from '../../../constants/FormOptions'
 import UploadExcel from '../ProductsCollection/UploadExcel/UploadExcel';
 import ManuallyAdd from '../ProductsCollection/ManuallyAdd/ManuallyAdd';
 import StyledTabs from '../../StyledTabs';
 import { useFormContext, useWatch } from 'react-hook-form';
 import SelectField from '../../FormComponents/SelectField';
-import { productCollectionTabs, dealLevelExclusionOptions } from '../../../constants/FormOptions'
 import exclusionStyles from './Exclusions.module.css'
 import StepperCard from '../StepperCard'
 import {useAppSelector} from '../../../store';

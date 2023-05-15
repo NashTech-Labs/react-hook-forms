@@ -9,11 +9,10 @@ import StepLabel from "../StepLabel";
 import Chip from "@mui/material/Chip";
 import Tag from "../Tag";
 import StepTitle from "../StepTitle";
-import { stackTypeOptions, stackTypeFreeShipping, FREE_SHIPPING_DEAL_TYPE, MULTI_BUY_DEAL_TYPE, DISCOUNT_DEAL_TYPE } from "../../constants/FormOptions";
+import { stackTypeOptions, stackTypeFreeShipping, FREE_SHIPPING_DEAL_TYPE, MULTI_BUY_DEAL_TYPE, dealTypeOptions } from "../../constants/FormOptions";
 import styles from "./GeneralInformation.module.css";
-import generateIdentifier from '../../util/generateIdentifier'
 import SelectField from '../FormComponents/SelectField'
-import { getIsEditing, updatedDealLevel, updatedDealStep } from "../../store/feature/deal/dealSlice";
+import { updatedDealLevel, updatedDealStep } from "../../store/feature/deal/dealSlice";
 import { useAppSelector } from "../../store/index";
 import StepperCard from './StepperCard'
 import FeedIcon from '@mui/icons-material/Feed';
@@ -35,9 +34,9 @@ const GeneralInformation = ({ handleFormDraftSubmit, deal }: IGeneralInformation
   const draftButtonLabel = id ? 'Save' : 'Save as draft'
   const isDraftStatus = deal?.generalDealInfo?.status
 
-  const handleGenerateIdentifier = () => {
-    setValue('identifier', generateIdentifier(), { shouldValidate: true })
-  }
+  // const handleGenerateIdentifier = () => {
+  //   setValue('identifier', generateIdentifier(), { shouldValidate: true })
+  // }
 
   useEffect(() => {
     if (dealName === MULTI_BUY_DEAL_TYPE) {
@@ -51,11 +50,13 @@ const GeneralInformation = ({ handleFormDraftSubmit, deal }: IGeneralInformation
 
   }, [])
 
+  const title = dealTypeOptions[dealName]
+  
   let content = <>
     <Grid container justifyContent="space-between" className={styles["heading-container"]}>
       <Grid item lg={5} md={5} sm={5}>
         <Typography variant="h3" className={styles.heading} data-testid="form-title">
-          Create New {dealName === DISCOUNT_DEAL_TYPE ? 'Discount' : dealName === MULTI_BUY_DEAL_TYPE ? 'Multi-buy' : 'Free Shipping'} Deal
+          Create New {title} Deal
         </Typography>
       </Grid>
       <Grid item lg={7} md={7} sm={7}>

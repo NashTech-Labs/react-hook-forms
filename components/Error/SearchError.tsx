@@ -1,7 +1,5 @@
 import React from "react";
 import { Button, Grid, Typography } from "@mui/material";
-import { useRouter } from "next/router";
-import { useAppSelector } from "../../store/index";
 import styles from "./SearchError.module.css";
 
 export const SearchError = () => {

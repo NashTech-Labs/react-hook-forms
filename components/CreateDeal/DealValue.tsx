@@ -11,7 +11,6 @@ import StyledTabs from '../StyledTabs'
 import TextInputField from '../FormComponents/TextInputField'
 import styles from "./DealValue.module.css";
 import FormCardPreview from '../FormCardPreview'
-import commonStyles from './Steps.module.css'
 import { dealLevelOptions, dealTabs, percentageOptions } from '../../constants/FormOptions'
 import { useAppDispatch, useAppSelector } from '../../store';
 import { updateDealLevel, updatedDealLevel } from '../../store/feature/deal/dealSlice';
@@ -191,6 +190,8 @@ const DealValue = () => {
     }
 
     if (dealLevel === 'basket') {
+        const endAdornmentForDollarFormat = displayDollarFormat ? undefined : <div style={{ position: 'absolute', left: '60px' }}>%</div> 
+        const endAdornment = basketDiscount ? endAdornmentForDollarFormat : undefined
         content = <div className={styles['basket-fields']}>
             <div style={{ marginTop: '20px' }}>
                 <TextInputField
@@ -218,7 +219,7 @@ const DealValue = () => {
                     required
                     displayDollarFormat={displayDollarFormat}
                     displayPercentageFormat={displayPercentageFormat}
-                    endAdornment={basketDiscount ? displayDollarFormat ? undefined : <div style={{ position: 'absolute', left: '60px' }}>%</div> : undefined}
+                    endAdornment={endAdornment}
                     inputHeight={true}
                 />
             </div>

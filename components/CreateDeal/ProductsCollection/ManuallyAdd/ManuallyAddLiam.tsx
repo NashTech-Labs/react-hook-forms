@@ -18,9 +18,9 @@ function ManuallyAddLiam({ liamValue }: any) {
         name: liamValue
     })
 
-    const [showAllBtnLIAM, setShowAllBtnLIAM] = useState<Boolean>(false);
+    const [showAllBtnLIAM, setShowAllBtnLIAM] = useState<boolean>(false);
 
-    const [showAllListLIAM, setShowAllListLIAM] = useState<Boolean>(false);
+    const [showAllListLIAM, setShowAllListLIAM] = useState<boolean>(false);
 
     const handleLIAM = () => {
         liam.push('')
@@ -68,7 +68,7 @@ function ManuallyAddLiam({ liamValue }: any) {
             <Grid container mb={2}>
                 {liam?.slice(0, showAllListLIAM ? liam.length : 5).map((data: any, index: any) => {
                     return (
-                        <Grid key={index} item lg={12} className={commonStyles["mch-card-container"]}>
+                        <Grid key={`${liamValue}.${index}`} item lg={12} className={commonStyles["mch-card-container"]}>
                             <Grid item lg={11}>
                                 <ManualAddForm name={`${liamValue}.${index}`} placeholder="Enter a valid LIAM" />
                             </Grid>

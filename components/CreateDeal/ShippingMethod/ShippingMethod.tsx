@@ -4,21 +4,14 @@ import StepLabel from '../../StepLabel'
 import StepTitle from '../../StepTitle'
 import commonStyles from "../Steps.module.css";
 import RadioGroupField from '../../FormComponents/RadioGroupField';
-import { useFormContext, useWatch } from 'react-hook-form';
-import StepperCard from '../StepperCard'
+import { useFormContext } from 'react-hook-form';
 
 export const shippingMethodOptions = [
     { value: "standard", label: "Standard" },
 ];
 
 function ShippingMethod() {
-
-    const { control, setValue } = useFormContext();
-
-    const shippingMethodType = useWatch({
-        control,
-        name: 'shippingMethodType'
-    })
+    const { setValue } = useFormContext();
 
     const handleChange = (e: any) => {
         const level = e.target.value;

@@ -35,7 +35,7 @@ function DealsMainPage() {
     }
   }, [userToken, dispatch]);
 
-  const [RolesOfUser, { data: rolesData, isLoading, isError }] =
+  const [RolesOfUser, { data: rolesData, isError }] =
     useGetRolesOfUserMutation();
 
   useEffect(() => {

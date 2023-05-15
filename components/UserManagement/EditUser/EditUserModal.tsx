@@ -4,8 +4,7 @@ import classes from './EditUserModal.module.css'
 import EditAccessModalContent from './EditAccessModalContent'
 import UpdateAccessModalContent from './UpdateAccessModalContent'
 import RemoveAccessModalContent from './RemoveAccessModalContent'
-import {IRolesPayload} from '../../../api/updateUser';
-import {useUpdateUserMutation} from "../../../api/updateUser";
+import {IRolesPayload,useUpdateUserMutation} from '../../../api/updateUser';
 import {notifySuccess, notifyError} from "../../../util/Notification/Notification";
 
 interface IEditUSerModal {
