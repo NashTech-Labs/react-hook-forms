@@ -23,18 +23,20 @@ const getDealValues = (deal: any) => {
          dealValues['customPercentageOff'] = ''
         } else {
          dealValues['percentageOff'] = 'custom'
-           dealValues['customPercentageOff'] = String(rewardsValue?.[0]?.value)
+         dealValues['customPercentageOff'] = String(rewardsValue?.[0]?.value)
         }
      }
      if(rewardType === '$_FIXED') {
         dealValues['fixedPriceOff'] = String(convertCentsToDollar(rewardsValue?.[0]?.value))
         dealValues['dealDiscountTab'] = 'fixed'
      }
-   } else {
-       dealValues['basketDiscount'] =  rewardType === '%_OFF' ? String(rewardsValue?.[0]?.value) : String(convertCentsToDollar(rewardsValue?.[0]?.value))
-       dealValues['basketSpend'] =  String(convertCentsToDollar(spend?.minimum))
-       dealValues['basketDealType'] = rewardType === '%_OFF' ? 'percentage' : 'dollar'
+
+     return dealValues
    }
+
+   dealValues['basketDiscount'] =  rewardType === '%_OFF' ? String(rewardsValue?.[0]?.value) : String(convertCentsToDollar(rewardsValue?.[0]?.value))
+   dealValues['basketSpend'] =  String(convertCentsToDollar(spend?.minimum))
+   dealValues['basketDealType'] = rewardType === '%_OFF' ? 'percentage' : 'dollar'
 
    return dealValues
 }

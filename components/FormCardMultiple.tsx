@@ -15,8 +15,8 @@ const FormCardPreview = ({ title, description }: IFormCardPreview) => {
         <div className={styles['description-container']}>
             <div> <SellOutlinedIcon /></div>
             <div>
-                {description.map((data, index) => {
-                    return <Typography key={index} className={styles['description']}>{data}</Typography>
+                {description.map((data) => {
+                    return <Typography key={data} className={styles['description']}>{data}</Typography>
                 })
                 }
             </div>

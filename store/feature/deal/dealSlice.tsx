@@ -1,13 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../index";
 
-export interface dealState {
+export interface DealState {
   dealName: string;
-  dealId: Number;
+  dealId: number;
   dealLevelName: string;
   isEditing: boolean 
 }
-const initialState: dealState = {
+const initialState: DealState = {
   dealName: "",
   dealId: 0,
   dealLevelName: 'product',

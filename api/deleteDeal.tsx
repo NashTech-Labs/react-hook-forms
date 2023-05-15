@@ -5,7 +5,7 @@ export const deleteDeal = createApi({
   reducerPath: "deleteDeal",
   baseQuery: CustomQuery(),
   endpoints: (builder) => ({
-    deleteDeal: builder.mutation<any, Number[]>({
+    deleteDeal: builder.mutation<any, number[]>({
       query: (deal_Ids) => ({
         url: `v1/deals`,
         method: "DELETE",

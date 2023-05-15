@@ -1,7 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { CustomQuery } from "../httpInterceptors";
 
-export interface dealPreview {
+export interface DealPreview {
     generalDealInfo: any;
     applicableProduct: any;
     exclusion: any;
@@ -13,7 +13,7 @@ export const dealPreview = createApi({
     baseQuery: CustomQuery(),
     refetchOnMountOrArgChange : true,
     endpoints: (builder) => ({
-        getDealPreview: builder.query<dealPreview, any>({
+        getDealPreview: builder.query<DealPreview, any>({
             query: (data) => ({
                 url: `/v1/deal/${data}`,
                 method: "GET",

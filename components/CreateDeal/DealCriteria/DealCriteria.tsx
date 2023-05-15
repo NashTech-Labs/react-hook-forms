@@ -6,7 +6,6 @@ import StepLabel from "../../StepLabel";
 import StepTitle from "../../StepTitle";
 import commonStyles from "../Steps.module.css";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import FormCardPreview from "../../FormCardPreview";
 import TextInputField from "../../FormComponents/TextInputField";
 import { useFormContext, useWatch } from "react-hook-form";
 import SelectField from "../../FormComponents/SelectField";
@@ -113,7 +112,7 @@ function DealCriteria() {
                 {dealCriteria?.map((data: any, index: any) => {
                     return (
                         <Grid
-                            key={index}
+                            key={dealCriteria[index]?.buy}
                             container
                             item
                             lg={12}

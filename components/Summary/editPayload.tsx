@@ -1,6 +1,6 @@
-import { dealPreview } from "../../api/dealPreview"
+import { DealPreview } from "../../api/dealPreview"
 
-export const editPayload = (data: dealPreview, name: string, isDealActive: boolean) => {
+export const editPayload = (data: DealPreview, name: string, isDealActive: boolean) => {
 
     const payload: any = {
         "title": data?.generalDealInfo?.title,
@@ -27,10 +27,10 @@ export const editPayload = (data: dealPreview, name: string, isDealActive: boole
         payload["promo_restrictions"]["price_applicability"] = data?.applicableProduct?.priceApplicability?.value
         payload["promo_restrictions"]["product_code"] = {
             "liam": data?.exclusion?.product?.liam
-        },
-            payload["promo_restrictions"]["category"] = {
-                "mch": data?.exclusion?.product?.mch
-            }
+        }
+        payload["promo_restrictions"]["category"] = {
+            "mch": data?.exclusion?.product?.mch
+        }
     }
 
     if (data?.generalDealInfo?.type === "MULTI_BUY") {

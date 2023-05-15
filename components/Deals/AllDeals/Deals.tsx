@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo, ChangeEvent } from "react";
 import Card from "@mui/material/Card";
-import { Box, CardContent, Divider, Grid, Typography, Pagination, PaginationItem, IconButton } from "@mui/material";
+import { Box, CardContent, Divider, Grid, Typography, Pagination, PaginationItem } from "@mui/material";
 import { useRouter } from "next/router";
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import Button from "@mui/material/Button";
@@ -57,7 +57,7 @@ function Deals({ search }: IDealsProps) {
     setPage(1)
   }, [filters])
 
-  const NoDealsComponent = () => <Box className={styles["no-data-box"]}>
+  const noDealsComponent = <Box className={styles["no-data-box"]}>
     <Typography
       variant="body2"
       className={styles["no-data-text"]}
@@ -179,9 +179,9 @@ function Deals({ search }: IDealsProps) {
               row.dealValue[0].rewardType === "%_OFF_MULTI"
             ) {
               return (
-                row.dealValue.map((data: any, index: number) => {
-                  return (<Grid key={index} display="grid">
-                    <Grid> Buy {data.buyQuantity} get {parseInt(data.rewardValue)}% off</Grid>
+                row.dealValue.map(({ buyQuantity, rewardValue }: any) => {
+                  return (<Grid key={`${buyQuantity}-${rewardValue}`} display="grid">
+                    <Grid> Buy {buyQuantity} get {parseInt(rewardValue)}% off</Grid>
                   </Grid>)
                 })
               )
@@ -190,9 +190,9 @@ function Deals({ search }: IDealsProps) {
               row.dealValue[0].rewardType === "$_OFF_MULTI"
             ) {
               return (
-                row.dealValue.map((data: any, index: number) => {
-                  return (<Grid key={index} display="grid">
-                    <Grid> Buy {data.buyQuantity} get ${(Number(data.rewardValue) / 100).toFixed(2)} off</Grid>
+                row.dealValue.map(({ buyQuantity, rewardValue }: any) => {
+                  return (<Grid key={`${buyQuantity}-${rewardValue}`} display="grid">
+                    <Grid> Buy {buyQuantity} get ${(Number(rewardValue) / 100).toFixed(2)} off</Grid>
                   </Grid>)
                 })
               )
@@ -201,9 +201,9 @@ function Deals({ search }: IDealsProps) {
               row.dealValue[0].rewardType === "$_FIXED_MULTI"
             ) {
               return (
-                row.dealValue.map((data: any, index: number) => {
-                  return (<Grid key={index} display="grid">
-                    <Grid> Buy {data.buyQuantity} For ${(Number(data.rewardValue) / 100).toFixed(2)}</Grid>
+                row.dealValue.map(({ buyQuantity, rewardValue }: any) => {
+                  return (<Grid  key={`${buyQuantity}-${rewardValue}`} display="grid">
+                    <Grid> Buy {buyQuantity} For ${(Number(rewardValue) / 100).toFixed(2)}</Grid>
                   </Grid>)
                 })
               )
@@ -282,7 +282,7 @@ function Deals({ search }: IDealsProps) {
     []
   );
 
-  const viewDetails = (value: Number) => {
+  const viewDetails = (value: number) => {
     dispatch(updateDealEditing(false))
     router.push("deals/view");
     dispatch(updateDealId(value));
@@ -326,7 +326,7 @@ function Deals({ search }: IDealsProps) {
               <DataTable
                 persistTableHead
                 data={[]}
-                noDataComponent={<NoDealsComponent />}
+                noDataComponent={noDealsComponent}
                 highlightOnHover
                 columns={columns}
                 customStyles={customStyles}
@@ -424,7 +424,7 @@ function Deals({ search }: IDealsProps) {
                         variant="body2"
                         className={styles["no-data-text"]}
                       >
-                        {search ? `No results for ${search}. Try another search.` : <NoDealsComponent />}
+                        {search ? `No results for ${search}. Try another search.` : noDealsComponent}
                       </Typography>
                     </Box>
                   }

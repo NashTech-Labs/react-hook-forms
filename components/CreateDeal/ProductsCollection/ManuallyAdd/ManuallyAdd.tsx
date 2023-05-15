@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
-    Card,
     Divider,
-    FormControl,
     Grid,
-    OutlinedInput,
     Typography,
 } from "@mui/material";
 import commonStyles from "../../Steps.module.css";
@@ -25,9 +22,9 @@ function ManuallyAdd({ mchValue, liamValue }: any) {
         name: mchValue
     })
 
-    const [showAllBtnMCH, setShowAllBtnMCH] = useState<Boolean>(false);
+    const [showAllBtnMCH, setShowAllBtnMCH] = useState<boolean>(false);
 
-    const [showAllListMCH, setShowAllListMCH] = useState<Boolean>(false);
+    const [showAllListMCH, setShowAllListMCH] = useState<boolean>(false);
 
     const handleMCH = () => {
         mch.push('')
@@ -71,7 +68,7 @@ function ManuallyAdd({ mchValue, liamValue }: any) {
             <Grid container mb={2}>
                 {mch?.slice(0, showAllListMCH ? mch.length : 5).map((data: any, index: any) => {
                     return (
-                        <Grid container key={index} item lg={12} className={commonStyles["mch-card-container"]}>
+                        <Grid container key={mchValue[index]} item lg={12} className={commonStyles["mch-card-container"]}>
                             <Grid item lg={11}>
                                 <ManualAddForm name={`${mchValue}.${index}`} placeholder="Enter a valid MCH" />
                             </Grid>

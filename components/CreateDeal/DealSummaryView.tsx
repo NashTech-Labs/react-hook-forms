@@ -15,10 +15,9 @@ import { userProfileState } from '../../store/feature/auth/authSlice';
 import generateCreateDealPayload from '../../util/createDealPayload'
 import { useCreateDealsMutation } from '../../api/createDeal';
 import { notifyError, notifySuccess } from '../../util/Notification/Notification';
-import { updateDealStep } from '../../store/feature/deal/dealSlice';
+import { updateDealStep, getIsEditing, updatedDealId, updateDealEditing } from '../../store/feature/deal/dealSlice';
 import CreateDealDefaultFormState from '../../constants/CreateDealDefaultFormState'
 import { Chip } from '@mui/material';
-import { getIsEditing, updatedDealId, updateDealEditing } from '../../store/feature/deal/dealSlice';
 import { useEditDealsMutation } from "../../api/editDeal";
 import { DISCOUNT_DEAL_TYPE, FREE_SHIPPING_DEAL_TYPE, MULTI_BUY_DEAL_TYPE } from '../../constants/FormOptions';
 import { useGetDealPreviewQuery } from "../../api/dealPreview";
@@ -142,8 +141,10 @@ const DealSummaryView = () => {
     </Grid>
     {
       Object.keys(config).filter(step => !excludeSteps.includes(step)).map((stepTitle: string) => {
+        const basketLevelTitle = dealLevel === 'basket' ? 'Product Applicability' : stepTitle
+        const computedTitle = stepTitle === 'Exclusions' ?  basketLevelTitle: stepTitle
         return <Card className={commonStyles["step-card-container-summary"]} key={stepTitle}>
-          <StepTitle title={stepTitle === 'Exclusions' ? dealLevel === 'basket' ? 'Product Applicability' : stepTitle : stepTitle} />
+          <StepTitle title={computedTitle} />
           {
             config[stepTitle].map(({ title, getValue, shouldHide }) => {
               if (shouldHide && shouldHide(newDealData)) {
