@@ -1,4 +1,4 @@
-import {IDENTIFIER_MAX_SIZE} from '../constants/FormOptions'
+// import {IDENTIFIER_MAX_SIZE} from '../constants/FormOptions'
 
 const generateIdentifier = (): string | void => {
     // const allowedValues = '0123456789abcdefghijklmnopqrstuvwxyz'

@@ -18,7 +18,7 @@ export interface AllDealsList {
   identifier: string;
 }
 
-export interface newAllDealsList {
+export interface NewAllDealsList {
   deals: AllDealsList[];
   paginationInfo: any;
 }
@@ -84,7 +84,7 @@ export const viewAllDeals = createApi({
   baseQuery: CustomQuery(),
   refetchOnMountOrArgChange: true,
   endpoints: (builder) => ({
-    getAllList: builder.query<newAllDealsList, IGetAllList>({
+    getAllList: builder.query<NewAllDealsList, IGetAllList>({
       query: (params) => ({
         url: getUrl(params),
         method: "GET",

@@ -16,7 +16,7 @@ import PromotionalMessages from './PromotionalMessages/PromotionalMessages';
 import styles from './CreateDealForm.module.css'
 import commonStyles from "./Steps.module.css";
 import { useAppDispatch, useAppSelector } from "../../store/index";
-import { updatedDealLevel, updatedDealStep, updateDealLevel, updateDealStep, getIsEditing, updateDealEditing } from "../../store/feature/deal/dealSlice";
+import { updatedDealLevel, updatedDealStep, updateDealLevel, updateDealStep, getIsEditing } from "../../store/feature/deal/dealSlice";
 import { updateNewDeal, getNewDealData } from '../../store/feature/deal/newDealSlice'
 import DateInEffect from './DateInEffect/DateInEffect';
 import DealCriteria from './DealCriteria/DealCriteria';
@@ -29,9 +29,8 @@ import DraftModal from './DraftModal';
 import { updateDraftDeal } from '../../store/feature/deal/draftDealSlice';
 import { useEditDealsMutation } from "../../api/editDeal";
 import convertDealDataToFormData from '../../util/convertDealToFormData'
-import { MULTI_BUY_DEAL_TYPE, FREE_SHIPPING_DEAL_TYPE, DISCOUNT_DEAL_TYPE } from '../../constants/FormOptions'
+import { MULTI_BUY_DEAL_TYPE, FREE_SHIPPING_DEAL_TYPE, DISCOUNT_DEAL_TYPE, EDIT_SCENARIO_FILED_EXCEPTIONS } from '../../constants/FormOptions'
 import ExitEditModal from './ExitEditModal'
-import { EDIT_SCENARIO_FILED_EXCEPTIONS } from '../../constants/FormOptions'
 
 interface ICreateDealFrom {
     deal?: object
@@ -63,7 +62,7 @@ const MAX_FILE_SIZE = 1000000; //1MB
 const validFileExtensions: any = ['.xlsx', '.xlsm', '.xlsb', '.xltx', '.xltm', '.xls', '.xlt', '.xml', '.xlam', '.xla', '.xlw', '.xlr'];
 
 function isValidFileType(fileName: any) {
-    var afterDot = fileName?.substr(fileName?.indexOf('.'));
+    const afterDot = fileName?.substr(fileName?.indexOf('.'));
     return fileName && validFileExtensions.includes(afterDot);
 }
 
@@ -428,7 +427,8 @@ const CreateDealForm = ({ deal }: ICreateDealFrom) => {
     return <FormProvider {...formMethods}>
         <form id="test">
             <GeneralInformation handleFormDraftSubmit={handleFormDraftSubmit} deal={deal}/>
-            {dealName === DISCOUNT_DEAL_TYPE ? <DealValue /> : dealName === MULTI_BUY_DEAL_TYPE ? <DealCriteria /> : null}
+            {dealName === DISCOUNT_DEAL_TYPE && <DealValue />} 
+            {dealName === MULTI_BUY_DEAL_TYPE && <DealCriteria />}
             {dealName === FREE_SHIPPING_DEAL_TYPE && <SpendMinimum />}
             <DateInEffect deal={deal} />
             {dealName === FREE_SHIPPING_DEAL_TYPE || dealLevelName === 'basket' ? null : <ProductsCollection />}

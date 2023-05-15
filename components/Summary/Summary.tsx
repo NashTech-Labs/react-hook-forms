@@ -1,4 +1,4 @@
-import { Box, Button, Card, Chip, Grid, IconButton, Switch, SwitchProps, Typography, Stack } from "@mui/material";
+import { Box, Button, Card, Chip, Grid, Switch, SwitchProps, Typography, Stack } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import StepTitle from "../StepTitle";
@@ -7,7 +7,6 @@ import { useGetDealPreviewQuery } from "../../api/dealPreview";
 import { getIsEditing, updatedDealId, updateDealStep, updateDealEditing, updateDealId } from "../../store/feature/deal/dealSlice";
 import { useAppDispatch, useAppSelector } from "../../store/index";
 import { capitalizeWords } from "../../util/format";
-import DownloadIcon from '@mui/icons-material/Download';
 import { convertToEST } from "../../util/ConvertDateTime";
 import { dealStatus } from "../../constants/DealStatus";
 import { styled } from '@mui/material/styles';
@@ -132,7 +131,7 @@ function Summary() {
 
         let csvString = csvMapping.reduce((acc, cur) => `${acc}\n${cur}`);
         csvString = "data:application/csv," + encodeURIComponent(csvString);
-        var x = document.createElement("A");
+        const x = document.createElement("A");
         x.setAttribute("href", csvString);
         x.setAttribute("download", "productList.csv");
         document.body.appendChild(x);
@@ -157,7 +156,7 @@ function Summary() {
 
         let csvString = csvMapping.reduce((acc, cur) => `${acc}\n${cur}`);
         csvString = "data:application/csv," + encodeURIComponent(csvString);
-        var x = document.createElement("A");
+        const x = document.createElement("A");
         x.setAttribute("href", csvString);
         x.setAttribute("download", "productList.csv");
         document.body.appendChild(x);
@@ -276,6 +275,7 @@ function Summary() {
     if (isEditing) {
         content = <CreateDealForm deal={data} />
     } else {
+        const discountTypeDealLabel = data?.dealValue?.rewardType === '%_OFF' ? 'Percentage (%) off' : 'Fixed off'
         content = <>
             <Card className={styles["step-card-container"]}>
                 <StepTitle title={"Deal type"} />
@@ -363,7 +363,7 @@ function Summary() {
                                         Type
                                     </Typography>
                                     <Typography className={styles.content} >{data?.dealValue?.rewardType === "$_OFF" ?
-                                        'Dollar ($) off' : data?.dealValue?.rewardType === '%_OFF' ? 'Percentage (%) off' : 'Fixed off'}
+                                        'Dollar ($) off' : discountTypeDealLabel}
                                     </Typography>
 
                                     <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
@@ -409,8 +409,8 @@ function Summary() {
                                     <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
                                         Customer preview
                                     </Typography>
-                                    {customerPreview.map((data: string, index: number) => {
-                                        return <Typography key={index} className={styles.content}>{data}</Typography>
+                                    {customerPreview.map((data: string) => {
+                                        return <Typography key={data} className={styles.content}>{data}</Typography>
                                     })}
                                 </Grid>
                             </Grid>
@@ -544,6 +544,7 @@ function Summary() {
                                 <Stack direction={"row"} gap={2}>
                                     <FormControlLabel
                                         control={<IOSSwitch
+                                            data-testId='toggleClick'
                                             checked={isDealActive}
                                             sx={{ m: 1, marginLeft: "38%" }}
                                             onChange={handleChange}

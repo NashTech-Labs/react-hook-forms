@@ -8,7 +8,6 @@ const getRewardType = ({ dealDiscountTab, dollarOff, percentageOff, fixedPriceOf
 
     if (dealLevel === 'basket') { 
         if (basketDealType === 'dollar') {
-            rewardType = '$_OFF'
             rewardValue = basketDiscount ? (Number(basketDiscount) * 100).toFixed() : basketDiscount
         }
 
@@ -22,9 +21,9 @@ const getRewardType = ({ dealDiscountTab, dollarOff, percentageOff, fixedPriceOf
     else {
     
     if(dealDiscountTab === 'dollar'){
-        rewardType = '$_OFF'
         rewardValue = dollarOff ? (Number(dollarOff) * 100).toFixed() : dollarOff
     }
+
     if(dealDiscountTab === 'percentage'){
 
         if (percentageOff === "custom") {
@@ -55,7 +54,7 @@ const getDealApplyType = (dealApplyType: string) => DEAL_APPLY_TYPE[dealApplyTyp
 const getScopeData = (productsCollectionTab: string, fileLIAM: string[], fileMCH: string[], liam: string[], mch: string[]) => {
     let data: any = []
 
-        fileLIAM.map((value: string, index: Number) => {
+        fileLIAM.forEach((value: string) => {
             data.push({
                     "type": "PRODUCT_CODE",
                     "sub_type": "LIAM",
@@ -63,7 +62,7 @@ const getScopeData = (productsCollectionTab: string, fileLIAM: string[], fileMCH
             })
         })
 
-        fileMCH.map((value: string, index: Number) => {
+        fileMCH.forEach((value: string) => {
             data.push({
                     "type": "CATEGORY",
                     "sub_type": "MCH",
@@ -71,7 +70,7 @@ const getScopeData = (productsCollectionTab: string, fileLIAM: string[], fileMCH
             })
         })
     
-        liam.map((value: string, index: Number) => {
+        liam.forEach((value: string) => {
             data.push({
                     "type": "PRODUCT_CODE",
                     "sub_type": "LIAM",
@@ -79,7 +78,7 @@ const getScopeData = (productsCollectionTab: string, fileLIAM: string[], fileMCH
             })
         })
 
-        mch.map((value: string, index: Number) => {
+        mch.forEach((value: string) => {
             data.push({
                     "type": "CATEGORY",
                     "sub_type": "MCH",
@@ -174,7 +173,7 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState, isDraft: bo
     if (dealLevel === 'product' && dealType !== "FREE_SHIPPING" ) {
         payload["promo_restrictions"]['product_code'] = {
             "liam": [...exFileLIAM, ...exliam]
-        },
+        }
         payload["promo_restrictions"]['category'] = {
             "mch": [...exFileMCH, ...exmch]
         }
@@ -199,12 +198,12 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState, isDraft: bo
             {
                 "value": String(rewardValue)
             }
-        ],
+        ]
         payload["reward_type"] = rewardType
     }
 
     if (dealType === MULTI_BUY_DEAL_TYPE) {
-        payload["rewards"] = getRewardMultiBuy(dealCriteria, dealCriteriaType),
+        payload["rewards"] = getRewardMultiBuy(dealCriteria, dealCriteriaType)
         payload["reward_type"] = dealCriteriaType;
         if (dealCriteria.length === 1)
         {
@@ -215,15 +214,15 @@ const generateCreateDealPayload  = (formData : ICreateDealFormState, isDraft: bo
         }
     }
 
-    if (dealType === FREE_SHIPPING_DEAL_TYPE)
-    {
-        payload["reward_type"] = "NO_FEE",
+    if (dealType === FREE_SHIPPING_DEAL_TYPE) {
+        const notCustomValue = spendMinimum === 'NO_MINIMUM' ? "0" : (Number(spendMinimum) * 100).toFixed()
+        payload["reward_type"] = "NO_FEE"
         payload["rewards"] = [{
             value: "SHIPPING",
             restrictions: {}
-        }],
+        }]
         payload["promo_restrictions"]['spend'] = {
-            "minimum": spendMinimum === 'CUSTOM' ? (Number(customMinimumSpend) * 100).toFixed() : spendMinimum === 'NO_MINIMUM' ? "0" : (Number(spendMinimum) * 100).toFixed(),
+            "minimum": spendMinimum === 'CUSTOM' ? (Number(customMinimumSpend) * 100).toFixed() : notCustomValue,
             "maximum": null
         }
     }

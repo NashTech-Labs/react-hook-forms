@@ -1,9 +1,7 @@
 import React, { useState, SyntheticEvent } from 'react'
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import styled from '@mui/material/styles/styled'
 import styles from './FormCardPreview.module.css'
-import { Typography } from '@mui/material';
 
 interface ITab {
     label: string
@@ -43,13 +41,13 @@ const StyledTabs = ({ tabs, handleTabUpdate, defaultValue }: IStyledTabsProps) =
         TabIndicatorProps={{ style: { height: '4px' } }}
         sx={{
             '.Mui-selected': {
-                color: '#043385',
+                color: '#043385 !important',
                 fontWeight: 600
             },
             '.MuiTab-root': {
                 textTransform: 'inherit',
                 fontSize: '16px',
-                color: '#043385',
+                color: '#191919',
                 opacity: 1
             },
             '.MuiTabs-flexContainer': {
@@ -57,7 +55,7 @@ const StyledTabs = ({ tabs, handleTabUpdate, defaultValue }: IStyledTabsProps) =
             }
         }}
     >
-        {tabs.map(({ label }, index) => <Tab key={`${label}-${index}`} label={label === "Manually add product(s)" && tab === 1 ? <span className={styles.required}>{label}</span> : label} />)}
+        {tabs.map(({ label }) => <Tab key={`${label}`} label={label === "Manually add product(s)" && tab === 1 ? <span className={styles.required}>{label}</span> : label} />)}
     </Tabs>
 }
 

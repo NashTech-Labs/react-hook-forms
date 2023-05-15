@@ -49,7 +49,6 @@ function ManualAddForm({ name, placeholder }: AddFieldProps) {
                 name={name}
                 value={value}
                 endAdornment={<InputAdornment position="end">
-                    {/* {endAdornment} */}
                     {error && <ErrorOutlineIcon className={styles['error-icon']} />}
                     {field.value && !error ? <CheckCircleOutlineOutlinedIcon className={styles['valid-icon']} /> : null}
                 </InputAdornment>

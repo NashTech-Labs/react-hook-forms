@@ -1,7 +1,7 @@
 import { rest } from "msw";
 
 export const handlers = [
-    rest.get(
+    rest.patch(
         `https://cs-bo-panel-bff-dev.loblaw.digital/v1/deal/657`,
         (req, res, ctx) => {
             const mockApiResponse = {
@@ -90,6 +90,12 @@ export const handlers = [
                 },
             };
             return res(ctx.json(mockApiResponse));
+        }
+    ),
+    rest.patch(
+        `https://cs-bo-panel-bff-dev.loblaw.digital/v1/deal/`,
+        (req, res, ctx) => {
+            return res(ctx.json({}));
         }
     ),
 ];

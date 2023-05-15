@@ -48,7 +48,7 @@ function CreateDeal() {
         <StepTitle title={"Select deal type"} />
 
         <Grid
-          data-testid="dealBtn"
+          data-testid="discountdealBtn"
           onClick={() => {
             handleDealValue(DISCOUNT_DEAL_TYPE);
           }}
@@ -67,7 +67,7 @@ function CreateDeal() {
         </Grid>
 
         <Grid
-          data-testid="dealBtn"
+          data-testid="multidealBtn"
           onClick={() => {
             handleDealValue(MULTI_BUY_DEAL_TYPE);
           }}
@@ -86,7 +86,7 @@ function CreateDeal() {
         </Grid>
 
         <Grid
-          data-testid="dealBtn"
+          data-testid="freeShippingdealBtn"
           onClick={() => {
             handleDealValue(FREE_SHIPPING_DEAL_TYPE);
           }}

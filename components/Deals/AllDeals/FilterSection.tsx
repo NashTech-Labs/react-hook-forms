@@ -28,7 +28,7 @@ const filterStyles = {
     },
   };
 
-const FilterSection = ({ }) => {
+const FilterSection = () => {
     const { count } = useSelector(getFilters)
     const [show, setShow] = useState(false)
 

@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
-import { Card, Divider, Grid, Typography } from "@mui/material";
+import { Divider, Grid, Typography } from "@mui/material";
 import StepLabel from "../../StepLabel";
 import StepTitle from "../../StepTitle";
-import commonStyles from "../Steps.module.css";
 import FormCardPreview from "../../FormCardPreview";
 import styles from "./DateInEffect.module.css";
 import { useFormContext, useWatch } from "react-hook-form";
