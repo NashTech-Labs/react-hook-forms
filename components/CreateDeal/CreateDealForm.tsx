@@ -31,6 +31,7 @@ import { useEditDealsMutation } from "../../api/editDeal";
 import convertDealDataToFormData from '../../util/convertDealToFormData'
 import { MULTI_BUY_DEAL_TYPE, FREE_SHIPPING_DEAL_TYPE, DISCOUNT_DEAL_TYPE, EDIT_SCENARIO_FILED_EXCEPTIONS } from '../../constants/FormOptions'
 import ExitEditModal from './ExitEditModal'
+import ShippingMethod from './ShippingMethod/ShippingMethod';
 
 interface ICreateDealFrom {
     deal?: object
@@ -426,10 +427,10 @@ const CreateDealForm = ({ deal }: ICreateDealFrom) => {
 
     return <FormProvider {...formMethods}>
         <form id="test">
-            <GeneralInformation handleFormDraftSubmit={handleFormDraftSubmit} deal={deal}/>
-            {dealName === DISCOUNT_DEAL_TYPE && <DealValue />} 
+            <GeneralInformation handleFormDraftSubmit={handleFormDraftSubmit} deal={deal} />
+            {dealName === DISCOUNT_DEAL_TYPE && <DealValue />}
             {dealName === MULTI_BUY_DEAL_TYPE && <DealCriteria />}
-            {dealName === FREE_SHIPPING_DEAL_TYPE && <SpendMinimum />}
+            {dealName === FREE_SHIPPING_DEAL_TYPE && <><ShippingMethod /> <SpendMinimum /></>}
             <DateInEffect deal={deal} />
             {dealName === FREE_SHIPPING_DEAL_TYPE || dealLevelName === 'basket' ? null : <ProductsCollection />}
             {dealName === FREE_SHIPPING_DEAL_TYPE ? null : <Exclusions dealLevelName={dealLevelName} />}

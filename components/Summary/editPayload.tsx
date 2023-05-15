@@ -24,7 +24,10 @@ export const editPayload = (data: DealPreview, name: string, isDealActive: boole
     }
 
     if (data?.generalDealInfo?.type !== "FREE_SHIPPING") {
-        payload["promo_restrictions"]["price_applicability"] = data?.applicableProduct?.priceApplicability?.value
+        payload["promo_restrictions"]["price_applicability"] = data?.applicableProduct?.priceApplicability
+    }
+
+    if (data?.dealValue?.scopeType !== "BASKET") {
         payload["promo_restrictions"]["product_code"] = {
             "liam": data?.exclusion?.product?.liam
         }
