@@ -35,3 +35,29 @@
 .accessText { 
   margin : 0
 }
+
+.search {
+  height: 40px;
+  width: 361.532470703125px;
+}
+
+.search-button {
+  padding: 8px;
+  gap: 8px;
+  width: 66px;
+  height: 40px;
+  border-radius: 4px;
+  background-color: #276add;
+  text-transform: capitalize;
+}
+
+.ClearText {
+  margin-top: -2%;
+  margin-bottom: 2%;
+  text-decoration: underline;
+  color: #276add;
+  cursor: pointer;
+  margin-left: 3px;
+  font-size: 14px;
+  width: fit-content;
+}

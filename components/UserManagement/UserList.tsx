@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
 import Card from "@mui/material/Card";
-import { Box, Button, CardContent, Typography } from "@mui/material";
+import { Box, Button, CardContent, FormControl, Grid, IconButton, InputAdornment, OutlinedInput, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Modal from "react-modal";
 import styles from "./UserList.module.css";
@@ -10,11 +10,16 @@ import AddUser from "./AddUser/AddUser";
 import { notifyError, notifySuccess } from "../../util/Notification/Notification";
 import EditUserModal from "./EditUser/EditUserModal";
 import { useRemoveUserMutation } from "../../api/removeUser";
+import ClearIcon from "@mui/icons-material/Clear";
+import SearchIcon from "@mui/icons-material/Search";
 
 const UserList = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { data,isError,refetch} = useGetUserRoleListQuery();
+  const { data, isError, refetch } = useGetUserRoleListQuery();
   const [showEditUserModal, setShowEditUserModal] = useState(false);
+  const [searchedText, setSearchedText] = useState("");
+  const [filterText, setFilterText] = useState("");
+  const [filterData, setFilterData] = useState([]);
   const [selectedRow, setSelectedRow] = useState<any>(null);
   const [removeUser] = useRemoveUserMutation();
 
@@ -125,7 +130,7 @@ const UserList = () => {
     },
   ];
 
-  if(isError){
+  if (isError) {
     notifyError("Oops! Something went wrong", "userList-error")
   }
 
@@ -158,13 +163,44 @@ const UserList = () => {
     closeRemoveUserModal();
   };
 
+  const searchUser = () => {
+    const filteredItems: any = data?.filter(
+      (item) =>
+        JSON.stringify(item.emailId || "")
+          .toLowerCase()
+          .indexOf(filterText.toLowerCase()) !== -1
+    );
+    setFilterData(filteredItems);
+    setSearchedText(filterText);
+  };
+
+  const clearSearch = () => {
+    setFilterText("");
+  };
+
+  const clearResult = () => {
+    setFilterText("");
+    setSearchedText("");
+    setFilterData([]);
+  };
+
+  useEffect(() => {
+    const filteredItems: any = data?.filter(
+      (item) =>
+        JSON.stringify(item.emailId || "")
+          .toLowerCase()
+          .indexOf(filterText.toLowerCase()) !== -1
+    );
+    setFilterData(filteredItems);
+  }, [data]);
+
   let content = null;
 
-  if(isError) {
+  if (isError) {
     content = (
       <>
         <Card className={styles["users-card"]}>
-          <CardContent sx={{padding: "0px"}}>
+          <CardContent sx={{ padding: "0px" }}>
             <Typography
               variant="h5"
               className={styles["users-card-header"]}
@@ -174,7 +210,7 @@ const UserList = () => {
             </Typography>
             <Typography
               variant="body2"
-              sx={{fontSize: "16px", color: "#666B73"}}
+              sx={{ fontSize: "16px", color: "#666B73" }}
             >
               This information is not available at this time.
             </Typography>
@@ -190,13 +226,27 @@ const UserList = () => {
         <Card className={styles["users-card"]}>
           <CardContent sx={{ padding: "0px" }}>
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Typography
-                variant="h5"
-                className={styles["users-card-header"]}
-                mb={3}
-              >
-                All Users
-              </Typography>
+              {searchedText?.length > 0 ? (
+                <Typography
+                  variant="h5"
+                  className={styles["users-card-header"]}
+                  mb={3}
+                  data-testid="searchResult"
+                >
+                  {filterData?.length}{" "}
+                  {filterData.length === 1 ? "Result" : "Results"} for{" "}
+                  {searchedText}
+                </Typography>
+              ) : (
+                <Typography
+                  variant="h5"
+                  className={styles["users-card-header"]}
+                  mb={3}
+                >
+                  All Users
+                </Typography>
+              )}
+
               <Button
                 variant="outlined"
                 startIcon={<AddIcon fontSize="large" />}
@@ -208,6 +258,68 @@ const UserList = () => {
               </Button>
             </Box>
 
+            <Grid
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                marginBottom: "3%",
+                marginTop: "-1%",
+              }}
+            >
+              <Grid>
+                <FormControl fullWidth>
+                  <OutlinedInput
+                    className={styles.search}
+                    autoComplete="off"
+                    id="outlined-basic"
+                    placeholder="Search by Agent or Admin’s email"
+                    value={filterText}
+                    onChange={(e) => setFilterText(e.target.value)}
+                    onKeyPress={(event) => {
+                      if (event.key === "Enter") searchUser();
+                    }}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        {searchedText?.length > 0 ? (
+                          <IconButton
+                            onClick={clearSearch}
+                            sx={{ padding: "3px" }}
+                            data-testid="clearIcon"
+                          >
+                            <ClearIcon sx={{ color: "#333333" }} />
+                          </IconButton>
+                        ) : (
+                          <IconButton sx={{ padding: "3px" }}>
+                            <SearchIcon sx={{ color: "#333333" }} />
+                          </IconButton>
+                        )}
+                      </InputAdornment>
+                    }
+                  />
+                </FormControl>
+              </Grid>
+              <Grid ml={2}>
+                <Button
+                  className={styles["search-button"]}
+                  variant="contained"
+                  disabled={!Boolean(filterText)}
+                  onClick={() => searchUser()}
+                  data-testid="searchBtn"
+                >
+                  Search
+                </Button>
+              </Grid>
+            </Grid>
+            {searchedText?.length > 0 ? (
+              <Typography
+                width="fit-content"
+                className={styles.ClearText}
+                onClick={clearResult}
+              >
+                Clear results and view all users
+              </Typography>
+            ) : null}
+
             <DataTable
               persistTableHead
               columns={columns}
@@ -216,7 +328,7 @@ const UserList = () => {
                   {"No results"}
                 </Typography>
               }
-              data={data}
+              data={searchedText?.length > 0 ? filterData : [...data].reverse()}
               customStyles={customStyles}
               highlightOnHover
             />
@@ -240,7 +352,7 @@ const UserList = () => {
         isOpen={isOpen}
         onRequestClose={closeModal}
       >
-        <AddUser closeModal={closeModal} refetch={refetch}/>
+        <AddUser closeModal={closeModal} refetch={refetch} />
       </Modal>
       <Modal
         style={editUserModalcustomStyles}
