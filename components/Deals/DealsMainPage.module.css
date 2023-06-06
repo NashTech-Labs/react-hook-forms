@@ -13,3 +13,8 @@
 .btn {
   text-transform: inherit;
 }
+
+.managePromotionsBtn {
+  color: #333333;
+  border: 1px solid #CCCCCC;
+}
