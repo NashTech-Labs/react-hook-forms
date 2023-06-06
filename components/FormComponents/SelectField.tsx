@@ -19,11 +19,12 @@ interface ISelectFieldProps {
   inputHeight?: boolean
   dealCriteria?: boolean
   tooltipKey? : string
+  topGutters?: boolean
 }
 
 const EmptyIconComponent = () => <div />
 
-const SelectField = ({ options, name, required, title, inputHeight, dealCriteria, tooltipKey }: ISelectFieldProps) => {
+const SelectField = ({ options, name, required, title, inputHeight, dealCriteria, tooltipKey, topGutters }: ISelectFieldProps) => {
   const { control } = useFormContext()
   const { field, fieldState: { error } } = useController({
     control,
@@ -33,7 +34,7 @@ const SelectField = ({ options, name, required, title, inputHeight, dealCriteria
   const titleClassNames = []
   required && titleClassNames.push(styles['required'])
 
-  return <FormControl className={dealCriteria ? styles["stack-type-form-control-deal-criteria"] : styles["stack-type-form-control"]}>
+  return <FormControl className={dealCriteria ? styles["stack-type-form-control-deal-criteria"] : styles["stack-type-form-control"]} sx={{ marginTop: topGutters ? '20px' : '0px' }}>
     <div className={styles['title-container']}>
     <Typography variant="body1" gutterBottom className={titleClassNames.join(' ')}>
       {title}

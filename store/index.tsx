@@ -17,6 +17,7 @@ import { updateUser } from "../api/updateUser";
 import { createDeals } from "../api/createDeal";
 import { dealPreview } from "../api/dealPreview";
 import { editDeals } from "../api/editDeal";
+import { disablePromotions } from "../api/disablePromotion";
 
 const persistauthConfig = {
   key: "auth",
@@ -56,7 +57,8 @@ export const generateStore = (preloadedState = {}) => {
       [updateUser.reducerPath]: updateUser.reducer,
       [createDeals.reducerPath]: createDeals.reducer,
       [dealPreview.reducerPath]: dealPreview.reducer,
-      [editDeals.reducerPath]: editDeals.reducer
+      [editDeals.reducerPath]: editDeals.reducer,
+      [disablePromotions.reducerPath] : disablePromotions.reducer
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
@@ -71,7 +73,8 @@ export const generateStore = (preloadedState = {}) => {
         removeUser.middleware,
         updateUser.middleware,
         dealPreview.middleware,
-        editDeals.middleware
+        editDeals.middleware,
+        disablePromotions.middleware
       ]),
     preloadedState,
   });

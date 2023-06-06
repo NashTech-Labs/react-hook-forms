@@ -1,6 +1,8 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
 import Grid from "@mui/material/Grid";
+import Stack from '@mui/material/Stack'
 import SearchOutlined from '@mui/icons-material/SearchOutlined';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import CloseIcon from '@mui/icons-material/Close';
 import { useAppDispatch, useAppSelector } from "../../store/index";
 import {
@@ -92,15 +94,24 @@ function DealsMainPage() {
             <Typography variant="h3" className={styles.heading}>
               Deals & Promotions
             </Typography>
-
-            <Button
-              onClick={() => createDeal()}
-              variant="contained"
-              className={styles.btn}
-            >
-              <CreateIcon sx={{ marginRight: "5px" }} />
-              Create new
-            </Button>
+            <Stack direction="row" spacing={2}>
+              <Button
+                onClick={() => createDeal()}
+                variant="contained"
+                className={styles.btn}
+              >
+                <CreateIcon sx={{ marginRight: "5px" }} />
+                Create new
+              </Button>
+              <Button
+                onClick={() => router.push('/deals/managePromotions')}
+                variant="outlined"
+                className={styles.managePromotionsBtn}
+              >
+                <VisibilityOffIcon sx={{ marginRight: "5px" }} />
+                Manage Promotions
+              </Button>
+            </Stack>
           </Grid>
           <Grid
             item
