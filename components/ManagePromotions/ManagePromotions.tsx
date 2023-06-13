@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography'
 import Stack from '@mui/material/Stack'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
+import Card from '@mui/material/Card'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import SelectField from '../FormComponents/SelectField'
 import TextInputField from '../FormComponents/TextInputField'
@@ -72,43 +73,45 @@ const ManagePromotions = () => {
       Manage Promotions
     </Typography>
     <FormProvider {...formMethods}>
-      <Stack sx={{ margin: '20px 0px'}} alignItems="center">
-        <SelectField
-          required
-          title="LOB"
-          name="levelOfBusiness"
-          options={LOB_OPTIONS}
-          inputHeight
-        />
-        <SelectField
-          required
-          title="Promotion type"
-          name="promotionType"
-          options={promotionTypeValues}
-          inputHeight
-          topGutters
-        />
-        <TextInputField
-          title="Promotion ID"
-          placeholder="Enter promotion ID"
-          name="promotionId"
-          required
-          type="text"
-          inputHeight={true}
-        />
-      </Stack>
-      <Stack direction="row" justifyContent='space-between'>
-          <Button variant="outlined" className={commonStyles['cancelBtn']} onClick={handleBack} data-testid="back-btn">Go Back</Button>
-          <Button
-            onClick={() => handleDisablePromotion()}
-            variant="outlined"
-            className={styles.disablePromotionsBtn}
-            data-testId="disable-btn"
-          >
-            <VisibilityOffIcon sx={{ marginRight: "5px" }} />
-            Disable
-          </Button>
+      <Card raised sx={{ padding: '20px', margin:'20px 0px' }}>
+        <Stack sx={{ margin: '20px 0px'}}>
+          <SelectField
+            required
+            title="LOB"
+            name="levelOfBusiness"
+            options={LOB_OPTIONS}
+            inputHeight
+          />
+          <SelectField
+            required
+            title="Promotion type"
+            name="promotionType"
+            options={promotionTypeValues}
+            inputHeight
+            topGutters
+          />
+          <TextInputField
+            title="Promotion ID"
+            placeholder="Enter promotion ID"
+            name="promotionId"
+            required
+            type="text"
+            inputHeight={true}
+          />
         </Stack>
+        <Stack direction="row" spacing={2}>
+            <Button variant="outlined" className={commonStyles['cancelBtn']} onClick={handleBack} data-testid="back-btn">Go Back</Button>
+            <Button
+              onClick={() => handleDisablePromotion()}
+              variant="outlined"
+              className={styles.disablePromotionsBtn}
+              data-testId="disable-btn"
+            >
+              <VisibilityOffIcon sx={{ marginRight: "5px" }} />
+              Disable
+            </Button>
+        </Stack>
+      </Card>
     </FormProvider>
     <ManagePromotionsModal closeModal={closePromotionsModal} open={open} formValues={formMethods.getValues()}/>
   </Box>
