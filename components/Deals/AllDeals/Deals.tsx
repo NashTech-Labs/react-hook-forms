@@ -50,12 +50,8 @@ function Deals({ search }: IDealsProps) {
   }, [])
 
   useEffect(() => {
-    refetch();
-  }, [])
-
-  useEffect(() => {
     setPage(1)
-  }, [filters])
+  }, [filters, search])
 
   const noDealsComponent = <Box className={styles["no-data-box"]}>
     <Typography
@@ -202,7 +198,7 @@ function Deals({ search }: IDealsProps) {
             ) {
               return (
                 row.dealValue.map(({ buyQuantity, rewardValue }: any) => {
-                  return (<Grid  key={`${buyQuantity}-${rewardValue}`} display="grid">
+                  return (<Grid key={`${buyQuantity}-${rewardValue}`} display="grid">
                     <Grid> Buy {buyQuantity} For ${(Number(rewardValue) / 100).toFixed(2)}</Grid>
                   </Grid>)
                 })
