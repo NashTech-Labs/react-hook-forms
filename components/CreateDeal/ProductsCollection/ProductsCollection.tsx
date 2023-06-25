@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import {Typography,Box,Stack,Button} from "@mui/material";
 import { useFormContext, useWatch } from "react-hook-form";
 import CheckroomOutlinedIcon from '@mui/icons-material/CheckroomOutlined';
 import StepLabel from "../../StepLabel";
@@ -11,9 +12,10 @@ import { productCollectionTabs } from '../../../constants/FormOptions'
 import StepperCard from '../StepperCard'
 import {useAppSelector} from "../../../store";
 import {getIsEditing} from "../../../store/feature/deal/dealSlice";
-import {Typography,Box,Stack} from "@mui/material";
+import RemoveProductsModal from "../RemoveProductsModal";
 
 function ProductsCollection() {
+    const [showRemoveProductsModal, setShowRemoveProductsModals] = useState<boolean>(false)
     const { setValue, control } = useFormContext()
     const isEditing = useAppSelector(getIsEditing)
     const productsCollectionTab = useWatch({
@@ -43,12 +45,19 @@ function ProductsCollection() {
         );
     }
 
+    const closeModal = () => {
+        setShowRemoveProductsModals(false)
+    }
+
     return (
         <>
             <StepperCard step={'PRODUCTS_AND_COLLECTIONS'} inProgressIcon={CheckroomOutlinedIcon}>
                 <StepLabel currentStep={5} totalSteps={7} />
                 <StepTitle title={"Products and Collections"} />
                 <Tag label="Internal facing" />
+                {isEditing && <Box marginBottom={3} marginTop={2}>
+                    <Button variant="contained" sx={{ textTransform: 'none' }} onClick={() => setShowRemoveProductsModals(true)}>Remove products</Button>
+                </Box>}
                 {isEditing && <Box sx={{
                     backgroundColor: '#E6ECF6',
                     padding: '16px',
@@ -62,6 +71,7 @@ function ProductsCollection() {
                 <StyledTabs tabs={productCollectionTabs} handleTabUpdate={handleTabUpdate} defaultValue={productsCollectionTab} />
                 {content}
             </StepperCard>
+            <RemoveProductsModal isOpen={showRemoveProductsModal} handleClose={closeModal}/>
         </>
     );
 }

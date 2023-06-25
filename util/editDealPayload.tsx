@@ -1,3 +1,4 @@
+import {ICreateDealFormState} from "../constants/CreateDealFormStateType"
 import { FREE_SHIPPING_DEAL_TYPE } from "../constants/FormOptions"
 
 export const addScopesForEditDealPayload = (deal: any, payload: any): any[] => {
@@ -16,10 +17,11 @@ export const addScopesForEditDealPayload = (deal: any, payload: any): any[] => {
   return uniqueScopeValues
 }
 
-export const addPromoRestrictionsForEditDealPayload = (deal: any, payload: any): any => {
+export const addPromoRestrictionsForEditDealPayload = (deal: any, payload: any, newDealData: ICreateDealFormState): any => {
   if (deal?.generalDealInfo?.type === FREE_SHIPPING_DEAL_TYPE) return payload?.['promo_restrictions']
-  const existingLiams = deal?.exclusion?.product?.liam
-  const existingMch = deal?.exclusion?.product?.mch
+  if(newDealData?.dealLevelOptions === 'no') return { product : { mch : [], liam: [] }}
+  const existingLiams = deal?.exclusion?.product?.liam || []
+  const existingMch = deal?.exclusion?.product?.mch || []
   const existingQuantity = deal?.quantity
   const existingPriceApplicability = deal?.applicableProducts?.priceApplicability
   const editedPromoRestrictions = payload['promo_restrictions']
