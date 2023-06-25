@@ -1,5 +1,5 @@
-import React from 'react'
-import { Grid, SelectChangeEvent, Typography } from '@mui/material'
+import React, { useState } from 'react'
+import { Grid, SelectChangeEvent, Typography, Box, Button } from '@mui/material'
 import DoDisturbOutlinedIcon from '@mui/icons-material/DoDisturbOutlined';
 import StepTitle from "../../StepTitle";
 import StepLabel from "../../StepLabel";
@@ -15,9 +15,10 @@ import exclusionStyles from './Exclusions.module.css'
 import StepperCard from '../StepperCard'
 import {useAppSelector} from '../../../store';
 import {getIsEditing} from '../../../store/feature/deal/dealSlice';
+import RemoveProductsModal from "../RemoveProductsModal";
 
 const Exclusions = ({ dealLevelName }: any) => {
-
+    const [showRemoveProductsModal, setShowRemoveProductsModals] = useState<boolean>(false)
     const { control, setValue } = useFormContext()
     const isEditing = useAppSelector(getIsEditing)
     const dealOptions = useWatch({
@@ -61,10 +62,17 @@ const Exclusions = ({ dealLevelName }: any) => {
         );
     }
 
+    const closeModal = () => {
+        setShowRemoveProductsModals(false)
+    }
+
     return <StepperCard step={'EXCLUSIONS'} inProgressIcon={DoDisturbOutlinedIcon}>
         <StepLabel currentStep={dealLevelName === 'product' ? 6 : 5} totalSteps={dealLevelName === 'product' ? 7 : 6} />
         <StepTitle title={dealLevelName === 'product' ? "Exclusions" : "Product Applicability"} />
         <Tag label="Internal facing" extraSpacing />
+        {isEditing && <Box marginBottom={3}>
+            <Button variant="contained" sx={{ textTransform: 'none' }} onClick={() => setShowRemoveProductsModals(true)}>Remove products</Button>
+        </Box>}
         {isEditing && <Typography sx={{ marginBottom: '10px'}}>The Exclusions added in this step will be appended to existing Exclusions on the deal</Typography>}
         <Grid display="grid">
             <div className={exclusionStyles['deal-apply-container']}>
@@ -80,6 +88,7 @@ const Exclusions = ({ dealLevelName }: any) => {
                         : null}
                 </> : null}
         </Grid>
+        <RemoveProductsModal isOpen={showRemoveProductsModal} handleClose={closeModal} exclusions={true}/>
     </StepperCard>
 }
 

@@ -52,9 +52,9 @@ const DealSummaryView = () => {
     if (isEditing) {
       formattedPayloadWithUser['dealId'] = dealId
       formattedPayloadWithUser['scopes'] = addScopesForEditDealPayload(data, formattedPayloadWithUser)
-      formattedPayloadWithUser['promo_restrictions'] = addPromoRestrictionsForEditDealPayload(data, formattedPayloadWithUser)
+      formattedPayloadWithUser['promo_restrictions'] = addPromoRestrictionsForEditDealPayload(data, formattedPayloadWithUser, newDealData)
     }
-    // if (isEditing)
+
     setSubmitting(true)
     if (isEditing) {
       await editDeal(formattedPayloadWithUser)
