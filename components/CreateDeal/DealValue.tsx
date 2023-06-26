@@ -82,20 +82,20 @@ const DealValue = () => {
             if (percentageOff === 'custom') {
                 setValue('dollarOff', '')
                 setValue('fixedPriceOff', '')
-                clearErrors(['dollarOff','fixedPriceOff'])
+                clearErrors(['dollarOff', 'fixedPriceOff'])
             } else {
                 setValue('dollarOff', '')
                 setValue('fixedPriceOff', '')
-                setValue('percentageOff', '')
+                setValue('percentageOff', '10')
                 setValue('customPercentageOff', '')
-                clearErrors(['dollarOff','fixedPriceOff','percentageOff','customPercentageOff'])
+                clearErrors(['dollarOff', 'fixedPriceOff', 'percentageOff', 'customPercentageOff'])
             }
         } else {
             setValue('percentageOff', '')
             setValue('dollarOff', '')
             setValue('fixedPriceOff', '')
             setValue('customPercentageOff', '')
-            clearErrors(['dollarOff','fixedPriceOff','percentageOff','customPercentageOff'])
+            clearErrors(['dollarOff', 'fixedPriceOff', 'percentageOff', 'customPercentageOff'])
         }
         setValue('dealDiscountTab', newTab)
     }
@@ -137,7 +137,7 @@ const DealValue = () => {
             setValue('exFileLIAM', [])
             setValue('exliam', [])
             setValue('exmch', [])
-            clearErrors(['dollarOff','fixedPriceOff','percentageOff','customPercentageOff'])
+            clearErrors(['dollarOff', 'fixedPriceOff', 'percentageOff', 'customPercentageOff'])
         }
     }
 
@@ -190,7 +190,7 @@ const DealValue = () => {
     }
 
     if (dealLevel === 'basket') {
-        const endAdornmentForDollarFormat = displayDollarFormat ? undefined : <div style={{ position: 'absolute', left: '60px' }}>%</div> 
+        const endAdornmentForDollarFormat = displayDollarFormat ? undefined : <div style={{ position: 'absolute', left: '60px' }}>%</div>
         const endAdornment = basketDiscount ? endAdornmentForDollarFormat : undefined
         content = <div className={styles['basket-fields']}>
             <div style={{ marginTop: '20px' }}>
@@ -248,7 +248,7 @@ const DealValue = () => {
     return <StepperCard step={'DEAL_VALUE'} inProgressIcon={MonetizationOnOutlinedIcon}>
         <StepLabel currentStep={3} totalSteps={dealLevelName === 'basket' ? 6 : 7} />
         <StepTitle title={"Deal Value"} />
-        <RadioGroupField options={dealLevelOptions} label="Is this at a basket level or product level?" name="dealLevel" required handleChange={handleChange} tooltipKey={'DEAL_LEVEL'}/>
+        <RadioGroupField options={dealLevelOptions} label="Is this at a basket level or product level?" name="dealLevel" required handleChange={handleChange} tooltipKey={'DEAL_LEVEL'} />
         {dealLevel === 'product' && < StyledTabs tabs={dealTabs} handleTabUpdate={handleTabUpdate} defaultValue={dealDiscountTab} />}
         {content}
         <FormCardPreview title="Customer preview" description={customerPreview} />
