@@ -192,7 +192,7 @@ describe("Create deal form tests", () => {
     test("Upload input file with input fields", async () => {
       fireEvent.click(screen.getByTestId('uploadCollection'))
       fireEvent.change(screen.getByTestId('uploadCollection'), { target: { files: {name: "LIAMs.xlsx", lastModifiedDate: "2023-02-15T12:22:53.169Z", webkitRelativePath: "", size: 9300, type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"} } } )
-      await waitFor(() =>  expect(screen.getByTestId("file-field-error")).toHaveTextContent('Error: FIle required'))
+      await waitFor(() =>  expect(screen.getByTestId("file-field-error")).toHaveTextContent('Error: File required'))
     })
   })
 
