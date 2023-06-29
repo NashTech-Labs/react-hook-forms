@@ -109,7 +109,7 @@ const RemoveProductsModal = ({
     setShowConfirmation(false);
   }, []);
 
-  const onClose = (e) => {
+  const onClose = (e: any) => {
     const {
       removeMchList = [],
       removeLiamList = [],
