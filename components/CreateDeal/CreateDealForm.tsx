@@ -440,7 +440,7 @@ const schema = yup
         "test-end-date",
         "Error: You cannot add date before yesterday",
         function (value, context) {
-          if (context.parent.isEditing) {
+          if (context.parent.isEditing && context.parent.endDatePicker) {
             return moment(value).isSameOrBefore(context.parent.endDatePicker);
           }
           return isEndDateTimeValid(
@@ -653,7 +653,7 @@ const CreateDealForm = ({ deal }: ICreateDealFrom) => {
   if (isEditing) {
     dealName = formDefaultValues["dealType"];
   }
-
+  console.log(getValues());
   const handleFormDraftSubmit = async (dealId: number) => {
     setValue("draftCreatedTimestamp", moment());
     dispatch(updateNewDeal(getValues()));
