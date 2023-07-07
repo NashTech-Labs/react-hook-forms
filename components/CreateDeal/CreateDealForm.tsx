@@ -437,12 +437,9 @@ const schema = yup
       .date()
       .typeError("Error: Valid date required")
       .test(
-        "test-end-date",
+        "test-start-date",
         "Error: You cannot add date before yesterday",
         function (value, context) {
-          if (context.parent.isEditing && context.parent.endDatePicker) {
-            return moment(value).isSameOrBefore(context.parent.endDatePicker);
-          }
           return isEndDateTimeValid(
             value,
             context.parent.startDatePicker,
