@@ -29,7 +29,7 @@ import styles from "./RemoveProductsModal.module.css";
 const draftModalcustomStyles = {
   content: {
     width: "800px",
-    top: "45%",
+    top: "50%",
     left: "50%",
     right: "auto",
     bottom: "auto",
@@ -58,7 +58,7 @@ const customStyles = {
   },
   table: {
     style: {
-      height: "350px",
+      height: "515px",
     },
   },
 };
