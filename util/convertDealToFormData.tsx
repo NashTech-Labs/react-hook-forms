@@ -100,18 +100,25 @@ const getFreeShippingValues = (deal: any) => {
   } = deal;
 
   if (type === FREE_SHIPPING_DEAL_TYPE) {
-    const minimum = dealValue?.spend?.minimum;
-    if (!minimum) return values;
-    const spendValue = String(convertCentsToDollar(minimum));
-    const isNotCustom = minimumSpendOptions.some(
-      ({ value }) => value === spendValue
-    );
-    if (isNotCustom) {
-      values["spendMinimum"] = spendValue;
+    values["shippingMethodType"] = "standard"
+    if (dealValue?.spend?.minimum === 0) {
+      values["spendMinimum"] = "NO_MINIMUM";
       values["customMinimumSpend"] = "";
-    } else {
-      values["spendMinimum"] = "CUSTOM";
-      values["customMinimumSpend"] = spendValue;
+    }
+    else {
+      const minimum = dealValue?.spend?.minimum;
+      if (!minimum) return values;
+      const spendValue = String(convertCentsToDollar(minimum));
+      const isNotCustom = minimumSpendOptions.some(
+        ({ value }) => value === spendValue
+      );
+      if (isNotCustom) {
+        values["spendMinimum"] = spendValue;
+        values["customMinimumSpend"] = "";
+      } else {
+        values["spendMinimum"] = "CUSTOM";
+        values["customMinimumSpend"] = spendValue;
+      }
     }
   }
 

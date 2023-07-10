@@ -394,7 +394,7 @@ const schema = yup
           ) {
             if (
               context?.parent?.productExclusionsCollectionTab ===
-                "uploadProduct" &&
+              "uploadProduct" &&
               context?.parent?.dealLevelOptions === "yes"
             ) {
               return value?.size && value.size < MAX_FILE_SIZE;
@@ -412,7 +412,7 @@ const schema = yup
           ) {
             if (
               context?.parent?.productExclusionsCollectionTab ===
-                "uploadProduct" &&
+              "uploadProduct" &&
               context?.parent?.dealLevelOptions === "yes"
             ) {
               return isValidFileType(value && value?.name?.toLowerCase());
@@ -526,7 +526,7 @@ const schema = yup
                 context?.from[1]?.value?.dealCriteriaType === "$_FIXED_MULTI" ||
                 (value > 0 &&
                   context?.from[1]?.value?.dealCriteriaType ===
-                    "$_OFF_MULTI") ||
+                  "$_OFF_MULTI") ||
                 context?.from[1]?.value?.dealType === DISCOUNT_DEAL_TYPE ||
                 context?.from[1]?.value?.dealType === FREE_SHIPPING_DEAL_TYPE
               ) {
@@ -544,7 +544,7 @@ const schema = yup
                 context?.from[1]?.value?.dealCriteriaType === "$_OFF_MULTI" ||
                 (value > 0 &&
                   context?.from[1]?.value?.dealCriteriaType ===
-                    "$_FIXED_MULTI") ||
+                  "$_FIXED_MULTI") ||
                 context?.from[1]?.value?.dealType === DISCOUNT_DEAL_TYPE ||
                 context?.from[1]?.value?.dealType === FREE_SHIPPING_DEAL_TYPE
               ) {
@@ -562,7 +562,7 @@ const schema = yup
                 context?.from[1]?.value?.dealCriteriaType === "$_FIXED_MULTI" ||
                 (value > 0 &&
                   context?.from[1]?.value?.dealCriteriaType ===
-                    "%_OFF_MULTI") ||
+                  "%_OFF_MULTI") ||
                 context?.from[1]?.value?.dealType === DISCOUNT_DEAL_TYPE ||
                 context?.from[1]?.value?.dealType === FREE_SHIPPING_DEAL_TYPE
               ) {
@@ -581,7 +581,7 @@ const schema = yup
                 (value > 0 &&
                   value < 100 &&
                   context?.from[1]?.value?.dealCriteriaType ===
-                    "%_OFF_MULTI") ||
+                  "%_OFF_MULTI") ||
                 context?.from[1]?.value?.dealType === DISCOUNT_DEAL_TYPE ||
                 context?.from[1]?.value?.dealType === FREE_SHIPPING_DEAL_TYPE
               ) {
@@ -601,7 +601,7 @@ const schema = yup
                   (parseInt(value) ===
                     parseInt(getdata[getdata.length - 1].get) &&
                     parseInt(value) >
-                      parseInt(getdata[getdata.length - 2].get)) ||
+                    parseInt(getdata[getdata.length - 2].get)) ||
                   (index === 0 &&
                     parseInt(value) < parseInt(getdata[index + 1].get)) ||
                   (index > 0 &&
@@ -817,11 +817,11 @@ const CreateDealForm = ({ deal }: ICreateDealFrom) => {
         )}
         <DateInEffect deal={deal} />
         {dealName === FREE_SHIPPING_DEAL_TYPE ||
-        dealLevelName === "basket" ? null : (
+          dealLevelName === "basket" ? null : (
           <ProductsCollection />
         )}
         {dealName === FREE_SHIPPING_DEAL_TYPE ? null : (
-          <Exclusions dealLevelName={dealLevelName} />
+          <Exclusions dealLevelName={dealLevelName} deal={deal} />
         )}
         <PromotionalMessages dealLevelName={dealLevelName} />
         {ctaContent}
