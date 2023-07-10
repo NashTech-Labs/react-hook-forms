@@ -13,11 +13,11 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import SelectField from '../../FormComponents/SelectField';
 import exclusionStyles from './Exclusions.module.css'
 import StepperCard from '../StepperCard'
-import {useAppSelector} from '../../../store';
-import {getIsEditing} from '../../../store/feature/deal/dealSlice';
+import { useAppSelector } from '../../../store';
+import { getIsEditing } from '../../../store/feature/deal/dealSlice';
 import RemoveProductsModal from "../RemoveProductsModal";
 
-const Exclusions = ({ dealLevelName }: any) => {
+const Exclusions = ({ dealLevelName, deal }: any) => {
     const [showRemoveProductsModal, setShowRemoveProductsModals] = useState<boolean>(false)
     const { control, setValue } = useFormContext()
     const isEditing = useAppSelector(getIsEditing)
@@ -70,10 +70,10 @@ const Exclusions = ({ dealLevelName }: any) => {
         <StepLabel currentStep={dealLevelName === 'product' ? 6 : 5} totalSteps={dealLevelName === 'product' ? 7 : 6} />
         <StepTitle title={dealLevelName === 'product' ? "Exclusions" : "Product Applicability"} />
         <Tag label="Internal facing" extraSpacing />
-        {isEditing && <Box marginBottom={3}>
+        {isEditing && deal?.dealValue?.scopeType === 'PRODUCT' && <Box marginBottom={3}>
             <Button variant="contained" sx={{ textTransform: 'none' }} onClick={() => setShowRemoveProductsModals(true)}>Remove products</Button>
         </Box>}
-        {isEditing && <Typography sx={{ marginBottom: '10px'}}>The Exclusions added in this step will be appended to existing Exclusions on the deal</Typography>}
+        {isEditing && deal?.dealValue?.scopeType === 'PRODUCT' && <Typography sx={{ marginBottom: '10px' }}>The Exclusions added in this step will be appended to existing Exclusions on the deal</Typography>}
         <Grid display="grid">
             <div className={exclusionStyles['deal-apply-container']}>
                 <SelectField options={dealApplyOptions} name="dealApplyType" title="What items does this deal apply to?" required inputHeight={true} />
@@ -88,7 +88,7 @@ const Exclusions = ({ dealLevelName }: any) => {
                         : null}
                 </> : null}
         </Grid>
-        <RemoveProductsModal isOpen={showRemoveProductsModal} handleClose={closeModal} exclusions={true}/>
+        <RemoveProductsModal isOpen={showRemoveProductsModal} handleClose={closeModal} exclusions={true} />
     </StepperCard>
 }
 
