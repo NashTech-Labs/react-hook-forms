@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Grid, SelectChangeEvent, Typography, Box, Button } from '@mui/material'
 import DoDisturbOutlinedIcon from '@mui/icons-material/DoDisturbOutlined';
 import StepTitle from "../../StepTitle";
@@ -13,13 +13,14 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import SelectField from '../../FormComponents/SelectField';
 import exclusionStyles from './Exclusions.module.css'
 import StepperCard from '../StepperCard'
-import { useAppSelector } from '../../../store';
-import { getIsEditing } from '../../../store/feature/deal/dealSlice';
+import { useAppDispatch, useAppSelector } from '../../../store';
+import { getIsEditing, updateDealLevel } from '../../../store/feature/deal/dealSlice';
 import RemoveProductsModal from "../RemoveProductsModal";
 
 const Exclusions = ({ dealLevelName, deal }: any) => {
     const [showRemoveProductsModal, setShowRemoveProductsModals] = useState<boolean>(false)
     const { control, setValue } = useFormContext()
+    const dispatch = useAppDispatch();
     const isEditing = useAppSelector(getIsEditing)
     const dealOptions = useWatch({
         control,
@@ -66,18 +67,24 @@ const Exclusions = ({ dealLevelName, deal }: any) => {
         setShowRemoveProductsModals(false)
     }
 
+    useEffect(() => {
+        if (deal?.dealValue?.scopeType) {
+            dispatch(updateDealLevel(deal?.dealValue?.scopeType.toLowerCase()))
+        }
+    }, [deal])
+
     return <StepperCard step={'EXCLUSIONS'} inProgressIcon={DoDisturbOutlinedIcon}>
         <StepLabel currentStep={dealLevelName === 'product' ? 6 : 5} totalSteps={dealLevelName === 'product' ? 7 : 6} />
         <StepTitle title={dealLevelName === 'product' ? "Exclusions" : "Product Applicability"} />
         <Tag label="Internal facing" extraSpacing />
-        {isEditing && deal?.dealValue?.scopeType === 'PRODUCT' && <Box marginBottom={3}>
-            <Button variant="contained" sx={{ textTransform: 'none' }} onClick={() => setShowRemoveProductsModals(true)}>Remove products</Button>
-        </Box>}
-        {isEditing && deal?.dealValue?.scopeType === 'PRODUCT' && <Typography sx={{ marginBottom: '10px' }}>The Exclusions added in this step will be appended to existing Exclusions on the deal</Typography>}
         <Grid display="grid">
             <div className={exclusionStyles['deal-apply-container']}>
                 <SelectField options={dealApplyOptions} name="dealApplyType" title="What items does this deal apply to?" required inputHeight={true} />
             </div>
+            {isEditing && deal?.dealValue?.scopeType === 'PRODUCT' && <Box marginBottom={2} mt={2} >
+                <Button variant="contained" sx={{ textTransform: 'none' }} onClick={() => setShowRemoveProductsModals(true)}>Remove products</Button>
+            </Box>}
+            {isEditing && deal?.dealValue?.scopeType === 'PRODUCT' && <Typography sx={{ marginBottom: '10px' }}>The Exclusions added in this step will be appended to existing Exclusions on the deal</Typography>}
             {dealLevelName === 'product' ?
                 <>
                     <RadioGroupField noBottomGutters options={dealLevelExclusionOptions} label="Will there be additional products excluded from this deal?" name="dealLevelOptions" required={true} handleChange={handleChange} />
