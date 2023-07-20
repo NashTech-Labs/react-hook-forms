@@ -50,6 +50,8 @@ import {
 import ExitEditModal from "./ExitEditModal";
 import ShippingMethod from "./ShippingMethod/ShippingMethod";
 
+moment.tz.setDefault("America/New_York");
+
 interface ICreateDealFrom {
   deal?: object;
 }
