@@ -26,7 +26,8 @@ export interface NewAllDealsList {
 interface IGetAllList {
   search: string,
   filters: IFilters
-  page: number
+  page: number,
+  user: any
 }
 
 const getUrl = (params: any): string => {
@@ -90,7 +91,8 @@ export const viewAllDeals = createApi({
         method: "GET",
         headers: {
           "X-Loblaw-Tenant-ID": "JOE_FRESH",
-          "x-apikey": "cGxlYXNlLWktcmVhbGx5LXdhbnQtdG8tYWNjZXNzLXBwZS1zdGFnaW5nLWFwaQo="
+          "x-apikey": "cGxlYXNlLWktcmVhbGx5LXdhbnQtdG8tYWNjZXNzLXBwZS1zdGFnaW5nLWFwaQo=",
+          'X-User-Name': params.user.name
         },
       }),
     }),

@@ -11,16 +11,17 @@ export interface DealPreview {
 export const dealPreview = createApi({
     reducerPath: "dealPreview",
     baseQuery: CustomQuery(),
-    refetchOnMountOrArgChange : true,
+    refetchOnMountOrArgChange: true,
     endpoints: (builder) => ({
         getDealPreview: builder.query<DealPreview, any>({
             query: (data) => ({
-                url: `/v1/deal/${data}`,
+                url: `/v1/deal/${data.dealId}`,
                 method: "GET",
                 headers: {
                     "X-Loblaw-Tenant-ID": "JOE_FRESH",
                     "x-apikey":
                         "cGxlYXNlLWktcmVhbGx5LXdhbnQtdG8tYWNjZXNzLXBwZS1zdGFnaW5nLWFwaQo=",
+                    'X-User-Name': data.user.name
                 },
             }),
         }),

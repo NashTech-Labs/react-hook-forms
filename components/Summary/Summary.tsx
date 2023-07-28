@@ -17,6 +17,7 @@ import CreateDealForm from "../CreateDeal/CreateDealForm";
 import { DISCOUNT_DEAL_TYPE, FREE_SHIPPING_DEAL_TYPE, MULTI_BUY_DEAL_TYPE, dealTypeOptions } from "../../constants/FormOptions";
 import NoDisableModal from './NoDisableModal'
 import CustomTooltip from "../Tooltip";
+import { userProfileState } from "../../store/feature/auth/authSlice";
 
 const editDealStyles = {
     content: {
@@ -93,7 +94,8 @@ const IOSSwitch = styled((props: SwitchProps) => (
 
 function Summary() {
     const dealId = useAppSelector(updatedDealId);
-    const { data, refetch } = useGetDealPreviewQuery(dealId);
+    const user = useAppSelector(userProfileState);
+    const { data, refetch } = useGetDealPreviewQuery({ dealId, user });
     const router = useRouter();
     const [customerPreview, setCustomerPreview] = useState<string[]>([])
     const [isOpen, setIsOpen] = useState<boolean>(false);

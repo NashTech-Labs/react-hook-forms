@@ -12,7 +12,8 @@ export const editDeals = createApi({
                 body: value,
                 headers: {
                     "X-Loblaw-Tenant-ID": `JOE_FRESH`,
-                    "x-apikey": "6bbd4e6c-ae21-40b3-add3-91240bb07db0"
+                    "x-apikey": "6bbd4e6c-ae21-40b3-add3-91240bb07db0",
+                    'X-User-Name': value.username
                 },
             }),
         }),
