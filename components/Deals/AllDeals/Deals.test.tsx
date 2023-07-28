@@ -2,7 +2,7 @@ import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import { generateStore, store } from "../../../store";
+import { generateStore } from "../../../store";
 import "@testing-library/jest-dom";
 import Deals from "./Deals";
 import { server } from "../../../test/server";
@@ -13,12 +13,20 @@ jest.mock("next/router", () => ({
   useRouter: jest.fn(),
 }));
 
+const store = generateStore({
+  user: {
+    userProfile: {
+      'name': "Test User"
+    }
+  }
+});
+
 describe("All Deals tests", () => {
   test("Renders all deals list", async () => {
     render(
       <Provider store={store}>
         <GoogleOAuthProvider clientId={""}>
-          <Deals />
+          <Deals search={''} />
         </GoogleOAuthProvider>
       </Provider>
     );
@@ -29,7 +37,7 @@ describe("All Deals tests", () => {
     render(
       <Provider store={store}>
         <GoogleOAuthProvider clientId={""}>
-          <Deals />
+          <Deals search={''} />
         </GoogleOAuthProvider>
       </Provider>
     );
@@ -52,7 +60,7 @@ describe("All Deals tests", () => {
     render(
       <Provider store={store}>
         <GoogleOAuthProvider clientId={""}>
-          <Deals />
+          <Deals search={''} />
         </GoogleOAuthProvider>
       </Provider>
     );
@@ -81,7 +89,7 @@ describe("All Deals tests", () => {
     render(
       <Provider store={store}>
         <GoogleOAuthProvider clientId={""}>
-          <Deals />
+          <Deals search={''} />
         </GoogleOAuthProvider>
       </Provider>
     );
@@ -101,7 +109,7 @@ describe("All Deals tests", () => {
     render(
       <Provider store={store}>
         <GoogleOAuthProvider clientId={""}>
-          <Deals />
+          <Deals search={''} />
         </GoogleOAuthProvider>
       </Provider>
     );
@@ -115,7 +123,7 @@ describe("All Deals tests", () => {
     render(
       <Provider store={store}>
         <GoogleOAuthProvider clientId={""}>
-          <Deals />
+          <Deals search={''} />
         </GoogleOAuthProvider>
       </Provider>
     );
@@ -133,7 +141,7 @@ describe("All Deals tests", () => {
     render(
       <Provider store={store}>
         <GoogleOAuthProvider clientId={""}>
-          <Deals />
+          <Deals search={''} />
         </GoogleOAuthProvider>
       </Provider>
     );
