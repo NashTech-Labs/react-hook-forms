@@ -4,11 +4,13 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import CloseIcon from "@mui/icons-material/Close";
 import classes from "./DeleteDeal.module.css";
+import { useAppSelector } from "../../store";
 import {
   notifyError,
   notifySuccess,
 } from "../../util/Notification/Notification";
 import { useDeleteDealMutation } from "../../api/deleteDeal";
+import { userProfileState } from "../../store/feature/auth/authSlice";
 
 interface ReceivedProp {
   closeModal(): any;
@@ -29,6 +31,9 @@ interface DealDetails {
 }
 
 function DeleteDeal({ closeModal, selectedDeals, refetch }: ReceivedProp) {
+
+  const user = useAppSelector(userProfileState);
+
   const [consent, setConsent] = useState(false);
   const [deleteDeal] = useDeleteDealMutation();
 
@@ -52,7 +57,7 @@ function DeleteDeal({ closeModal, selectedDeals, refetch }: ReceivedProp) {
     selectedDeals.forEach((element: DealDetails) => {
       deal_Ids.push(element.id);
     });
-    await deleteDeal(deal_Ids)
+    await deleteDeal({ deal_Ids, user })
       .unwrap()
       .then(() => {
         closeModalfn();

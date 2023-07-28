@@ -21,6 +21,7 @@ import { updateDealEditing, updateDealId } from "../../../store/feature/deal/dea
 import { dealStatus } from "../../../constants/DealStatus";
 import FilterSection from './FilterSection'
 import { getFilters } from "../../../store/feature/filters/filtersSlice";
+import { userProfileState } from "../../../store/feature/auth/authSlice";
 
 interface IDealsProps {
   search: string
@@ -32,7 +33,10 @@ function Deals({ search }: IDealsProps) {
   const filters = useAppSelector(getFilters)
   const [isOpen, setIsOpen] = useState(false);
   const [page, setPage] = useState(1)
-  const { data, isLoading, error, refetch } = useGetAllListQuery({ search, filters, page });
+
+  const user = useAppSelector(userProfileState);
+
+  const { data, isLoading, error, refetch } = useGetAllListQuery({ search, filters, page, user });
   const [selectedRows, setSelectedRows] = useState<any>([]);
 
   useEffect(() => {

@@ -28,6 +28,11 @@ const store = generateStore({
     deal: {
         dealId: 657,
     },
+    user: {
+        userProfile: {
+            'name': "Test User"
+        }
+    }
 });
 
 describe("Summary Page Test", () => {

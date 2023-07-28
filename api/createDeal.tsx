@@ -12,7 +12,8 @@ export const createDeals = createApi({
                 body: value,
                 headers: {
                     "X-Loblaw-Tenant-ID": `JOE_FRESH`,
-                    "x-apikey": "cGxlYXNlLWktcmVhbGx5LXdhbnQtdG8tYWNjZXNzLXBwZS1zdGFnaW5nLWFwaQo="
+                    "x-apikey": "cGxlYXNlLWktcmVhbGx5LXdhbnQtdG8tYWNjZXNzLXBwZS1zdGFnaW5nLWFwaQo=",
+                    'X-User-Name': value.username
                 },
             }),
         }),
