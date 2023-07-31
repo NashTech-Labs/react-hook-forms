@@ -23,6 +23,7 @@ import { useAppSelector } from "../../store";
 import { updatedDealId } from "../../store/feature/deal/dealSlice";
 import { useGetDealPreviewQuery } from "../../api/dealPreview";
 import styles from "./RemoveProductsModal.module.css";
+import { userProfileState } from "../../store/feature/auth/authSlice";
 
 // const PAGE_SIZE = 10;
 
@@ -82,8 +83,9 @@ const RemoveProductsModal = ({
   const [confirmationMessage, setConfirmationMessage] = useState<string | null>(
     null
   );
+  const user = useAppSelector(userProfileState);
   const dealId = useAppSelector(updatedDealId);
-  const { data } = useGetDealPreviewQuery(dealId);
+  const { data } = useGetDealPreviewQuery({ dealId, user });
 
   // const handlePagination = useCallback(
   //   (e: ChangeEvent<unknown>, number: number): void => {
