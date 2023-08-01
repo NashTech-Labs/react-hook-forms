@@ -106,7 +106,7 @@ function DealCriteria() {
                 handleChange={handleChange}
             />
 
-            <Typography className={commonStyles.required} mb={2}>Tiers</Typography>
+            <Typography data-testid="dealCriteria" className={commonStyles.required} mb={2}>Tiers</Typography>
 
             <Grid container mb={2}>
                 {dealCriteria?.map((data: any, index: any) => {
@@ -196,7 +196,7 @@ function DealCriteria() {
                 title="Customer preview"
                 description={customerPreview}
             />
-         </StepperCard>
+        </StepperCard>
     );
 }
 

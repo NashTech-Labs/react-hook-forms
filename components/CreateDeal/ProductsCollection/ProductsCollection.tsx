@@ -14,7 +14,7 @@ import {useAppSelector} from "../../../store";
 import {getIsEditing} from "../../../store/feature/deal/dealSlice";
 import RemoveProductsModal from "../RemoveProductsModal";
 
-function ProductsCollection() {
+function ProductsCollection({ currentStep, totalSteps }: any) {
     const [showRemoveProductsModal, setShowRemoveProductsModals] = useState<boolean>(false)
     const { setValue, control } = useFormContext()
     const isEditing = useAppSelector(getIsEditing)
@@ -52,7 +52,7 @@ function ProductsCollection() {
     return (
         <>
             <StepperCard step={'PRODUCTS_AND_COLLECTIONS'} inProgressIcon={CheckroomOutlinedIcon}>
-                <StepLabel currentStep={5} totalSteps={7} />
+                <StepLabel currentStep={currentStep} totalSteps={totalSteps} />
                 <StepTitle title={"Products and Collections"} />
                 <Tag label="Internal facing" />
                 {isEditing && <Box marginBottom={3} marginTop={2}>

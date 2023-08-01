@@ -16,16 +16,16 @@ interface IStyledTabsProps {
 
 const StyledTabs = ({ tabs, handleTabUpdate, defaultValue }: IStyledTabsProps) => {
     const [tab, setTab] = useState<number | Function>(() => {
-        if(!defaultValue) return 0
+        if (!defaultValue) return 0
         let index = 0
-        for(let i= 0; i < tabs.length; i++){
-            if(tabs[i]?.value === defaultValue){
+        for (let i = 0; i < tabs.length; i++) {
+            if (tabs[i]?.value === defaultValue) {
                 index = i
                 break;
             }
         }
         return index
-      }
+    }
     )
 
     const handleChange = (e: SyntheticEvent, newTab: number) => {
@@ -55,7 +55,7 @@ const StyledTabs = ({ tabs, handleTabUpdate, defaultValue }: IStyledTabsProps) =
             }
         }}
     >
-        {tabs.map(({ label }) => <Tab key={`${label}`} label={label === "Manually add product(s)" && tab === 1 ? <span className={styles.required}>{label}</span> : label} />)}
+        {tabs.map(({ label }) => <Tab data-testid={label} key={`${label}`} label={label === "Manually add product(s)" && tab === 1 ? <span className={styles.required}>{label}</span> : label} />)}
     </Tabs>
 }
 

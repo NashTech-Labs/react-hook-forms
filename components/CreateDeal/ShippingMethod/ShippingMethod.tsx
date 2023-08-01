@@ -11,12 +11,6 @@ export const shippingMethodOptions = [
 ];
 
 function ShippingMethod() {
-    const { setValue } = useFormContext();
-
-    const handleChange = (e: any) => {
-        const level = e.target.value;
-        setValue("shippingMethodType", level)
-    };
 
     return (
         <StepperCard step={'FREE_SHIPPING_SHIPPING_METHOD'} inProgressIcon={MonetizationOnOutlinedIcon}>
@@ -28,7 +22,6 @@ function ShippingMethod() {
                 label="Shipping method"
                 name="shippingMethodType"
                 required
-                handleChange={handleChange}
             />
 
         </StepperCard>

@@ -1,0 +1,25 @@
+.deal-card-header {
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 28px;
+    color: #333333;
+  }
+
+  .filter-container {
+    float: right
+  }
+
+  .filter-label {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    margin-bottom: 10px;
+  }
+
+  .filter-field {
+    width: 140px;
+  }
+
+  .filter-icon {
+    padding: 5px 5px 0px 0px;
+  }

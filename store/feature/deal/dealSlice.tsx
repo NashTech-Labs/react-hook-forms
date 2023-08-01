@@ -5,13 +5,13 @@ export interface DealState {
   dealName: string;
   dealId: number;
   dealLevelName: string;
-  isEditing: boolean 
+  isEditing: boolean;
 }
 const initialState: DealState = {
   dealName: "",
   dealId: 0,
   dealLevelName: 'product',
-  isEditing: false
+  isEditing: false,
 };
 
 const dealSlice = createSlice({
@@ -33,7 +33,7 @@ const dealSlice = createSlice({
   },
 });
 
-export const { updateDealStep, updateDealEditing, updateDealId, updateDealLevel  } = dealSlice.actions;
+export const { updateDealStep, updateDealEditing, updateDealId, updateDealLevel } = dealSlice.actions;
 export const updatedDealStep = (state: RootState) => state.deal.dealName;
 export const updatedDealId = (state: RootState) => state.deal.dealId;
 export const updatedDealLevel = (state: RootState) => state.deal.dealLevelName;

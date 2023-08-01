@@ -53,8 +53,8 @@ function ManuallyAdd({ mchValue, liamValue }: any) {
     return (
         <Grid>
             <div className={styles['title-container']}>
-             <Typography className={commonStyles.mchHeading}>MCH(s)</Typography>
-             <CustomTooltip descriptionKey="MCH" customStyles={{ marginTop: '17px' }}/>
+                <Typography data-testid="mchTitle" className={commonStyles.mchHeading}>MCH(s)</Typography>
+                <CustomTooltip descriptionKey="MCH" customStyles={{ marginTop: '17px' }} />
             </div>
 
             {mch?.length > 0 ? (
@@ -73,7 +73,7 @@ function ManuallyAdd({ mchValue, liamValue }: any) {
                                 <ManualAddForm name={`${mchValue}.${index}`} placeholder="Enter a valid MCH" />
                             </Grid>
                             <Grid>
-                                <CloseIcon onClick={() => deleteMCH(index)} className={commonStyles.closeIcon} />{" "}
+                                <CloseIcon data-testid="deleteMCH" onClick={() => deleteMCH(index)} className={commonStyles.closeIcon} />{" "}
                             </Grid>
                         </Grid>
                     );
@@ -92,7 +92,7 @@ function ManuallyAdd({ mchValue, liamValue }: any) {
 
                             <Grid item lg={12}>
                                 <Typography>Showing <strong> 5 of {mch.length} </strong> recently added</Typography>
-                                <Grid onClick={handleShowAllMCH} display="flex" ml={5}>
+                                <Grid data-testid="showAllMCH" onClick={handleShowAllMCH} display="flex" ml={5}>
                                     <KeyboardArrowDownIcon /> <Typography ml={1}> Show all</Typography>
                                 </Grid>
                             </Grid>
@@ -108,7 +108,7 @@ function ManuallyAdd({ mchValue, liamValue }: any) {
             ) : null}
 
             <Grid container>
-                <Grid item lg={2} onClick={() => handleMCH()} className={commonStyles.addbtn}>
+                <Grid item lg={2} data-testid="addMCH" onClick={() => handleMCH()} className={commonStyles.addbtn}>
                     <AddCircleOutlineIcon className={commonStyles.mchIcon} />
                     <Typography ml="3px" mt="1px">
                         Add MCH

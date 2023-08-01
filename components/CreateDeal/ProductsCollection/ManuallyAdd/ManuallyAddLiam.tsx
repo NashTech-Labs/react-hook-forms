@@ -49,11 +49,11 @@ function ManuallyAddLiam({ liamValue }: any) {
 
     return (
         <>
-           <div className={styles['title-container']}>
-             <Typography className={commonStyles.mchHeading}>LIAM(s)</Typography>
-             <CustomTooltip descriptionKey="LIAM" customStyles={{ marginTop: '17px' }}/>
+            <div className={styles['title-container']}>
+                <Typography className={commonStyles.mchHeading}>LIAM(s)</Typography>
+                <CustomTooltip descriptionKey="LIAM" customStyles={{ marginTop: '17px' }} />
             </div>
-            
+
             {
                 liam?.length > 0 ? (
                     <>
@@ -74,7 +74,7 @@ function ManuallyAddLiam({ liamValue }: any) {
                             </Grid>
                             <Grid>
                                 {" "}
-                                <CloseIcon onClick={() => deleteLIAM(index)} className={commonStyles.closeIcon} />{" "}
+                                <CloseIcon data-testid="deleteLIAM" onClick={() => deleteLIAM(index)} className={commonStyles.closeIcon} />{" "}
                             </Grid>
                         </Grid>
                     );
@@ -93,7 +93,7 @@ function ManuallyAddLiam({ liamValue }: any) {
 
                             <Grid item lg={12}>
                                 <Typography>Showing <strong>5 of {liam.length} </strong> recently added</Typography>
-                                <Grid onClick={handleShowAllLIAM} display="flex" ml={5}>
+                                <Grid data-testid="showAllLIAM" onClick={handleShowAllLIAM} display="flex" ml={5}>
                                     <KeyboardArrowDownIcon /> <Typography ml={1}> Show all</Typography>
                                 </Grid>
                             </Grid>
@@ -111,7 +111,7 @@ function ManuallyAddLiam({ liamValue }: any) {
             }
 
             <Grid container>
-                <Grid item lg={2} onClick={() => handleLIAM()} className={commonStyles.addbtn}>
+                <Grid item lg={2} data-testid="addLIAM" onClick={() => handleLIAM()} className={commonStyles.addbtn}>
                     <AddCircleOutlineIcon className={commonStyles.mchIcon} />
                     <Typography ml="3px" mt="1px">
                         Add LIAMs
