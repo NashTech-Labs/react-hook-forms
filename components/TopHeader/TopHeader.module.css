@@ -40,3 +40,18 @@
 .homeIcon {
     margin-right: 6%;
 }
+
+.dropdownMain {
+    width: 120px;
+    height: 40px;
+    color: #fff;
+    background: #000;
+}
+
+.dropdownSection {
+    width: 120px;
+    height: 40px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 16px;
+}

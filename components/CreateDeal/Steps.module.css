@@ -279,3 +279,7 @@
     font-size: 16px;
     line-height: 120%;
   }
+
+  .mainSection {
+    overflow: hidden;
+  }

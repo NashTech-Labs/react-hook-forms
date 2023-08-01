@@ -16,25 +16,36 @@ import {
 } from "../../store/feature/auth/authSlice";
 import { googleLogout } from "@react-oauth/google";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import { Divider, Menu } from "@mui/material";
+import { Divider, FormControl, Menu, Select, SelectChangeEvent } from "@mui/material";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import { updateDealEditing, updateDealStep } from "../../store/feature/deal/dealSlice";
+import { updatePromotionType, updatedPromotionType, updateVoucherType } from "../../store/feature/voucher/voucherSlice";
 
 function TopHeader() {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const token = useAppSelector(tokenState);
 
+  const promotionType = useAppSelector(updatedPromotionType);
+
   const userRole: any = useAppSelector(roleState);
   const [signoutVisible, setSignoutVisibile] = useState(false);
 
   const [user, setUser] = useState<any>({});
 
+  const [selectedType, setSelectedType] = useState('deals')
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
   const isTitleVisible = router.pathname === "/" ? false : true;
+
+  useEffect(() => {
+    if (router.pathname === '/deals') {
+      dispatch(updatePromotionType('deals'))
+    }
+  }, [router])
 
   useEffect(() => {
     if (token !== "") {
@@ -48,7 +59,9 @@ function TopHeader() {
     googleLogout();
     dispatch(userToken(""));
     dispatch(updateDealStep(""));
+    dispatch(updatePromotionType(''))
     dispatch(updateDealEditing(false))
+    dispatch(updateVoucherType(''))
     router.push("/");
   };
 
@@ -71,7 +84,15 @@ function TopHeader() {
     handleClose();
     dispatch(updateDealStep(""));
     dispatch(updateDealEditing(false))
-    router.push("/deals");
+    dispatch(updateVoucherType(''))
+    if (selectedType === "deals") {
+      dispatch(updatePromotionType('deals'))
+      router.push("/deals");
+    }
+    else {
+      dispatch(updatePromotionType('vouchers'))
+      router.push('/vouchers')
+    }
   };
 
   const manageUsersfn = () => {
@@ -79,20 +100,62 @@ function TopHeader() {
     router.push("/userManagement");
   };
 
+  const handleChange = (event: SelectChangeEvent<string>) => {
+    dispatch(updatePromotionType(event.target.value))
+    setSelectedType(event.target.value)
+    dispatch(updateVoucherType(''))
+    if (event.target.value === 'vouchers') {
+      router.push('/vouchers')
+    }
+    else {
+      router.push('/deals')
+    }
+  }
+
+  useEffect(() => {
+    if (promotionType) {
+      setSelectedType(promotionType)
+    }
+    else {
+      setSelectedType("deals")
+    }
+  }, [promotionType])
+
   return (
     <Box className={styles["navbar-box"]} data-testid="topHeader">
       <AppBar position="sticky" sx={{ background: "#333333" }}>
         <Toolbar>
           <Grid container spacing={2} alignItems="center">
-            <Grid item lg={3} md={3} sm={3}>
+            <Grid display="flex" item lg={3} md={3} sm={3}>
               {isTitleVisible === true ? (
-                <Typography
-                  variant="h5"
-                  component="div"
-                  className={styles.dropdownText}
-                >
-                  Joe Fresh
-                </Typography>
+                <>
+                  <Typography
+                    mt="2px"
+                    variant="h5"
+                    component="div"
+                    className={styles.dropdownText}
+                  >
+                    Joe Fresh
+                  </Typography>
+                  <Grid ml={4} className={styles.dropdownMain} >
+                    <FormControl >
+                      <Select
+                        value={selectedType}
+                        onChange={handleChange}
+                        displayEmpty
+                        className={styles.dropdownSection}
+                        sx={{
+                          '.MuiSvgIcon-root ': {
+                            fill: "white !important"
+                          },
+                        }}
+                      >
+                        <MenuItem value={'deals'}>Deals</MenuItem>
+                        <MenuItem value={'vouchers'}>Vouchers</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                </>
               ) : (
                 <Typography
                   variant="h5"

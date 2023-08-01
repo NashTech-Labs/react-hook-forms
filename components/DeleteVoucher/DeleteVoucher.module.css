@@ -1,0 +1,46 @@
+.modal-heading {
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 28px;
+  color: #333333;
+}
+
+.exit-btn {
+  align-items: center;
+  padding: 8px;
+  gap: 8px;
+  width: 80px;
+  height: 40px;
+  background: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  text-transform: capitalize;
+  font-size: 16px;
+  color: #333333;
+}
+
+.submit-btn {
+  background: #276add;
+  border-radius: 4px;
+  align-items: center;
+  padding: 8px;
+  gap: 8px;
+  width: 84px;
+  height: 40px;
+  text-transform: initial;
+  font-size: 16px;
+  color: #fff;
+}
+
+.error {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 120%;
+  color: #e1251b;
+}
+
+.info-text {
+  font-size: 14px;
+  color: #000000;
+  font-weight: 400;
+}

@@ -15,6 +15,8 @@ import { dealLevelOptions, dealTabs, percentageOptions } from '../../constants/F
 import { useAppDispatch, useAppSelector } from '../../store';
 import { updateDealLevel, updatedDealLevel } from '../../store/feature/deal/dealSlice';
 import StepperCard from './StepperCard'
+import { generatePreviewForValueStep } from '../../util/generatePreview'
+import { updateAndClearErrors } from '../../util/updateFields'
 
 const DealValue = () => {
     const dealLevelName = useAppSelector(updatedDealLevel)
@@ -80,22 +82,24 @@ const DealValue = () => {
     const handleTabUpdate = (newTab: string): void => {
         if (newTab === 'percentage') {
             if (percentageOff === 'custom') {
-                setValue('dollarOff', '')
-                setValue('fixedPriceOff', '')
-                clearErrors(['dollarOff', 'fixedPriceOff'])
+                updateAndClearErrors({
+                  fields: ['dollarOff','fixedPriceOff'],
+                  setValue,
+                  clearErrors
+                })
             } else {
-                setValue('dollarOff', '')
-                setValue('fixedPriceOff', '')
-                setValue('percentageOff', '10')
-                setValue('customPercentageOff', '')
-                clearErrors(['dollarOff', 'fixedPriceOff', 'percentageOff', 'customPercentageOff'])
+                updateAndClearErrors({
+                    fields: ['dollarOff','fixedPriceOff','percentageOff','customPercentageOff'],
+                    setValue,
+                    clearErrors
+                })
             }
         } else {
-            setValue('percentageOff', '')
-            setValue('dollarOff', '')
-            setValue('fixedPriceOff', '')
-            setValue('customPercentageOff', '')
-            clearErrors(['dollarOff', 'fixedPriceOff', 'percentageOff', 'customPercentageOff'])
+            updateAndClearErrors({
+                fields: ['dollarOff','fixedPriceOff','percentageOff','customPercentageOff'],
+                setValue,
+                clearErrors
+            })
         }
         setValue('dealDiscountTab', newTab)
     }
@@ -227,23 +231,17 @@ const DealValue = () => {
         </div>
     }
 
-    let customerPreview = 'Preview will generate after inputs are completed'
-
-    if (dealLevel === 'product') {
-        if (dealDiscountTab === 'percentage' && percentageOff) {
-            if (percentageOff === 'custom') {
-                if (customPercentageOff) {
-                    customerPreview = `${customPercentageOff}% off products(s)`
-                }
-            } else {
-                customerPreview = `${percentageOff}% off products(s)`
-            }
-        } else if (dollarOff || fixedPriceOff) {
-            customerPreview = `$${dollarOff || fixedPriceOff} off product(s)`
-        }
-    } else if (basketSpend && basketDiscount) {
-        customerPreview = `Spend $${basketSpend}, Get ${basketDealType === 'dollar' ? '$' : ''}${basketDiscount}${basketDealType === 'percentage' ? '%' : ''} off`
-    }
+    const customerPreview = generatePreviewForValueStep({
+        tab: dealDiscountTab,
+        level: dealLevel,
+        percentageOff,
+        customPercentageOff,
+        dollarOff,
+        fixedPriceOff,
+        basketSpend,
+        basketDiscount,
+        basketDealType
+    })
 
     return <StepperCard step={'DEAL_VALUE'} inProgressIcon={MonetizationOnOutlinedIcon}>
         <StepLabel currentStep={3} totalSteps={dealLevelName === 'basket' ? 6 : 7} />

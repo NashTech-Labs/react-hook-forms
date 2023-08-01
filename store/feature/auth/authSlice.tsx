@@ -31,6 +31,7 @@ const authSlice = createSlice({
 export const { userToken } = authSlice.actions;
 export const { userRolefn } = authSlice.actions;
 export const { userProfilefn } = authSlice.actions;
+export const getUser = (state: RootState) => state.user;
 export const tokenState = (state: RootState) => state.user.token;
 export const roleState = (state: RootState) => state.user.role;
 export const userProfileState = (state: RootState) => state.user.userProfile;

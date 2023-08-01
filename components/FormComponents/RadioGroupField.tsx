@@ -38,12 +38,12 @@ const RadioGroupField = ({ options, label, name, required, handleChange, noBotto
 
     return <FormControl className={fieldClasses.join(' ')}>
         <div className={styles['title-container']}>
-        <FormLabel sx={{
-            '&.Mui-focused': {
-                color: 'black'
-            }
-        }} id="demo-radio-buttons-group-label" className={titleClassNames.join(' ')}>{label}</FormLabel>
-        {tooltipKey && <CustomTooltip descriptionKey={tooltipKey}/>}
+            <FormLabel sx={{
+                '&.Mui-focused': {
+                    color: 'black'
+                }
+            }} id="demo-radio-buttons-group-label" className={titleClassNames.join(' ')}>{label}</FormLabel>
+            {tooltipKey && <CustomTooltip descriptionKey={tooltipKey} />}
         </div>
         <RadioGroup
             aria-labelledby="demo-radio-buttons-group-label"
@@ -59,6 +59,7 @@ const RadioGroupField = ({ options, label, name, required, handleChange, noBotto
                     height: '33px'
                 }
             }}
+            data-testid={name}
         >
             {
                 options.map(({ value, label }) => <FormControlLabel key={value} value={value} control={<Radio />} label={label} />)

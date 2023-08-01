@@ -77,6 +77,11 @@ export const dealTypeOptions: { [index: string]: string } = {
   FREE_SHIPPING: "Free shipping",
 };
 
+export const voucherTypeOptions: { [index: string]: string } = {
+  PROMOTIONAL: "Promotional",
+  SERIALIZED: "Serialized",
+};
+
 export const JF_PROMOTION_TYPE: { [index: string]: string } = {
   LOYALTY: "Loyalty",
   VOUCHER: "Voucher",
@@ -97,4 +102,61 @@ export const DISCOUNT_DEAL_TYPE = "DISCOUNT";
 export const FREE_SHIPPING_DEAL_TYPE = "FREE_SHIPPING";
 export const MULTI_BUY_DEAL_TYPE = "MULTI_BUY";
 
-export const EDIT_SCENARIO_FILED_EXCEPTIONS = ["file", "exFile"];
+export const EDIT_SCENARIO_FILED_EXCEPTIONS = [
+  "file",
+  "exFile",
+  "mch",
+  "exmch",
+  "liam",
+  "exliam",
+];
+
+export const voucherPerformanceOptions = [
+  { value: "yes", label: "Yes" },
+  { value: "no", label: "No" },
+];
+export const MCH = "mch";
+export const UPC = "upc";
+export const voucherPerformanceTabs = [
+  { label: "By MCH", value: MCH },
+  { label: "By UPC", value: UPC },
+];
+
+export const voucherCodeOptions = [
+  { value: "justOnce", label: "Just once" },
+  { value: "unlimited", label: "Unlimited" },
+];
+
+export const useNumberOfVoucherOptions: { [index: string]: string } = {
+  "1": "1",
+  "2": "2",
+  "3": "3",
+  "4": "4",
+  "5": "5",
+  "6": "6",
+  "7": "7",
+  "8": "8",
+  "9": "9",
+};
+
+export const MAX_FILE_SIZE = 1000000; //1MB
+
+export const validFileExtensions: any = [
+  ".xlsx",
+  ".xlsm",
+  ".xlsb",
+  ".xltx",
+  ".xltm",
+  ".xls",
+  ".xlt",
+  ".xml",
+  ".xlam",
+  ".xla",
+  ".xlw",
+  ".xlr",
+];
+
+export function isValidFileType(fileName: any) {
+  const afterDot = fileName?.substr(fileName?.indexOf("."));
+  return fileName && validFileExtensions.includes(afterDot);
+}

@@ -1,9 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./feature/auth/authSlice";
+import voucherSlice from "./feature/voucher/voucherSlice";
 import dealReducer from "./feature/deal/dealSlice";
-import newDealReducer from './feature/deal/newDealSlice'
-import draftDealReducer from './feature/deal/draftDealSlice'
-import filtersReducer from './feature/filters/filtersSlice'
+import newDealReducer from "./feature/deal/newDealSlice";
+import newVoucherReducer from "./feature/voucher/newVoucherSlice";
+import draftDealReducer from "./feature/deal/draftDealSlice";
+import filtersReducer from "./feature/filters/filtersSlice";
+import voucherFilterSlice from "./feature/voucher/voucherFilterSlice";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
@@ -18,6 +21,11 @@ import { createDeals } from "../api/createDeal";
 import { dealPreview } from "../api/dealPreview";
 import { editDeals } from "../api/editDeal";
 import { disablePromotions } from "../api/disablePromotion";
+import { voucherList } from "../api/voucherList";
+import { voucherPreviewAPI } from "../api/voucherPreview";
+import { createVoucher } from "../api/createVoucher";
+import { editVoucher } from "../api/editVoucher";
+import { deleteVoucher } from "../api/deleteVoucher";
 
 const persistauthConfig = {
   key: "auth",
@@ -30,15 +38,29 @@ const dealsCount = {
 };
 
 const newDeal = {
-  key: 'newDeal',
-  storage
-}
+  key: "newDeal",
+  storage,
+};
+
+const newVoucher = {
+  key: "newVoucher",
+  storage,
+};
+
+const voucher = {
+  key: "voucher",
+  storage,
+};
 
 const persistedAuthReducer = persistReducer(persistauthConfig, authReducer);
 
 const persistedDealReducer = persistReducer(dealsCount, dealReducer);
 
-const persistedNewDeal = persistReducer(newDeal, newDealReducer)
+const persistedNewDeal = persistReducer(newDeal, newDealReducer);
+
+const persistedVoucher = persistReducer(voucher, voucherSlice);
+
+const persistedNewVoucher = persistReducer(newVoucher, newVoucherReducer);
 
 export const generateStore = (preloadedState = {}) => {
   return configureStore({
@@ -46,8 +68,11 @@ export const generateStore = (preloadedState = {}) => {
       user: persistedAuthReducer,
       deal: persistedDealReducer,
       newDeal: persistedNewDeal,
+      newVoucher: persistedNewVoucher,
       draftDeal: draftDealReducer,
       filters: filtersReducer,
+      voucher: persistedVoucher,
+      voucherFilters: voucherFilterSlice,
       [RolesOfUser.reducerPath]: RolesOfUser.reducer,
       [userRoleList.reducerPath]: userRoleList.reducer,
       [addUser.reducerPath]: addUser.reducer,
@@ -58,7 +83,12 @@ export const generateStore = (preloadedState = {}) => {
       [createDeals.reducerPath]: createDeals.reducer,
       [dealPreview.reducerPath]: dealPreview.reducer,
       [editDeals.reducerPath]: editDeals.reducer,
-      [disablePromotions.reducerPath] : disablePromotions.reducer
+      [disablePromotions.reducerPath]: disablePromotions.reducer,
+      [voucherList.reducerPath]: voucherList.reducer,
+      [voucherPreviewAPI.reducerPath]: voucherPreviewAPI.reducer,
+      [createVoucher.reducerPath]: createVoucher.reducer,
+      [editVoucher.reducerPath]: editVoucher.reducer,
+      [deleteVoucher.reducerPath]: deleteVoucher.reducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
@@ -74,7 +104,12 @@ export const generateStore = (preloadedState = {}) => {
         updateUser.middleware,
         dealPreview.middleware,
         editDeals.middleware,
-        disablePromotions.middleware
+        disablePromotions.middleware,
+        voucherList.middleware,
+        voucherPreviewAPI.middleware,
+        createVoucher.middleware,
+        editVoucher.middleware,
+        deleteVoucher.middleware
       ]),
     preloadedState,
   });

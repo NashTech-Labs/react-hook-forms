@@ -3,7 +3,7 @@ import { Grid, SelectChangeEvent, Typography, Box, Button } from '@mui/material'
 import DoDisturbOutlinedIcon from '@mui/icons-material/DoDisturbOutlined';
 import StepTitle from "../../StepTitle";
 import StepLabel from "../../StepLabel";
-import RadioGroupField from '../../FormComponents/RadioGroupField'
+import RadioGroupField from "../../FormComponents/RadioGroupField";
 import Tag from "../../Tag";
 import { dealApplyOptions, productCollectionTabs, dealLevelExclusionOptions } from '../../../constants/FormOptions'
 import UploadExcel from '../ProductsCollection/UploadExcel/UploadExcel';
@@ -28,40 +28,43 @@ const Exclusions = ({ dealLevelName, deal }: any) => {
     })
 
     const productExclusionsCollectionTab = useWatch({
-        control,
-        name: 'productExclusionsCollectionTab'
-    })
+      control,
+      name: "productExclusionsCollectionTab",
+    });
+  
 
-    const handleChange = ({ target: { value } }: SelectChangeEvent) => {
-        if (value === 'no') {
-            setValue('exmch', [])
-            setValue('exliam', [])
-            setValue('exfile', null)
-            setValue("productExclusionsCollectionTab", 'uploadProduct')
-        }
-    };
-
-    const handleTabUpdate = (newTab: string): void => {
-        setValue('productExclusionsCollectionTab', newTab, { shouldValidate: true })
+  const handleChange = ({ target: { value } }: SelectChangeEvent) => {
+    if (value === "no") {
+      setValue("exmch", []);
+      setValue("exliam", []);
+      setValue("exfile", null);
+      setValue("productExclusionsCollectionTab", "uploadProduct");
     }
+  };
 
-    let content = null
+  const handleTabUpdate = (newTab: string): void => {
+    setValue("productExclusionsCollectionTab", newTab, {
+      shouldValidate: true,
+    });
+  };
 
-    if (productExclusionsCollectionTab === "uploadProduct") {
-        content = (
-            <>
-                <UploadExcel uploadStep="exfile" />
-            </>
-        );
-    }
+  let content = null;
 
-    if (productExclusionsCollectionTab === "addProduct") {
-        content = (
-            <>
-                <ManuallyAdd mchValue="exmch" liamValue="exliam" />
-            </>
-        );
-    }
+  if (productExclusionsCollectionTab === "uploadProduct") {
+    content = (
+      <>
+        <UploadExcel uploadStep="exfile" />
+      </>
+    );
+  }
+
+  if (productExclusionsCollectionTab === "addProduct") {
+    content = (
+      <>
+        <ManuallyAdd mchValue="exmch" liamValue="exliam" />
+      </>
+    );
+  }
 
     const closeModal = () => {
         setShowRemoveProductsModals(false)
@@ -73,7 +76,7 @@ const Exclusions = ({ dealLevelName, deal }: any) => {
         }
     }, [deal])
 
-    return <StepperCard step={'EXCLUSIONS'} inProgressIcon={DoDisturbOutlinedIcon}>
+    return (<StepperCard step={'EXCLUSIONS'} inProgressIcon={DoDisturbOutlinedIcon}>
         <StepLabel currentStep={dealLevelName === 'product' ? 6 : 5} totalSteps={dealLevelName === 'product' ? 7 : 6} />
         <StepTitle title={dealLevelName === 'product' ? "Exclusions" : "Product Applicability"} />
         <Tag label="Internal facing" extraSpacing />
@@ -97,6 +100,7 @@ const Exclusions = ({ dealLevelName, deal }: any) => {
         </Grid>
         <RemoveProductsModal isOpen={showRemoveProductsModal} handleClose={closeModal} exclusions={true} />
     </StepperCard>
-}
+  );
+};
 
-export default Exclusions
+export default Exclusions;
