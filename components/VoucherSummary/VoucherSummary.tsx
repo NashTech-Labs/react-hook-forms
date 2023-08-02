@@ -45,15 +45,17 @@ function VoucherSummary() {
   }
 
   const getDealValuePreview = (data: any) => {
-    if (!data?.voucherValues?.rewards[0]?.value) return ''
+    if (data?.voucherValues?.rewards) {
+      if (!data?.voucherValues?.rewards[0]?.value) return ''
 
-    const value = dealValue(data?.voucherValues?.rewards[0]?.value, data?.voucherValues?.rewardType)
+      const value = dealValue(data?.voucherValues?.rewards[0]?.value, data?.voucherValues?.rewardType)
 
-    if (data?.voucherValues?.scopeType === 'BASKET') {
-      return `Spend $${(Number(data?.voucherExclusions?.spend?.minimum) / 100).toFixed(2)} Get ${value} off`
+      if (data?.voucherValues?.scopeType === 'BASKET') {
+        return `Spend $${(Number(data?.voucherExclusions?.spend?.minimum) / 100).toFixed(2)} Get ${value} off`
+      }
+
+      return `${value} off product(s)`
     }
-
-    return `${value} off product(s)`
   }
 
   const downloadScopeExcel = (data: any) => {
@@ -187,7 +189,7 @@ function VoucherSummary() {
                   <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
                     Value
                   </Typography>
-                  <Typography className={styles.content}>{data?.voucherValues?.rewards[0]?.value ?
+                  <Typography className={styles.content}>{data?.voucherValues?.rewards ?
                     dealValue(data?.voucherValues?.rewards[0]?.value, data?.voucherValues?.rewardType) : null}</Typography>
 
                   <Typography variant="h4" className={styles.heading} mt={2} mb={1}>

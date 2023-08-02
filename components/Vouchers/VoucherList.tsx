@@ -208,32 +208,32 @@ function VoucherList() {
           if (row?.spend?.minimum > 0) {
 
             if (
-              row.voucherValues[0].rewardType === "$_OFF"
+              row.voucherValues[0]?.rewardType === "$_OFF"
             ) {
               return (
                 <Grid display="grid">
                   <Grid> Spend ${(Number(row?.spend?.minimum) / 100).toFixed(2)} </Grid>
-                  <Grid> Get ${(Number(row.voucherValues[0].rewardValue) / 100).toFixed(2)} Off </Grid>
+                  <Grid> Get ${(Number(row.voucherValues[0]?.rewardValue) / 100).toFixed(2)} Off </Grid>
                 </Grid>
               )
             }
-            if (row.voucherValues[0].rewardType === "%_OFF") {
+            if (row.voucherValues[0]?.rewardType === "%_OFF") {
               return (
                 <Grid display="grid">
                   <Grid> Spend ${(Number(row?.spend?.minimum) / 100).toFixed(2)} </Grid>
-                  <Grid> Get {row.voucherValues[0].rewardValue}% Off </Grid>
+                  <Grid> Get {row.voucherValues[0]?.rewardValue}% Off </Grid>
                 </Grid>
               )
             }
             else {
               if (
-                row.voucherValues[0].rewardType === "$_OFF" ||
-                row.voucherValues[0].rewardType === "$_FIXED"
+                row.voucherValues[0]?.rewardType === "$_OFF" ||
+                row.voucherValues[0]?.rewardType === "$_FIXED"
               ) {
-                return `$${(Number(row.voucherValues[0].rewardValue) / 100).toFixed(2)} Off`;
+                return `$${(Number(row.voucherValues[0]?.rewardValue) / 100).toFixed(2)} Off`;
               }
-              if (row.dealValue[0].rewardType === "%_OFF") {
-                return `${row.voucherValues[0].rewardValue}% Off`;
+              if (row.voucherValues[0]?.rewardType === "%_OFF") {
+                return `${row.voucherValues[0]?.rewardValue}% Off`;
               }
             }
           }
