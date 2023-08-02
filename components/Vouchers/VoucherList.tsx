@@ -73,6 +73,10 @@ function VoucherList() {
     refetch();
   }
 
+  useEffect(() => {
+    refetch();
+  }, [])
+
   const handleDeleteClick = () => {
     setIsOpen(true);
   };

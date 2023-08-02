@@ -183,8 +183,11 @@ function VoucherSummary() {
                   <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
                     Type
                   </Typography>
+
+                  { data?.voucherValues?.rewardType ? <>
                   <Typography className={styles.content} >{data?.voucherValues?.rewardType === "$_OFF" ?
                     'Dollar ($) off' : discountTypeDealLabel}</Typography>
+                    </> : null }
 
                   <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
                     Value
@@ -257,7 +260,7 @@ function VoucherSummary() {
                   <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
                     What items does this deal apply to?
                   </Typography>
-                  <Typography className={styles.content} >{data?.voucherExclusions?.priceApplicability?.value === 'REGULAR_ONLY' ? 'Regular priced items only' : 'All'}</Typography>
+                  { data?.voucherExclusions?.priceApplicability?.value && <Typography className={styles.content} >{data?.voucherExclusions?.priceApplicability?.value === 'REGULAR_ONLY' ? 'Regular priced items only' : 'All'}</Typography> }
                   {data?.voucherExclusions?.product?.liam?.length > 0 || data?.voucherExclusions?.product?.mch?.length > 0
                     ?
                     <>
