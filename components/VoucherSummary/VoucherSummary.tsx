@@ -260,7 +260,7 @@ function VoucherSummary() {
                   <Typography variant="h5" className={styles.heading} mt={4} mb={1}>
                     What items does this deal apply to?
                   </Typography>
-                  { data?.voucherExclusions?.priceApplicability?.value && <Typography className={styles.content} >{data?.voucherExclusions?.priceApplicability?.value === 'REGULAR_ONLY' ? 'Regular priced items only' : 'All'}</Typography> }
+                  <Typography className={styles.content} >{data?.voucherExclusions?.priceApplicability?.value === 'REGULAR_ONLY' ? 'Regular priced items only' : 'All'}</Typography>
                   {data?.voucherExclusions?.product?.liam?.length > 0 || data?.voucherExclusions?.product?.mch?.length > 0
                     ?
                     <>
