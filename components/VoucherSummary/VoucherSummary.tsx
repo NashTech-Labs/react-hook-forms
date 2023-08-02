@@ -183,8 +183,11 @@ function VoucherSummary() {
                   <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
                     Type
                   </Typography>
+
+                  { data?.voucherValues?.rewardType ? <>
                   <Typography className={styles.content} >{data?.voucherValues?.rewardType === "$_OFF" ?
                     'Dollar ($) off' : discountTypeDealLabel}</Typography>
+                    </> : null }
 
                   <Typography variant="h4" className={styles.heading} mt={2} mb={1}>
                     Value
