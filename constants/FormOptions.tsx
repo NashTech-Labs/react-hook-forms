@@ -4,6 +4,10 @@ export const stackTypeOptions: { [index: string]: string } = {
   override: "Override",
 };
 
+export const stackTypeOptionsVouchers: { [index: string]: string } = {
+  always_apply: "Always Apply"
+};
+
 export const stackTypeFreeShipping: { [index: string]: string } = {
   always_apply: "Always Apply",
 };

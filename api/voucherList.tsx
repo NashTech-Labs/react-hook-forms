@@ -36,7 +36,7 @@ const getUrl = (params: any): string => {
     const { search, filters, page } = params
     if (search) {
         urlParamsObj = {
-            'code': search.toUpperCase()
+            'search_text': search.toUpperCase()
         }
     }
 

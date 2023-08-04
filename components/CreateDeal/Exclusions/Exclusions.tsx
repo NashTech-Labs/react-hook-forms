@@ -17,7 +17,7 @@ import { useAppDispatch, useAppSelector } from '../../../store';
 import { getIsEditing, updateDealLevel } from '../../../store/feature/deal/dealSlice';
 import RemoveProductsModal from "../RemoveProductsModal";
 
-const Exclusions = ({ dealLevelName, deal }: any) => {
+const Exclusions = ({ dealLevelName, deal, currentStep, totalSteps }: any) => {
     const [showRemoveProductsModal, setShowRemoveProductsModals] = useState<boolean>(false)
     const { control, setValue } = useFormContext()
     const dispatch = useAppDispatch();
@@ -77,7 +77,7 @@ const Exclusions = ({ dealLevelName, deal }: any) => {
     }, [deal])
 
     return (<StepperCard step={'EXCLUSIONS'} inProgressIcon={DoDisturbOutlinedIcon}>
-        <StepLabel currentStep={dealLevelName === 'product' ? 6 : 5} totalSteps={dealLevelName === 'product' ? 7 : 6} />
+        <StepLabel currentStep={currentStep} totalSteps={totalSteps} />
         <StepTitle title={dealLevelName === 'product' ? "Exclusions" : "Product Applicability"} />
         <Tag label="Internal facing" extraSpacing />
         <Grid display="grid">

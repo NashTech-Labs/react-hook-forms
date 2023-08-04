@@ -16,7 +16,7 @@ import StepperCard from '../StepperCard'
 import { FREE_SHIPPING_DEAL_TYPE } from '../../../constants/FormOptions'
 import { updatedVoucherType } from "../../../store/feature/voucher/voucherSlice";
 
-function DateInEffect({ deal: deal}: any) {
+function DateInEffect({ deal, currentStep, totalSteps}: any) {
   const { setValue, trigger } = useFormContext();
   const dealName = useAppSelector(updatedDealStep);
   const dealLevelName = useAppSelector(updatedDealLevel)
@@ -83,7 +83,7 @@ function DateInEffect({ deal: deal}: any) {
 
   return (
     <StepperCard step={'DATE_IN_EFFECT'} inProgressIcon={CalendarMonthOutlinedIcon}>
-      <StepLabel currentStep={dealName === FREE_SHIPPING_DEAL_TYPE ? 5 : voucherType === 'promotional' ? 5 : 4} totalSteps={(dealName === FREE_SHIPPING_DEAL_TYPE || dealLevelName === 'basket') ? 6 : voucherType === 'promotional' ? 7 : 7} />
+      <StepLabel currentStep={currentStep} totalSteps={totalSteps} />
       <StepTitle title={"Date in effect"} />
       <Grid container>
         <Grid item lg={12}>
