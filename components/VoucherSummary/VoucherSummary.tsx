@@ -3,22 +3,27 @@ import { Box, Button, Card, Chip, Grid, Switch, SwitchProps, Typography, Stack }
 import { useRouter } from "next/router";
 import StepTitle from '../StepTitle';
 import styles from "../Summary/Summary.module.css";
-import { useAppSelector } from "../../store";
-import { updatedVoucherId } from '../../store/feature/voucher/voucherSlice';
+import { useAppDispatch, useAppSelector } from "../../store";
+import { updateVoucherEditing, updateVoucherType, updatedVoucherEditing, updatedVoucherId } from '../../store/feature/voucher/voucherSlice';
 import { useGetVoucherPreviewQuery } from '../../api/voucherPreview';
 import { statusOptions, voucherTypeOptions } from '../../constants/FormOptions';
 import { convertToEST } from '../../util/ConvertDateTime';
 import { dealStatus } from '../../constants/DealStatus';
 import { capitalizeWords } from '../../util/format';
 import { userProfileState } from '../../store/feature/auth/authSlice';
+import CreateVoucherForm from '../CreateVouchers/CreateVoucherForm';
 
 function VoucherSummary() {
 
   const router = useRouter();
 
+  const dispatch = useAppDispatch()
+
   const user = useAppSelector(userProfileState);
 
   const voucherId = useAppSelector(updatedVoucherId);
+
+  const isVoucherEditing = useAppSelector(updatedVoucherEditing);
 
   const { data } = useGetVoucherPreviewQuery({ voucherId, user });
 
@@ -119,18 +124,20 @@ function VoucherSummary() {
     x.click();
   }
 
-  return (
-    <>
-      <Grid container>
-        <Grid item lg={12} md={9} sm={6}>
-          <Grid container display="flex" justifyContent='space-around' mb={4} mt={4}></Grid>
-          <Grid item lg={9} className={styles.titleContainer} >
-            <Typography variant="h4" className={styles.title}>{data?.voucherGeneralInfo?.code}</Typography>
-            <Typography mt={2} className={styles["sub-title"]} >voucher created on {data?.vouchersDateInEffect?.createdAt ? convertToEST(data?.vouchersDateInEffect?.createdAt).format("MMMM D, YYYY [at] h:mm A z") : null}</Typography>
-            <Chip className={styles.Chip} sx={{ backgroundColor: dealStatus[data?.voucherGeneralInfo?.status], mb: 1, fontColor: "#000000" }}
-              label={statusOptions[data?.voucherGeneralInfo?.status]} />
-          </Grid>
+  const handleEditClick = () => {
+    dispatch(updateVoucherEditing(true))
+    dispatch(updateVoucherType(data?.voucherGeneralInfo?.type.toLowerCase()))
+  }
 
+  let content = null
+
+  if (isVoucherEditing) {
+    content = <CreateVoucherForm voucher={data} />
+  }
+
+  else {
+    content = 
+      <>
           <Card className={styles["step-card-container"]}>
             <StepTitle title={"Voucher type"} />
             <Typography variant="h4" className={styles.heading} mt={4}>Type</Typography>
@@ -285,7 +292,25 @@ function VoucherSummary() {
 
           <Grid display="flex" justifyContent='space-between' ml={4} mb={4} mt={5} sx={{ margin: '1.3% 25%' }}>
             <Button data-testId='back' onClick={() => router.push('/vouchers')} className={styles.btn} variant="outlined">Go Back</Button>
-            {/* <Button data-testId='edit' className={styles.btn} variant="contained">Edit</Button> */}
+            <Button onClick={() => handleEditClick()} className={styles.btn} variant="contained">Edit</Button>
+          </Grid>
+      </>
+  }
+
+  return (
+    <>
+      <Grid container>
+        <Grid item lg={12} md={9} sm={6}>
+          <Grid container display="flex" justifyContent='space-around' mb={4} mt={4}></Grid>
+          <Grid item lg={9} className={styles.titleContainer} >
+            <Typography variant="h4" className={styles.title}>{data?.voucherGeneralInfo?.code}</Typography>
+            <Typography mt={2} className={styles["sub-title"]} >voucher created on {data?.vouchersDateInEffect?.createdAt ? convertToEST(data?.vouchersDateInEffect?.createdAt).format("MMMM D, YYYY [at] h:mm A z") : null}</Typography>
+            <Chip className={styles.Chip} sx={{ backgroundColor: dealStatus[data?.voucherGeneralInfo?.status], mb: 1, fontColor: "#000000" }}
+              label={statusOptions[data?.voucherGeneralInfo?.status]} />
+          </Grid>
+
+          <Grid>
+            {content}
           </Grid>
 
         </Grid>

@@ -840,7 +840,7 @@ const CreateDealForm = ({ deal }: ICreateDealFrom) => {
         isOpen={exitModal}
         onRequestClose={handleExitModalClose}
       >
-        <ExitEditModal closeModal={handleExitModalClose} />
+        <ExitEditModal closeModal={handleExitModalClose} isVoucherEditing={false} />
       </Modal>
     </FormProvider>
   );

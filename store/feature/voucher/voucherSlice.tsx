@@ -4,12 +4,14 @@ import { RootState } from "../../index";
 export interface DealState {
     promotionType: string;
     voucherType: string;
-    voucherId: string
+    voucherId: string;
+    isVoucherEditing: boolean
 }
 const initialState: DealState = {
     promotionType: 'deals',
     voucherType: '',
-    voucherId: ''
+    voucherId: '',
+    isVoucherEditing: false,
 };
 
 const voucherSlice = createSlice({
@@ -25,11 +27,15 @@ const voucherSlice = createSlice({
         updateVoucherId: (state, action) => {
             state.voucherId = action.payload;
         },
+        updateVoucherEditing: (state, action) => {
+            state.isVoucherEditing = action.payload;
+        },
     },
 });
 
-export const { updatePromotionType, updateVoucherType, updateVoucherId } = voucherSlice.actions;
+export const { updatePromotionType, updateVoucherType, updateVoucherId, updateVoucherEditing } = voucherSlice.actions;
 export const updatedPromotionType = (state: RootState) => state.voucher.promotionType;
 export const updatedVoucherType = (state: RootState) => state.voucher.voucherType;
 export const updatedVoucherId = (state: RootState) => state.voucher.voucherId;
+export const updatedVoucherEditing = (state: RootState) => state.voucher.isVoucherEditing;
 export default voucherSlice.reducer;

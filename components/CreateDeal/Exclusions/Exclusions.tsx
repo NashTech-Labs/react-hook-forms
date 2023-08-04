@@ -16,11 +16,13 @@ import StepperCard from '../StepperCard'
 import { useAppDispatch, useAppSelector } from '../../../store';
 import { getIsEditing, updateDealLevel } from '../../../store/feature/deal/dealSlice';
 import RemoveProductsModal from "../RemoveProductsModal";
+import { updatedVoucherEditing } from '../../../store/feature/voucher/voucherSlice';
 
 const Exclusions = ({ dealLevelName, deal, currentStep, totalSteps }: any) => {
     const [showRemoveProductsModal, setShowRemoveProductsModals] = useState<boolean>(false)
     const { control, setValue } = useFormContext()
     const dispatch = useAppDispatch();
+    const isVoucherEditing = useAppSelector(updatedVoucherEditing);
     const isEditing = useAppSelector(getIsEditing)
     const dealOptions = useWatch({
         control,
@@ -87,7 +89,7 @@ const Exclusions = ({ dealLevelName, deal, currentStep, totalSteps }: any) => {
             {isEditing && deal?.dealValue?.scopeType === 'PRODUCT' && <Box marginBottom={2} mt={2} >
                 <Button variant="contained" sx={{ textTransform: 'none' }} onClick={() => setShowRemoveProductsModals(true)}>Remove products</Button>
             </Box>}
-            {isEditing && deal?.dealValue?.scopeType === 'PRODUCT' && <Typography sx={{ marginBottom: '10px' }}>The Exclusions added in this step will be appended to existing Exclusions on the deal</Typography>}
+            {isEditing && deal?.dealValue?.scopeType === 'PRODUCT' || isVoucherEditing && <Typography sx={{ marginBottom: '10px' }}>The Exclusions added in this step will be appended to existing Exclusions on the {isVoucherEditing ? 'voucher' : "deal"}</Typography>}
             {dealLevelName === 'product' ?
                 <>
                     <RadioGroupField noBottomGutters options={dealLevelExclusionOptions} label="Will there be additional products excluded from this deal?" name="dealLevelOptions" required={true} handleChange={handleChange} />

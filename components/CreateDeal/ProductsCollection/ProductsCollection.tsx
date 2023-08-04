@@ -13,10 +13,13 @@ import StepperCard from '../StepperCard'
 import {useAppSelector} from "../../../store";
 import {getIsEditing} from "../../../store/feature/deal/dealSlice";
 import RemoveProductsModal from "../RemoveProductsModal";
+import { updatedVoucherEditing } from "../../../store/feature/voucher/voucherSlice";
 
 function ProductsCollection({ currentStep, totalSteps }: any) {
     const [showRemoveProductsModal, setShowRemoveProductsModals] = useState<boolean>(false)
     const { setValue, control } = useFormContext()
+
+    const isVoucherEditing = useAppSelector(updatedVoucherEditing);
     const isEditing = useAppSelector(getIsEditing)
     const productsCollectionTab = useWatch({
         control,
@@ -58,7 +61,7 @@ function ProductsCollection({ currentStep, totalSteps }: any) {
                 {isEditing && <Box marginBottom={3} marginTop={2}>
                     <Button variant="contained" sx={{ textTransform: 'none' }} onClick={() => setShowRemoveProductsModals(true)}>Remove products</Button>
                 </Box>}
-                {isEditing && <Box sx={{
+                {isEditing || isVoucherEditing && <Box sx={{
                     backgroundColor: '#E6ECF6',
                     padding: '16px',
                     marginBottom: '24px'

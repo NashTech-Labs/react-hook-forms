@@ -14,11 +14,12 @@ import { useCreateVoucherMutation } from "../../api/createVoucher";
 import { updateVoucherId } from "../../store/feature/voucher/voucherSlice";
 
 interface numbersOfSteps {
+  isVoucherEditing: boolean
   currentStep: number
   totalSteps: number
 }
 
-const GeneralInformation = ({ currentStep, totalSteps }: numbersOfSteps) => {
+const GeneralInformation = ({ isVoucherEditing, currentStep, totalSteps }: numbersOfSteps) => {
 
   const dispatch = useAppDispatch()
 
@@ -70,6 +71,7 @@ const GeneralInformation = ({ currentStep, totalSteps }: numbersOfSteps) => {
         description="Max 23 characters"
         placeholder="eg. Sasha20"
         name="externalVoucherCode"
+        disabled={isVoucherEditing}
         required
         inputHeight={true}
         tooltipKey={""}
