@@ -4,7 +4,7 @@ import FeedIcon from "@mui/icons-material/Feed";
 import StepperCard from "../CreateDeal/StepperCard";
 import SelectField from "../FormComponents/SelectField";
 import TextInputField from "../FormComponents/TextInputField";
-import { stackTypeOptions } from "../../constants/FormOptions";
+import { stackTypeOptionsVouchers } from "../../constants/FormOptions";
 import StepTitle from "../StepTitle";
 import StepLabel from "../StepLabel";
 import Tag from "../Tag";
@@ -13,7 +13,12 @@ import { getUser } from "../../store/feature/auth/authSlice";
 import { useCreateVoucherMutation } from "../../api/createVoucher";
 import { updateVoucherId } from "../../store/feature/voucher/voucherSlice";
 
-const GeneralInformation = () => {
+interface numbersOfSteps {
+  currentStep: number
+  totalSteps: number
+}
+
+const GeneralInformation = ({ currentStep, totalSteps }: numbersOfSteps) => {
 
   const dispatch = useAppDispatch()
 
@@ -36,13 +41,18 @@ const GeneralInformation = () => {
       }
       if (error) {
         setError("externalVoucherCode", {
-          message: "Error: Voucher code already exists",
+          message: "Error: " + error?.data?.details,
         });
       }
     });
   };
 
   const customHandleBlur = (value: string) => {
+
+    if(!value) {
+      return;
+    }
+
     setValue("externalVoucherCode", value, { shouldValidate: true });
     if (previousVoucherCode !== value) {
       checkForDuplicateVouchers(value);
@@ -52,12 +62,12 @@ const GeneralInformation = () => {
 
   return (
     <StepperCard inProgressIcon={FeedIcon} error step={"GENERAL_INFORMATION"}>
-      <StepLabel currentStep={2} totalSteps={7} />
+      <StepLabel currentStep={currentStep} totalSteps={totalSteps} />
       <StepTitle title={"General Information"} />
       <Tag label="Internal facing" />
       <TextInputField
         title="External Voucher Code"
-        description="Max 80 characters"
+        description="Max 23 characters"
         placeholder="eg. Sasha20"
         name="externalVoucherCode"
         required
@@ -83,7 +93,7 @@ const GeneralInformation = () => {
         tooltipKey={"PRIORITY"}
       />
       <SelectField
-        options={stackTypeOptions}
+        options={stackTypeOptionsVouchers}
         name="stackingType"
         title="Stacking Type"
         required

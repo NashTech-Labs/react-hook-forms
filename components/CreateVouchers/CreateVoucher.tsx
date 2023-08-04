@@ -43,7 +43,7 @@ function CreateVoucher() {
             </Grid>
 
             <Card className={commonStyles["card-container"]}>
-                <StepLabel currentStep={1} totalSteps={8} />
+                <StepLabel currentStep={1} totalSteps={6} />
                 <StepTitle title={"Select voucher type"} />
 
                 <Grid

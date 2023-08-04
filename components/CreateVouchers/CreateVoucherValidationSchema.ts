@@ -16,7 +16,7 @@ const isEndDateTimeValid = (endDateOrTime: any, startDateOrTime: object, operati
 }
 
 const schema = yup.object().shape({
-    externalVoucherCode: yup.string().max(80, 'Error: Code should be less than 80 characters').required('External Voucher Code is required'),
+    externalVoucherCode: yup.string().max(23, 'Error: Code should be less than 24 characters').required('External Voucher Code is required'),
     description: yup.string().max(250, 'Error: Description should be less than 250 characters'),
     priority: yup
         .number()

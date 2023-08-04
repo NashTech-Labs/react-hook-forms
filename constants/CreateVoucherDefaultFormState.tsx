@@ -6,7 +6,7 @@ const createVoucherDefaultFormState: ICreateVoucherFormState = {
   voucherType: "PROMOTIONAL",
   description: "",
   priority: "",
-  stackingType: "",
+  stackingType: "always_apply",
   voucherPerformance: "yes",
   voucherPerformanceBy: "mch",
   voucherPerformanceMCH: "",

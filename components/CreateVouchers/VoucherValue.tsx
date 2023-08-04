@@ -20,7 +20,12 @@ import { generatePreviewForValueStep } from "../../util/generatePreview";
 import StyledTabs from "../StyledTabs";
 import { updateAndClearErrors } from "../../util/updateFields";
 
-const VoucherValue = () => {
+interface numbersOfSteps {
+  currentStep: number
+  totalSteps: number
+}
+
+const VoucherValue = ({ currentStep, totalSteps }: numbersOfSteps) => {
   const {
     dealDiscountTab,
     voucherLevel,
@@ -255,7 +260,7 @@ const VoucherValue = () => {
       error
       step={"DEAL_VALUE"}
     >
-      <StepLabel currentStep={3} totalSteps={7} />
+      <StepLabel currentStep={currentStep} totalSteps={totalSteps} />
       <StepTitle title={"Voucher value"} />
       <Stack>
         <RadioGroupField

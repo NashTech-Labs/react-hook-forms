@@ -38,6 +38,7 @@ const CreateVoucherForm = () => {
     getValues,
     setValue,
     trigger,
+    setError,
     formState: { errors },
   } = formMethods
 
@@ -56,7 +57,11 @@ const CreateVoucherForm = () => {
     e.preventDefault();
     const cleanForm = await trigger(undefined, { shouldFocus: true });
 
-    if (cleanForm) {
+    if (errors.externalVoucherCode) {
+      setError("externalVoucherCode", { message: "Error: " + errors?.externalVoucherCode?.message})
+    }
+
+    if (cleanForm && !errors.externalVoucherCode) {
       setValue("draftCreatedTimestamp", moment());
       dispatch(updateNewVoucher(formMethods.getValues()))
       router.push("/vouchers/create/summary");
@@ -79,12 +84,12 @@ const CreateVoucherForm = () => {
             </Grid>
           </Grid>
         </Grid>
-        <GeneralInformation />
-        <VoucherValue />
+        <GeneralInformation currentStep={2} totalSteps={voucherLevel === "basket" ? 5 : 6} />
+        <VoucherValue currentStep={3} totalSteps={voucherLevel === "basket" ? 5 : 6} />
         {/* <NumberCodes /> */}
-        <DateInEffect />
-        {voucherLevel === "product" ? <ProductsCollection currentStep={6} totalSteps={7} /> : null}
-        <Exclusions dealLevelName={voucherLevel} currentStep={voucherLevel === "product" ? 7 : 5} totalSteps={voucherLevel === "product" ? 7 : 5} />
+        <DateInEffect currentStep={4} totalSteps={voucherLevel === "basket" ? 5 : 6} />
+        {voucherLevel === "product" ? <ProductsCollection currentStep={5} totalSteps={6} /> : null}
+        <Exclusions dealLevelName={voucherLevel} currentStep={voucherLevel === 'product' ? 6 : 5} totalSteps={voucherLevel === 'product' ? 6 : 5} />
 
         <div className={styles["submit-btn-container"]}>
           <div>
