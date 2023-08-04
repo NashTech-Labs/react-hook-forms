@@ -14,7 +14,7 @@ import { useEditVoucherMutation } from '../../../api/editVoucher';
 import generateCreateVoucherPayload from '../../../util/createVoucherPayload';
 import { notifyError, notifySuccess } from '../../../util/Notification/Notification';
 import { userProfileState } from '../../../store/feature/auth/authSlice';
-import { updatedVoucherId } from '../../../store/feature/voucher/voucherSlice';
+import { updatedVoucherEditing, updatedVoucherId } from '../../../store/feature/voucher/voucherSlice';
 
 function VoucherFormSummary() {
 
@@ -23,6 +23,8 @@ function VoucherFormSummary() {
     const dispatch = useAppDispatch();
 
     const user = useAppSelector(userProfileState)
+
+    const isVoucherEditing = useAppSelector(updatedVoucherEditing);
 
     const voucherId = useAppSelector(updatedVoucherId);
 
@@ -50,7 +52,7 @@ function VoucherFormSummary() {
             .unwrap()
             .then((data) => {
                 if (data) {
-                    notifySuccess("Voucher successfully created")
+                    notifySuccess(isVoucherEditing ? "Voucher successfully saved" : "Voucher successfully created")
                     router.push('/vouchers')
                     dispatch(updateNewVoucher(createVoucherDefaultFormState))
                 }
@@ -126,7 +128,7 @@ function VoucherFormSummary() {
                                 variant="contained"
                                 className={commonStyles.continueBtn}
                             >
-                                Create
+                                {isVoucherEditing ? 'Save' : 'Create'}
                             </Button>
                         </div>
                     </Grid>

@@ -11,12 +11,14 @@ import {
   updateDealLevel,
   updateDealStep,
 } from "../../store/feature/deal/dealSlice";
+import { updateVoucherEditing } from "../../store/feature/voucher/voucherSlice";
 
 interface IExitEditModal {
   closeModal: Function;
+  isVoucherEditing: boolean
 }
 
-const ExitEditModal = ({ closeModal }: IExitEditModal) => {
+const ExitEditModal = ({ closeModal, isVoucherEditing }: IExitEditModal) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
@@ -27,14 +29,30 @@ const ExitEditModal = ({ closeModal }: IExitEditModal) => {
     dispatch(updateDealEditing(false));
   };
 
+  const resetVoucherState = () => {
+    dispatch(updateVoucherEditing(false))
+  }
+
   const handelClose = () => {
-    router.push("/deals");
-    resetState();
+    if (isVoucherEditing) {
+      router.push("/vouchers");
+      resetVoucherState();  
+    }
+    else {
+      router.push("/deals");
+      resetState();
+    }
   };
 
   const handleSumamryNavigation = () => {
-    closeModal();
-    resetState();
+    if (isVoucherEditing) {
+      closeModal();
+      resetVoucherState();
+    }
+    else {
+      closeModal();
+      resetState();
+    }
   };
 
   return (

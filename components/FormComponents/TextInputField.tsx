@@ -95,7 +95,7 @@ const TextInputField = ({
 
   const sxOverrides: any = {
     "&.Mui-disabled": {
-      backgroundColor: disabled ? "#F0F0F0" : "#ffffff",
+      backgroundColor: disabled ? "#F0F0F0 !important" : "#ffffff",
     },
     "&.Mui-error": {
       background: "#FEFAF9",

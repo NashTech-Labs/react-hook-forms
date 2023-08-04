@@ -34,7 +34,7 @@ import SearchOutlined from '@mui/icons-material/SearchOutlined';
 import CloseIcon from '@mui/icons-material/Close';
 import FilterVoucherSection from "./FilterVoucherSection";
 import { getVoucherFilters } from "../../store/feature/voucher/voucherFilterSlice";
-import { updateVoucherId, updateVoucherType } from "../../store/feature/voucher/voucherSlice";
+import { updateVoucherEditing, updateVoucherId, updateVoucherType } from "../../store/feature/voucher/voucherSlice";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import Modal from "react-modal";
 import DeleteVoucher from "../DeleteVoucher/DeleteVoucher";
@@ -75,6 +75,7 @@ function VoucherList() {
 
   useEffect(() => {
     refetch();
+    dispatch(updateVoucherEditing(false))
   }, [])
 
   const handleDeleteClick = () => {
