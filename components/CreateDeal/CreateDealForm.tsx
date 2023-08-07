@@ -652,7 +652,7 @@ const CreateDealForm = ({ deal }: ICreateDealFrom) => {
   if (isEditing) {
     dealName = formDefaultValues["dealType"];
   }
-  console.log(getValues());
+
   const handleFormDraftSubmit = async (dealId: number) => {
     setValue("draftCreatedTimestamp", moment());
     dispatch(updateNewDeal(getValues()));
@@ -817,13 +817,26 @@ const CreateDealForm = ({ deal }: ICreateDealFrom) => {
             <ShippingMethod /> <SpendMinimum />
           </>
         )}
-        <DateInEffect deal={deal} currentStep={dealName === FREE_SHIPPING_DEAL_TYPE ? 5 : 4} totalSteps={(dealName === FREE_SHIPPING_DEAL_TYPE || dealLevelName === 'basket') ? 6 : 7} />
+        <DateInEffect
+          deal={deal}
+          currentStep={dealName === FREE_SHIPPING_DEAL_TYPE ? 5 : 4}
+          totalSteps={
+            dealName === FREE_SHIPPING_DEAL_TYPE || dealLevelName === "basket"
+              ? 6
+              : 7
+          }
+        />
         {dealName === FREE_SHIPPING_DEAL_TYPE ||
         dealLevelName === "basket" ? null : (
           <ProductsCollection currentStep={5} totalSteps={7} />
         )}
         {dealName === FREE_SHIPPING_DEAL_TYPE ? null : (
-          <Exclusions dealLevelName={dealLevelName} deal={deal} currentStep={dealLevelName === 'product' ? 6 : 5} totalSteps={dealLevelName === 'product' ? 7 : 6} />
+          <Exclusions
+            dealLevelName={dealLevelName}
+            deal={deal}
+            currentStep={dealLevelName === "product" ? 6 : 5}
+            totalSteps={dealLevelName === "product" ? 7 : 6}
+          />
         )}
         <PromotionalMessages dealLevelName={dealLevelName} />
         {ctaContent}
@@ -840,7 +853,10 @@ const CreateDealForm = ({ deal }: ICreateDealFrom) => {
         isOpen={exitModal}
         onRequestClose={handleExitModalClose}
       >
-        <ExitEditModal closeModal={handleExitModalClose} isVoucherEditing={false} />
+        <ExitEditModal
+          closeModal={handleExitModalClose}
+          isVoucherEditing={false}
+        />
       </Modal>
     </FormProvider>
   );

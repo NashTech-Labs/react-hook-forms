@@ -1,4 +1,5 @@
 import React, { MouseEvent, useState } from "react";
+import Modal from "react-modal";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Grid, Typography } from "@mui/material";
@@ -9,20 +10,35 @@ import createVoucherDefaultFormState from "../../constants/CreateVoucherDefaultF
 import { ICreateVoucherFormState } from "../../constants/CreateVoucherFormStateType";
 import schema from "./CreateVoucherValidationSchema";
 import VoucherValue from "./VoucherValue";
-import Modal from "react-modal";
 // import ReportingInformation from './ReportingInformation';
 import DateInEffect from "../CreateDeal/DateInEffect/DateInEffect";
 import NumberCodes from "./numberCodes/NumberCodes";
 import ProductsCollection from "../CreateDeal/ProductsCollection/ProductsCollection";
 import Exclusions from "../CreateDeal/Exclusions/Exclusions";
 import { useRouter } from "next/router";
-import { updateVoucherType, updatedVoucherEditing } from "../../store/feature/voucher/voucherSlice";
+import {
+  updateVoucherType,
+  updatedVoucherEditing,
+  updatedVoucherId,
+} from "../../store/feature/voucher/voucherSlice";
 import { useAppDispatch, useAppSelector } from "../../store";
-import { getNewVoucherData, updateNewVoucher } from "../../store/feature/voucher/newVoucherSlice";
+import {
+  getNewVoucherData,
+  updateNewVoucher,
+} from "../../store/feature/voucher/newVoucherSlice";
 import moment from "moment";
 import convertVoucherDataToFormData from "../../util/convertVoucherToFormData";
 import ExitEditModal from "../CreateDeal/ExitEditModal";
 import { EDIT_SCENARIO_FILED_EXCEPTIONS } from "../../constants/FormOptions";
+import generalInformationStyles from "../CreateDeal/GeneralInformation.module.css";
+import { useEditVoucherMutation } from "../../api/editVoucher";
+import generateCreateVoucherPayload from "../../util/createVoucherPayload";
+import { userProfileState } from "../../store/feature/auth/authSlice";
+import {
+  notifyError,
+  notifySuccess,
+} from "../../util/Notification/Notification";
+import DraftModal from "../CreateDeal/DraftModal";
 
 interface ICreateVoucherFrom {
   voucher?: object;
@@ -49,18 +65,20 @@ const draftModalcustomStyles = {
   },
 };
 
-const CreateVoucherForm = ({voucher}: ICreateVoucherFrom) => {
-
+const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
   const router = useRouter();
 
   const dispatch = useAppDispatch();
 
   const [exitModal, setExitModal] = useState<boolean>(false);
+  const [showDraftModal, setShowDraftModal] = useState<boolean>(false);
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
   const isVoucherEditing = useAppSelector(updatedVoucherEditing);
-
-  const draftFormValues = useAppSelector(getNewVoucherData)
-
+  const draftFormValues = useAppSelector(getNewVoucherData);
+  const voucherId = useAppSelector(updatedVoucherId);
+  const user = useAppSelector(userProfileState);
+  const [editVoucher] = useEditVoucherMutation();
   const formDefaultValues = voucher
     ? convertVoucherDataToFormData(voucher)
     : draftFormValues || createVoucherDefaultFormState;
@@ -77,16 +95,16 @@ const CreateVoucherForm = ({voucher}: ICreateVoucherFrom) => {
     trigger,
     setError,
     formState: { errors },
-  } = formMethods
-
+  } = formMethods;
+  const draftButtonLabel = voucherId ? "Save" : "Save as draft";
   const voucherLevel = getValues("voucherLevel");
 
   const handleBack = () => {
-    dispatch(updateVoucherType(''))
+    dispatch(updateVoucherType(""));
   };
 
   const handleCancel = () => {
-    dispatch(updateVoucherType(''))
+    dispatch(updateVoucherType(""));
     router.push("/vouchers");
   };
 
@@ -95,7 +113,9 @@ const CreateVoucherForm = ({voucher}: ICreateVoucherFrom) => {
     const cleanForm = await trigger(undefined, { shouldFocus: true });
 
     if (errors.externalVoucherCode) {
-      setError("externalVoucherCode", { message: "Error: " + errors?.externalVoucherCode?.message})
+      setError("externalVoucherCode", {
+        message: "Error: " + errors?.externalVoucherCode?.message,
+      });
     }
 
     const cleanFormForEditScenario = Object.keys(errors).every((error) =>
@@ -104,11 +124,10 @@ const CreateVoucherForm = ({voucher}: ICreateVoucherFrom) => {
 
     if (cleanForm && !errors.externalVoucherCode) {
       setValue("draftCreatedTimestamp", moment());
-      dispatch(updateNewVoucher(formMethods.getValues()))
+      dispatch(updateNewVoucher(formMethods.getValues()));
       router.push("/vouchers/create/summary");
     }
   };
-
 
   const handleEditCancel = () => {
     setExitModal(true);
@@ -118,37 +137,69 @@ const CreateVoucherForm = ({voucher}: ICreateVoucherFrom) => {
     setExitModal(false);
   };
 
+  const closeDraftModal = () => {
+    setShowDraftModal(false);
+  };
+
+  const handleDraftSave = async () => {
+    const editPayloadData = generateCreateVoucherPayload(getValues(), true);
+    const formattedPayloadWithUser = {
+      ...editPayloadData,
+      voucherId,
+      username: user?.name,
+    };
+    setShowDraftModal(true);
+    setSubmitting(true);
+    await editVoucher(formattedPayloadWithUser)
+      .unwrap()
+      .then((data) => {
+        if (data) {
+          notifySuccess("Voucher successfully saved");
+          dispatch(updateNewVoucher(createVoucherDefaultFormState));
+        }
+      })
+      .catch((error: any) => {
+        notifyError(
+          error.data?.details ? error.data?.details : "Something went wrong",
+          "voucher-failed"
+        );
+      })
+      .finally(() => {
+        setSubmitting(false);
+      });
+  };
+
   let ctaContent = (
     <div className={styles["submit-btn-container"]}>
-          <div>
-            <Button
-              variant="outlined"
-              className={commonStyles["cancelBtn"]}
-              onClick={handleCancel}
-              ata-testid="cancel-btn"
-            >
-              Cancel
-            </Button>
-          </div>
-          <div className={styles["submit-container"]}>
-            <Button
-              variant="text"
-              onClick={handleBack}
-              className={commonStyles["text-style-btn"]}
-              data-testid="back-btn"
-            >
-              Go Back
-            </Button>
-            <Button
-              variant="contained"
-              className={commonStyles["continueBtn"]}
-              onClick={(e) => handleFormSubmit(e)}
-              data-testid="continue-btn"
-            >
-              Continue
-            </Button>
-          </div>
+      <div>
+        <Button
+          variant="outlined"
+          className={commonStyles["cancelBtn"]}
+          onClick={handleCancel}
+          ata-testid="cancel-btn"
+        >
+          Cancel
+        </Button>
       </div>
+      <div className={styles["submit-container"]}>
+        <Button
+          variant="text"
+          onClick={handleBack}
+          className={commonStyles["text-style-btn"]}
+          data-testid="back-btn"
+        >
+          Go Back
+        </Button>
+        <Button
+          variant="contained"
+          className={commonStyles["continueBtn"]}
+          onClick={(e) => handleFormSubmit(e)}
+          data-testid="continue-btn"
+        >
+          Continue
+        </Button>
+      </div>
+    </div>
   );
 
   if (isVoucherEditing) {
@@ -181,25 +232,49 @@ const CreateVoucherForm = ({voucher}: ICreateVoucherFrom) => {
   return (
     <FormProvider {...formMethods}>
       <Grid className={commonStyles.mainSection}>
-        <Grid container justifyContent="center">
-          <Grid item lg={6} md={8} sm={9}>
-            <Grid display="flex" justifyContent="space-between" mt={8}>
-              <Typography
-                data-testid="createDealTitle"
-                variant="h3"
-                className={commonStyles.heading}
-              >
-                Create New Promotional Voucher
-              </Typography>
-            </Grid>
+        <Grid container sx={{ margin: "3.3% 25%" }}>
+          <Grid item lg={6} md={6} sm={6}>
+            <Typography
+              data-testid="createVocuherTitle"
+              variant="h3"
+              className={commonStyles.heading}
+            >
+              Create New Promotional Voucher
+            </Typography>
+          </Grid>
+          <Grid item lg={6} md={6} sm={6}>
+            <Button
+              data-testid="draft-btn"
+              variant="contained"
+              className={generalInformationStyles.draftBtn}
+              onClick={() => handleDraftSave()}
+            >
+              {draftButtonLabel}
+            </Button>
           </Grid>
         </Grid>
-        <GeneralInformation isVoucherEditing={isVoucherEditing} currentStep={2} totalSteps={voucherLevel === "basket" ? 5 : 6} />
-        <VoucherValue currentStep={3} totalSteps={voucherLevel === "basket" ? 5 : 6} />
+        <GeneralInformation
+          isVoucherEditing={isVoucherEditing}
+          currentStep={2}
+          totalSteps={voucherLevel === "basket" ? 5 : 6}
+        />
+        <VoucherValue
+          currentStep={3}
+          totalSteps={voucherLevel === "basket" ? 5 : 6}
+        />
         {/* <NumberCodes /> */}
-        <DateInEffect currentStep={4} totalSteps={voucherLevel === "basket" ? 5 : 6} />
-        {voucherLevel === "product" ? <ProductsCollection currentStep={5} totalSteps={6} /> : null}
-        <Exclusions dealLevelName={voucherLevel} currentStep={voucherLevel === 'product' ? 6 : 5} totalSteps={voucherLevel === 'product' ? 6 : 5} />
+        <DateInEffect
+          currentStep={4}
+          totalSteps={voucherLevel === "basket" ? 5 : 6}
+        />
+        {voucherLevel === "product" ? (
+          <ProductsCollection currentStep={5} totalSteps={6} />
+        ) : null}
+        <Exclusions
+          dealLevelName={voucherLevel}
+          currentStep={voucherLevel === "product" ? 6 : 5}
+          totalSteps={voucherLevel === "product" ? 6 : 5}
+        />
 
         {ctaContent}
 
@@ -208,10 +283,23 @@ const CreateVoucherForm = ({voucher}: ICreateVoucherFrom) => {
           isOpen={exitModal}
           onRequestClose={handleExitModalClose}
         >
-          <ExitEditModal closeModal={handleExitModalClose} isVoucherEditing={true} />
+          <ExitEditModal
+            closeModal={handleExitModalClose}
+            isVoucherEditing={true}
+          />
         </Modal>
-
       </Grid>
+      <Modal
+        style={draftModalcustomStyles}
+        isOpen={showDraftModal}
+        onRequestClose={closeDraftModal}
+      >
+        <DraftModal
+          loading={submitting}
+          closeModal={closeDraftModal}
+          isVoucher={true}
+        />
+      </Modal>
     </FormProvider>
   );
 };
