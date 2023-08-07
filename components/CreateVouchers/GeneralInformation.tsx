@@ -73,7 +73,7 @@ const GeneralInformation = ({
       <Tag label="Internal facing" />
       <TextInputField
         title="External Voucher Code"
-        description="Max 23 characters"
+        description="Max 22 characters"
         placeholder="eg. Sasha20"
         name="externalVoucherCode"
         disabled={isVoucherEditing}

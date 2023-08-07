@@ -15,6 +15,8 @@ import TextInputField from '../FormComponents/TextInputField'
 import styles from './ManagePromotions.module.css'
 import { JF_PROMOTION_TYPE, SDM_PROMOTION_TYPE , LOB_OPTIONS } from '../../constants/FormOptions'
 import ManagePromotionsModal from './ManagePromotionsModal'
+import { useAppSelector } from '../../store';
+import { updatedPromotionType } from '../../store/feature/voucher/voucherSlice';
 
 export interface IManagePromotionsFormState {
   promotionType: string,
@@ -36,6 +38,9 @@ const schema = yup.object().shape({
 
 const ManagePromotions = () => {
   const router = useRouter()
+
+  const promotionType = useAppSelector(updatedPromotionType);
+
   const [open, setOpen] = useState<boolean>(false)
   const formMethods = useForm<IManagePromotionsFormState>({
     resolver: yupResolver(schema),
@@ -63,7 +68,13 @@ const ManagePromotions = () => {
   }
 
   const handleBack = () => {
-    router.push('/deals')
+    if (promotionType === 'deals')
+    {
+      router.push('/deals')
+    }
+    else {
+      router.push('/vouchers')
+    }
   }
 
   const promotionTypeValues = lob === 'JOE_FRESH' ? JF_PROMOTION_TYPE : SDM_PROMOTION_TYPE

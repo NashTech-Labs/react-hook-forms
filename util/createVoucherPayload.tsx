@@ -172,7 +172,7 @@ const generateCreateVoucherPayload = (
 
   if (voucherLevel?.toUpperCase() === "BASKET") {
     payload["promo_restrictions"]["spend"] = {
-      minimum: (Number(basketSpend) * 100).toFixed(),
+      minimum: Number((Number(basketSpend) * 100).toFixed()),
       maximum: null,
     };
   }
