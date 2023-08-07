@@ -14,17 +14,24 @@ import { useCreateVoucherMutation } from "../../api/createVoucher";
 import { updateVoucherId } from "../../store/feature/voucher/voucherSlice";
 
 interface numbersOfSteps {
-  isVoucherEditing: boolean
-  currentStep: number
-  totalSteps: number
+  isVoucherEditing: boolean;
+  currentStep: number;
+  totalSteps: number;
 }
 
-const GeneralInformation = ({ isVoucherEditing, currentStep, totalSteps }: numbersOfSteps) => {
-
-  const dispatch = useAppDispatch()
+const GeneralInformation = ({
+  isVoucherEditing,
+  currentStep,
+  totalSteps,
+}: numbersOfSteps) => {
+  const dispatch = useAppDispatch();
 
   const [previousVoucherCode, setPreviousVoucherCode] = useState<any>(null);
-  const { setValue, setError } = useFormContext();
+  const {
+    setValue,
+    setError,
+    formState: { errors },
+  } = useFormContext();
   const user = useAppSelector(getUser);
   const [createVoucher] = useCreateVoucherMutation();
   const checkForDuplicateVouchers = async (code: string) => {
@@ -36,9 +43,8 @@ const GeneralInformation = ({ isVoucherEditing, currentStep, totalSteps }: numbe
     };
     createVoucher(payload).then((response: any) => {
       const { data, error } = response;
-      if (data) 
-      {
-        dispatch(updateVoucherId(data.id))
+      if (data) {
+        dispatch(updateVoucherId(data.id));
       }
       if (error) {
         setError("externalVoucherCode", {
@@ -49,12 +55,11 @@ const GeneralInformation = ({ isVoucherEditing, currentStep, totalSteps }: numbe
   };
 
   const customHandleBlur = (value: string) => {
-
-    if(!value) {
+    if (!value) {
       return;
     }
 
-    setValue("externalVoucherCode", value, { shouldValidate: true });
+    setValue("externalVoucherCode", value);
     if (previousVoucherCode !== value) {
       checkForDuplicateVouchers(value);
     }

@@ -12,7 +12,7 @@ import styles from '../../../FormComponents/FormComponents.module.css'
 
 function ManuallyAddLiam({ liamValue }: any) {
 
-    const { control, setValue } = useFormContext()
+    const { control, setValue, clearErrors } = useFormContext()
     const liam = useWatch({
         control,
         name: liamValue
@@ -29,7 +29,8 @@ function ManuallyAddLiam({ liamValue }: any) {
 
     const deleteLIAM = (index: any) => {
         liam.splice(index, 1)
-        setValue(liamValue, liam)
+        clearErrors(liam.length === 0 ? liamValue : `${liamValue}.${index}`);
+        setValue(liamValue, liam, { shouldValidate: true });
     }
 
     const handleShowAllLIAM = () => {
