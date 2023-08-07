@@ -55,6 +55,11 @@ const GeneralInformation = ({
   };
 
   const customHandleBlur = (value: string) => {
+
+    if (value.length > 23) {
+      return;
+    }
+
     if (!value) {
       return;
     }

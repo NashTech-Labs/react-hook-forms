@@ -20,7 +20,7 @@ import { Divider, FormControl, Menu, Select, SelectChangeEvent } from "@mui/mate
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import { updateDealEditing, updateDealStep } from "../../store/feature/deal/dealSlice";
-import { updatePromotionType, updatedPromotionType, updateVoucherType } from "../../store/feature/voucher/voucherSlice";
+import { updatePromotionType, updatedPromotionType, updateVoucherType, updateVoucherId } from "../../store/feature/voucher/voucherSlice";
 
 function TopHeader() {
   const dispatch = useAppDispatch();
@@ -83,6 +83,7 @@ function TopHeader() {
   const homefn = () => {
     handleClose();
     dispatch(updateDealStep(""));
+    dispatch(updateVoucherId(""))
     dispatch(updateDealEditing(false))
     dispatch(updateVoucherType(''))
     if (selectedType === "deals") {
