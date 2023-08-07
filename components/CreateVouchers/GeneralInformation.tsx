@@ -56,7 +56,7 @@ const GeneralInformation = ({
 
   const customHandleBlur = (value: string) => {
 
-    if (value.length > 23) {
+    if (value.length > 22) {
       return;
     }
 
