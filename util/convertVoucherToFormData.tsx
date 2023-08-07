@@ -11,7 +11,7 @@ const getMchLiamValues = (voucher: any) => {
   const liam: Array<string> = [];
   const {
     vouchersProductsAndCollections: { scopes },
-    voucherExclusions: { product },
+    voucherExclusions,
   } = voucher;
   scopes?.forEach(({ value, sub_type }: any) => {
     if (sub_type === "MCH") {
@@ -24,8 +24,8 @@ const getMchLiamValues = (voucher: any) => {
   return {
     mch,
     liam,
-    exmch: product?.mch || [],
-    exliam: product?.liam || [],
+    exmch: voucherExclusions?.product?.mch || [],
+    exliam: voucherExclusions?.product?.liam || [],
   };
 };
 
@@ -34,7 +34,7 @@ const getDealValues = (voucher: any) => {
       voucherValues: { scopeType, rewards, rewardType },
     } = voucher;
 
-    const { voucherExclusions: { spend } } = voucher
+    const { voucherExclusions } = voucher
 
     const dealValues: any = {};
     if (scopeType === "PRODUCT") {
@@ -72,7 +72,7 @@ const getDealValues = (voucher: any) => {
       rewardType === "%_OFF"
         ? String(rewards?.[0]?.value)
         : String(convertCentsToDollar(rewards?.[0]?.value));
-    dealValues["basketSpend"] = String(convertCentsToDollar(spend?.minimum));
+    dealValues["basketSpend"] = voucherExclusions?.spend ? String(convertCentsToDollar(voucherExclusions?.spend?.minimum)) : null;
     dealValues["basketDealType"] =
       rewardType === "%_OFF" ? "percentage" : "dollar";
   
@@ -91,7 +91,8 @@ const convertVoucherDataToFormData = (voucher: any) => {
       exFileLIAM: [],
       productsCollectionTab: "uploadProduct",
       productExclusionsCollectionTab: "uploadProduct",
-      basketDealType: 'dollar'
+      basketDealType: 'dollar',
+      dealDiscountTab: "dollar",
     };
   
     const { voucherGeneralInfo, voucherValues, vouchersProductsAndCollections, voucherExclusions, vouchersDateInEffect} = voucher;
@@ -102,24 +103,24 @@ const convertVoucherDataToFormData = (voucher: any) => {
       priority,
       stackingType
     } = voucherGeneralInfo;
-    const { scopeType } = voucherValues;
-    const { priceApplicability } = voucherExclusions;
-    const { product } = voucherExclusions;
+    // const { scopeType } = voucherValues;
+    // const { priceApplicability } = voucherExclusions;
+    // const { product } = voucherExclusions;
 
     const { validFrom, validTo } = vouchersDateInEffect;
  
     formData["externalVoucherCode"] = code;
     formData["voucherType"] = type;
-    formData["description"] = description;
+    formData["description"] = description || '';
     formData["priority"] = priority;
     formData["stackingType"] =
       Object.keys(STACKING_TYPES).find(
         (key) => STACKING_TYPES[key] === stackingType
       ) || "";
-    formData["voucherLevel"] = scopeType.toLowerCase();
-    formData["dealApplyType"] = priceApplicability === null ? "all" : "regular_priced_only";
-    formData["dealLevelOptions"] = Object.values(product).some(
-      (value) => Array.isArray(value) && value.length > 0) ? "yes" : "no";
+    formData["voucherLevel"] = voucherValues?.scopeType ? voucherValues?.scopeType?.toLowerCase() : 'product';
+    formData["dealApplyType"] = voucherExclusions?.priceApplicability === null ? "all" : "regular_priced_only";
+    formData["dealLevelOptions"] = voucherExclusions?.product ? Object.values(voucherExclusions?.product).some(
+      (value) => Array.isArray(value) && value.length > 0) ? "yes" : "no" : "no";
     formData["startDatePicker"] = convertToEST("");
     formData["startTimePicker"] = convertToEST("");
     formData["endDatePicker"] = convertToEST("");
