@@ -91,6 +91,7 @@ const convertVoucherDataToFormData = (voucher: any) => {
       exFileLIAM: [],
       productsCollectionTab: "uploadProduct",
       productExclusionsCollectionTab: "uploadProduct",
+      basketDealType: 'dollar'
     };
   
     const { voucherGeneralInfo, voucherValues, vouchersProductsAndCollections, voucherExclusions, vouchersDateInEffect} = voucher;

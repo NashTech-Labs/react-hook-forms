@@ -161,6 +161,7 @@ const convertDealDataToFormData = (deal: any) => {
     exFileLIAM: [],
     productsCollectionTab: "uploadProduct",
     productExclusionsCollectionTab: "uploadProduct",
+    basketDealType: "dollar",
   };
 
   const { generalDealInfo, dealValue, applicableProduct, exclusion } = deal;

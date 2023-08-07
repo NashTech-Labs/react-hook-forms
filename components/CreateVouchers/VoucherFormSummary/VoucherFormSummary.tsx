@@ -42,7 +42,7 @@ function VoucherFormSummary() {
 
     const handleCreateVoucher = async () => {
 
-        const editPayloadData = generateCreateVoucherPayload(newVoucherData)
+        const editPayloadData = generateCreateVoucherPayload(newVoucherData, false)
         const formattedPayloadWithUser = {
             ...editPayloadData,
             voucherId: voucherId,
