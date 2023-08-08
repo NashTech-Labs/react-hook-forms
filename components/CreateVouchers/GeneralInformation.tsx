@@ -13,17 +13,19 @@ import { getUser } from "../../store/feature/auth/authSlice";
 import { useCreateVoucherMutation } from "../../api/createVoucher";
 import { updateVoucherId } from "../../store/feature/voucher/voucherSlice";
 
-interface numbersOfSteps {
+interface IGeneralInformation {
   isVoucherEditing: boolean;
   currentStep: number;
   totalSteps: number;
+  setCheckForDuplicateInProgress: Function;
 }
 
 const GeneralInformation = ({
   isVoucherEditing,
   currentStep,
   totalSteps,
-}: numbersOfSteps) => {
+  setCheckForDuplicateInProgress,
+}: IGeneralInformation) => {
   const dispatch = useAppDispatch();
 
   const [previousVoucherCode, setPreviousVoucherCode] = useState<any>(null);
@@ -41,21 +43,25 @@ const GeneralInformation = ({
       is_serialized: false,
       username: user.userProfile.name,
     };
-    createVoucher(payload).then((response: any) => {
-      const { data, error } = response;
-      if (data) {
-        dispatch(updateVoucherId(data.id));
-      }
-      if (error) {
-        setError("externalVoucherCode", {
-          message: "Error: " + error?.data?.details,
-        });
-      }
-    });
+    setCheckForDuplicateInProgress(true);
+    createVoucher(payload)
+      .then((response: any) => {
+        const { data, error } = response;
+        if (data) {
+          dispatch(updateVoucherId(data.id));
+        }
+        if (error) {
+          setError("externalVoucherCode", {
+            message: "Error: " + error?.data?.details,
+          });
+        }
+      })
+      .finally(() => {
+        setCheckForDuplicateInProgress(false);
+      });
   };
 
   const customHandleBlur = (value: string) => {
-
     if (value.length > 22) {
       return;
     }

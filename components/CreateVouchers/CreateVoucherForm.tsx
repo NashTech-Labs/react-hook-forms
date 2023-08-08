@@ -73,6 +73,8 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
   const [exitModal, setExitModal] = useState<boolean>(false);
   const [showDraftModal, setShowDraftModal] = useState<boolean>(false);
   const [submitting, setSubmitting] = useState<boolean>(false);
+  const [checkForDuplicateInProgress, setCheckForDuplicateInProgress] =
+    useState<boolean>(false);
 
   const isVoucherEditing = useAppSelector(updatedVoucherEditing);
   const draftFormValues = useAppSelector(getNewVoucherData);
@@ -159,6 +161,7 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
         }
       })
       .catch((error: any) => {
+        setShowDraftModal(false);
         notifyError(
           error.data?.details ? error.data?.details : "Something went wrong",
           "voucher-failed"
@@ -232,31 +235,35 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
   return (
     <FormProvider {...formMethods}>
       <Grid className={commonStyles.mainSection}>
-        <Grid container sx={{ margin: "3.3% 25%" }}>
-          <Grid item lg={6} md={6} sm={6}>
-            <Typography
-              data-testid="createVocuherTitle"
-              variant="h3"
-              className={commonStyles.heading}
-            >
-              Create New Promotional Voucher
-            </Typography>
+        {!isVoucherEditing && (
+          <Grid container sx={{ margin: "3.3% 25%" }}>
+            <Grid item lg={6} md={6} sm={6}>
+              <Typography
+                data-testid="createVocuherTitle"
+                variant="h3"
+                className={commonStyles.heading}
+              >
+                Create New Promotional Voucher
+              </Typography>
+            </Grid>
+            <Grid item lg={6} md={6} sm={6}>
+              <Button
+                data-testid="draft-btn"
+                variant="contained"
+                className={generalInformationStyles.draftBtn}
+                onClick={() => handleDraftSave()}
+                disabled={checkForDuplicateInProgress || submitting}
+              >
+                {draftButtonLabel}
+              </Button>
+            </Grid>
           </Grid>
-          <Grid item lg={6} md={6} sm={6}>
-            <Button
-              data-testid="draft-btn"
-              variant="contained"
-              className={generalInformationStyles.draftBtn}
-              onClick={() => handleDraftSave()}
-            >
-              {draftButtonLabel}
-            </Button>
-          </Grid>
-        </Grid>
+        )}
         <GeneralInformation
           isVoucherEditing={isVoucherEditing}
           currentStep={2}
           totalSteps={voucherLevel === "basket" ? 5 : 6}
+          setCheckForDuplicateInProgress={setCheckForDuplicateInProgress}
         />
         <VoucherValue
           currentStep={3}
