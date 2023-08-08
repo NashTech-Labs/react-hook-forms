@@ -144,6 +144,10 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
   };
 
   const handleDraftSave = async () => {
+    if (!voucherId) {
+      trigger("externalVoucherCode");
+      return;
+    }
     const editPayloadData = generateCreateVoucherPayload(getValues(), true);
     const formattedPayloadWithUser = {
       ...editPayloadData,
