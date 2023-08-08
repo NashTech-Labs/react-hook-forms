@@ -12,6 +12,7 @@ import { useAppSelector, useAppDispatch } from "../../store";
 import { getUser } from "../../store/feature/auth/authSlice";
 import { useCreateVoucherMutation } from "../../api/createVoucher";
 import { updateVoucherId } from "../../store/feature/voucher/voucherSlice";
+import { notifySuccess } from "../../util/Notification/Notification";
 
 interface IGeneralInformation {
   isVoucherEditing: boolean;
@@ -29,11 +30,7 @@ const GeneralInformation = ({
   const dispatch = useAppDispatch();
 
   const [previousVoucherCode, setPreviousVoucherCode] = useState<any>(null);
-  const {
-    setValue,
-    setError,
-    formState: { errors },
-  } = useFormContext();
+  const { setValue, setError } = useFormContext();
   const user = useAppSelector(getUser);
   const [createVoucher] = useCreateVoucherMutation();
   const checkForDuplicateVouchers = async (code: string) => {
@@ -49,6 +46,7 @@ const GeneralInformation = ({
         const { data, error } = response;
         if (data) {
           dispatch(updateVoucherId(data.id));
+          notifySuccess("Voucher successfully saved");
         }
         if (error) {
           setError("externalVoucherCode", {
