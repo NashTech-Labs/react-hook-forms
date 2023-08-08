@@ -9,6 +9,9 @@ import { editPayload } from "./editPayload"
 import { useAppSelector } from "../../store";
 import { userProfileState } from "../../store/feature/auth/authSlice";
 import { useEditDealsMutation } from "../../api/editDeal";
+import convertVoucherDataToFormData from "../../util/convertVoucherToFormData";
+import { editVoucherPayload } from "../VoucherSummary/editVoucherPayload";
+import { useEditVoucherMutation } from "../../api/editVoucher";
 
 function EditDealModal({ closeModal, isDealActive, disableDeal, data, dealId, refetch }: any) {
 
@@ -17,6 +20,8 @@ function EditDealModal({ closeModal, isDealActive, disableDeal, data, dealId, re
     const [editDeal] = useEditDealsMutation();
 
     const [consent, setConsent] = useState(false);
+
+    const [editVoucher] = useEditVoucherMutation();
 
     const closeModalfn = () => {
         closeModal();
@@ -29,6 +34,30 @@ function EditDealModal({ closeModal, isDealActive, disableDeal, data, dealId, re
     };
 
     const handleSubmit = async () => {
+
+        if (data?.voucherGeneralInfo?.type === "PROMOTIONAL") {
+            const editPayloadData = editVoucherPayload(data, user?.name, isDealActive, dealId)
+
+            await editVoucher(editPayloadData)
+                .unwrap()
+                .then((data) => {
+                    if (data) {
+                        notifySuccess(isDealActive ? "Voucher successfully disabled" : "Voucher successfully enabled")
+                        disableDeal();
+                        closeModal();
+                        refetch();
+                    }
+                })
+                .catch((error: any) => {
+                    notifyError(
+                        error.data?.details ? error.data?.details : "Something went wrong",
+                        "deal-failed"
+                    )
+                })
+        }
+
+        else {
+
         const editPayloadData = editPayload(data, user?.name, isDealActive)
         const formattedPayloadWithUser = {
             ...editPayloadData,
@@ -50,6 +79,8 @@ function EditDealModal({ closeModal, isDealActive, disableDeal, data, dealId, re
                     "deal-failed"
                 )
             })
+
+        }
     }
 
     return (
@@ -66,8 +97,8 @@ function EditDealModal({ closeModal, isDealActive, disableDeal, data, dealId, re
                     </Grid>
                 </Grid>
                 <Typography data-testid="heading" variant="body2" className={classes["info-text"]} mt={4}>
-                    {isDealActive ? "Disabling the deal will result it from customer view and access until it is enabled (made Active) again. Proceed?" :
-                        "Enabling will result in customers viewing and accessing the deal again. Would you like to proceed?"}
+                    {isDealActive ? `Disabling the ${data?.voucherGeneralInfo?.type === "PROMOTIONAL" ? "voucher" : "deal"} will result it from customer view and access until it is enabled (made Active) again. Proceed?` :
+                        `Enabling will result in customers viewing and accessing the ${data?.voucherGeneralInfo?.type === "PROMOTIONAL" ? "voucher" : "deal"} again. Would you like to proceed?`}
                 </Typography>
 
                 <Box my={3}>

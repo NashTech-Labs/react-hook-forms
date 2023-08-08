@@ -1,5 +1,5 @@
-import React from 'react'
-import { Box, Button, Card, Chip, Grid, Switch, SwitchProps, Typography, Stack } from "@mui/material";
+import React, { useEffect, useState } from 'react'
+import { Box, Button, Card, Chip, Grid, Switch, SwitchProps, Typography, Stack, FormControlLabel } from "@mui/material";
 import { useRouter } from "next/router";
 import StepTitle from '../StepTitle';
 import styles from "../Summary/Summary.module.css";
@@ -12,6 +12,83 @@ import { dealStatus } from '../../constants/DealStatus';
 import { capitalizeWords } from '../../util/format';
 import { userProfileState } from '../../store/feature/auth/authSlice';
 import CreateVoucherForm from '../CreateVouchers/CreateVoucherForm';
+import CustomTooltip from '../Tooltip';
+import Modal from "react-modal";
+import { styled } from '@mui/material/styles';
+import EditDealModal from '../Summary/EditDealModal';
+
+const editDealStyles = {
+  content: {
+      width: "27%",
+      top: "40%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+      borderRadius: "2px",
+      background: "#fff",
+      boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+      padding: "16px",
+      gap: "10px",
+  },
+  overlay: {
+      zIndex: "999",
+      background: "rgba(0,0,0,0.4",
+  },
+};
+
+const IOSSwitch = styled((props: SwitchProps) => (
+  <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
+))(({ theme }) => ({
+  width: 65,
+  height: 31,
+  padding: 0,
+  '& .MuiSwitch-switchBase': {
+      padding: 0,
+      margin: 2,
+      transitionDuration: '300ms',
+      '&.Mui-checked': {
+          transform: 'translateX(16px)',
+          color: '#fff',
+          marginLeft: "22px",
+          '& + .MuiSwitch-track': {
+              backgroundColor: theme.palette.mode === 'dark' ? '#2ECA45' : '#467E1B',
+              opacity: 1,
+              border: 0,
+          },
+          '&.Mui-disabled + .MuiSwitch-track': {
+              opacity: 0.5,
+          },
+      },
+      '&.Mui-focusVisible .MuiSwitch-thumb': {
+          color: '#33cf4d',
+          border: '6px solid #fff',
+      },
+      '&.Mui-disabled .MuiSwitch-thumb': {
+          color:
+              theme.palette.mode === 'light'
+                  ? theme.palette.grey[100]
+                  : theme.palette.grey[600],
+      },
+      '&.Mui-disabled + .MuiSwitch-track': {
+          opacity: theme.palette.mode === 'light' ? 0.7 : 0.3,
+      },
+  },
+  '& .MuiSwitch-thumb': {
+      boxSizing: 'border-box',
+      width: 26,
+      height: 28,
+  },
+  '& .MuiSwitch-track': {
+      borderRadius: 26 / 2,
+      backgroundColor: theme.palette.mode === 'light' ? '#666B73' : '#39393D',
+      opacity: 1,
+      transition: theme.transitions.create(['background-color'], {
+          duration: 500,
+      }),
+  },
+}));
 
 function VoucherSummary() {
 
@@ -25,9 +102,15 @@ function VoucherSummary() {
 
   const isVoucherEditing = useAppSelector(updatedVoucherEditing);
 
-  const { data } = useGetVoucherPreviewQuery({ voucherId, user });
+  const { data, refetch } = useGetVoucherPreviewQuery({ voucherId, user });
 
   const discountTypeDealLabel = data?.voucherValues?.rewardType === '%_OFF' ? 'Percentage (%) off' : 'Fixed off'
+
+  const [isVoucherActive, setIsVoucherActive] = useState<boolean>(true)
+
+  const [noEditModal, setNoEditModal] = useState<boolean>(false);
+
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const ToProperCase = (string: string) => {
     let str = string.replace(/_/g, " ")
@@ -127,6 +210,28 @@ function VoucherSummary() {
   const handleEditClick = () => {
     dispatch(updateVoucherEditing(true))
     dispatch(updateVoucherType(data?.voucherGeneralInfo?.type.toLowerCase()))
+  }
+
+  useEffect(() => {
+    if (data?.voucherGeneralInfo?.status === "ACTIVE") {
+      setIsVoucherActive(true)
+    }
+    else {
+      setIsVoucherActive(false)
+    }
+  }, [data, router])
+
+  const handleChange = () => {
+    setIsOpen(true)
+    setNoEditModal(true)
+  }
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+
+  const disableDeal = () => {
+    setIsVoucherActive(!isVoucherActive)
   }
 
   let content = null
@@ -290,10 +395,11 @@ function VoucherSummary() {
             </Grid>
           </Card>
 
+          
           <Grid display="flex" justifyContent='space-between' ml={4} mb={4} mt={5} sx={{ margin: '1.3% 25%' }}>
             <Button data-testId='back' onClick={() => router.push('/vouchers')} className={styles.btn} variant="outlined">Go Back</Button>
-            <Button onClick={() => handleEditClick()} className={styles.btn} variant="contained">Edit</Button>
-          </Grid>
+            { data?.voucherGeneralInfo?.status === "ENDED" ? null : <Button onClick={() => handleEditClick()} className={styles.btn} variant="contained">Edit</Button> }
+          </Grid> 
       </>
   }
 
@@ -309,9 +415,63 @@ function VoucherSummary() {
               label={statusOptions[data?.voucherGeneralInfo?.status]} />
           </Grid>
 
+          {/* Active and Inactive */}
+
+          {/* {data?.voucherGeneralInfo?.status === "ACTIVE" || data?.voucherGeneralInfo?.status === "INACTIVE" ?
+                        <Grid container mt={3} item lg={6} ml="25%" className={data?.voucherGeneralInfo?.status === "ACTIVE" ? styles.toggleSection : styles.toggleDisabledSection} >
+                            <Grid mt={1} item lg={5}>
+                                <Stack direction={"row"} gap={2}>
+                                    <FormControlLabel
+                                        control={<IOSSwitch
+                                            data-testId='toggleClick'
+                                            checked={isVoucherActive}
+                                            sx={{ m: 1, marginLeft: "38%" }}
+                                            onChange={handleChange}
+                                        />}
+                                        label=""
+                                    />
+                                    <Stack>
+                                        <Typography className={styles.activeHeading} >{data?.voucherGeneralInfo?.status === "ACTIVE" ? "ACTIVE" : "DISABLED"}</Typography>
+                                        <Typography className={styles.activePeriod} >{data?.voucherGeneralInfo?.valid_to ? convertToEST(data?.voucherGeneralInfo?.valid_to).format("MMMM D, YYYY [at] h:mm A z") : null}</Typography>
+                                    </Stack>
+                                </Stack>
+                            </Grid>
+                            <Grid item lg={7}>
+                                <Box sx={{
+                                    height: '100%',
+                                    display: 'flex',
+                                    justifyContent: 'flex-end',
+                                    alignItems: 'center',
+                                    paddingRight: '20px'
+                                }}>
+                                    <CustomTooltip descriptionKey="DEAL_TOGGLE" />
+                                </Box>
+                            </Grid>
+                        </Grid>
+                        : null} */}
+
+          {/* Active and Inactive */}
+
           <Grid>
             {content}
           </Grid>
+
+          <Box>
+              <Modal
+                  style={editDealStyles}
+                  isOpen={isOpen}
+                  onRequestClose={closeModal}
+                >
+                  <EditDealModal
+                      closeModal={closeModal}
+                      isDealActive={isVoucherActive}
+                      disableDeal={disableDeal}
+                      data={data}
+                      dealId={voucherId}
+                      refetch={refetch}
+                    />
+                </Modal>
+            </Box>
 
         </Grid>
       </Grid>
