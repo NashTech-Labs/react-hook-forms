@@ -256,7 +256,11 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
                 variant="contained"
                 className={generalInformationStyles.draftBtn}
                 onClick={() => handleDraftSave()}
-                disabled={checkForDuplicateInProgress || submitting}
+                disabled={
+                  checkForDuplicateInProgress ||
+                  submitting ||
+                  errors.externalVoucherCode
+                }
               >
                 {draftButtonLabel}
               </Button>
