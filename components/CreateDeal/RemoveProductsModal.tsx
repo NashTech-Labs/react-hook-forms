@@ -24,6 +24,8 @@ import { updatedDealId } from "../../store/feature/deal/dealSlice";
 import { useGetDealPreviewQuery } from "../../api/dealPreview";
 import styles from "./RemoveProductsModal.module.css";
 import { userProfileState } from "../../store/feature/auth/authSlice";
+import { useGetVoucherPreviewQuery } from "../../api/voucherPreview";
+import { updatedVoucherId } from "../../store/feature/voucher/voucherSlice";
 
 // const PAGE_SIZE = 10;
 
@@ -68,16 +70,17 @@ interface IRemoveProductsModal {
   isOpen: boolean;
   handleClose: MouseEventHandler;
   exclusions?: boolean;
+  isVoucher?: boolean;
 }
 
 const RemoveProductsModal = ({
   isOpen,
   handleClose,
   exclusions,
+  isVoucher,
 }: IRemoveProductsModal) => {
   const { getValues, setValue } = useFormContext();
   const [search, setSearch] = useState<string>("");
-  // const [page, setPage] = useState<number>(1);
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
   const [selectedRows, setSelectedRows] = useState<any>([]);
   const [confirmationMessage, setConfirmationMessage] = useState<string | null>(
@@ -85,14 +88,15 @@ const RemoveProductsModal = ({
   );
   const user = useAppSelector(userProfileState);
   const dealId = useAppSelector(updatedDealId);
-  const { data } = useGetDealPreviewQuery({ dealId, user });
-
-  // const handlePagination = useCallback(
-  //   (e: ChangeEvent<unknown>, number: number): void => {
-  //     setPage(number);
-  //   },
-  //   []
-  // );
+  const voucherId = useAppSelector(updatedVoucherId);
+  const { data } = useGetDealPreviewQuery(
+    { dealId, user },
+    { skip: isVoucher }
+  );
+  const { data: voucherData } = useGetVoucherPreviewQuery(
+    { voucherId, user },
+    { skip: !isVoucher }
+  );
 
   const handleSearchChange = ({
     target: { value },
@@ -127,8 +131,13 @@ const RemoveProductsModal = ({
         ...removeMchExclusionsList,
       ].map(({ value }) => value);
 
-      const existingExclusionsMch = data?.exclusion?.product?.mch;
-      const existingExclusionsLiam = data?.exclusion?.product?.liam;
+      let existingExclusionsMch = data?.exclusion?.product?.mch;
+      let existingExclusionsLiam = data?.exclusion?.product?.liam;
+
+      if (isVoucher) {
+        existingExclusionsMch = voucherData?.voucherExclusions?.product?.mch;
+        existingExclusionsLiam = voucherData?.voucherExclusions?.product?.liam;
+      }
 
       existingExclusionsMch.forEach((mch: string) => {
         !combinedRemovalForExclusions.includes(mch) && newExMch.push(mch);
@@ -142,7 +151,10 @@ const RemoveProductsModal = ({
     } else {
       const newMch: Array<any> = [];
       const newLiam: Array<any> = [];
-      const existingScopes = data?.dealValue?.scopeValue;
+      let existingScopes = data?.dealValue?.scopeValue;
+      if (isVoucher) {
+        existingScopes = voucherData?.vouchersProductsAndCollections?.scopes;
+      }
 
       const combinedRemovalForInclusions = [
         ...removeMchList,
@@ -170,8 +182,12 @@ const RemoveProductsModal = ({
   let records: Array<{ value: string; type: string; id: string }> = [];
 
   if (exclusions) {
-    const mch = data?.exclusion?.product?.mch || [];
-    const liam = data?.exclusion?.product?.liam || [];
+    let mch = data?.exclusion?.product?.mch || [];
+    let liam = data?.exclusion?.product?.liam || [];
+    if (isVoucher) {
+      mch = voucherData?.voucherExclusions?.product?.mch || [];
+      liam = voucherData?.voucherExclusions?.product?.liam || [];
+    }
     mch.forEach((value: string) => {
       records.push({
         value,
@@ -187,7 +203,9 @@ const RemoveProductsModal = ({
       });
     });
   } else {
-    records = data?.dealValue?.scopeValue;
+    records = isVoucher
+      ? voucherData?.vouchersProductsAndCollections?.scopes
+      : data?.dealValue?.scopeValue;
   }
 
   const handleDeleteProducts = async () => {
@@ -226,7 +244,9 @@ const RemoveProductsModal = ({
         }
       );
     } else {
-      const scopes = data?.dealValue?.scopeValue;
+      const scopes = isVoucher
+        ? voucherData?.vouchersProductsAndCollections?.scopes
+        : data?.dealValue?.scopeValue;
       scopes.forEach((scope: { value: string; sub_type: string }) => {
         const { value, sub_type } = scope;
         if (productsToBeRemoved.includes(value)) {
@@ -263,7 +283,7 @@ const RemoveProductsModal = ({
 
   let tableData: Array<{ value: string }> = [];
 
-  if (data) {
+  if (data || voucherData) {
     if (confirmationMessage) {
       const removeMchList = getValues("removeMchList") || [];
       const removeLiamList = getValues("removeLiamList") || [];
