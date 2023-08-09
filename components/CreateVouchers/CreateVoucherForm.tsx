@@ -1,4 +1,4 @@
-import React, { MouseEvent, useState } from "react";
+import React, { MouseEvent, useEffect, useState } from "react";
 import Modal from "react-modal";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -82,6 +82,8 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
   const [checkForDuplicateInProgress, setCheckForDuplicateInProgress] =
     useState<boolean>(false);
 
+  const [isSaveDisable, setIsSaveDisable] = useState<boolean>(false)
+
   const isVoucherEditing = useAppSelector(updatedVoucherEditing);
   const draftFormValues = useAppSelector(getNewVoucherData);
   const voucherId = useAppSelector(updatedVoucherId);
@@ -104,7 +106,7 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
     setError,
     formState: { errors },
   } = formMethods;
-  const draftButtonLabel = voucherId ? "Save" : "Save as draft";
+  const draftButtonLabel = isVoucherEditing ? "Save" : "Save as draft";
   const voucherLevel = getValues("voucherLevel");
 
   const handleBack = () => {
@@ -136,6 +138,15 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
       router.push("/vouchers/create/summary");
     }
   };
+
+  useEffect(() => {
+    if (errors?.externalVoucherCode) {
+      setIsSaveDisable(true)
+    }
+    else {
+      setIsSaveDisable(false)
+    }
+  });
 
   const handleEditCancel = () => {
     setExitModal(true);
@@ -199,7 +210,7 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
           variant="contained"
           className={generalInformationStyles.draftBtn}
           onClick={() => handleDraftSave()}
-          disabled={checkForDuplicateInProgress || submitting}
+          disabled={checkForDuplicateInProgress || submitting || isSaveDisable}
         >
           {draftButtonLabel}
         </Button>
