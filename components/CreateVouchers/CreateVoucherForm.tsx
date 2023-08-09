@@ -2,7 +2,7 @@ import React, { MouseEvent, useState } from "react";
 import Modal from "react-modal";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography, Chip } from "@mui/material";
 import commonStyles from "../CreateDeal/Steps.module.css";
 import styles from "../CreateDeal/CreateDealForm.module.css";
 import GeneralInformation from "./GeneralInformation";
@@ -29,7 +29,10 @@ import {
 import moment from "moment";
 import convertVoucherDataToFormData from "../../util/convertVoucherToFormData";
 import ExitEditModal from "../CreateDeal/ExitEditModal";
-import { EDIT_SCENARIO_FILED_EXCEPTIONS } from "../../constants/FormOptions";
+import {
+  EDIT_SCENARIO_FILED_EXCEPTIONS,
+  statusOptions,
+} from "../../constants/FormOptions";
 import generalInformationStyles from "../CreateDeal/GeneralInformation.module.css";
 import { useEditVoucherMutation } from "../../api/editVoucher";
 import generateCreateVoucherPayload from "../../util/createVoucherPayload";
@@ -39,9 +42,12 @@ import {
   notifySuccess,
 } from "../../util/Notification/Notification";
 import DraftModal from "../CreateDeal/DraftModal";
+import { dealStatus } from "../../constants/DealStatus";
+import { convertToEST } from "../../util/ConvertDateTime";
+import { capitalizeWords } from "../../util/format";
 
 interface ICreateVoucherFrom {
-  voucher?: object;
+  voucher?: any;
 }
 
 const draftModalcustomStyles = {
@@ -176,6 +182,31 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
       });
   };
 
+  let headerContent = (
+    <Grid container sx={{ margin: "3.3% 25%" }}>
+      <Grid item lg={6} md={6} sm={6}>
+        <Typography
+          data-testid="createVocuherTitle"
+          variant="h3"
+          className={commonStyles.heading}
+        >
+          Create New Promotional Voucher
+        </Typography>
+      </Grid>
+      <Grid item lg={6} md={6} sm={6}>
+        <Button
+          data-testid="draft-btn"
+          variant="contained"
+          className={generalInformationStyles.draftBtn}
+          onClick={() => handleDraftSave()}
+          disabled={checkForDuplicateInProgress || submitting}
+        >
+          {draftButtonLabel}
+        </Button>
+      </Grid>
+    </Grid>
+  );
+
   let ctaContent = (
     <div className={styles["submit-btn-container"]}>
       <div>
@@ -234,39 +265,68 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
         </div>
       </div>
     );
+
+    headerContent = (
+      <>
+        <Grid
+          container
+          justifyContent="space-between"
+          className={generalInformationStyles["heading-container"]}
+        >
+          <Grid item lg={5} md={5} sm={5}>
+            <Typography
+              variant="h3"
+              className={generalInformationStyles.heading}
+              data-testid="form-title"
+            >
+              {voucher?.voucherGeneralInfo?.code}
+            </Typography>
+          </Grid>
+          <Grid item lg={7} md={7} sm={7}>
+            <Button
+              data-testid="draft-btn"
+              variant="contained"
+              className={generalInformationStyles.draftBtn}
+              onClick={() => handleDraftSave()}
+            >
+              {draftButtonLabel}
+            </Button>
+          </Grid>
+        </Grid>
+        <Typography className={generalInformationStyles.draftTime}>
+          voucher created on
+          {voucher?.vouchersDateInEffect?.createdAt
+            ? convertToEST(voucher?.vouchersDateInEffect?.createdAt).format(
+                "MMMM D, YYYY [at] h:mm A z"
+              )
+            : null}
+        </Typography>
+        <Chip
+          className={
+            voucher?.voucherGeneralInfo?.status === "INACTIVE"
+              ? generalInformationStyles.inactiveChip
+              : generalInformationStyles.Chip
+          }
+          sx={{
+            margin: "0 25%",
+            backgroundColor: dealStatus[voucher?.voucherGeneralInfo?.status],
+            mb: 1,
+            fontColor: "#000000",
+          }}
+          label={
+            voucher?.voucherGeneralInfo?.status
+              ? capitalizeWords(voucher?.voucherGeneralInfo?.status)
+              : null
+          }
+        />
+      </>
+    );
   }
 
   return (
     <FormProvider {...formMethods}>
       <Grid className={commonStyles.mainSection}>
-        {!isVoucherEditing && (
-          <Grid container sx={{ margin: "3.3% 25%" }}>
-            <Grid item lg={6} md={6} sm={6}>
-              <Typography
-                data-testid="createVocuherTitle"
-                variant="h3"
-                className={commonStyles.heading}
-              >
-                Create New Promotional Voucher
-              </Typography>
-            </Grid>
-            <Grid item lg={6} md={6} sm={6}>
-              <Button
-                data-testid="draft-btn"
-                variant="contained"
-                className={generalInformationStyles.draftBtn}
-                onClick={() => handleDraftSave()}
-                disabled={
-                  checkForDuplicateInProgress ||
-                  submitting ||
-                  errors.externalVoucherCode
-                }
-              >
-                {draftButtonLabel}
-              </Button>
-            </Grid>
-          </Grid>
-        )}
+        {headerContent}
         <GeneralInformation
           isVoucherEditing={isVoucherEditing}
           currentStep={2}
