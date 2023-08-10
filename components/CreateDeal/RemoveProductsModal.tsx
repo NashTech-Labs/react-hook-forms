@@ -151,6 +151,7 @@ const RemoveProductsModal = ({
     } else {
       const newMch: Array<any> = [];
       const newLiam: Array<any> = [];
+
       let existingScopes = data?.dealValue?.scopeValue;
       if (isVoucher) {
         existingScopes = voucherData?.vouchersProductsAndCollections?.scopes;
@@ -205,7 +206,7 @@ const RemoveProductsModal = ({
   } else {
     records = isVoucher
       ? voucherData?.vouchersProductsAndCollections?.scopes
-      : data?.dealValue?.scopeValue;
+      : data?.dealValue?.scopeValue || [];
   }
 
   const handleDeleteProducts = async () => {
