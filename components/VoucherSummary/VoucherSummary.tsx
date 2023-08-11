@@ -625,7 +625,7 @@ function VoucherSummary() {
                   : null}
               </Typography>
               <Chip
-                className={styles.Chip}
+                className={data?.voucherGeneralInfo?.status === "INACTIVE" ? styles.inactiveChip : styles.Chip}
                 sx={{
                   backgroundColor: dealStatus[data?.voucherGeneralInfo?.status],
                   mb: 1,

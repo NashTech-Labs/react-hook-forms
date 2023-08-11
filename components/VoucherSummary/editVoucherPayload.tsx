@@ -19,19 +19,15 @@ export const editVoucherPayload = (data: voucherPreview, name: string, isDealAct
         valid_to: data?.vouchersDateInEffect?.validTo,
         stacking_type: data?.voucherGeneralInfo?.stackingType,
         scope_type: data?.voucherValues?.scopeType,
-        promo_restrictions: {},
+        promo_restrictions: {
+            "spend": data?.voucherExclusions?.spend
+        },
         username: name
     }
 
     if (data?.voucherExclusions?.priceApplicability) {
         payload["promo_restrictions"]["price_applicability"] = {
             value: data?.voucherExclusions?.priceApplicability?.value
-        }
-    }
-
-    if (data?.voucherExclusions?.spend) {
-        payload["promo_restrictions"] = {
-            spend: data?.voucherExclusions?.spend
         }
     }
 

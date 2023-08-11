@@ -89,7 +89,7 @@ function EditDealModal({ closeModal, isDealActive, disableDeal, data, dealId, re
                 <Grid container alignItems="center" my={2}>
                     <Grid item lg={11}>
                         <Typography variant="h5" className={classes["modal-heading"]}>
-                            {isDealActive === true ? "Disable deal?" : "Enable deal?"}
+                            {isDealActive === true ? `Disable ${data?.voucherGeneralInfo?.type === "PROMOTIONAL" ? "voucher" : "deal"}?` : `Enable ${data?.voucherGeneralInfo?.type === "PROMOTIONAL" ? "voucher" : "deal"}?`}
                         </Typography>
                     </Grid>
                     <Grid item lg={1} sx={{ cursor: "pointer", textAlign: "right" }}>
