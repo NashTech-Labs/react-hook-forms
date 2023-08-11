@@ -53,21 +53,21 @@ describe("Create Voucher tests", () => {
         expect(screen.getByTestId("ContinueBtn")).toBeInTheDocument();
     });
 
-    test("Test Create Voucher Multi-buy button", async () => {
-        render(
-            <Provider store={store}>
-                <GoogleOAuthProvider clientId={""}>
-                    <CreateVoucher />
-                </GoogleOAuthProvider>
-            </Provider>
-        );
-        expect(screen.getByTestId("createDealTitle")).toBeInTheDocument();
+    // test("Test Create Voucher Multi-buy button", async () => {
+    //     render(
+    //         <Provider store={store}>
+    //             <GoogleOAuthProvider clientId={""}>
+    //                 <CreateVoucher />
+    //             </GoogleOAuthProvider>
+    //         </Provider>
+    //     );
+    //     expect(screen.getByTestId("createDealTitle")).toBeInTheDocument();
 
-        const clickIndicator = screen.getByTestId("multidealBtn");
-        fireEvent.click(clickIndicator);
+    //     const clickIndicator = screen.getByTestId("multidealBtn");
+    //     fireEvent.click(clickIndicator);
 
-        expect(screen.getByTestId("ContinueBtn")).toBeInTheDocument();
-    });
+    //     expect(screen.getByTestId("ContinueBtn")).toBeInTheDocument();
+    // });
 
     test("Test Cancel Voucher button", async () => {
         render(

@@ -65,7 +65,7 @@ function CreateVoucher() {
                     </Grid>
                 </Grid>
 
-                <Grid
+                {/* <Grid
                     data-testid="multidealBtn"
                     // onClick={() => {
                     //     handleVoucherValue("serialized");
@@ -82,7 +82,7 @@ function CreateVoucher() {
                             Create new serialized voucher
                         </Typography>
                     </Grid>
-                </Grid>
+                </Grid> */}
 
             </Card>
 

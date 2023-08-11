@@ -29,6 +29,12 @@ export const editVoucherPayload = (data: voucherPreview, name: string, isDealAct
         }
     }
 
+    if (data?.voucherExclusions?.spend) {
+        payload["promo_restrictions"] = {
+            spend: data?.voucherExclusions?.spend
+        }
+    }
+
     if (data?.voucherValues?.scopeType !== "BASKET") {
         payload["promo_restrictions"]["product_code"] = {
             "liam": data?.voucherExclusions?.product?.liam

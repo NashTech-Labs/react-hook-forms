@@ -12,6 +12,7 @@ const TOOLTIP_TEXT: { [key: string]: string } = {
     ENGLISH_PROMOTION: 'This is a customer-facing note shared to browsers with language settings on English. Message can be customized as needed.',
     FRENCH_PROMOTION: 'This is a customer-facing note shared to browsers with language settings on French. Message can be customized as needed.',
     DEAL_TOGGLE: 'A completed deal can be marked as Active (Currently customer facing), or be taken down by switching to Disabled.',
+    VOUCHER_TOGGLE: 'A completed voucher can be marked as Active (Currently customer facing), or be taken down by switching to Disabled.',
     VOUCHER_QUANTITY: 'The maximum number of vouchers that will be dispensed to customers. Can be added upon later',
     VOUCHER_USAGE: 'The number of times the customer can use the voucher'
 }
