@@ -638,7 +638,7 @@ function VoucherSummary() {
 
           {/* Active and Inactive */}
 
-          {/* {data?.voucherGeneralInfo?.status === "ACTIVE" || data?.voucherGeneralInfo?.status === "INACTIVE" ?
+          {data?.voucherGeneralInfo?.status === "ACTIVE" || data?.voucherGeneralInfo?.status === "INACTIVE" ?
                         <Grid container mt={3} item lg={6} ml="25%" className={data?.voucherGeneralInfo?.status === "ACTIVE" ? styles.toggleSection : styles.toggleDisabledSection} >
                             <Grid mt={1} item lg={5}>
                                 <Stack direction={"row"} gap={2}>
@@ -653,7 +653,7 @@ function VoucherSummary() {
                                     />
                                     <Stack>
                                         <Typography className={styles.activeHeading} >{data?.voucherGeneralInfo?.status === "ACTIVE" ? "ACTIVE" : "DISABLED"}</Typography>
-                                        <Typography className={styles.activePeriod} >{data?.voucherGeneralInfo?.valid_to ? convertToEST(data?.voucherGeneralInfo?.valid_to).format("MMMM D, YYYY [at] h:mm A z") : null}</Typography>
+                                        <Typography className={styles.activePeriod} >{data?.vouchersDateInEffect?.validTo ? convertToEST(data?.vouchersDateInEffect?.validTo).format("MMMM D, YYYY [at] h:mm A z") : null}</Typography>
                                     </Stack>
                                 </Stack>
                             </Grid>
@@ -665,11 +665,11 @@ function VoucherSummary() {
                                     alignItems: 'center',
                                     paddingRight: '20px'
                                 }}>
-                                    <CustomTooltip descriptionKey="DEAL_TOGGLE" />
+                                    <CustomTooltip descriptionKey="VOUCHER_TOGGLE" />
                                 </Box>
                             </Grid>
                         </Grid>
-                        : null} */}
+                        : null}
 
           {/* Active and Inactive */}
 
