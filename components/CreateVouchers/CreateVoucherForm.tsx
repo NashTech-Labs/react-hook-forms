@@ -109,6 +109,8 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
   const draftButtonLabel = isVoucherEditing ? "Save" : "Save as draft";
   const voucherLevel = getValues("voucherLevel");
 
+  const externalVoucherCode = getValues('externalVoucherCode')
+
   const handleBack = () => {
     dispatch(updateVoucherType(""));
   };
@@ -290,7 +292,7 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
               className={generalInformationStyles.heading}
               data-testid="form-title"
             >
-              {voucher?.voucherGeneralInfo?.code}
+              {voucher?.voucherGeneralInfo?.code || externalVoucherCode}
             </Typography>
           </Grid>
           <Grid item lg={7} md={7} sm={7}>
