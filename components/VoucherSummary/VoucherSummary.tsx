@@ -32,6 +32,12 @@ import CustomTooltip from "../Tooltip";
 import Modal from "react-modal";
 import { styled } from "@mui/material/styles";
 import EditDealModal from "../Summary/EditDealModal";
+import { useCreateVoucherMutation } from "../../api/createVoucher";
+import {
+  notifySuccess,
+  notifyError,
+} from "../../util/Notification/Notification";
+import { updateVoucherId } from "../../store/feature/voucher/voucherSlice";
 
 const editDealStyles = {
   content: {
@@ -108,27 +114,19 @@ const IOSSwitch = styled((props: SwitchProps) => (
 
 function VoucherSummary() {
   const router = useRouter();
-
   const dispatch = useAppDispatch();
-
+  const [isVoucherActive, setIsVoucherActive] = useState<boolean>(true);
+  const [noEditModal, setNoEditModal] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const user = useAppSelector(userProfileState);
-
   const voucherId = useAppSelector(updatedVoucherId);
-
   const isVoucherEditing = useAppSelector(updatedVoucherEditing);
-
   const { data, refetch } = useGetVoucherPreviewQuery({ voucherId, user });
-
+  const [createVoucher] = useCreateVoucherMutation();
   const discountTypeDealLabel =
     data?.voucherValues?.rewardType === "%_OFF"
       ? "Percentage (%) off"
       : "Fixed off";
-
-  const [isVoucherActive, setIsVoucherActive] = useState<boolean>(true);
-
-  const [noEditModal, setNoEditModal] = useState<boolean>(false);
-
-  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const ToProperCase = (string: string) => {
     let str = string.replace(/_/g, " ");
@@ -232,8 +230,39 @@ function VoucherSummary() {
   };
 
   const handleEditClick = () => {
-    dispatch(updateVoucherEditing(true));
-    dispatch(updateVoucherType(data?.voucherGeneralInfo?.type.toLowerCase()));
+    if (data?.voucherGeneralInfo?.status === "ENDED") {
+      const payload = {
+        code: data?.voucherGeneralInfo?.code,
+        status: "DRAFT",
+        is_serialized: false,
+        username: user.name,
+      };
+      createVoucher(payload)
+        .then((response: any) => {
+          const { data: createVoucherResponseData, error } = response;
+          if (createVoucherResponseData) {
+            dispatch(updateVoucherEditing(true));
+            dispatch(
+              updateVoucherType(data?.voucherGeneralInfo?.type.toLowerCase())
+            );
+            dispatch(updateVoucherId(createVoucherResponseData.id));
+            notifySuccess("Voucher successfully saved");
+          }
+          if (error) {
+            notifyError(`Error: ${error?.data?.details}`, "duplicate-voucher");
+          }
+        })
+        .catch((error: any) => {
+          console.error(error);
+          notifyError(
+            error.data?.details ? error.data?.details : "Something went wrong",
+            "voucher-failed"
+          );
+        });
+    } else {
+      dispatch(updateVoucherEditing(true));
+      dispatch(updateVoucherType(data?.voucherGeneralInfo?.type.toLowerCase()));
+    }
   };
 
   useEffect(() => {
@@ -586,15 +615,15 @@ function VoucherSummary() {
           >
             Go Back
           </Button>
-          {data?.voucherGeneralInfo?.status === "ENDED" ? null : (
-            <Button
-              onClick={() => handleEditClick()}
-              className={styles.btn}
-              variant="contained"
-            >
-              Edit
-            </Button>
-          )}
+          <Button
+            onClick={() => handleEditClick()}
+            className={styles.btn}
+            variant="contained"
+          >
+            {data?.voucherGeneralInfo?.status === "ENDED"
+              ? "Re-create"
+              : "Edit"}
+          </Button>
         </Grid>
       </>
     );
@@ -625,7 +654,11 @@ function VoucherSummary() {
                   : null}
               </Typography>
               <Chip
-                className={data?.voucherGeneralInfo?.status === "INACTIVE" ? styles.inactiveChip : styles.Chip}
+                className={
+                  data?.voucherGeneralInfo?.status === "INACTIVE"
+                    ? styles.inactiveChip
+                    : styles.Chip
+                }
                 sx={{
                   backgroundColor: dealStatus[data?.voucherGeneralInfo?.status],
                   mb: 1,
@@ -638,38 +671,64 @@ function VoucherSummary() {
 
           {/* Active and Inactive */}
 
-          {data?.voucherGeneralInfo?.status === "ACTIVE" || data?.voucherGeneralInfo?.status === "INACTIVE" ?
-                        <Grid container mt={3} item lg={6} ml="25%" className={data?.voucherGeneralInfo?.status === "ACTIVE" ? styles.toggleSection : styles.toggleDisabledSection} >
-                            <Grid mt={1} item lg={5}>
-                                <Stack direction={"row"} gap={2}>
-                                    <FormControlLabel
-                                        control={<IOSSwitch
-                                            data-testId='toggleClick'
-                                            checked={isVoucherActive}
-                                            sx={{ m: 1, marginLeft: "38%" }}
-                                            onChange={handleChange}
-                                        />}
-                                        label=""
-                                    />
-                                    <Stack>
-                                        <Typography className={styles.activeHeading} >{data?.voucherGeneralInfo?.status === "ACTIVE" ? "ACTIVE" : "DISABLED"}</Typography>
-                                        <Typography className={styles.activePeriod} >{data?.vouchersDateInEffect?.validTo ? convertToEST(data?.vouchersDateInEffect?.validTo).format("MMMM D, YYYY [at] h:mm A z") : null}</Typography>
-                                    </Stack>
-                                </Stack>
-                            </Grid>
-                            <Grid item lg={7}>
-                                <Box sx={{
-                                    height: '100%',
-                                    display: 'flex',
-                                    justifyContent: 'flex-end',
-                                    alignItems: 'center',
-                                    paddingRight: '20px'
-                                }}>
-                                    <CustomTooltip descriptionKey="VOUCHER_TOGGLE" />
-                                </Box>
-                            </Grid>
-                        </Grid>
+          {data?.voucherGeneralInfo?.status === "ACTIVE" ||
+          data?.voucherGeneralInfo?.status === "INACTIVE" ? (
+            <Grid
+              container
+              mt={3}
+              item
+              lg={6}
+              ml="25%"
+              className={
+                data?.voucherGeneralInfo?.status === "ACTIVE"
+                  ? styles.toggleSection
+                  : styles.toggleDisabledSection
+              }
+            >
+              <Grid mt={1} item lg={5}>
+                <Stack direction={"row"} gap={2}>
+                  <FormControlLabel
+                    control={
+                      <IOSSwitch
+                        data-testId="toggleClick"
+                        checked={isVoucherActive}
+                        sx={{ m: 1, marginLeft: "38%" }}
+                        onChange={handleChange}
+                      />
+                    }
+                    label=""
+                  />
+                  <Stack>
+                    <Typography className={styles.activeHeading}>
+                      {data?.voucherGeneralInfo?.status === "ACTIVE"
+                        ? "ACTIVE"
+                        : "DISABLED"}
+                    </Typography>
+                    <Typography className={styles.activePeriod}>
+                      {data?.vouchersDateInEffect?.validTo
+                        ? convertToEST(
+                            data?.vouchersDateInEffect?.validTo
+                          ).format("MMMM D, YYYY [at] h:mm A z")
                         : null}
+                    </Typography>
+                  </Stack>
+                </Stack>
+              </Grid>
+              <Grid item lg={7}>
+                <Box
+                  sx={{
+                    height: "100%",
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    alignItems: "center",
+                    paddingRight: "20px",
+                  }}
+                >
+                  <CustomTooltip descriptionKey="VOUCHER_TOGGLE" />
+                </Box>
+              </Grid>
+            </Grid>
+          ) : null}
 
           {/* Active and Inactive */}
 

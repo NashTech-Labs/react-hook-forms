@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
+import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import { Divider, Grid, Typography } from "@mui/material";
 import StepLabel from "../../StepLabel";
 import StepTitle from "../../StepTitle";
@@ -10,17 +10,10 @@ import DatePicker from "../../FormComponents/DatePicker";
 import InputTimePicker from "../../FormComponents/TimePicker";
 import { dateTimePreviewGenerator } from "../../../util/ConvertDateTime";
 import moment from "moment";
-import { useAppSelector } from "../../../store";
-import { updatedDealLevel, updatedDealStep } from "../../../store/feature/deal/dealSlice";
-import StepperCard from '../StepperCard'
-import { FREE_SHIPPING_DEAL_TYPE } from '../../../constants/FormOptions'
-import { updatedVoucherType } from "../../../store/feature/voucher/voucherSlice";
+import StepperCard from "../StepperCard";
 
-function DateInEffect({ deal, currentStep, totalSteps}: any) {
+function DateInEffect({ deal, currentStep, totalSteps }: any) {
   const { setValue, trigger } = useFormContext();
-  const dealName = useAppSelector(updatedDealStep);
-  const dealLevelName = useAppSelector(updatedDealLevel)
-  const voucherType = useAppSelector(updatedVoucherType);
 
   const startDateValue = useWatch({
     name: "startDatePicker",
@@ -73,16 +66,22 @@ function DateInEffect({ deal, currentStep, totalSteps}: any) {
   }, [startTimeValue]);
 
   useEffect(() => {
-    if (deal?.generalDealInfo?.status === "ENDED") {
+    if (
+      deal?.generalDealInfo?.status === "ENDED" ||
+      deal?.voucherGeneralInfo?.status === "ENDED"
+    ) {
       setValue("startTimePicker", null);
       setValue("endTimePicker", null);
       setValue("startDatePicker", null);
       setValue("endDatePicker", null);
     }
-  }, [])
+  }, []);
 
   return (
-    <StepperCard step={'DATE_IN_EFFECT'} inProgressIcon={CalendarMonthOutlinedIcon}>
+    <StepperCard
+      step={"DATE_IN_EFFECT"}
+      inProgressIcon={CalendarMonthOutlinedIcon}
+    >
       <StepLabel currentStep={currentStep} totalSteps={totalSteps} />
       <StepTitle title={"Date in effect"} />
       <Grid container>
@@ -99,7 +98,11 @@ function DateInEffect({ deal, currentStep, totalSteps}: any) {
               >
                 Date
               </Typography>
-              <DatePicker name="startDatePicker" required minDate={moment().subtract(1, "days")} />
+              <DatePicker
+                name="startDatePicker"
+                required
+                minDate={moment().subtract(1, "days")}
+              />
             </Grid>
             <Grid item lg={6}>
               <Typography
