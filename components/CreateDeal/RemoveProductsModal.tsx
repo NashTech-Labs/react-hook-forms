@@ -139,10 +139,10 @@ const RemoveProductsModal = ({
         existingExclusionsLiam = voucherData?.voucherExclusions?.product?.liam;
       }
 
-      existingExclusionsMch.forEach((mch: string) => {
+      existingExclusionsMch?.forEach((mch: string) => {
         !combinedRemovalForExclusions.includes(mch) && newExMch.push(mch);
       });
-      existingExclusionsLiam.forEach((liam: string) => {
+      existingExclusionsLiam?.forEach((liam: string) => {
         !combinedRemovalForExclusions.includes(liam) && newExLiam.push(liam);
       });
 
@@ -179,7 +179,7 @@ const RemoveProductsModal = ({
 
     handleClose(e);
   };
-
+  
   let records: Array<{ value: string; type: string; id: string }> = [];
 
   if (exclusions) {
@@ -205,7 +205,7 @@ const RemoveProductsModal = ({
     });
   } else {
     records = isVoucher
-      ? voucherData?.vouchersProductsAndCollections?.scopes
+      ? voucherData?.vouchersProductsAndCollections?.scopes || []
       : data?.dealValue?.scopeValue || [];
   }
 

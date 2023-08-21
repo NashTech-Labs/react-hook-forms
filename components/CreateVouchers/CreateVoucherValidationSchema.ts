@@ -106,7 +106,21 @@ const schema = yup.object().shape({
     //     .test('voucher_qauntity', 'Error: Voucher qauntity should be whole number', (value: any) => value && value % 1 === 0)
     //     .required('Error: Number of vouchers required'),
     // usageOfVoucher: yup.string().required('Error: Number of uses required'),
-    startDatePicker: yup.date().typeError("Error: Valid date required").min(moment().subtract(1, "days").format("YYYY-MM-DD"), "Error: You cannot add date before yesterday").required('Error: Date required').nullable(),
+    startDatePicker: yup.date()
+    .typeError("Error: Valid date required")
+    .test(
+      "test-start-date",
+      "Error: You cannot add date before yesterday",
+      function (value, context) {
+        return isEndDateTimeValid(
+          value,
+          context.parent.startDatePicker,
+          ">="
+        );
+      }
+    )
+    .required("Error: Date required")
+    .nullable(),
     startTimePicker: yup.date().typeError("Error: Valid time required").required('Error: Time required').nullable(),
     endDatePicker: yup.date().typeError("Error: Valid date required").required('Error: Date required').nullable()
         .test("test-end-date", "Error: End date smaller than start date", function(value, context) {

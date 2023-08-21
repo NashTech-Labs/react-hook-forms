@@ -91,6 +91,10 @@ const Exclusions = ({ dealLevelName, deal, currentStep, totalSteps }: any) => {
     }
   }, [deal]);
 
+  const showExclusion =
+    (isEditing && deal?.dealValue?.scopeType === "PRODUCT") ||
+    (dealLevelName === "product" && isVoucherEditing);
+
   return (
     <StepperCard step={"EXCLUSIONS"} inProgressIcon={DoDisturbOutlinedIcon}>
       <StepLabel currentStep={currentStep} totalSteps={totalSteps} />
@@ -110,8 +114,7 @@ const Exclusions = ({ dealLevelName, deal, currentStep, totalSteps }: any) => {
             inputHeight={true}
           />
         </div>
-        {((isEditing && deal?.dealValue?.scopeType === "PRODUCT") ||
-          isVoucherEditing) && (
+        {showExclusion && (
           <Box marginBottom={2} mt={2}>
             <Button
               variant="contained"
@@ -122,8 +125,7 @@ const Exclusions = ({ dealLevelName, deal, currentStep, totalSteps }: any) => {
             </Button>
           </Box>
         )}
-        {((isEditing && deal?.dealValue?.scopeType === "PRODUCT") ||
-          isVoucherEditing) && (
+        {showExclusion && (
           <Typography sx={{ marginBottom: "10px" }}>
             The Exclusions added in this step will be appended to existing
             Exclusions on the {isVoucherEditing ? "voucher" : "deal"}
