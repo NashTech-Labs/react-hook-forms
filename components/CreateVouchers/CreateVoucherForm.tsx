@@ -20,6 +20,7 @@ import {
   updateVoucherType,
   updatedVoucherEditing,
   updatedVoucherId,
+  updatedVoucherType,
 } from "../../store/feature/voucher/voucherSlice";
 import { useAppDispatch, useAppSelector } from "../../store";
 import {
@@ -31,7 +32,7 @@ import convertVoucherDataToFormData from "../../util/convertVoucherToFormData";
 import ExitEditModal from "../CreateDeal/ExitEditModal";
 import {
   EDIT_SCENARIO_FILED_EXCEPTIONS,
-  statusOptions,
+  voucherTypeOptions,
 } from "../../constants/FormOptions";
 import generalInformationStyles from "../CreateDeal/GeneralInformation.module.css";
 import { useEditVoucherMutation } from "../../api/editVoucher";
@@ -82,12 +83,13 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
   const [checkForDuplicateInProgress, setCheckForDuplicateInProgress] =
     useState<boolean>(false);
 
-  const [isSaveDisable, setIsSaveDisable] = useState<boolean>(false)
+  const [isSaveDisable, setIsSaveDisable] = useState<boolean>(false);
 
   const isVoucherEditing = useAppSelector(updatedVoucherEditing);
   const draftFormValues = useAppSelector(getNewVoucherData);
   const voucherId = useAppSelector(updatedVoucherId);
   const user = useAppSelector(userProfileState);
+  const voucherType = useAppSelector(updatedVoucherType);
   const [editVoucher] = useEditVoucherMutation();
   const formDefaultValues = voucher
     ? convertVoucherDataToFormData(voucher)
@@ -109,7 +111,7 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
   const draftButtonLabel = isVoucherEditing ? "Save" : "Save as draft";
   const voucherLevel = getValues("voucherLevel");
 
-  const externalVoucherCode = getValues('externalVoucherCode')
+  const externalVoucherCode = getValues("externalVoucherCode");
 
   const handleBack = () => {
     dispatch(updateVoucherType(""));
@@ -143,10 +145,9 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
 
   useEffect(() => {
     if (errors?.externalVoucherCode) {
-      setIsSaveDisable(true)
-    }
-    else {
-      setIsSaveDisable(false)
+      setIsSaveDisable(true);
+    } else {
+      setIsSaveDisable(false);
     }
   });
 
@@ -203,7 +204,7 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
           variant="h3"
           className={commonStyles.heading}
         >
-          Create New Promotional Voucher
+          Create New {voucherTypeOptions[voucherType.toUpperCase()]} Voucher
         </Typography>
       </Grid>
       <Grid item lg={6} md={6} sm={6}>
