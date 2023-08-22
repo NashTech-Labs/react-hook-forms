@@ -309,7 +309,7 @@ const RemoveProductsModal = ({
       tableData = records;
     }
   }
-
+  console.log("tableData", getValues());
   let content = null;
 
   if (showConfirmation) {
@@ -324,6 +324,7 @@ const RemoveProductsModal = ({
             variant="outlined"
             className={styles.cancelBtn}
             onClick={handleCancelConfirmation}
+            data-testid="no-cancel-btn"
           >
             No, cancel
           </Button>
@@ -392,6 +393,7 @@ const RemoveProductsModal = ({
               textTransform: "none",
             }}
             onClick={handleDeleteClick}
+            data-testId="delete-btn"
           >
             Delete selected
           </Button>

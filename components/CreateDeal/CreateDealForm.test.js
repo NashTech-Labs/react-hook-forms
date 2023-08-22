@@ -24,30 +24,32 @@ jest.mock("next/router", () => ({
   },
 }));
 
-const TestCreateDealForm = (dealName) => {
+const TestCreateDealForm = (dealName, isEditing = false, dealData) => {
   const store = generateStore({
     deal: {
       dealLevelName: "product",
       dealName,
+      isEditing,
     },
   });
 
-  return <Provider store={store}>
-    <GoogleOAuthProvider clientId={""}>
-      <CreateDealForm />
-    </GoogleOAuthProvider>
-  </Provider>
-}
+  return (
+    <Provider store={store}>
+      <GoogleOAuthProvider clientId={""}>
+        <CreateDealForm deal={dealData}/>
+      </GoogleOAuthProvider>
+    </Provider>
+  );
+};
 
 describe("Create deal form tests", () => {
-
   test("Renders create form with out errors", async () => {
-    render(TestCreateDealForm("Discount"))
+    render(TestCreateDealForm("DISCOUNT"));
     await expect(screen.getByTestId("form-title")).toBeInTheDocument();
   });
 
   test("Form is not submitted when required fields are not filled", async () => {
-    render(TestCreateDealForm("Discount"))
+    render(TestCreateDealForm("DISCOUNT"));
     fireEvent.click(screen.getByTestId("continue-btn"));
     await waitFor(() =>
       expect(screen.getByText("Error: Title is required")).toBeInTheDocument()
@@ -55,7 +57,7 @@ describe("Create deal form tests", () => {
   });
 
   describe("Title field tests", () => {
-    beforeEach(() => render(TestCreateDealForm("Discount")))
+    beforeEach(() => render(TestCreateDealForm("DISCOUNT")));
     test("Proper error messages are displayed for empty title field", async () => {
       fireEvent.change(screen.getByTestId("title"), { target: { value: "" } });
       fireEvent.focusOut(screen.getByTestId("title"));
@@ -98,7 +100,7 @@ describe("Create deal form tests", () => {
   });
 
   describe("Priority field tests", () => {
-    beforeEach(() => render(TestCreateDealForm("Discount")))
+    beforeEach(() => render(TestCreateDealForm("DISCOUNT")));
     test("Proper error messages are displayed for empty priority field", async () => {
       fireEvent.change(screen.getByTestId("priority"), {
         target: { value: "" },
@@ -149,7 +151,7 @@ describe("Create deal form tests", () => {
   });
 
   describe("Stacking type field tests", () => {
-    beforeEach(() => render(TestCreateDealForm("Discount")))
+    beforeEach(() => render(TestCreateDealForm("DISCOUNT")));
     test("Proper error messages are displayed for empty stacking type field", async () => {
       const [stackTypeSelect] = screen.getAllByText("Select Type");
       fireEvent.click(stackTypeSelect);
@@ -176,9 +178,8 @@ describe("Create deal form tests", () => {
   });
 
   //Promotional Message Tests
-
   describe("Promotional Message Tests", () => {
-    beforeEach(() => render(TestCreateDealForm("Discount")))
+    beforeEach(() => render(TestCreateDealForm("DISCOUNT")));
     test("Proper error messages are displayed for empty english message field", async () => {
       fireEvent.change(screen.getByTestId("englishMessage"), {
         target: { value: "" },
@@ -241,7 +242,7 @@ describe("Create deal form tests", () => {
   // Date-In-Effect Test cases
 
   describe("Date-In-Effect field tests", () => {
-    beforeEach(() => render(TestCreateDealForm("Discount")))
+    beforeEach(() => render(TestCreateDealForm("DISCOUNT")));
     test("Proper error messages are displayed for empty start date field", async () => {
       fireEvent.click(screen.getByTestId("startDatePicker-icon"));
       fireEvent.change(screen.getByTestId("startDatePicker"), {
@@ -297,11 +298,11 @@ describe("Create deal form tests", () => {
 
   // Upload Component Test Cases
 
-  describe('Product Collection tests ', () => {
-    beforeEach(() => render(TestCreateDealForm("Discount")))
+  describe("Product Collection tests ", () => {
+    beforeEach(() => render(TestCreateDealForm("DISCOUNT")));
     test("Renders create collection title", async () => {
       expect(screen.getByTestId("collection")).toBeInTheDocument();
-    })
+    });
 
     // test("Upload input file with input fields", async () => {
     //   fireEvent.click(screen.getByTestId('uploadCollection'))
@@ -310,78 +311,216 @@ describe("Create deal form tests", () => {
     // })
 
     test("Renders manually add component", async () => {
-      fireEvent.click(screen.getByTestId('Manually add product(s)'))
+      fireEvent.click(screen.getByTestId("Manually add product(s)"));
       expect(screen.getByTestId("mchTitle")).toBeInTheDocument();
-    })
+    });
 
     test("Manually add MCH", async () => {
-      fireEvent.click(screen.getByTestId('Manually add product(s)'))
+      fireEvent.click(screen.getByTestId("Manually add product(s)"));
 
-      fireEvent.click(screen.getByTestId('addMCH'))
+      fireEvent.click(screen.getByTestId("addMCH"));
       expect(screen.getByTestId("mchTitle")).toBeInTheDocument();
-    })
+    });
 
     test("Manually delete MCH", async () => {
-      fireEvent.click(screen.getByTestId('Manually add product(s)'))
+      fireEvent.click(screen.getByTestId("Manually add product(s)"));
 
-      fireEvent.click(screen.getByTestId('addMCH'))
-      fireEvent.click(screen.getByTestId('deleteMCH'))
+      fireEvent.click(screen.getByTestId("addMCH"));
+      fireEvent.click(screen.getByTestId("deleteMCH"));
       expect(screen.getByTestId("mchTitle")).toBeInTheDocument();
-    })
+    });
 
     test("Manually show All MCH", async () => {
-      fireEvent.click(screen.getByTestId('Manually add product(s)'))
+      fireEvent.click(screen.getByTestId("Manually add product(s)"));
 
       for (let i = 0; i < 7; i++) {
-        fireEvent.click(screen.getByTestId('addMCH'))
+        fireEvent.click(screen.getByTestId("addMCH"));
       }
-      fireEvent.click(screen.getByTestId('showAllMCH'))
+      fireEvent.click(screen.getByTestId("showAllMCH"));
       expect(screen.getByTestId("mchTitle")).toBeInTheDocument();
-    })
+    });
 
     test("Manually add LIAM", async () => {
-      fireEvent.click(screen.getByTestId('Manually add product(s)'))
+      fireEvent.click(screen.getByTestId("Manually add product(s)"));
 
-      fireEvent.click(screen.getByTestId('addLIAM'))
+      fireEvent.click(screen.getByTestId("addLIAM"));
       expect(screen.getByTestId("mchTitle")).toBeInTheDocument();
-    })
+    });
 
     test("Manually delete LIAM", async () => {
-      fireEvent.click(screen.getByTestId('Manually add product(s)'))
+      fireEvent.click(screen.getByTestId("Manually add product(s)"));
 
-      fireEvent.click(screen.getByTestId('addLIAM'))
-      fireEvent.click(screen.getByTestId('deleteLIAM'))
+      fireEvent.click(screen.getByTestId("addLIAM"));
+      fireEvent.click(screen.getByTestId("deleteLIAM"));
       expect(screen.getByTestId("mchTitle")).toBeInTheDocument();
-    })
+    });
 
     test("Manually show All LIAM", async () => {
-      fireEvent.click(screen.getByTestId('Manually add product(s)'))
+      fireEvent.click(screen.getByTestId("Manually add product(s)"));
 
       for (let i = 0; i < 7; i++) {
-        fireEvent.click(screen.getByTestId('addLIAM'))
+        fireEvent.click(screen.getByTestId("addLIAM"));
       }
-      fireEvent.click(screen.getByTestId('showAllLIAM'))
+      fireEvent.click(screen.getByTestId("showAllLIAM"));
       expect(screen.getByTestId("mchTitle")).toBeInTheDocument();
-    })
+    });
+  });
 
-  })
-
-  describe('Shipping method tests', () => {
-    beforeEach(() => render(TestCreateDealForm("FREE_SHIPPING")))
+  describe("Shipping method tests", () => {
+    beforeEach(() => render(TestCreateDealForm("FREE_SHIPPING")));
     test("Renders Shipping method component", async () => {
       await waitFor(() =>
-        expect(
-          screen.queryByTestId("collection")
-        ).not.toBeInTheDocument()
+        expect(screen.queryByTestId("collection")).not.toBeInTheDocument()
       );
-    })
-  })
+    });
+  });
 
-  describe('Deal Criteria tests', () => {
-    beforeEach(() => render(TestCreateDealForm("MULTI_BUY")))
+  describe("Deal Criteria tests", () => {
+    beforeEach(() => render(TestCreateDealForm("MULTI_BUY")));
     test("Renders Deal Criteria component", async () => {
       expect(screen.getByTestId("dealCriteria")).toBeInTheDocument();
-    })
-  })
+    });
+  });
 
+  describe("Deal Value unit tests", () => {
+    beforeEach(() => render(TestCreateDealForm("DISCOUNT")));
+    test("displays error for all fields in Deal value step", async () => {
+      fireEvent.blur(screen.getByTestId("dollarOff"));
+      await waitFor(() =>
+        expect(
+          screen.getByText("Error: Dollar($) value required")
+        ).toBeInTheDocument()
+      );
+      fireEvent.click(screen.getByTestId("Percentage (%) off"));
+      fireEvent.click(screen.getByText("Add custom value"));
+      fireEvent.blur(screen.getByTestId("customPercentageOff"));
+      await waitFor(() =>
+        expect(
+          screen.getByText("Error: Percentage(%) value required")
+        ).toBeInTheDocument()
+      );
+      fireEvent.click(screen.getByTestId("Fixed price"));
+      fireEvent.blur(screen.getByTestId("fixedPriceOff"));
+      await waitFor(() =>
+        expect(
+          screen.getByText("Error: Dollar($) value required")
+        ).toBeInTheDocument()
+      );
+      fireEvent.click(screen.getByText("Basket"));
+      fireEvent.blur(screen.getByTestId("basketSpend"));
+      await waitFor(() =>
+        expect(
+          screen.getByText("Error: Dollar($) value required")
+        ).toBeInTheDocument()
+      );
+      fireEvent.change(screen.getByTestId("basketSpend"), {
+        target: { value: 20 },
+      });
+      fireEvent.blur(screen.getByTestId("basketDiscount"));
+      await waitFor(() =>
+        expect(
+          screen.getByText("Error: Dollar($) value required")
+        ).toBeInTheDocument()
+      );
+    });
+  });
+
+  describe("Draft modal tests", () => {
+    beforeEach(() => render(TestCreateDealForm("DISCOUNT")));
+    test("Draft modal shows up after save", async () => {
+      fireEvent.click(screen.getByTestId("draft-btn"));
+      await waitFor(() =>
+        expect(
+          screen.getByText("Saved. How would you like to proceed?")
+        ).toBeInTheDocument()
+      );
+    });
+
+    test("Draft modal closes when clicked on continue editing", async () => {
+      fireEvent.click(screen.getByTestId("draft-btn"));
+      await waitFor(() =>
+        expect(
+          screen.getByText("Saved. How would you like to proceed?")
+        ).toBeInTheDocument()
+      );
+      fireEvent.click(screen.getByText("Continue editing deal"));
+      await waitFor(() =>
+        expect(
+          screen.queryByText("Saved. How would you like to proceed?")
+        ).not.toBeInTheDocument()
+      );
+    });
+
+    test("Draft modal closes and naviigates to list page when clicked on exit button", async () => {
+      fireEvent.click(screen.getByTestId("draft-btn"));
+      await waitFor(() =>
+        expect(
+          screen.getByText("Saved. How would you like to proceed?")
+        ).toBeInTheDocument()
+      );
+      fireEvent.click(screen.getByTestId("exit-btn"));
+      await waitFor(() =>
+        expect(
+          screen.queryByText("Create New Discount Deal")
+        ).not.toBeInTheDocument()
+      );
+    });
+  });
+
+  describe("Edit exit modal tests", () => {
+    beforeEach(() => render(TestCreateDealForm("DISCOUNT", true)));
+    test("Exit modal shows up and closes when clicked on just exit", async () => {
+      fireEvent.click(screen.getByTestId("draft-btn"));
+      await waitFor(() =>
+        expect(
+          screen.getByText("Saved. How would you like to proceed?")
+        ).toBeInTheDocument()
+      );
+      fireEvent.click(screen.getByText("Continue editing deal"));
+      await waitFor(() =>
+        expect(
+          screen.queryByText("Saved. How would you like to proceed?")
+        ).not.toBeInTheDocument()
+      );
+      fireEvent.click(screen.getByTestId("cancel-btn"));
+      await waitFor(() =>
+        expect(
+          screen.queryByText("Are you sure your want to exit?")
+        ).toBeInTheDocument()
+      );
+      fireEvent.click(screen.getByText("Just exit"));
+      await waitFor(() =>
+        expect(
+          screen.queryByText("Create New Discount Deal")
+        ).not.toBeInTheDocument()
+      );
+    });
+  });
+
+  describe("Remove products modal unit tests", () => {
+    beforeEach(() => render(TestCreateDealForm("DISCOUNT", true)));
+
+    test("Remove products modal shows up", async () => {
+      fireEvent.click(screen.getByTestId("collections-remove-products"));
+      await waitFor(() =>
+        expect(
+          screen.queryByText(/Remove applicable products for promotion/)
+        ).toBeInTheDocument()
+      );
+      fireEvent.click(screen.getByTestId("delete-btn"));
+      await waitFor(() =>
+        expect(
+          screen.queryByText(
+            "Are you sure you wish to permanently remove these product(s) from this promotion?"
+          )
+        ).toBeInTheDocument()
+      );
+      fireEvent.click(screen.getByTestId("no-cancel-btn"));
+      await waitFor(() =>
+        expect(
+          screen.queryByText(/Remove applicable products for promotion/)
+        ).toBeInTheDocument()
+      );
+    });
+  });
 });

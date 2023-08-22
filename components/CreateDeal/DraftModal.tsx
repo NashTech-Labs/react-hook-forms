@@ -79,6 +79,7 @@ const DraftModal = ({ loading, closeModal, isVoucher }: IDraftModal) => {
             variant="contained"
             className={commonStyles.continueBtn}
             onClick={handleClose}
+            data-testid="continue-btn"
           >
             Continue editing {isVoucher ? "voucher" : "deal"}
           </Button>

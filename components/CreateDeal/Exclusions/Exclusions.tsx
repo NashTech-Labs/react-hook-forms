@@ -120,6 +120,7 @@ const Exclusions = ({ dealLevelName, deal, currentStep, totalSteps }: any) => {
               variant="contained"
               sx={{ textTransform: "none" }}
               onClick={() => setShowRemoveProductsModals(true)}
+              data-testid="exlusions-remove-products"
             >
               Remove products
             </Button>

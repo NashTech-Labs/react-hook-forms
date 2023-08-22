@@ -784,7 +784,7 @@ const CreateDealForm = ({ deal }: ICreateDealFrom) => {
             variant="outlined"
             className={commonStyles["cancelBtn"]}
             onClick={() => handleEditCancel()}
-            ata-testid="cancel-btn"
+            data-testid="cancel-btn"
           >
             Cancel
           </Button>
