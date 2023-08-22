@@ -69,6 +69,7 @@ function ProductsCollection({ currentStep, totalSteps }: any) {
               variant="contained"
               sx={{ textTransform: "none" }}
               onClick={() => setShowRemoveProductsModals(true)}
+              data-testid="collections-remove-products"
             >
               Remove products
             </Button>
