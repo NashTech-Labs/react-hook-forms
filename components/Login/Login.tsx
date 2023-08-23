@@ -12,7 +12,7 @@ function Login() {
   const responseGoogleSuccess = (response: any) => {
     dispatch(userToken(response?.credential));
     if (response != null) {
-      router.push("/deals");
+      router.push("/");
     }
   };
 

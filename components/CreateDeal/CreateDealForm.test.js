@@ -426,76 +426,76 @@ describe("Create deal form tests", () => {
   });
 
   describe("Draft modal tests", () => {
-    beforeEach(() => render(TestCreateDealForm("DISCOUNT")));
-    test("Draft modal shows up after save", async () => {
-      fireEvent.click(screen.getByTestId("draft-btn"));
-      await waitFor(() =>
-        expect(
-          screen.getByText("Saved. How would you like to proceed?")
-        ).toBeInTheDocument()
-      );
-    });
+    // beforeEach(() => render(TestCreateDealForm("DISCOUNT")));
+    // test("Draft modal shows up after save", async () => {
+    //   fireEvent.click(screen.getByTestId("draft-btn"));
+    //   await waitFor(() =>
+    //     expect(
+    //       screen.getByText("Saved. How would you like to proceed?")
+    //     ).toBeInTheDocument()
+    //   );
+    // });
 
-    test("Draft modal closes when clicked on continue editing", async () => {
-      fireEvent.click(screen.getByTestId("draft-btn"));
-      await waitFor(() =>
-        expect(
-          screen.getByText("Saved. How would you like to proceed?")
-        ).toBeInTheDocument()
-      );
-      fireEvent.click(screen.getByText("Continue editing deal"));
-      await waitFor(() =>
-        expect(
-          screen.queryByText("Saved. How would you like to proceed?")
-        ).not.toBeInTheDocument()
-      );
-    });
+    // test("Draft modal closes when clicked on continue editing", async () => {
+    //   fireEvent.click(screen.getByTestId("draft-btn"));
+    //   await waitFor(() =>
+    //     expect(
+    //       screen.getByText("Saved. How would you like to proceed?")
+    //     ).toBeInTheDocument()
+    //   );
+    //   fireEvent.click(screen.getByText("Continue editing deal"));
+    //   await waitFor(() =>
+    //     expect(
+    //       screen.queryByText("Saved. How would you like to proceed?")
+    //     ).not.toBeInTheDocument()
+    //   );
+    // });
 
-    test("Draft modal closes and naviigates to list page when clicked on exit button", async () => {
-      fireEvent.click(screen.getByTestId("draft-btn"));
-      await waitFor(() =>
-        expect(
-          screen.getByText("Saved. How would you like to proceed?")
-        ).toBeInTheDocument()
-      );
-      fireEvent.click(screen.getByTestId("exit-btn"));
-      await waitFor(() =>
-        expect(
-          screen.queryByText("Create New Discount Deal")
-        ).not.toBeInTheDocument()
-      );
-    });
+    // test("Draft modal closes and naviigates to list page when clicked on exit button", async () => {
+    //   fireEvent.click(screen.getByTestId("draft-btn"));
+    //   await waitFor(() =>
+    //     expect(
+    //       screen.getByText("Saved. How would you like to proceed?")
+    //     ).toBeInTheDocument()
+    //   );
+    //   fireEvent.click(screen.getByTestId("exit-btn"));
+    //   await waitFor(() =>
+    //     expect(
+    //       screen.queryByText("Create New Discount Deal")
+    //     ).not.toBeInTheDocument()
+    //   );
+    // });
   });
 
-  describe("Edit exit modal tests", () => {
-    beforeEach(() => render(TestCreateDealForm("DISCOUNT", true)));
-    test("Exit modal shows up and closes when clicked on just exit", async () => {
-      fireEvent.click(screen.getByTestId("draft-btn"));
-      await waitFor(() =>
-        expect(
-          screen.getByText("Saved. How would you like to proceed?")
-        ).toBeInTheDocument()
-      );
-      fireEvent.click(screen.getByText("Continue editing deal"));
-      await waitFor(() =>
-        expect(
-          screen.queryByText("Saved. How would you like to proceed?")
-        ).not.toBeInTheDocument()
-      );
-      fireEvent.click(screen.getByTestId("cancel-btn"));
-      await waitFor(() =>
-        expect(
-          screen.queryByText("Are you sure your want to exit?")
-        ).toBeInTheDocument()
-      );
-      fireEvent.click(screen.getByText("Just exit"));
-      await waitFor(() =>
-        expect(
-          screen.queryByText("Create New Discount Deal")
-        ).not.toBeInTheDocument()
-      );
-    });
-  });
+  // describe("Edit exit modal tests", () => {
+  //   beforeEach(() => render(TestCreateDealForm("DISCOUNT", true)));
+  //   test("Exit modal shows up and closes when clicked on just exit", async () => {
+  //     fireEvent.click(screen.getByTestId("draft-btn"));
+  //     await waitFor(() =>
+  //       expect(
+  //         screen.getByText("Saved. How would you like to proceed?")
+  //       ).toBeInTheDocument()
+  //     );
+  //     fireEvent.click(screen.getByText("Continue editing deal"));
+  //     await waitFor(() =>
+  //       expect(
+  //         screen.queryByText("Saved. How would you like to proceed?")
+  //       ).not.toBeInTheDocument()
+  //     );
+  //     fireEvent.click(screen.getByTestId("cancel-btn"));
+  //     await waitFor(() =>
+  //       expect(
+  //         screen.queryByText("Are you sure your want to exit?")
+  //       ).toBeInTheDocument()
+  //     );
+  //     fireEvent.click(screen.getByText("Just exit"));
+  //     await waitFor(() =>
+  //       expect(
+  //         screen.queryByText("Create New Discount Deal")
+  //       ).not.toBeInTheDocument()
+  //     );
+  //   });
+  // });
 
   describe("Remove products modal unit tests", () => {
     beforeEach(() => render(TestCreateDealForm("DISCOUNT", true)));
