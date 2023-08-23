@@ -26,6 +26,8 @@ import { voucherPreviewAPI } from "../api/voucherPreview";
 import { createVoucher } from "../api/createVoucher";
 import { editVoucher } from "../api/editVoucher";
 import { deleteVoucher } from "../api/deleteVoucher";
+import lobSlice from "./feature/selectlob/lobSlice";
+import { userLobs } from "../api/getuserLobs";
 
 const persistauthConfig = {
   key: "auth",
@@ -52,6 +54,16 @@ const voucher = {
   storage,
 };
 
+const persistConfigLOB = {
+  key: "lob",
+  storage,
+};
+
+const persistedLOBReducer = persistReducer(
+  persistConfigLOB,
+  lobSlice
+);
+
 const persistedAuthReducer = persistReducer(persistauthConfig, authReducer);
 
 const persistedDealReducer = persistReducer(dealsCount, dealReducer);
@@ -73,6 +85,7 @@ export const generateStore = (preloadedState = {}) => {
       filters: filtersReducer,
       voucher: persistedVoucher,
       voucherFilters: voucherFilterSlice,
+      lob: persistedLOBReducer,
       [RolesOfUser.reducerPath]: RolesOfUser.reducer,
       [userRoleList.reducerPath]: userRoleList.reducer,
       [addUser.reducerPath]: addUser.reducer,
@@ -82,6 +95,7 @@ export const generateStore = (preloadedState = {}) => {
       [updateUser.reducerPath]: updateUser.reducer,
       [createDeals.reducerPath]: createDeals.reducer,
       [dealPreview.reducerPath]: dealPreview.reducer,
+      [userLobs.reducerPath]:userLobs.reducer,
       [editDeals.reducerPath]: editDeals.reducer,
       [disablePromotions.reducerPath]: disablePromotions.reducer,
       [voucherList.reducerPath]: voucherList.reducer,
@@ -109,7 +123,8 @@ export const generateStore = (preloadedState = {}) => {
         voucherPreviewAPI.middleware,
         createVoucher.middleware,
         editVoucher.middleware,
-        deleteVoucher.middleware
+        deleteVoucher.middleware,
+        userLobs.middleware
       ]),
     preloadedState,
   });

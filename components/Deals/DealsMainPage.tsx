@@ -5,13 +5,6 @@ import SearchOutlined from '@mui/icons-material/SearchOutlined';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import CloseIcon from '@mui/icons-material/Close';
 import { useAppDispatch, useAppSelector } from "../../store/index";
-import {
-  tokenState,
-  userProfilefn,
-  userRolefn,
-} from "../../store/feature/auth/authSlice";
-import jwt from "jwt-decode";
-import { useGetRolesOfUserMutation } from "../../api/getRoles";
 import styles from "./DealsMainPage.module.css";
 import { SearchEmptyError } from "../Error/SearchError";
 import CreateIcon from "@mui/icons-material/Create";
@@ -20,37 +13,15 @@ import { Button, Typography, OutlinedInput } from "@mui/material";
 import { useRouter } from "next/router";
 import { updateNewDeal } from "../../store/feature/deal/newDealSlice";
 import CreateDealDefaultFormState from "../../constants/CreateDealDefaultFormState";
+import { lobState } from "../../store/feature/selectlob/lobSlice";
 
 function DealsMainPage() {
   const router = useRouter();
-  const userToken = useAppSelector(tokenState);
   const dispatch = useAppDispatch();
 
-  const [user, setUser] = useState<any>({});
+  const lobType = useAppSelector(lobState);
+
   const [search, setSearch] = useState<string>('')
-
-  useEffect(() => {
-    if (userToken !== "") {
-      let value: any = jwt(userToken);
-      dispatch(userProfilefn(value));
-      setUser(value);
-    }
-  }, [userToken, dispatch]);
-
-  const [RolesOfUser, { data: rolesData, isError }] =
-    useGetRolesOfUserMutation();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      await RolesOfUser(user.email).then((data: any) => {
-        dispatch(userRolefn(data));
-      });
-    };
-
-    if (user?.email) {
-      fetchData();
-    }
-  }, [user, dispatch, RolesOfUser]);
 
   const handleSearchChange = ({ target: { value }}: ChangeEvent<HTMLInputElement>) =>{
     setSearch(value)
@@ -67,13 +38,9 @@ function DealsMainPage() {
 
   let content = null;
 
-  if (isError) {
-    content = <SearchEmptyError />;
-  }
-
-  if (rolesData) {
-    const roles: any = rolesData;
-    if (roles.roles.includes("BO_ADMIN") || roles.roles.includes("BO_USER")) {
+  if (lobType?.lob) {
+    let lob = lobType?.lob.toUpperCase().replace(/ /g, "_");
+    if (lobType.lobData[lob]?.includes("BO_ADMIN") || lobType.lobData[lob]?.includes("BO_USER")) {
       const searchEndAdorment =  search ? <CloseIcon 
       onClick={clearSearch}
       sx={{

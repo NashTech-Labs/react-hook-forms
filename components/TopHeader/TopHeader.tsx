@@ -11,28 +11,33 @@ import { useAppDispatch, useAppSelector } from "../../store/index";
 import jwt from "jwt-decode";
 import {
   tokenState,
-  userToken,
-  roleState,
+  userToken
 } from "../../store/feature/auth/authSlice";
 import { googleLogout } from "@react-oauth/google";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import { Divider, FormControl, Menu, Select, SelectChangeEvent } from "@mui/material";
+import { Divider, FormControl, ListItemIcon, Menu, Select, SelectChangeEvent } from "@mui/material";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import { updateDealEditing, updateDealStep } from "../../store/feature/deal/dealSlice";
 import { updatePromotionType, updatedPromotionType, updateVoucherType, updateVoucherId } from "../../store/feature/voucher/voucherSlice";
+import { lobState, selectedLob, setLobData } from "../../store/feature/selectlob/lobSlice";
+import { Check } from "@mui/icons-material";
+
 
 function TopHeader() {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const token = useAppSelector(tokenState);
 
+  const lobType = useAppSelector(lobState);
+
   const promotionType = useAppSelector(updatedPromotionType);
 
-  const userRole: any = useAppSelector(roleState);
   const [signoutVisible, setSignoutVisibile] = useState(false);
 
   const [user, setUser] = useState<any>({});
+
+  const [typeOfLOB, setTypeOfLOB] = useState("Joe Fresh");
 
   const [selectedType, setSelectedType] = useState('deals')
 
@@ -62,8 +67,16 @@ function TopHeader() {
     dispatch(updatePromotionType(''))
     dispatch(updateDealEditing(false))
     dispatch(updateVoucherType(''))
+    dispatch(selectedLob(""));
+    dispatch(setLobData({}));
     router.push("/");
   };
+
+  useEffect(() => {
+    if (lobType) {
+      setTypeOfLOB(lobType.lob);
+    }
+  }, [lobType])
 
   useEffect(() => {
     if (token) {
@@ -122,6 +135,17 @@ function TopHeader() {
     }
   }, [promotionType])
 
+  const checkForAdmin = (selectedLOB: string) => {
+    if (selectedLOB) {
+      let lob = selectedLOB.toUpperCase().replace(/ /g, "_");
+      if (lobType.lobData[lob]?.includes("BO_ADMIN")) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  };
+
   return (
     <Box className={styles["navbar-box"]} data-testid="topHeader">
       <AppBar position="sticky" sx={{ background: "#333333" }}>
@@ -136,7 +160,7 @@ function TopHeader() {
                     component="div"
                     className={styles.dropdownText}
                   >
-                    Joe Fresh
+                    {lobType?.lob === "Online Groceries" ? "PC Express": lobType?.lob}
                   </Typography>
                   <Grid ml={4} className={styles.dropdownMain} >
                     <FormControl >
@@ -151,7 +175,7 @@ function TopHeader() {
                           },
                         }}
                       >
-                        <MenuItem value={'deals'}>Deals</MenuItem>
+                        { lobType?.lob === "Joe Fresh" && <MenuItem value={'deals'}>Deals</MenuItem>}
                         <MenuItem value={'vouchers'}>Vouchers</MenuItem>
                       </Select>
                     </FormControl>
@@ -169,7 +193,7 @@ function TopHeader() {
             </Grid>
 
             <Grid item lg={9} md={9} sm={9}>
-              {isTitleVisible && signoutVisible && (
+              {signoutVisible && (
                 <Grid
                   sx={{
                     display: "flex",
@@ -194,17 +218,29 @@ function TopHeader() {
                       "aria-labelledby": "basic-button",
                     }}
                   >
-                    <MenuItem onClick={homefn}>
-                      <HomeOutlinedIcon
-                        data-testid="homeBtn"
-                        className={styles.homeIcon}
-                      />{" "}
-                      Home
-                    </MenuItem>
-                    {userRole?.data?.roles?.includes("BO_ADMIN") ? (
-                      <MenuItem onClick={manageUsersfn}>
+                    {router.pathname !== "/" ? (
+                      <MenuItem onClick={homefn}>
+                        <HomeOutlinedIcon
+                          data-testid="homeBtn"
+                          className={styles.homeIcon}
+                        />{" "}
+                        Home
+                        {router.pathname === "/deals" || router.pathname === "/vouchers" ?  (
+                          <ListItemIcon sx={{ justifyContent: "end" }}>
+                            <Check />
+                          </ListItemIcon>
+                        ) : null}
+                      </MenuItem>
+                    ) : null}
+                    {checkForAdmin(lobType.lob) && router.pathname !== "/" ? (
+                      <MenuItem onClick={manageUsersfn} data-testid="userManageBtn">
                         <AppRegistrationIcon className={styles.homeIcon} />
                         Manage Users
+                        {router.pathname === "/userManagement" && (
+                          <ListItemIcon sx={{ justifyContent: "end" }}>
+                            <Check />
+                          </ListItemIcon>
+                        )}
                       </MenuItem>
                     ) : null}
                     <Divider />
