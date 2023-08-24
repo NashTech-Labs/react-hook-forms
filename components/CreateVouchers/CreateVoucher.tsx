@@ -7,19 +7,19 @@ import DiscountOutlinedIcon from "@mui/icons-material/DiscountOutlined";
 import StepTitle from "../StepTitle";
 import Button from "@mui/material/Button";
 import commonStyles from "../CreateDeal/Steps.module.css";
-import { useAppDispatch } from "../../store/index";
+import { useAppDispatch, useAppSelector } from "../../store/index";
 import { updateVoucherType } from "../../store/feature/voucher/voucherSlice";
 import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
 import { updateNewVoucher } from "../../store/feature/voucher/newVoucherSlice";
 import createVoucherDefaultFormState from "../../constants/CreateVoucherDefaultFormState";
+import { lobState } from "../../store/feature/selectlob/lobSlice";
+import { ONLINE_GROCERIES_LOB } from "../../constants/lob";
 
 function CreateVoucher() {
   const router = useRouter();
-
   const dispatch = useAppDispatch();
-
   const [voucherType, setVoucherType] = useState("");
-
+  const lobType = useAppSelector(lobState);
   const handleVoucherValue = (type: string) => {
     setVoucherType(type);
   };
@@ -44,7 +44,6 @@ function CreateVoucher() {
           </Grid>
         </Grid>
       </Grid>
-
       <Card className={commonStyles["card-container"]}>
         <StepLabel currentStep={1} totalSteps={6} />
         <StepTitle title={"Select voucher type"} />
@@ -65,22 +64,24 @@ function CreateVoucher() {
             <Typography>Create new promotional voucher</Typography>
           </Grid>
         </Grid>
-        <Grid
-          data-testid="multidealBtn"
-          onClick={() => {
-            handleVoucherValue("serialized");
-          }}
-          className={commonStyles["deal-card-container"]}
-          bgcolor={voucherType === "serialized" ? "#E6ECF6" : "#fff"}
-        >
-          <ReceiptLongOutlinedIcon className={commonStyles.Discount} />
-          <Grid className={commonStyles.dealTitle}>
-            <Typography variant="h6" className={commonStyles.dealType}>
-              Serialized
-            </Typography>
-            <Typography>Create new serialized voucher</Typography>
+        {lobType?.lob === ONLINE_GROCERIES_LOB && (
+          <Grid
+            data-testid="multidealBtn"
+            onClick={() => {
+              handleVoucherValue("serialized");
+            }}
+            className={commonStyles["deal-card-container"]}
+            bgcolor={voucherType === "serialized" ? "#E6ECF6" : "#fff"}
+          >
+            <ReceiptLongOutlinedIcon className={commonStyles.Discount} />
+            <Grid className={commonStyles.dealTitle}>
+              <Typography variant="h6" className={commonStyles.dealType}>
+                Serialized
+              </Typography>
+              <Typography>Create new serialized voucher</Typography>
+            </Grid>
           </Grid>
-        </Grid>
+        )}
       </Card>
       <Grid container justifyContent="center">
         <Grid item lg={6} md={8} sm={9} mt={5}>

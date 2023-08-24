@@ -15,6 +15,7 @@ import Image from "next/image";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { SearchEmptyError, SearchError } from "../Error/SearchError";
 import { updatePromotionType } from "../../store/feature/voucher/voucherSlice";
+import { JOE_FRESH_LOB, ONLINE_GROCERIES_LOB } from  '../../constants/lob'
 
 function Homepage() {
   const [user, setUser] = useState<any>({});
@@ -47,13 +48,13 @@ function Homepage() {
   });
 
   const handleJoeFreshClick = () => {
-    dispatch(selectedLob("Joe Fresh"));
+    dispatch(selectedLob(JOE_FRESH_LOB));
     dispatch(updatePromotionType('deals'))
     router.push("/deals");
   };
 
   const handlePCXClick = () => {
-    dispatch(selectedLob("Online Groceries"));
+    dispatch(selectedLob(ONLINE_GROCERIES_LOB));
     dispatch(updatePromotionType('vouchers'))
     router.push("/vouchers");
   };

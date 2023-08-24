@@ -9,20 +9,36 @@ import styles from "./TopHeader.module.css";
 import { useRouter } from "next/router";
 import { useAppDispatch, useAppSelector } from "../../store/index";
 import jwt from "jwt-decode";
-import {
-  tokenState,
-  userToken
-} from "../../store/feature/auth/authSlice";
+import { tokenState, userToken } from "../../store/feature/auth/authSlice";
 import { googleLogout } from "@react-oauth/google";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import { Divider, FormControl, ListItemIcon, Menu, Select, SelectChangeEvent } from "@mui/material";
+import {
+  Divider,
+  FormControl,
+  ListItemIcon,
+  Menu,
+  Select,
+  SelectChangeEvent,
+} from "@mui/material";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
-import { updateDealEditing, updateDealStep } from "../../store/feature/deal/dealSlice";
-import { updatePromotionType, updatedPromotionType, updateVoucherType, updateVoucherId } from "../../store/feature/voucher/voucherSlice";
-import { lobState, selectedLob, setLobData } from "../../store/feature/selectlob/lobSlice";
+import {
+  updateDealEditing,
+  updateDealStep,
+} from "../../store/feature/deal/dealSlice";
+import {
+  updatePromotionType,
+  updatedPromotionType,
+  updateVoucherType,
+  updateVoucherId,
+} from "../../store/feature/voucher/voucherSlice";
+import {
+  lobState,
+  selectedLob,
+  setLobData,
+} from "../../store/feature/selectlob/lobSlice";
 import { Check } from "@mui/icons-material";
-
+import { ONLINE_GROCERIES_LOB, JOE_FRESH_LOB } from "../../constants/lob";
 
 function TopHeader() {
   const dispatch = useAppDispatch();
@@ -39,7 +55,7 @@ function TopHeader() {
 
   const [typeOfLOB, setTypeOfLOB] = useState("Joe Fresh");
 
-  const [selectedType, setSelectedType] = useState('deals')
+  const [selectedType, setSelectedType] = useState("deals");
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -47,10 +63,10 @@ function TopHeader() {
   const isTitleVisible = router.pathname === "/" ? false : true;
 
   useEffect(() => {
-    if (router.pathname === '/deals') {
-      dispatch(updatePromotionType('deals'))
+    if (router.pathname === "/deals") {
+      dispatch(updatePromotionType("deals"));
     }
-  }, [router])
+  }, [router]);
 
   useEffect(() => {
     if (token !== "") {
@@ -64,9 +80,9 @@ function TopHeader() {
     googleLogout();
     dispatch(userToken(""));
     dispatch(updateDealStep(""));
-    dispatch(updatePromotionType(''))
-    dispatch(updateDealEditing(false))
-    dispatch(updateVoucherType(''))
+    dispatch(updatePromotionType(""));
+    dispatch(updateDealEditing(false));
+    dispatch(updateVoucherType(""));
     dispatch(selectedLob(""));
     dispatch(setLobData({}));
     router.push("/");
@@ -76,7 +92,7 @@ function TopHeader() {
     if (lobType) {
       setTypeOfLOB(lobType.lob);
     }
-  }, [lobType])
+  }, [lobType]);
 
   useEffect(() => {
     if (token) {
@@ -96,16 +112,15 @@ function TopHeader() {
   const homefn = () => {
     handleClose();
     dispatch(updateDealStep(""));
-    dispatch(updateVoucherId(""))
-    dispatch(updateDealEditing(false))
-    dispatch(updateVoucherType(''))
+    dispatch(updateVoucherId(""));
+    dispatch(updateDealEditing(false));
+    dispatch(updateVoucherType(""));
     if (selectedType === "deals") {
-      dispatch(updatePromotionType('deals'))
+      dispatch(updatePromotionType("deals"));
       router.push("/deals");
-    }
-    else {
-      dispatch(updatePromotionType('vouchers'))
-      router.push('/vouchers')
+    } else {
+      dispatch(updatePromotionType("vouchers"));
+      router.push("/vouchers");
     }
   };
 
@@ -115,25 +130,23 @@ function TopHeader() {
   };
 
   const handleChange = (event: SelectChangeEvent<string>) => {
-    dispatch(updatePromotionType(event.target.value))
-    setSelectedType(event.target.value)
-    dispatch(updateVoucherType(''))
-    if (event.target.value === 'vouchers') {
-      router.push('/vouchers')
+    dispatch(updatePromotionType(event.target.value));
+    setSelectedType(event.target.value);
+    dispatch(updateVoucherType(""));
+    if (event.target.value === "vouchers") {
+      router.push("/vouchers");
+    } else {
+      router.push("/deals");
     }
-    else {
-      router.push('/deals')
-    }
-  }
+  };
 
   useEffect(() => {
     if (promotionType) {
-      setSelectedType(promotionType)
+      setSelectedType(promotionType);
+    } else {
+      setSelectedType("deals");
     }
-    else {
-      setSelectedType("deals")
-    }
-  }, [promotionType])
+  }, [promotionType]);
 
   const checkForAdmin = (selectedLOB: string) => {
     if (selectedLOB) {
@@ -160,23 +173,27 @@ function TopHeader() {
                     component="div"
                     className={styles.dropdownText}
                   >
-                    {lobType?.lob === "Online Groceries" ? "PC Express": lobType?.lob}
+                    {lobType?.lob === ONLINE_GROCERIES_LOB
+                      ? "PC Express"
+                      : lobType?.lob}
                   </Typography>
-                  <Grid ml={4} className={styles.dropdownMain} >
-                    <FormControl >
+                  <Grid ml={4} className={styles.dropdownMain}>
+                    <FormControl>
                       <Select
                         value={selectedType}
                         onChange={handleChange}
                         displayEmpty
                         className={styles.dropdownSection}
                         sx={{
-                          '.MuiSvgIcon-root ': {
-                            fill: "white !important"
+                          ".MuiSvgIcon-root ": {
+                            fill: "white !important",
                           },
                         }}
                       >
-                        { lobType?.lob === "Joe Fresh" && <MenuItem value={'deals'}>Deals</MenuItem>}
-                        <MenuItem value={'vouchers'}>Vouchers</MenuItem>
+                        {lobType?.lob === JOE_FRESH_LOB && (
+                          <MenuItem value={"deals"}>Deals</MenuItem>
+                        )}
+                        <MenuItem value={"vouchers"}>Vouchers</MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>
@@ -225,7 +242,8 @@ function TopHeader() {
                           className={styles.homeIcon}
                         />{" "}
                         Home
-                        {router.pathname === "/deals" || router.pathname === "/vouchers" ?  (
+                        {router.pathname === "/deals" ||
+                        router.pathname === "/vouchers" ? (
                           <ListItemIcon sx={{ justifyContent: "end" }}>
                             <Check />
                           </ListItemIcon>
@@ -233,7 +251,10 @@ function TopHeader() {
                       </MenuItem>
                     ) : null}
                     {checkForAdmin(lobType.lob) && router.pathname !== "/" ? (
-                      <MenuItem onClick={manageUsersfn} data-testid="userManageBtn">
+                      <MenuItem
+                        onClick={manageUsersfn}
+                        data-testid="userManageBtn"
+                      >
                         <AppRegistrationIcon className={styles.homeIcon} />
                         Manage Users
                         {router.pathname === "/userManagement" && (
