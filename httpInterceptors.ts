@@ -14,8 +14,10 @@ export const CustomQuery = () =>
             headers.set("X-Loblaw-Support-Tool-ID", "BO");
             const state = getState() as RootState
             const token = state.user.token;
+            const lob = state.lob.lob
 
             headers.set("Authorization", `${"Bearer"} ${token}`);
+            headers.set("X-Loblaw-Tenant-ID", lob?.toUpperCase().replace(/ /g, "_"));
             return headers;
         }
     })
