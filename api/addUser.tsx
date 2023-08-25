@@ -17,7 +17,6 @@ export const addUser = createApi({
         method: "POST",
         body: rest,
         headers: {
-            "X-Loblaw-Tenant-ID": `${business}`,
             "X-Loblaw-auth-provider": 'GOOGLE',
         },
       }),

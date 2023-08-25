@@ -89,7 +89,6 @@ export const voucherList = createApi({
                 url: getUrl(params),
                 method: "GET",
                 headers: {
-                    "X-Loblaw-Tenant-ID": "JOE_FRESH",
                      "X-User-Name": params.user.name
                 },
             }),
