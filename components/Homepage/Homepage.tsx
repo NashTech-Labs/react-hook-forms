@@ -149,7 +149,7 @@ function Homepage() {
       content = (
         <>
           <Grid container justifyContent="center" alignItems="center">
-            <Grid item lg={8} md={8} sm={12} mt={5} >
+            <Grid item lg={8} md={8} sm={12} mt={5} className={classes.mainTopSection} >
               <Typography className={classes["hello-text"]}>
                 Hello {user.given_name},
               </Typography>

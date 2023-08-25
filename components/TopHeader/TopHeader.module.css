@@ -55,3 +55,16 @@
     font-weight: 600;
     font-size: 16px;
 }
+
+.dropdownLOB {
+    background: #333333;
+    border: 0;
+    border-radius: 0;
+    color: #ffffff;
+    width: fit-content;
+    flex-grow: 1;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 28px;
+    text-transform: capitalize;
+  }

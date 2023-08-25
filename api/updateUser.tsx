@@ -26,7 +26,6 @@ export const updateUser = createApi({
                 method: "PATCH",
                 body: payload,
                 headers: {
-                    "X-Loblaw-Tenant-ID": `JOE_FRESH`,
                     "Content-Type": "application/json",
                 },
             }),

@@ -18,7 +18,6 @@ export const removeUser = createApi({
         method: "PATCH",
         body: [],
         headers: {
-          "X-Loblaw-Tenant-ID": "JOE_FRESH",
           "X-Loblaw-Anonymize": "true",
           "Content-Type": "application/json",
         },
