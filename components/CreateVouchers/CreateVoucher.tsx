@@ -13,7 +13,7 @@ import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
 import { updateNewVoucher } from "../../store/feature/voucher/newVoucherSlice";
 import createVoucherDefaultFormState from "../../constants/CreateVoucherDefaultFormState";
 import { lobState } from "../../store/feature/selectlob/lobSlice";
-import { ONLINE_GROCERIES_LOB } from "../../constants/lob";
+import { JOE_FRESH_LOB, ONLINE_GROCERIES_LOB } from "../../constants/lob";
 
 function CreateVoucher() {
   const router = useRouter();
@@ -48,22 +48,24 @@ function CreateVoucher() {
         <StepLabel currentStep={1} totalSteps={6} />
         <StepTitle title={"Select voucher type"} />
 
-        <Grid
-          data-testid="discountdealBtn"
-          onClick={() => {
-            handleVoucherValue("promotional");
-          }}
-          className={commonStyles["deal-card-container"]}
-          bgcolor={voucherType === "promotional" ? "#E6ECF6" : "#fff"}
-        >
-          <DiscountOutlinedIcon className={commonStyles.Discount} />
-          <Grid className={commonStyles.dealTitle}>
-            <Typography variant="h6" className={commonStyles.dealType}>
-              Promotional
-            </Typography>
-            <Typography>Create new promotional voucher</Typography>
+        {lobType?.lob === JOE_FRESH_LOB && (
+          <Grid
+            data-testid="promotional-voucher-btn"
+            onClick={() => {
+              handleVoucherValue("promotional");
+            }}
+            className={commonStyles["deal-card-container"]}
+            bgcolor={voucherType === "promotional" ? "#E6ECF6" : "#fff"}
+          >
+            <DiscountOutlinedIcon className={commonStyles.Discount} />
+            <Grid className={commonStyles.dealTitle}>
+              <Typography variant="h6" className={commonStyles.dealType}>
+                Promotional
+              </Typography>
+              <Typography>Create new promotional voucher</Typography>
+            </Grid>
           </Grid>
-        </Grid>
+        )}
         {lobType?.lob === ONLINE_GROCERIES_LOB && (
           <Grid
             data-testid="multidealBtn"
