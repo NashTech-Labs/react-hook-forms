@@ -261,12 +261,12 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
         <GeneralInformation
           isVoucherEditing={isVoucherEditing}
           currentStep={2}
-          totalSteps={voucherLevel === "basket" ? 8 : 9}
+          totalSteps={voucherLevel === "basket" ? 9 : 10}
           setCheckForDuplicateInProgress={setCheckForDuplicateInProgress}
         />
         <SerializedVoucherValue
           currentStep={4}
-          totalSteps={voucherLevel === "basket" ? 8 : 9}
+          totalSteps={voucherLevel === "basket" ? 9 : 10}
         />
       </Grid>
       {ctaContent}

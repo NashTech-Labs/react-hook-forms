@@ -45,7 +45,10 @@ function CreateVoucher() {
         </Grid>
       </Grid>
       <Card className={commonStyles["card-container"]}>
-        <StepLabel currentStep={1} totalSteps={6} />
+        <StepLabel
+          currentStep={1}
+          totalSteps={lobType?.lob === JOE_FRESH_LOB ? 6 : 10}
+        />
         <StepTitle title={"Select voucher type"} />
 
         {lobType?.lob === JOE_FRESH_LOB && (
