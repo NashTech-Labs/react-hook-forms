@@ -5,7 +5,7 @@ export const stackTypeOptions: { [index: string]: string } = {
 };
 
 export const stackTypeOptionsVouchers: { [index: string]: string } = {
-  always_apply: "Always Apply"
+  always_apply: "Always Apply",
 };
 
 export const stackTypeFreeShipping: { [index: string]: string } = {
@@ -29,6 +29,8 @@ export const dealTabs = [
   { label: "Percentage (%) off", value: "percentage" },
   { label: "Fixed price", value: "fixed" },
 ];
+
+export const voucherTabs = [{ label: "Dollar ($) off", value: "dollar" }];
 
 export const percentageOptions = [
   { value: "10", label: "10%" },

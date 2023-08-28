@@ -20,12 +20,12 @@ import { generatePreviewForValueStep } from "../../util/generatePreview";
 import StyledTabs from "../StyledTabs";
 import { updateAndClearErrors } from "../../util/updateFields";
 
-interface numbersOfSteps {
-  currentStep: number
-  totalSteps: number
+interface IVoucherValueProps {
+  currentStep: number;
+  totalSteps: number;
 }
 
-const VoucherValue = ({ currentStep, totalSteps }: numbersOfSteps) => {
+const VoucherValue = ({ currentStep, totalSteps }: IVoucherValueProps) => {
   const {
     dealDiscountTab,
     voucherLevel,

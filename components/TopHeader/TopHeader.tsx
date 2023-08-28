@@ -162,14 +162,12 @@ function TopHeader() {
   const handleChangeLOB = (event: string) => {
     setTypeOfLOB(event);
     dispatch(selectedLob(event));
-    if (event === "Online Groceries")
-    {
-      dispatch(updatePromotionType('vouchers'))
-      router.push("/vouchers");  
-    }
-    else {
-      dispatch(updatePromotionType('deals'))
-      router.push("/deals");  
+    if (event === "Online Groceries") {
+      dispatch(updatePromotionType("vouchers"));
+      router.push("/vouchers");
+    } else {
+      dispatch(updatePromotionType("deals"));
+      router.push("/deals");
     }
   };
 
@@ -181,62 +179,72 @@ function TopHeader() {
             <Grid display="flex" item lg={3} md={3} sm={3}>
               {isTitleVisible === true ? (
                 <>
-                <FormControl fullWidth>
-                  <Select
-                    id="lob-select"
-                    className={styles.dropdownLOB}
-                    sx={{
-                      "&.MuiOutlinedInput-root": {
-                        "& fieldset": {
-                          border: "none",
+                  <FormControl fullWidth>
+                    <Select
+                      id="lob-select"
+                      className={styles.dropdownLOB}
+                      sx={{
+                        "&.MuiOutlinedInput-root": {
+                          "& fieldset": {
+                            border: "none",
+                          },
+                          "& svg": {
+                            color: "#fff",
+                            marginTop: "-1%",
+                          },
                         },
-                        "& svg": {
-                          color: "#fff",
-                          marginTop: "-1%",
-                        },
-                      },
-                    }}
-                    value={typeOfLOB}
-                    onChange={(e) => handleChangeLOB(e.target.value)}
-                    renderValue={(value: string) => {
-                      return <div>{value === "Online Groceries" ? "PC Express": value}</div>;
-                    }}
-                  >
-                    {(lobType.lobData["JOE_FRESH"]?.includes("BO_ADMIN") ||
-                      lobType.lobData["JOE_FRESH"]?.includes("BO_USER")) && (
-                      <MenuItem
-                        value={"Joe Fresh"}
-                        sx={{ justifyContent: "space-between" }}
-                        data-testid="lobOption"
-                      >
+                      }}
+                      value={typeOfLOB}
+                      onChange={(e) => handleChangeLOB(e.target.value)}
+                      renderValue={(value: string) => {
+                        return (
+                          <div>
+                            {value === "Online Groceries"
+                              ? "PC Express"
+                              : value}
+                          </div>
+                        );
+                      }}
+                    >
+                      {(lobType.lobData["JOE_FRESH"]?.includes("BO_ADMIN") ||
+                        lobType.lobData["JOE_FRESH"]?.includes("BO_USER")) && (
+                        <MenuItem
+                          value={"Joe Fresh"}
+                          sx={{ justifyContent: "space-between" }}
+                          data-testid="lobOption"
+                        >
                           Joe Fresh
-                        {typeOfLOB === "Joe Fresh" && (
-                          <ListItemIcon>
-                            <Check />
-                          </ListItemIcon>
-                        )}
-                      </MenuItem>
-                    )}
-                    {(lobType.lobData["ONLINE_GROCERIES"]?.includes("BO_ADMIN") ||
-                      lobType.lobData["ONLINE_GROCERIES"]?.includes("BO_USER")) && (
-                      <MenuItem
-                        value={"Online Groceries"}
-                        sx={{ justifyContent: "space-between" }}
-                        data-testid="lobOption"
-                      >
+                          {typeOfLOB === "Joe Fresh" && (
+                            <ListItemIcon>
+                              <Check />
+                            </ListItemIcon>
+                          )}
+                        </MenuItem>
+                      )}
+                      {(lobType.lobData["ONLINE_GROCERIES"]?.includes(
+                        "BO_ADMIN"
+                      ) ||
+                        lobType.lobData["ONLINE_GROCERIES"]?.includes(
+                          "BO_USER"
+                        )) && (
+                        <MenuItem
+                          value={"Online Groceries"}
+                          sx={{ justifyContent: "space-between" }}
+                          data-testid="lobOption"
+                        >
                           PC Express
-                        {typeOfLOB === "Online Groceries" && (
-                          <ListItemIcon>
-                            <Check />
-                          </ListItemIcon>
-                        )}
-                      </MenuItem>
-                    )}
-                  </Select>
-                </FormControl>
+                          {typeOfLOB === "Online Groceries" && (
+                            <ListItemIcon>
+                              <Check />
+                            </ListItemIcon>
+                          )}
+                        </MenuItem>
+                      )}
+                    </Select>
+                  </FormControl>
 
-                  <Grid ml={2} mt={2} className={styles.dropdownMain} >
-                    <FormControl >
+                  <Grid ml={2} mt={2} className={styles.dropdownMain}>
+                    <FormControl>
                       <Select
                         value={selectedType}
                         onChange={handleChange}

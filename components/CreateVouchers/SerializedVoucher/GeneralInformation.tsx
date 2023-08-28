@@ -1,18 +1,18 @@
 import React, { useState } from "react";
-import { useFormContext } from "react-hook-form";
 import FeedIcon from "@mui/icons-material/Feed";
-import StepperCard from "../CreateDeal/StepperCard";
-import SelectField from "../FormComponents/SelectField";
-import TextInputField from "../FormComponents/TextInputField";
-import { stackTypeOptionsVouchers } from "../../constants/FormOptions";
-import StepTitle from "../StepTitle";
-import StepLabel from "../StepLabel";
-import Tag from "../Tag";
-import { useAppSelector, useAppDispatch } from "../../store";
-import { getUser } from "../../store/feature/auth/authSlice";
-import { useCreateVoucherMutation } from "../../api/createVoucher";
-import { updateVoucherId } from "../../store/feature/voucher/voucherSlice";
-import { notifySuccess } from "../../util/Notification/Notification";
+import { useFormContext } from "react-hook-form";
+import StepperCard from "../../CreateDeal/StepperCard";
+import SelectField from "../../FormComponents/SelectField";
+import TextInputField from "../../FormComponents/TextInputField";
+import { stackTypeOptionsVouchers } from "../../../constants/FormOptions";
+import StepTitle from "../../StepTitle";
+import StepLabel from "../../StepLabel";
+import Tag from "../../Tag";
+import { useCreateVoucherMutation } from "../../../api/createVoucher";
+import { updateVoucherId } from "../../../store/feature/voucher/voucherSlice";
+import { notifySuccess } from "../../../util/Notification/Notification";
+import { useAppSelector, useAppDispatch } from "../../../store";
+import { getUser } from "../../../store/feature/auth/authSlice";
 
 interface IGeneralInformation {
   isVoucherEditing: boolean;
@@ -36,7 +36,7 @@ const GeneralInformation = ({
     const payload = {
       code: code.toUpperCase(),
       status: "DRAFT",
-      is_serialized: false,
+      is_serialized: true,
       username: user.userProfile.name,
     };
     setCheckForDuplicateInProgress(true);
@@ -59,7 +59,7 @@ const GeneralInformation = ({
   };
 
   const customHandleBlur = (value: string) => {
-    if (value.length > 22) {
+    if (value.length !== 3) {
       return;
     }
 
@@ -73,16 +73,15 @@ const GeneralInformation = ({
     }
     setPreviousVoucherCode(value);
   };
-
   return (
     <StepperCard inProgressIcon={FeedIcon} error step={"GENERAL_INFORMATION"}>
       <StepLabel currentStep={currentStep} totalSteps={totalSteps} />
       <StepTitle title={"General Information"} />
       <Tag label="Internal facing" />
       <TextInputField
-        title="External Voucher Code"
-        description="Max 22 characters"
-        placeholder="eg. Sasha20"
+        title="Voucher Code"
+        description="Max 3 characters"
+        placeholder="eg. PCX"
         name="externalVoucherCode"
         disabled={isVoucherEditing}
         required
