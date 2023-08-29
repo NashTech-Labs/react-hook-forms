@@ -123,9 +123,12 @@ function Homepage() {
       (errorCode?.data?.error_code === 404 &&
         errorCode?.data?.status === "USER_RECORD_NOT_FOUND")
     ) {
-      content = <SearchEmptyError />;
+      content = <SearchEmptyError />
     } else {
-      content = <SearchError />;
+      content = 
+      <Grid className={classes.mainErrorSection}>
+        <SearchError />
+      </Grid>
     }
   }
 

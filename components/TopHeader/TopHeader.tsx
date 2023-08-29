@@ -179,7 +179,7 @@ function TopHeader() {
             <Grid display="flex" item lg={3} md={3} sm={3}>
               {isTitleVisible === true ? (
                 <>
-                  <FormControl fullWidth>
+                  <FormControl className={styles.mainHeader} fullWidth>
                     <Select
                       id="lob-select"
                       className={styles.dropdownLOB}
@@ -243,7 +243,7 @@ function TopHeader() {
                     </Select>
                   </FormControl>
 
-                  <Grid ml={2} mt={2} className={styles.dropdownMain}>
+                  <Grid className={styles.dropdownMain}>
                     <FormControl>
                       <Select
                         value={selectedType}

@@ -22,7 +22,7 @@ export default function App({ Component, pageProps }: AppProps) {
           clientId={process.env.NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID || ""}
         >
           <ToastContainer className="toast-container" />
-          <TopHeader />
+          {pageLoaded ? <TopHeader /> : null}
           {pageLoaded ? <Component {...pageProps} /> : null}
         </GoogleOAuthProvider>
       </StyledEngineProvider>

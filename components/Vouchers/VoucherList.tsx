@@ -39,11 +39,14 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import Modal from "react-modal";
 import DeleteVoucher from "../DeleteVoucher/DeleteVoucher";
 import { userProfileState } from "../../store/feature/auth/authSlice";
+import { lobState } from "../../store/feature/selectlob/lobSlice";
 
 function VoucherList() {
   const router = useRouter();
 
   const dispatch = useAppDispatch()
+
+  const lobType = useAppSelector(lobState);
 
   const filters = useAppSelector(getVoucherFilters)
 
@@ -76,7 +79,7 @@ function VoucherList() {
   useEffect(() => {
     refetch();
     dispatch(updateVoucherEditing(false))
-  }, [])
+  }, [lobType])
 
   const handleDeleteClick = () => {
     setIsOpen(true);
@@ -339,6 +342,7 @@ function VoucherList() {
               <CreateIcon sx={{ marginRight: "5px" }} />
               Create new
             </Button>
+            { lobType?.lob === "Online Groceries" ? null : 
             <Button
               onClick={() => router.push("/deals/managePromotions")}
               variant="outlined"
@@ -347,6 +351,7 @@ function VoucherList() {
               <VisibilityOffIcon sx={{ marginRight: "5px" }} />
               Manage Promotions
             </Button>
+            }
           </Stack>
         </Grid>
         <Grid
