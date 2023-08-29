@@ -83,6 +83,7 @@ const getUrl = (params: any): string => {
 export const voucherList = createApi({
     reducerPath: "allVoucherList",
     baseQuery: CustomQuery(),
+    refetchOnMountOrArgChange: true,
     endpoints: (builder) => ({
         getVoucherList: builder.query<NewAllVoucherList, GetAllVoucher>({
             query: (params) => ({

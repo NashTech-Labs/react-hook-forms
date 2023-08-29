@@ -14,6 +14,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import SearchIcon from "@mui/icons-material/Search";
 
 const UserList = () => {
+
   const [isOpen, setIsOpen] = useState(false);
   const { data, isError, refetch } = useGetUserRoleListQuery();
   const [showEditUserModal, setShowEditUserModal] = useState(false);
@@ -69,6 +70,40 @@ const UserList = () => {
     },
   };
 
+  const getUserAccess = (profiles: any) => {
+    if (Object.keys(profiles[0])[0] === "JOE_FRESH") {
+      return (
+        `${
+          profiles[0]?.JOE_FRESH?.roles[0]
+            ? profiles[0]?.JOE_FRESH?.roles[0]?.replace(/_/g, " ")
+            : ""
+        }` +
+        `${
+          profiles[0]?.JOE_FRESH?.roles[1]
+            ? " & " + profiles[0]?.JOE_FRESH?.roles[1]?.replace(/_/g, " ")
+            : ""
+        }`
+      );
+    }
+
+    if (Object.keys(profiles[0])[0] === "ONLINE_GROCERIES") {
+      return (
+        `${
+          profiles[0]?.ONLINE_GROCERIES?.roles[0]
+            ? profiles[0]?.ONLINE_GROCERIES?.roles[0]?.replace(/_/g, " ")
+            : ""
+        }` +
+        `${
+          profiles[0]?.ONLINE_GROCERIES?.roles[1]
+            ? " & " +
+              profiles[0]?.ONLINE_GROCERIES?.roles[1]?.replace(/_/g, " ")
+            : ""
+        }`
+      );
+    }
+  };
+
+
   const editUserModalcustomStyles = {
     content: {
       width: "500px",
@@ -96,17 +131,15 @@ const UserList = () => {
       selector: (row) => row.emailId,
     },
     {
+      name: "LOB",
+      selector: (row) =>
+        Object.keys(row.profiles[0])[0] === "ONLINE_GROCERIES"
+          ? "PC_EXPRESS"
+          : Object.keys(row.profiles[0])[0],
+    },
+    {
       name: "Access",
-      selector: (row) => (
-        <>
-          <p className={styles.accessText}>
-            {row.profiles[0]?.JOE_FRESH?.roles[0]}{" "}
-            {row.profiles[0]?.JOE_FRESH?.roles[1]
-              ? `${" & " + row.profiles[0]?.JOE_FRESH?.roles[1]}`
-              : null}
-          </p>
-        </>
-      )
+      selector: (row) => getUserAccess(row.profiles),
     },
     {
       name: "Action",
