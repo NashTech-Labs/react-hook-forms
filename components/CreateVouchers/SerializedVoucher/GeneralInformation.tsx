@@ -79,7 +79,7 @@ const GeneralInformation = ({
       <StepTitle title={"General Information"} />
       <Tag label="Internal facing" />
       <TextInputField
-        title="Voucher Code"
+        title="Seed Code"
         description="Max 3 characters"
         placeholder="eg. PCX"
         name="externalVoucherCode"

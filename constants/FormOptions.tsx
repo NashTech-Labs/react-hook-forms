@@ -166,3 +166,21 @@ export function isValidFileType(fileName: any) {
   const afterDot = fileName?.substr(fileName?.indexOf("."));
   return fileName && validFileExtensions.includes(afterDot);
 }
+
+export const BANNER_RESTRICTIONS: { [index: string]: string } = {
+  dominion: "Dominion",
+  extrafoods: "Extrafoods",
+  fortinos: "Fortinos",
+  independent: "Independent",
+  Independentcitymarket: "Independentcitymarket",
+  loblaw: "Loblaw",
+  maxi: "Maxi",
+  nofrills: "Nofrills",
+  provigo: "Provigo",
+  rass: "Rass",
+  superstore: "Superstore",
+  valumart: "Valumart",
+  wholesaleclub: "Wholesaleclub",
+  zehrs: "Zehrs",
+  rapid: "Rapid",
+};

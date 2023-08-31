@@ -12,6 +12,7 @@ import { updateVoucherType } from "../../store/feature/voucher/voucherSlice";
 import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
 import { updateNewVoucher } from "../../store/feature/voucher/newVoucherSlice";
 import createVoucherDefaultFormState from "../../constants/CreateVoucherDefaultFormState";
+import createSerializedVoucherDefaultFormState from "../../constants/SerializedVoucherDefaultFormState";
 import { lobState } from "../../store/feature/selectlob/lobSlice";
 import { JOE_FRESH_LOB, ONLINE_GROCERIES_LOB } from "../../constants/lob";
 
@@ -26,7 +27,13 @@ function CreateVoucher() {
 
   const ContinueDeal = () => {
     dispatch(updateVoucherType(voucherType));
-    dispatch(updateNewVoucher(createVoucherDefaultFormState));
+    dispatch(
+      updateNewVoucher(
+        voucherType === "promotional"
+          ? createVoucherDefaultFormState
+          : createSerializedVoucherDefaultFormState
+      )
+    );
   };
 
   return (

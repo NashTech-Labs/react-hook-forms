@@ -7,8 +7,8 @@ import { Button, Grid, Typography, Chip } from "@mui/material";
 import commonStyles from "../../CreateDeal/Steps.module.css";
 import styles from "../../CreateDeal/CreateDealForm.module.css";
 import GeneralInformation from "./GeneralInformation";
-import createVoucherDefaultFormState from "../../../constants/CreateVoucherDefaultFormState";
-import { ICreateVoucherFormState } from "../../../constants/CreateVoucherFormStateType";
+import createSerializedVoucherDefaultFormState from "../../../constants/SerializedVoucherDefaultFormState";
+import { ICreateSerializedVoucherFormState } from "../../../constants/SerializedVoucherFormStateType";
 import schema from "./SerializedVoucherValidationSchema";
 import SerializedVoucherValue from "./SerializedVoucherValue";
 import DateInEffect from "../../CreateDeal/DateInEffect/DateInEffect";
@@ -33,6 +33,7 @@ import { convertToEST } from "../../../util/ConvertDateTime";
 import { capitalizeWords } from "../../../util/format";
 import { JOE_FRESH_LOB } from "../../../constants/lob";
 import { lobState } from "../../../store/feature/selectlob/lobSlice";
+import BannerRestrictions from "./BannerRestrictions";
 
 interface ICreateVoucherFrom {
   voucher?: any;
@@ -80,9 +81,8 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
   const lobType = useAppSelector(lobState);
   const formDefaultValues = voucher
     ? convertVoucherDataToFormData(voucher)
-    : draftFormValues || createVoucherDefaultFormState;
-
-  const formMethods = useForm<ICreateVoucherFormState>({
+    : draftFormValues || createSerializedVoucherDefaultFormState;
+  const formMethods = useForm<ICreateSerializedVoucherFormState>({
     defaultValues: formDefaultValues,
     resolver: yupResolver(schema),
     mode: "all",
@@ -263,6 +263,10 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
           currentStep={2}
           totalSteps={voucherLevel === "basket" ? 9 : 10}
           setCheckForDuplicateInProgress={setCheckForDuplicateInProgress}
+        />
+        <BannerRestrictions
+          currentStep={3}
+          totalSteps={voucherLevel === "basket" ? 9 : 10}
         />
         <SerializedVoucherValue
           currentStep={4}
