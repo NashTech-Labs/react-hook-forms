@@ -15,4 +15,5 @@ export interface ICreateSerializedVoucherFormState {
     restrictions: Array<string>;
     pickUpOrders: boolean;
     deliveryOrders: boolean;
+    useVoucherOptions: string;
 }

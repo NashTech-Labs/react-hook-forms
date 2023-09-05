@@ -129,8 +129,8 @@ export const voucherPerformanceTabs = [
 ];
 
 export const voucherCodeOptions = [
-  { value: "justOnce", label: "Just once" },
-  { value: "unlimited", label: "Unlimited" },
+  { value: 'justOnce', label: 'Just once' },
+  { value: 'moreThanOnce', label: 'More than once' }
 ];
 
 export const useNumberOfVoucherOptions: { [index: string]: string } = {
