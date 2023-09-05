@@ -22,7 +22,7 @@ const BannerRestrictions = ({
   currentStep: number;
   totalSteps: number;
 }) => {
-  const titleClassNames = [styles["labelHeading"], styles["required"]];
+  const titleClassNames = [styles["labelHeading"]];
   return (
     <StepperCard inProgressIcon={StoreIcon} error step={"BANNER_RESTRICTIONS"}>
       <StepLabel currentStep={currentStep} totalSteps={totalSteps} />

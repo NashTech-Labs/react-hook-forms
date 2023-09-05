@@ -1,5 +1,6 @@
 import React from "react";
 import { useFormContext, useController } from "react-hook-form";
+import { SelectChangeEvent } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -8,6 +9,9 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import Checkbox from "@mui/material/Checkbox";
 import FieldErrorMessage from "../FormComponents/FieldErrorMessage";
 import styles from "./FormComponents.module.css";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
@@ -40,7 +44,7 @@ const SelectField = ({
   placeholder,
   multiple,
 }: ISelectFieldProps) => {
-  const { control } = useFormContext();
+  const { control, setValue } = useFormContext();
   const {
     field,
     fieldState: { error },
@@ -52,6 +56,28 @@ const SelectField = ({
   const titleClassNames = [];
   required && titleClassNames.push(styles["required"]);
   const displayPlaceHolder = placeholder || "Select Type";
+
+  const handleChange = (e: SelectChangeEvent) => {
+    if (!multiple) {
+      onChange(e);
+      return;
+    }
+    const {
+      target: { value },
+    } = e;
+    if (value.length === 1 && value.includes("all")) {
+      setValue(name, Object.keys(options));
+    } else if (value[value.length - 1] === "all") {
+      setValue(
+        name,
+        value.length === Object.keys(options).length + 1
+          ? []
+          : Object.keys(options)
+      );
+    } else {
+      setValue(name, value);
+    }
+  };
 
   const RenderValue = () => {
     if (!value) return displayPlaceHolder;
@@ -80,6 +106,30 @@ const SelectField = ({
     return null;
   };
 
+  const dropdownOptionsForMultiple = Object.keys(options).map((key) => (
+    <MenuItem key={key} value={key}>
+      <ListItemIcon>
+        <Checkbox checked={value.includes(key)} />
+      </ListItemIcon>
+      <ListItemText> {options[key]}</ListItemText>
+    </MenuItem>
+  ));
+
+  const selectAll = (
+    <MenuItem key={"select-all"} value="all">
+      <ListItemIcon>
+        <Checkbox checked={value.length === Object.keys(options).length} />
+      </ListItemIcon>
+      <ListItemText>All banners</ListItemText>
+    </MenuItem>
+  );
+
+  const dropdownOptions = Object.keys(options).map((key) => (
+    <MenuItem key={key} value={key}>
+      {options[key]}
+    </MenuItem>
+  ));
+
   return (
     <FormControl
       className={
@@ -105,7 +155,7 @@ const SelectField = ({
         id={name}
         value={value}
         size="small"
-        onChange={onChange}
+        onChange={handleChange}
         displayEmpty
         renderValue={() => RenderValue()}
         className={
@@ -148,11 +198,9 @@ const SelectField = ({
           "data-testid": `${name}-input`,
         }}
       >
-        {Object.keys(options).map((key) => (
-          <MenuItem key={key} value={key}>
-            {options[key]}
-          </MenuItem>
-        ))}
+        {multiple && selectAll}
+        {multiple && dropdownOptionsForMultiple}
+        {!multiple && dropdownOptions}
       </Select>
       {error && (
         <FieldErrorMessage
