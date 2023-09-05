@@ -11,6 +11,7 @@ import createSerializedVoucherDefaultFormState from "../../../constants/Serializ
 import { ICreateSerializedVoucherFormState } from "../../../constants/SerializedVoucherFormStateType";
 import schema from "./SerializedVoucherValidationSchema";
 import SerializedVoucherValue from "./SerializedVoucherValue";
+import NumberCodes from "../numberCodes/NumberCodes";
 import DateInEffect from "../../CreateDeal/DateInEffect/DateInEffect";
 import {
   updateVoucherType,
@@ -272,6 +273,7 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
           currentStep={4}
           totalSteps={voucherLevel === "basket" ? 9 : 10}
         />
+        <NumberCodes />
       </Grid>
       {ctaContent}
     </FormProvider>

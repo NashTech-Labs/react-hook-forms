@@ -109,7 +109,7 @@ const SelectField = ({
   const dropdownOptionsForMultiple = Object.keys(options).map((key) => (
     <MenuItem key={key} value={key}>
       <ListItemIcon>
-        <Checkbox checked={value.includes(key)} />
+        <Checkbox checked={value?.includes(key)} />
       </ListItemIcon>
       <ListItemText> {options[key]}</ListItemText>
     </MenuItem>
@@ -118,7 +118,7 @@ const SelectField = ({
   const selectAll = (
     <MenuItem key={"select-all"} value="all">
       <ListItemIcon>
-        <Checkbox checked={value.length === Object.keys(options).length} />
+        <Checkbox checked={value?.length === Object.keys(options).length} />
       </ListItemIcon>
       <ListItemText>All banners</ListItemText>
     </MenuItem>

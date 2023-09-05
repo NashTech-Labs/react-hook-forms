@@ -99,13 +99,13 @@ const schema = yup.object().shape({
                 return value !== undefined && value > 0 && value < 100
             } else return true
         }),
-    // voucherQuantity: yup
-    //     .number()
-    //     .min(1, 'Error: Number should be greater than 0')
-    //     .typeError('Error: Number of vouchers required')
-    //     .test('voucher_qauntity', 'Error: Voucher qauntity should be whole number', (value: any) => value && value % 1 === 0)
-    //     .required('Error: Number of vouchers required'),
-    // usageOfVoucher: yup.string().required('Error: Number of uses required'),
+    voucherQuantity: yup
+        .number()
+        .required('Error: Number of vouchers required')
+        .min(1, 'Error: Number should be greater than 0')
+        .typeError('Error: Number of vouchers required')
+        .test('voucher_qauntity', 'Error: Voucher qauntity should be whole number', (value: any) => value && value % 1 === 0),
+    usageOfVoucher: yup.string().required('Error: Number of uses required'),
     startDatePicker: yup.date()
         .typeError("Error: Valid date required")
         .test(
