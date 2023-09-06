@@ -17,7 +17,12 @@ const createSerializedVoucherDefaultFormState: ICreateSerializedVoucherFormState
     restrictions: [],
     pickUpOrders: true,
     deliveryOrders: true,
-    useVoucherOptions: 'justOnce'
+    useVoucherOptions: 'justOnce',
+    startDatePicker: null,
+    endDatePicker: null,
+    startTimePicker: null,
+    endTimePicker: null,
+
 };
 
 export default createSerializedVoucherDefaultFormState;

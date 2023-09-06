@@ -274,6 +274,11 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
           totalSteps={voucherLevel === "basket" ? 9 : 10}
         />
         <NumberCodes />
+        <DateInEffect
+          deal={voucher}
+          currentStep={7}
+          totalSteps={voucherLevel === "basket" ? 7 : 10}
+        />
       </Grid>
       {ctaContent}
     </FormProvider>

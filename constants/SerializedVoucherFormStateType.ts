@@ -16,4 +16,8 @@ export interface ICreateSerializedVoucherFormState {
     pickUpOrders: boolean;
     deliveryOrders: boolean;
     useVoucherOptions: string;
+    startDatePicker: object | null;
+    endDatePicker: object | null;
+    startTimePicker: object | null;
+    endTimePicker: object | null;
 }
