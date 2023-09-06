@@ -15,8 +15,8 @@ const createSerializedVoucherDefaultFormState: ICreateSerializedVoucherFormState
     regionRestriction: 'no',
     voucherLevel: 'product',
     restrictions: [],
-    pickUpOrders: false,
-    deliveryOrders: false,
+    pickUpOrders: true,
+    deliveryOrders: true,
     useVoucherOptions: 'justOnce'
 };
 
