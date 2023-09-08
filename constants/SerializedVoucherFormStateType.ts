@@ -12,6 +12,7 @@ export interface ICreateSerializedVoucherFormState {
     basketSpend: string;
     basketDiscount: string;
     regionRestriction: string;
+    regionRestrictions: Array<string>
     restrictions: Array<string>;
     pickUpOrders: boolean;
     deliveryOrders: boolean;

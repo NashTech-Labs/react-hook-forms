@@ -129,8 +129,8 @@ export const voucherPerformanceTabs = [
 ];
 
 export const voucherCodeOptions = [
-  { value: 'justOnce', label: 'Just once' },
-  { value: 'moreThanOnce', label: 'More than once' }
+  { value: "justOnce", label: "Just once" },
+  { value: "moreThanOnce", label: "More than once" },
 ];
 
 export const useNumberOfVoucherOptions: { [index: string]: string } = {
@@ -183,4 +183,11 @@ export const BANNER_RESTRICTIONS: { [index: string]: string } = {
   wholesaleclub: "Wholesaleclub",
   zehrs: "Zehrs",
   rapid: "Rapid",
+};
+
+export const REGION_RESTRICTIONS: { [index: string]: string } = {
+  sales_org_atlantic: "Sales org Atlantic",
+  sales_org_ontario: "Sales org Ontario",
+  sales_org_quebec: "Sales org Quebec",
+  sales_org_west: "Sales org West",
 };

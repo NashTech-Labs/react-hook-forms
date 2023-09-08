@@ -28,6 +28,7 @@ interface ISelectFieldProps {
   topGutters?: boolean;
   placeholder?: string;
   multiple?: boolean;
+  selectAllLabel?: string;
 }
 
 const EmptyIconComponent = () => <div />;
@@ -43,6 +44,7 @@ const SelectField = ({
   topGutters,
   placeholder,
   multiple,
+  selectAllLabel,
 }: ISelectFieldProps) => {
   const { control, setValue } = useFormContext();
   const {
@@ -91,7 +93,7 @@ const SelectField = ({
           {value.map((selected) => (
             <Chip
               key={selected}
-              label={selected}
+              label={options[selected]}
               sx={{
                 borderRadius: "0px",
                 marginRight: "5px",
@@ -120,7 +122,7 @@ const SelectField = ({
       <ListItemIcon>
         <Checkbox checked={value?.length === Object.keys(options).length} />
       </ListItemIcon>
-      <ListItemText>All banners</ListItemText>
+      <ListItemText>{selectAllLabel}</ListItemText>
     </MenuItem>
   );
 
