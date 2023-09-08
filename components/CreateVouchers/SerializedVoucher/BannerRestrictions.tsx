@@ -1,5 +1,6 @@
-import React from "react";
-import { Stack, FormLabel } from "@mui/material";
+import React, { useEffect } from "react";
+import { useFormContext, useWatch } from "react-hook-form";
+import { Stack, FormLabel, Box } from "@mui/material";
 import StoreIcon from "@mui/icons-material/Store";
 import StepperCard from "../../CreateDeal/StepperCard";
 import SelectField from "../../FormComponents/SelectField";
@@ -9,6 +10,7 @@ import Tag from "../../Tag";
 import {
   BANNER_RESTRICTIONS,
   dealLevelExclusionOptions,
+  REGION_RESTRICTIONS,
 } from "../../../constants/FormOptions";
 import RadioGroupField from "../../FormComponents/RadioGroupField";
 import CheckboxField from "../../FormComponents/CheckboxField";
@@ -22,6 +24,18 @@ const BannerRestrictions = ({
   currentStep: number;
   totalSteps: number;
 }) => {
+  const { control, setValue } = useFormContext();
+  const regionRestriction = useWatch({
+    control,
+    name: "regionRestriction",
+  });
+
+  useEffect(() => {
+    if (regionRestriction === "no") {
+      setValue("regionRestrictions", []);
+    }
+  }, [regionRestriction, setValue]);
+
   const titleClassNames = [styles["labelHeading"]];
   return (
     <StepperCard inProgressIcon={StoreIcon} error step={"BANNER_RESTRICTIONS"}>
@@ -37,6 +51,7 @@ const BannerRestrictions = ({
           tooltipKey={""}
           placeholder="Choose a Banner"
           multiple
+          selectAllLabel="All banners"
         />
         <Stack marginTop={4}>
           <div>
@@ -64,6 +79,20 @@ const BannerRestrictions = ({
           tooltipKey={""}
           noBottomGutters
         />
+        {regionRestriction === "yes" && (
+          <Box marginLeft={2} marginTop={2}>
+            <SelectField
+              options={REGION_RESTRICTIONS}
+              name="regionRestrictions"
+              title="Select Region(s)"
+              inputHeight={true}
+              tooltipKey={""}
+              placeholder="Choose a Region"
+              multiple
+              selectAllLabel="All regions"
+            />
+          </Box>
+        )}
       </Stack>
     </StepperCard>
   );

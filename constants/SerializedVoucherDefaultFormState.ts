@@ -13,6 +13,7 @@ const createSerializedVoucherDefaultFormState: ICreateSerializedVoucherFormState
     basketSpend: "",
     basketDiscount: "",
     regionRestriction: 'no',
+    regionRestrictions: [],
     voucherLevel: 'product',
     restrictions: [],
     pickUpOrders: true,
@@ -22,7 +23,6 @@ const createSerializedVoucherDefaultFormState: ICreateSerializedVoucherFormState
     endDatePicker: null,
     startTimePicker: null,
     endTimePicker: null,
-
 };
 
 export default createSerializedVoucherDefaultFormState;
