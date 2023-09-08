@@ -8,8 +8,16 @@ import TextInputField from '../../FormComponents/TextInputField';
 import RadioGroupField from '../../FormComponents/RadioGroupField'
 import { useNumberOfVoucherOptions, voucherCodeOptions } from '../../../constants/FormOptions';
 import SelectField from '../../FormComponents/SelectField';
+import { useFormContext } from 'react-hook-form';
 
-function NumberCodes() {
+interface ISerializedVoucherValueProps {
+    currentStep: number;
+    totalSteps: number;
+}
+
+function NumberCodes({currentStep,totalSteps}: ISerializedVoucherValueProps) {
+
+    const { setValue, clearErrors } = useFormContext();
 
     const [inputVisible, setInputVisible] = useState(false)
 
@@ -17,15 +25,17 @@ function NumberCodes() {
 
         if (value === 'moreThanOnce') {
             setInputVisible(true)
+            setValue('usageOfVoucher', '2')
         }
         else {
+            clearErrors("usageOfVoucher")
             setInputVisible(false)
         }
     }
 
     return (
-        <StepperCard inProgressIcon={DataUsageIcon} error step={'Number_Codes'}>
-            <StepLabel currentStep={6} totalSteps={10} />
+        <StepperCard inProgressIcon={DataUsageIcon} error step={'NUMBER_CODES'}>
+            <StepLabel currentStep={currentStep} totalSteps={totalSteps} />
             <StepTitle title={"Number of Codes and Details"} />
 
             <Grid>

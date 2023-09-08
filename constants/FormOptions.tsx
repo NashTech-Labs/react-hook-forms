@@ -58,6 +58,7 @@ export const dealLevelExclusionOptions = [
   { value: "yes", label: "Yes" },
 ];
 
+
 export const DEAL_APPLY_TYPE: { [index: string]: string } = {
   all: "ALL",
   regular_priced_only: "REGULAR_ONLY",
@@ -134,7 +135,6 @@ export const voucherCodeOptions = [
 ];
 
 export const useNumberOfVoucherOptions: { [index: string]: string } = {
-  "1": "1",
   "2": "2",
   "3": "3",
   "4": "4",
@@ -143,6 +143,8 @@ export const useNumberOfVoucherOptions: { [index: string]: string } = {
   "7": "7",
   "8": "8",
   "9": "9",
+  "10": "10",
+  "unlimited": "Unlimited",
 };
 
 export const MAX_FILE_SIZE = 1000000; //1MB

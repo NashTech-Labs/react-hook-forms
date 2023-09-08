@@ -31,7 +31,7 @@ const STEP_CONFIG: { [index: string]: any } = {
   PROMOTION_MESSAGES: ["englishMessage", "frenchMessage"],
   FREE_SHIPPING_SPEND_MINIMUM: [["spendMinimum", "customMinimumSpend"]],
   FREE_SHIPPING_SHIPPING_METHOD: [["shippingMethodType"]],
-  Number_Codes: ["voucherQuantity"],
+  Number_Codes: ["voucherQuantity", "usageOfVoucher"],
 };
 
 const STEP_CONFIG_VOUCHERS: { [index: string]: any } = {
@@ -43,7 +43,8 @@ const STEP_CONFIG_VOUCHERS: { [index: string]: any } = {
     "basketDiscount",
     ["percentageOff", "customPercentageOff"],
   ],
-  NUMBER_CODES: ["voucherQuantity"],
+  NUMBER_CODES: ["voucherQuantity", "useVoucherOptions"],
+  VOUCHER_VALIDITY: ['voucherValidity'],
   DATE_IN_EFFECT: [
     "startDatePicker",
     "startTimePicker",
@@ -60,7 +61,7 @@ const STEP_CONFIG_VOUCHERS: { [index: string]: any } = {
 const anyOneValueCriteriaSections = [
   "PRODUCTS_AND_COLLECTIONS",
   "DEAL_VALUE",
-  "FREE_SHIPPING_SPEND_MINIMUM",
+  "FREE_SHIPPING_SPEND_MINIMUM"
 ];
 
 const getIconProps = ({ error, complete, inProgressIcon }: any) => {
