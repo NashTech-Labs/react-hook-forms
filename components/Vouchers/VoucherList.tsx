@@ -168,7 +168,7 @@ function VoucherList() {
   const columns: any = useMemo(
     () => [
       {
-        name: "Deal",
+        name: "Voucher",
         width: "35%",
         selector: (row: any) => (
           <Grid container>

@@ -21,4 +21,7 @@ export interface ICreateSerializedVoucherFormState {
     endDatePicker: object | null;
     startTimePicker: object | null;
     endTimePicker: object | null;
+    voucherValidity: string;
+    usageOfVoucher: number | null;
+    voucherQuantity: string | null;
 }

@@ -35,6 +35,7 @@ import { capitalizeWords } from "../../../util/format";
 import { JOE_FRESH_LOB } from "../../../constants/lob";
 import { lobState } from "../../../store/feature/selectlob/lobSlice";
 import BannerRestrictions from "./BannerRestrictions";
+import VoucherValidity from "./VoucherValidity/VoucherValidity";
 
 interface ICreateVoucherFrom {
   voucher?: any;
@@ -273,7 +274,10 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
           currentStep={4}
           totalSteps={voucherLevel === "basket" ? 9 : 10}
         />
-        <NumberCodes />
+        <VoucherValidity currentStep={5}
+          totalSteps={voucherLevel === "basket" ? 7 : 10} />
+        <NumberCodes currentStep={6}
+          totalSteps={voucherLevel === "basket" ? 7 : 10} />
         <DateInEffect
           deal={voucher}
           currentStep={7}
