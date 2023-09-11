@@ -273,6 +273,16 @@ const schema = yup.object().shape({
                 } else return false;
             }
         ),
+    pickUpOrders: yup.mixed().test("fulfilment-error-pickUpOrders", "Error: Fulfillment type is required", (value: boolean, context: any) => {
+        if(!value) {
+            return context?.parent?.deliveryOrders
+        } else return true
+    }),
+    deliveryOrders: yup.mixed().test("fulfilment-error-deliveryOrders", "Error: Fulfillment type is required", (value: boolean, context: any) => {
+        if(!value) {
+            return context?.parent?.pickUpOrders
+        } else return true
+    })
 })
 
 export default schema

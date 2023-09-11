@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useFormContext, useWatch } from "react-hook-form";
+import { useFormContext, useWatch, useController } from "react-hook-form";
 import { Stack, FormLabel, Box } from "@mui/material";
 import StoreIcon from "@mui/icons-material/Store";
 import StepperCard from "../../CreateDeal/StepperCard";
@@ -14,6 +14,7 @@ import {
 } from "../../../constants/FormOptions";
 import RadioGroupField from "../../FormComponents/RadioGroupField";
 import CheckboxField from "../../FormComponents/CheckboxField";
+import FieldErrorMessage from "../../FormComponents/FieldErrorMessage";
 import CustomTooltip from "../../Tooltip";
 import styles from "../../FormComponents/FormComponents.module.css";
 
@@ -25,6 +26,12 @@ const BannerRestrictions = ({
   totalSteps: number;
 }) => {
   const { control, setValue } = useFormContext();
+  const {
+    fieldState: { error: pickUpOrdersError },
+  } = useController({ control, name: "pickUpOrders" });
+  const {
+    fieldState: { error: deliveryOrdersError },
+  } = useController({ control, name: "deliveryOrders" });
   const regionRestriction = useWatch({
     control,
     name: "regionRestriction",
@@ -36,7 +43,7 @@ const BannerRestrictions = ({
     }
   }, [regionRestriction, setValue]);
 
-  const titleClassNames = [styles["labelHeading"]];
+  const titleClassNames = [styles["labelHeading"], styles["required"]];
   return (
     <StepperCard inProgressIcon={StoreIcon} error step={"BANNER_RESTRICTIONS"}>
       <StepLabel currentStep={currentStep} totalSteps={totalSteps} />
@@ -70,6 +77,14 @@ const BannerRestrictions = ({
           </div>
           <CheckboxField name="pickUpOrders" label={"Pick-up Orders"} />
           <CheckboxField name="deliveryOrders" label={"Delivery Orders"} />
+          {(pickUpOrdersError || deliveryOrdersError) && (
+            <FieldErrorMessage
+              message={
+                pickUpOrdersError?.message || deliveryOrdersError?.message
+              }
+              testId={`fulfillment-field-error`}
+            />
+          )}
         </Stack>
         <RadioGroupField
           options={dealLevelExclusionOptions}
