@@ -25,7 +25,8 @@ const createSerializedVoucherDefaultFormState: ICreateSerializedVoucherFormState
     endTimePicker: null,
     voucherQuantity: null,
     voucherValidity: 'no',
-    usageOfVoucher: null
+    usageOfVoucher: null,
+    voucherDiscountTab: "dollar",
 };
 
 export default createSerializedVoucherDefaultFormState;

@@ -24,4 +24,5 @@ export interface ICreateSerializedVoucherFormState {
     voucherValidity: string;
     usageOfVoucher: number | null;
     voucherQuantity: string | null;
+    voucherDiscountTab: string;
 }

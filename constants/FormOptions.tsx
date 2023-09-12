@@ -19,6 +19,14 @@ export const dealApplyOptions: { [index: string]: string } = {
   regular_priced_only: "Regular priced only",
 };
 
+export const spendApplyOptions: { [index: string]: string } = {
+  1000: "1000",
+  2000: "2000",
+  5000: "5000",
+  10000: "10000",
+  15000: "15000"
+};
+
 export const dealLevelOptions = [
   { value: "product", label: "Product" },
   { value: "basket", label: "Basket" },
@@ -30,7 +38,7 @@ export const dealTabs = [
   { label: "Fixed price", value: "fixed" },
 ];
 
-export const voucherTabs = [{ label: "Dollar ($) off", value: "dollar" }];
+export const voucherTabs = [{ label: "Dollar ($) off", value: "dollar"}, { label: "Points", value: "points" }];
 
 export const percentageOptions = [
   { value: "10", label: "10%" },
