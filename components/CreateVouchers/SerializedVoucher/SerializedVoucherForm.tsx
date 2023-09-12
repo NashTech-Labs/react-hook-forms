@@ -36,6 +36,7 @@ import { JOE_FRESH_LOB } from "../../../constants/lob";
 import { lobState } from "../../../store/feature/selectlob/lobSlice";
 import BannerRestrictions from "./BannerRestrictions";
 import VoucherValidity from "./VoucherValidity/VoucherValidity";
+import Exclusions from "../../CreateDeal/Exclusions/Exclusions";
 
 interface ICreateVoucherFrom {
   voucher?: any;
@@ -282,6 +283,11 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
           deal={voucher}
           currentStep={7}
           totalSteps={voucherLevel === "basket" ? 7 : 10}
+        />
+         <Exclusions
+          dealLevelName={voucherLevel}
+          currentStep={voucherLevel === "product" ? 9 : 8}
+          totalSteps={voucherLevel === "product" ? 10 : 8}
         />
       </Grid>
       {ctaContent}
