@@ -29,6 +29,7 @@ interface ISelectFieldProps {
   placeholder?: string;
   multiple?: boolean;
   selectAllLabel?: string;
+  spendOption?: boolean
 }
 
 const EmptyIconComponent = () => <div />;
@@ -45,6 +46,7 @@ const SelectField = ({
   placeholder,
   multiple,
   selectAllLabel,
+  spendOption
 }: ISelectFieldProps) => {
   const { control, setValue } = useFormContext();
   const {
@@ -161,7 +163,7 @@ const SelectField = ({
         displayEmpty
         renderValue={() => RenderValue()}
         className={
-          dealCriteria ? styles["select-deal-criteria"] : styles["select"]
+          spendOption ? styles["spend-points"] : dealCriteria ? styles["select-deal-criteria"] : styles["select"]
         }
         inputRef={ref}
         name={name}

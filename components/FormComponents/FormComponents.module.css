@@ -32,6 +32,10 @@
     padding: 10px 0px;
 }
 
+.spend-points {
+    margin-top: -14px;
+}
+
 .select-deal-criteria {
     padding: 10px 0px;
     width: 200px;

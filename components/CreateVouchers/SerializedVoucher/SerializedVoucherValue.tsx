@@ -9,9 +9,10 @@ import RadioGroupField from "../../FormComponents/RadioGroupField";
 import TextInputField from "../../FormComponents/TextInputField";
 import FormCardPreview from "../../FormCardPreview";
 import StyledTabs from "../../StyledTabs";
-import { dealLevelOptions, voucherTabs } from "../../../constants/FormOptions";
+import { dealLevelOptions, spendApplyOptions, voucherTabs } from "../../../constants/FormOptions";
 import { generatePreviewForValueStep } from "../../../util/generatePreview";
 import styles from "./SerializedVoucherValue.module.css";
+import SelectField from "../../FormComponents/SelectField";
 
 interface ISerializedVoucherValueProps {
   currentStep: number;
@@ -22,7 +23,7 @@ const SerializedVoucherValue = ({
   currentStep,
   totalSteps,
 }: ISerializedVoucherValueProps) => {
-  const { voucherLevel, dollarOff, basketSpend, basketDiscount } = useWatch();
+  const { voucherLevel, dollarOff, basketSpend, basketDiscount, voucherDiscountTab } = useWatch();
   const { setValue, clearErrors } = useFormContext();
   const handleChange = (e: any) => {
     const level = e.target.value;
@@ -33,6 +34,7 @@ const SerializedVoucherValue = ({
       clearErrors(["basketSpend", "basketDiscount"]);
     } else {
       setValue("dollarOff", "");
+      setValue("basketDiscount", "");
       setValue("fixedPriceOff", "");
       setValue("dealDiscountTab", "");
       setValue("productExclusionsCollectionTab", "uploadProduct");
@@ -45,21 +47,64 @@ const SerializedVoucherValue = ({
     }
   };
 
+  const handleTabUpdate = (newTab: string): void => {
+    setValue("voucherDiscountTab", newTab);
+  }
+
   let content = null;
   if (voucherLevel === "product") {
-    content = (
-      <TextInputField
-        title="Enter dollar ($) off"
-        description="Must be numeric values only"
-        placeholder="$ 0.00"
-        type="number"
-        name="dollarOff"
-        required
-        displayDollarFormat
-        inputHeight={true}
-        tooltipKey={""}
-      />
-    );
+
+    if (voucherDiscountTab === 'dollar')
+    {
+      content = (
+        <TextInputField
+          title="Enter dollar ($) off"
+          description="Must be numeric values only"
+          placeholder="$ 0.00"
+          type="number"
+          name="dollarOff"
+          required
+          displayDollarFormat
+          inputHeight={true}
+          tooltipKey={""}
+        />
+      );
+    }
+    if (voucherDiscountTab === 'points') {
+      content = (
+        <Grid
+        container
+        className={styles["basket-fields"]}
+        wrap="nowrap"
+        alignItems={"baseline"}
+      >
+        <Grid item md={5}>
+          <SelectField
+            options={spendApplyOptions}
+            name="pointsApplyType"
+            inputHeight={true}
+            spendOption={true}
+          />
+
+        </Grid>
+        <Grid item md={6}>
+          <TextInputField
+            name="dollarPointDiscount"
+            placeholder={`$ 0.00`}
+            type="number"
+            inline
+            required
+            displayDollarFormat
+            inputHeight={true}
+            title="Get"
+          />
+        </Grid>
+        <Grid item md={1}>
+          <Typography>Off</Typography>
+        </Grid>
+      </Grid>
+      );
+    }
   }
   if (voucherLevel === "basket") {
     content = (
@@ -118,7 +163,7 @@ const SerializedVoucherValue = ({
           handleChange={handleChange}
         />
         {voucherLevel === "product" && (
-          <StyledTabs tabs={voucherTabs} handleTabUpdate={() => {}} />
+          <StyledTabs tabs={voucherTabs} handleTabUpdate={handleTabUpdate} />
         )}
         {content}
         <FormCardPreview
