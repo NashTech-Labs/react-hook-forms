@@ -27,6 +27,8 @@ const createSerializedVoucherDefaultFormState: ICreateSerializedVoucherFormState
     voucherValidity: 'no',
     usageOfVoucher: null,
     voucherDiscountTab: "dollar",
+    website: true,
+    mobileApplication: true,
 };
 
 export default createSerializedVoucherDefaultFormState;

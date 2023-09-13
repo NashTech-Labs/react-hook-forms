@@ -25,4 +25,6 @@ export interface ICreateSerializedVoucherFormState {
     usageOfVoucher: number | null;
     voucherQuantity: string | null;
     voucherDiscountTab: string;
+    website: boolean,
+    mobileApplication: boolean,
 }

@@ -272,6 +272,16 @@ const schema = yup.object().shape({
         if(!value) {
             return context?.parent?.pickUpOrders
         } else return true
+    }),
+    website: yup.mixed().test("platform-error-website", "Error: Platform type is required", (value: boolean, context: any) => {
+        if(!value) {
+            return context?.parent?.mobileApplication
+        } else return true
+    }),
+    mobileApplication: yup.mixed().test("platform-error-mobileApplication", "Error: Platform type is required", (value: boolean, context: any) => {
+        if(!value) {
+            return context?.parent?.website
+        } else return true
     })
 })
 
