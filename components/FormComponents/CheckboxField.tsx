@@ -6,10 +6,9 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 interface ICheckboxFieldProps {
   label?: string;
   name: string;
-  defaultCheck?: boolean
 }
 
-const CheckboxField = ({ label, name, defaultCheck }: ICheckboxFieldProps) => {
+const CheckboxField = ({ label, name }: ICheckboxFieldProps) => {
   const { control } = useFormContext();
   const { field } = useController({
     control,
@@ -20,7 +19,7 @@ const CheckboxField = ({ label, name, defaultCheck }: ICheckboxFieldProps) => {
     <FormControlLabel
       control={
         <Checkbox
-          defaultChecked={defaultCheck ? true : false}
+          defaultChecked={false}
           checked={value}
           onChange={onChange}
           onBlur={onBlur}
