@@ -75,28 +75,18 @@ const schema = yup.object().shape({
         .number()
         .transform(value => (isNaN(value) ? undefined : value))
         .test('basket-discount', 'Error: Dollar($) value required', (value, context) => {
-            if(context?.parent?.voucherLevel === 'basket' && context?.parent?.basketDealType === 'dollar') {
+            if(context?.parent?.voucherLevel === 'basket') {
                 return value !== undefined
             } else return true
         })
         .test('basket-discount', "Error: Discount amount can't be greater than or equal to the spending amount", (value, context) => {
-            if(context?.parent?.voucherLevel === 'basket' && context?.parent?.basketDealType === 'dollar') {
+            if(context?.parent?.voucherLevel === 'basket') {
                 return value !== undefined && value < context?.parent?.basketSpend
             } else return true
         })
         .test('basket-discount-smaller', 'Error: Must be a minimum of $1.00', (value, context) => {
-            if(context?.parent?.voucherLevel === 'basket' && context?.parent?.basketDealType === 'dollar') {
+            if(context?.parent?.voucherLevel === 'basket') {
                 return value !== undefined && value >= 1
-            } else return true
-        })
-        .test('basket-discount', 'Error: Percentage(%) value required', (value, context) => {
-            if(context?.parent?.voucherLevel === 'basket' && context?.parent?.basketDealType === 'percentage') {
-                return value !== undefined
-            } else return true
-        })
-        .test('basket-discount', 'Error: Percentage(%) must be between 1-99', (value, context) => {
-            if(context?.parent?.voucherLevel === 'basket' && context?.parent?.basketDealType === 'percentage') {
-                return value !== undefined && value > 0 && value < 100
             } else return true
         }),
     voucherQuantity: yup
