@@ -25,7 +25,7 @@ const BannerRestrictions = ({
   currentStep: number;
   totalSteps: number;
 }) => {
-  const { control, setValue } = useFormContext();
+  const { control, setValue, getValues, clearErrors } = useFormContext();
   const {
     fieldState: { error: pickUpOrdersError },
   } = useController({ control, name: "pickUpOrders" });
@@ -36,6 +36,20 @@ const BannerRestrictions = ({
     control,
     name: "regionRestriction",
   });
+  const { pickUpOrders, deliveryOrders } = getValues();
+
+  useEffect(() => {
+    if (pickUpOrders || deliveryOrders) {
+      (pickUpOrdersError || deliveryOrdersError) &&
+        clearErrors(["pickUpOrders", "deliveryOrders"]);
+    }
+  }, [
+    pickUpOrders,
+    deliveryOrders,
+    clearErrors,
+    pickUpOrdersError,
+    deliveryOrdersError,
+  ]);
 
   useEffect(() => {
     if (regionRestriction === "no") {

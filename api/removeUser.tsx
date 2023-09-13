@@ -20,6 +20,7 @@ export const removeUser = createApi({
         headers: {
           "X-Loblaw-Anonymize": "true",
           "Content-Type": "application/json",
+          "Business-User-Agent": "PLATFORM_BO_TOOLS",
         },
       }),
     }),

@@ -10,7 +10,8 @@ export const RolesOfUser = createApi({
         url: `v1/roles/${searchValue}/getUserRoles`,
         method: "GET",
         headers: {
-          "X-Loblaw-Tenant-ID": "JOE_FRESH"
+          "X-Loblaw-Tenant-ID": "JOE_FRESH",
+          "Business-User-Agent": "PLATFORM_BO_TOOLS",
         },
       }),
     }),
