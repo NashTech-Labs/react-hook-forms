@@ -4,7 +4,7 @@ import { CustomQuery } from "../httpInterceptors";
 export interface LobsRoleData {
   JOE_FRESH: string[];
   SHOPPERS_DRUG_MART: string[];
-  ONLINE_GROCERIES: string[]
+  ONLINE_GROCERIES: string[];
 }
 
 export const userLobs = createApi({
@@ -17,6 +17,7 @@ export const userLobs = createApi({
         method: "GET",
         headers: {
           "X-CallType": "LOB",
+          "Business-User-Agent": "PLATFORM_BO_TOOLS",
         },
       }),
     }),

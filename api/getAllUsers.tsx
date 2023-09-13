@@ -11,7 +11,7 @@ export const userRoleList = createApi({
         url: `v1/roles/getAllUsers`,
         method: "GET",
         headers: {
-          // "X-Loblaw-Tenant-ID": "JOE_FRESH"
+          "Business-User-Agent": "PLATFORM_BO_TOOLS",
         },
       }),
     }),
