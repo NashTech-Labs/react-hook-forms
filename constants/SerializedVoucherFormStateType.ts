@@ -27,4 +27,15 @@ export interface ICreateSerializedVoucherFormState {
     voucherDiscountTab: string;
     website: boolean,
     mobileApplication: boolean,
+    productsCollectionTab: string;
+    mch: Array<string>;
+    liam: Array<string>;
+    fileMCH: Array<string>;
+    fileLIAM: Array<string>;
+    exFileMCH: Array<string>;
+    exFileLIAM: Array<string>;
+    exmch: Array<string>;
+    exliam: Array<string>;
+    fileName: string;
+    exFileName: string;
 }

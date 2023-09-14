@@ -37,6 +37,7 @@ import { lobState } from "../../../store/feature/selectlob/lobSlice";
 import BannerRestrictions from "./BannerRestrictions";
 import VoucherValidity from "./VoucherValidity/VoucherValidity";
 import Exclusions from "../../CreateDeal/Exclusions/Exclusions";
+import ProductsCollection from "../../CreateDeal/ProductsCollection/ProductsCollection";
 
 interface ICreateVoucherFrom {
   voucher?: any;
@@ -275,16 +276,23 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
           currentStep={4}
           totalSteps={voucherLevel === "basket" ? 9 : 10}
         />
-        <VoucherValidity currentStep={5}
-          totalSteps={voucherLevel === "basket" ? 7 : 10} />
-        <NumberCodes currentStep={6}
-          totalSteps={voucherLevel === "basket" ? 7 : 10} />
+        <VoucherValidity
+          currentStep={5}
+          totalSteps={voucherLevel === "basket" ? 7 : 10}
+        />
+        <NumberCodes
+          currentStep={6}
+          totalSteps={voucherLevel === "basket" ? 7 : 10}
+        />
         <DateInEffect
           deal={voucher}
           currentStep={7}
           totalSteps={voucherLevel === "basket" ? 7 : 10}
         />
-         <Exclusions
+        {voucherLevel === "product" ? (
+          <ProductsCollection currentStep={8} totalSteps={10} />
+        ) : null}
+        <Exclusions
           dealLevelName={voucherLevel}
           currentStep={voucherLevel === "product" ? 9 : 8}
           totalSteps={voucherLevel === "product" ? 10 : 8}
