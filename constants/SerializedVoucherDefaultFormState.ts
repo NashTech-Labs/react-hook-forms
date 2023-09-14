@@ -29,6 +29,17 @@ const createSerializedVoucherDefaultFormState: ICreateSerializedVoucherFormState
     voucherDiscountTab: "dollar",
     website: true,
     mobileApplication: true,
+    productsCollectionTab: "uploadProduct",
+    mch: [],
+    liam: [],
+    fileName: '',
+    exFileName: '',
+    exmch: [],
+    exliam: [],
+    fileMCH: [],
+    exFileMCH: [],
+    fileLIAM: [],
+    exFileLIAM: [],
 };
 
 export default createSerializedVoucherDefaultFormState;

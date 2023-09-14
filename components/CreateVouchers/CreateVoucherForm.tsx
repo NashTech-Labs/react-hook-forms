@@ -12,7 +12,6 @@ import schema from "./CreateVoucherValidationSchema";
 import VoucherValue from "./VoucherValue";
 // import ReportingInformation from './ReportingInformation';
 import DateInEffect from "../CreateDeal/DateInEffect/DateInEffect";
-import NumberCodes from "./numberCodes/NumberCodes";
 import ProductsCollection from "../CreateDeal/ProductsCollection/ProductsCollection";
 import Exclusions from "../CreateDeal/Exclusions/Exclusions";
 import { useRouter } from "next/router";
@@ -351,7 +350,6 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
           currentStep={3}
           totalSteps={voucherLevel === "basket" ? 5 : 6}
         />
-        {/* <NumberCodes /> */}
         <DateInEffect
           deal={voucher}
           currentStep={4}
