@@ -95,7 +95,7 @@ const schema = yup.object().shape({
         .min(1, 'Error: Number should be greater than 0')
         .typeError('Error: Number of vouchers required')
         .test('voucher_qauntity', 'Error: Voucher qauntity should be whole number', (value: any) => value && value % 1 === 0),
-    usageOfVoucher: yup.string().required('Error: Number of uses required'),
+    // usageOfVoucher: yup.string().required('Error: Number of uses required'),
     startDatePicker: yup.date()
         .typeError("Error: Valid date required")
         .test(
@@ -282,7 +282,15 @@ const schema = yup.object().shape({
         if(!value) {
             return context?.parent?.website
         } else return true
-    })
+    }),
+    englishMessage: yup
+      .string()
+      .required("Error: English message required")
+      .max(250, "Error: Message should be less than 250 characters"),
+    frenchMessage: yup
+      .string()
+      .required("Error: French message required")
+      .max(250, "Error: Message should be less than 250 characters"),
 })
 
 export default schema

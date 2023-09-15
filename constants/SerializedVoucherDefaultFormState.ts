@@ -40,6 +40,8 @@ const createSerializedVoucherDefaultFormState: ICreateSerializedVoucherFormState
     exFileMCH: [],
     fileLIAM: [],
     exFileLIAM: [],
+    englishMessage: "",
+    frenchMessage: ""
 };
 
 export default createSerializedVoucherDefaultFormState;
