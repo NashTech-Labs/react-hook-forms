@@ -29,8 +29,6 @@ function VoucherValidity({currentStep,totalSteps}: ISerializedVoucherValueProps)
         fieldState: { error: mobileApplicationError },field: { value: mobileApplicationState }
       } = useController({ control, name: "mobileApplication" });
 
-    console.log(websiteState, mobileApplicationState)
-
     useEffect(()=> {
         if (websiteState || mobileApplicationState) {
             clearErrors("website")

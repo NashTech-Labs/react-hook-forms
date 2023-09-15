@@ -2,6 +2,7 @@ import moment from 'moment'
 import { ICreateVoucherFormState } from '../../../constants/CreateVoucherFormStateType'
 import { voucherTypeOptions, stackTypeOptions, dealApplyOptions, dealLevelExclusionOptions } from '../../../constants/FormOptions'
 import { capitalizeWords } from '../../../util/format'
+import { ICreateSerializedVoucherFormState } from '../../../constants/SerializedVoucherFormStateType'
 
 const getFormattedDate = (date: any, time: any) => `${moment(date).format('MMMM DD, YYYY')} ${moment(time).format('hh:mma z')} EST`
 
@@ -49,6 +50,20 @@ const config: IConfig = {
             }
         }
     ],
+    'Banner Restrictions': [
+        {
+            title: 'Banner', getValue: (formData: ICreateSerializedVoucherFormState) => {
+                const { restrictions } = formData
+                return restrictions.length > 0 ? restrictions.join(', ') : 'None'
+            }
+        },
+        {
+            title: 'Is this voucher restricted to a specific location?', getValue: (formData: ICreateSerializedVoucherFormState) => {
+                const { regionRestrictions } = formData
+                return regionRestrictions.length > 0 ? regionRestrictions.join(', ') : 'NO'
+            }
+        }
+    ],
     'Voucher value': [{
         title: 'Is this at a basket level or product level?',
         getValue: (formData: ICreateVoucherFormState) => {
@@ -90,6 +105,36 @@ const config: IConfig = {
             if (percentageOff) return `${percentageOff === 'custom' ? customPercentageOff : percentageOff}% off product(s)`
         }
     }
+    ],
+    'Voucher Validity': [
+        {
+            title: 'Is this voucher for new customers only?', getValue: (formData: ICreateSerializedVoucherFormState) => {
+                const { voucherValidity } = formData
+                return voucherValidity.toUpperCase()
+            }
+        },
+        {
+            title: 'Which platform(s) is this voucher eligible for redemption on?', getValue: (formData: ICreateSerializedVoucherFormState) => {
+                const { website, mobileApplication } = formData
+                if (website && mobileApplication) return "Website and Mobile Application"
+                if (website) return "Website" 
+                if (mobileApplication) return "Mobile Application"
+            }
+        }
+    ],
+    'Number of Codes': [
+        {
+            title: 'Number of vouchers to create', getValue: (formData: ICreateSerializedVoucherFormState) => {
+                const { voucherQuantity } = formData
+                return voucherQuantity
+            }
+        },
+        {
+            title: 'How often can the customer use this voucher?', getValue: (formData: ICreateSerializedVoucherFormState) => {
+                const { useVoucherOptions, usageOfVoucher } = formData
+                return useVoucherOptions === "moreThanOnce" ? usageOfVoucher : "Just once"
+            }
+        }
     ],
     'Date in effect': [{
         title: 'Start Date',
@@ -200,6 +245,22 @@ const config: IConfig = {
             }
         }
     ],
+    'Promotional messages': [
+        {
+            title: 'English message',
+            getValue: (formData: ICreateSerializedVoucherFormState) => {
+                const {englishMessage} = formData
+                return englishMessage
+            }
+        },
+        {
+            title: 'French message',
+            getValue: (formData: ICreateSerializedVoucherFormState) => {
+                const {frenchMessage} = formData
+                return frenchMessage
+            }
+        }
+    ]
 }
 
 

@@ -34,13 +34,23 @@ function VoucherFormSummary() {
 
     const excludeSteps: string[] = []
 
-    const { externalVoucherCode, draftCreatedTimestamp, voucherLevel } = newVoucherData
+    const { externalVoucherCode, draftCreatedTimestamp, voucherLevel, voucherType } = newVoucherData
 
     if (voucherLevel === 'basket') {
         excludeSteps.push('Products and Collections')
     }
 
+    if (voucherType !== "SERIALIZED") {
+        excludeSteps.push('Banner Restrictions', 'Voucher Validity', 'Number of Codes', 'Promotional messages')
+    }
+
     const handleCreateVoucher = async () => {
+
+        if (voucherType === "SERIALIZED") {
+            console.log(newVoucherData)
+        }
+
+        else {
 
         const editPayloadData = generateCreateVoucherPayload(newVoucherData, false)
         const formattedPayloadWithUser = {
@@ -63,6 +73,7 @@ function VoucherFormSummary() {
                     "voucher-failed"
                 )
             })
+        }
     }
 
     const handleCancel = () => {

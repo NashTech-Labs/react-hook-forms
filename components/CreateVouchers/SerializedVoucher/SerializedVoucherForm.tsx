@@ -38,6 +38,7 @@ import BannerRestrictions from "./BannerRestrictions";
 import VoucherValidity from "./VoucherValidity/VoucherValidity";
 import Exclusions from "../../CreateDeal/Exclusions/Exclusions";
 import ProductsCollection from "../../CreateDeal/ProductsCollection/ProductsCollection";
+import SerilizedPromotionalMessage from "./SerilizedPromotionalMessage/SerilizedPromotionalMessage";
 
 interface ICreateVoucherFrom {
   voucher?: any;
@@ -104,6 +105,23 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
 
   const externalVoucherCode = getValues("externalVoucherCode");
 
+  const handleFormSubmit = async (e: MouseEvent) => {
+    e.preventDefault();
+    const cleanForm = await trigger(undefined, { shouldFocus: true });
+
+    if (errors.externalVoucherCode) {
+      setError("externalVoucherCode", {
+        message: errors?.externalVoucherCode?.message,
+      });
+    }
+
+    if (cleanForm && !errors.externalVoucherCode) {
+      setValue("draftCreatedTimestamp", moment());
+      dispatch(updateNewVoucher(formMethods.getValues()));
+      router.push("/vouchers/create/summary");
+    }
+  };
+
   const handleBack = () => {
     dispatch(updateVoucherType(""));
   };
@@ -166,7 +184,7 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
         <Button
           variant="contained"
           className={commonStyles["continueBtn"]}
-          // onClick={(e) => handleFormSubmit(e)}
+          onClick={(e) => handleFormSubmit(e)}
           data-testid="continue-btn"
         >
           Continue
@@ -297,6 +315,7 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
           currentStep={voucherLevel === "product" ? 9 : 8}
           totalSteps={voucherLevel === "product" ? 10 : 8}
         />
+        <SerilizedPromotionalMessage />
       </Grid>
       {ctaContent}
     </FormProvider>

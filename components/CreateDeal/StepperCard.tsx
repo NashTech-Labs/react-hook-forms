@@ -44,7 +44,7 @@ const STEP_CONFIG_VOUCHERS: { [index: string]: any } = {
     ["percentageOff", "customPercentageOff"],
   ],
   NUMBER_CODES: ["voucherQuantity", "useVoucherOptions"],
-  VOUCHER_VALIDITY: ["voucherValidity"],
+  VOUCHER_VALIDITY: [["website", "mobileApplication"]],
   DATE_IN_EFFECT: [
     "startDatePicker",
     "startTimePicker",
@@ -64,6 +64,7 @@ const anyOneValueCriteriaSections = [
   "DEAL_VALUE",
   "FREE_SHIPPING_SPEND_MINIMUM",
   "BANNER_RESTRICTIONS",
+  "VOUCHER_VALIDITY"
 ];
 
 const getIconProps = ({ error, complete, inProgressIcon }: any) => {

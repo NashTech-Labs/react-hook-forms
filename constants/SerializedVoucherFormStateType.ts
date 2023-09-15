@@ -38,4 +38,6 @@ export interface ICreateSerializedVoucherFormState {
     exliam: Array<string>;
     fileName: string;
     exFileName: string;
+    englishMessage: string;
+    frenchMessage: string;
 }
