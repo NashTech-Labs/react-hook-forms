@@ -12,6 +12,7 @@ export interface ICreateSerializedVoucherFormState {
     basketSpend: string;
     basketDiscount: string;
     regionRestriction: string;
+    dealApplyType: string;
     regionRestrictions: Array<string>
     restrictions: Array<string>;
     pickUpOrders: boolean;
@@ -23,6 +24,7 @@ export interface ICreateSerializedVoucherFormState {
     endTimePicker: object | null;
     voucherValidity: string;
     usageOfVoucher: number | null;
+    dealLevelOptions: string,
     voucherQuantity: string | null;
     voucherDiscountTab: string;
     website: boolean,

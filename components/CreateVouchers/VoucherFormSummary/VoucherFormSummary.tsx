@@ -15,6 +15,7 @@ import generateCreateVoucherPayload from '../../../util/createVoucherPayload';
 import { notifyError, notifySuccess } from '../../../util/Notification/Notification';
 import { userProfileState } from '../../../store/feature/auth/authSlice';
 import { updatedVoucherEditing, updatedVoucherId } from '../../../store/feature/voucher/voucherSlice';
+import generateCreateSerializedVoucherPayload from '../../../util/createSerializedVoucherPayload';
 
 function VoucherFormSummary() {
 
@@ -28,7 +29,7 @@ function VoucherFormSummary() {
 
     const voucherId = useAppSelector(updatedVoucherId);
 
-    const newVoucherData = useAppSelector(getNewVoucherData)
+    const newVoucherData: any = useAppSelector(getNewVoucherData)
 
     const [editVoucher] = useEditVoucherMutation();
 
@@ -48,6 +49,27 @@ function VoucherFormSummary() {
 
         if (voucherType === "SERIALIZED") {
             console.log(newVoucherData)
+            const editPayloadData = generateCreateSerializedVoucherPayload(newVoucherData, false)
+            const formattedPayloadWithUser = {
+            ...editPayloadData,
+            voucherId: voucherId,
+            username: user?.name
+        }
+        await editVoucher(formattedPayloadWithUser)
+            .unwrap()
+            .then((data) => {
+                if (data) {
+                    notifySuccess(isVoucherEditing ? "Voucher successfully saved" : "Voucher successfully created")
+                    router.push('/vouchers')
+                    dispatch(updateNewVoucher(createVoucherDefaultFormState))
+                }
+            })
+            .catch((error: any) => {
+                notifyError(
+                    error.data?.details ? error.data?.details : "Something went wrong",
+                    "voucher-failed"
+                )
+            })
         }
 
         else {
