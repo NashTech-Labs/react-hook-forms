@@ -28,6 +28,7 @@ import { editVoucher } from "../api/editVoucher";
 import { deleteVoucher } from "../api/deleteVoucher";
 import lobSlice from "./feature/selectlob/lobSlice";
 import { userLobs } from "../api/getuserLobs";
+import { getPoints } from "../api/getPoints";
 
 const persistauthConfig = {
   key: "auth",
@@ -103,6 +104,7 @@ export const generateStore = (preloadedState = {}) => {
       [createVoucher.reducerPath]: createVoucher.reducer,
       [editVoucher.reducerPath]: editVoucher.reducer,
       [deleteVoucher.reducerPath]: deleteVoucher.reducer,
+      [getPoints.reducerPath]: getPoints.reducer
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
@@ -124,7 +126,8 @@ export const generateStore = (preloadedState = {}) => {
         createVoucher.middleware,
         editVoucher.middleware,
         deleteVoucher.middleware,
-        userLobs.middleware
+        userLobs.middleware,
+        getPoints.middleware
       ]),
     preloadedState,
   });

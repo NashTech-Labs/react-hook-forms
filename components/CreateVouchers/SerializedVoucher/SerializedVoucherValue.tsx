@@ -9,10 +9,13 @@ import RadioGroupField from "../../FormComponents/RadioGroupField";
 import TextInputField from "../../FormComponents/TextInputField";
 import FormCardPreview from "../../FormCardPreview";
 import StyledTabs from "../../StyledTabs";
-import { dealLevelOptions, spendApplyOptions, voucherTabs } from "../../../constants/FormOptions";
+import { dealLevelOptions, voucherTabs } from "../../../constants/FormOptions";
 import { generatePreviewForValueStep } from "../../../util/generatePreview";
 import styles from "./SerializedVoucherValue.module.css";
 import SelectField from "../../FormComponents/SelectField";
+import { getPointsData, useGetPointsQuery } from "../../../api/getPoints";
+import { useAppSelector } from "../../../store";
+import { userProfileState } from "../../../store/feature/auth/authSlice";
 
 interface ISerializedVoucherValueProps {
   currentStep: number;
@@ -23,7 +26,23 @@ const SerializedVoucherValue = ({
   currentStep,
   totalSteps,
 }: ISerializedVoucherValueProps) => {
-  const { voucherLevel, dollarOff, basketSpend, basketDiscount, voucherDiscountTab } = useWatch();
+
+  const user = useAppSelector(userProfileState);
+
+  const { voucherLevel, dollarOff, basketSpend, basketDiscount, voucherDiscountTab, pointsApplyType, dollarPointDiscount } = useWatch();
+
+  const { data } = useGetPointsQuery({ voucherDiscountTab , user });
+
+  const getspendApplyOptions = (data: getPointsData | undefined) => {
+    let value: { [index: string]: string } = {}
+    if (data?.rewardIncrementResponse?.reward_increments) {
+      data?.rewardIncrementResponse?.reward_increments.forEach((pointsdata)=> {
+        value[pointsdata] = pointsdata 
+      })
+    }
+    return value
+  }
+
   const { setValue, clearErrors } = useFormContext();
   const handleChange = (e: any) => {
     const level = e.target.value;
@@ -80,7 +99,7 @@ const SerializedVoucherValue = ({
       >
         <Grid item md={5}>
           <SelectField
-            options={spendApplyOptions}
+            options={getspendApplyOptions(data)}
             name="pointsApplyType"
             inputHeight={true}
             spendOption={true}
@@ -173,6 +192,8 @@ const SerializedVoucherValue = ({
             dollarOff,
             basketSpend,
             basketDiscount,
+            pointsApplyType,
+            dollarPointDiscount
           })}
         />
       </Stack>

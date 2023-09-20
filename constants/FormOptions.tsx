@@ -19,14 +19,6 @@ export const dealApplyOptions: { [index: string]: string } = {
   regular_priced_only: "Regular priced only",
 };
 
-export const spendApplyOptions: { [index: string]: string } = {
-  1000: "1000",
-  2000: "2000",
-  5000: "5000",
-  10000: "10000",
-  15000: "15000"
-};
-
 export const dealLevelOptions = [
   { value: "product", label: "Product" },
   { value: "basket", label: "Basket" },

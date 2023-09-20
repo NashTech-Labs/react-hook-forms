@@ -11,8 +11,12 @@ import StepLabel from "../../../StepLabel";
 import StepTitle from "../../../StepTitle";
 import FormCardPreview from "../../../FormCardPreview";
 
+interface ISerializedVoucherValueProps {
+  currentStep: number;
+  totalSteps: number;
+}
 
-function SerilizedPromotionalMessage() {
+function SerilizedPromotionalMessage({currentStep,totalSteps}: ISerializedVoucherValueProps) {
   const { resetField } = useFormContext();
 
   const englishMessage = useWatch({
@@ -44,7 +48,7 @@ function SerilizedPromotionalMessage() {
 
   return (
     <StepperCard step={'PROMOTION_MESSAGES'} inProgressIcon={MessageOutlinedIcon}>
-      <StepLabel currentStep={10} totalSteps={10} />
+      <StepLabel currentStep={currentStep} totalSteps={totalSteps} />
       <StepTitle title={"Promotional Messages"} />
       <Grid container>
         <Grid item lg={12}>

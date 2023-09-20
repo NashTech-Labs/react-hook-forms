@@ -296,16 +296,16 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
         />
         <VoucherValidity
           currentStep={5}
-          totalSteps={voucherLevel === "basket" ? 7 : 10}
+          totalSteps={voucherLevel === "basket" ? 9 : 10}
         />
         <NumberCodes
           currentStep={6}
-          totalSteps={voucherLevel === "basket" ? 7 : 10}
+          totalSteps={voucherLevel === "basket" ? 9 : 10}
         />
         <DateInEffect
           deal={voucher}
           currentStep={7}
-          totalSteps={voucherLevel === "basket" ? 7 : 10}
+          totalSteps={voucherLevel === "basket" ? 9 : 10}
         />
         {voucherLevel === "product" ? (
           <ProductsCollection currentStep={8} totalSteps={10} />
@@ -313,9 +313,12 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
         <Exclusions
           dealLevelName={voucherLevel}
           currentStep={voucherLevel === "product" ? 9 : 8}
-          totalSteps={voucherLevel === "product" ? 10 : 8}
+          totalSteps={voucherLevel === "product" ? 10 : 9}
         />
-        <SerilizedPromotionalMessage />
+        <SerilizedPromotionalMessage
+        currentStep={voucherLevel === "product" ? 10 : 9}
+        totalSteps={voucherLevel === "product" ? 10 : 9}
+        />
       </Grid>
       {ctaContent}
     </FormProvider>
