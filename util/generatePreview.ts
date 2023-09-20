@@ -9,6 +9,8 @@ interface IGeneratePreviewForValueStep {
     basketSpend?: string
     basketDiscount?: string
     basketDealType?: string
+    pointsApplyType?: string
+    dollarPointDiscount?: string
 }
 
 export const generatePreviewForValueStep = ({
@@ -20,7 +22,9 @@ export const generatePreviewForValueStep = ({
     fixedPriceOff,
     basketSpend,
     basketDiscount,
-    basketDealType
+    basketDealType,
+    pointsApplyType,
+    dollarPointDiscount
 }: IGeneratePreviewForValueStep): string => {
     let customerPreview = 'Preview will generate after inputs are completed'
 
@@ -35,6 +39,8 @@ export const generatePreviewForValueStep = ({
             }
         } else if(dollarOff || fixedPriceOff) {
             customerPreview = `$${dollarOff || fixedPriceOff} off product(s)`
+        } else if ( pointsApplyType || dollarPointDiscount ) {
+            customerPreview = `Spend ${pointsApplyType} points, Get $${dollarPointDiscount} off`
         }
     } else if(basketSpend && basketDiscount) {
         customerPreview = `Spend $${basketSpend}, Get ${basketDealType === 'dollar' ? '$' : ''}${basketDiscount}${basketDealType === 'percentage' ? '%' : ''} off`
