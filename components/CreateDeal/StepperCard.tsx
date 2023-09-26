@@ -56,7 +56,7 @@ const STEP_CONFIG_VOUCHERS: { [index: string]: any } = {
   PROMOTION_MESSAGES: ["englishMessage", "frenchMessage"],
   FREE_SHIPPING_SPEND_MINIMUM: [["spendMinimum", "customMinimumSpend"]],
   FREE_SHIPPING_SHIPPING_METHOD: [["shippingMethodType"]],
-  BANNER_RESTRICTIONS: [["pickUpOrders", "deliveryOrders"]],
+  BANNER_RESTRICTIONS: [["pickUpOrders", "deliveryOrders"], "restrictions"],
 };
 
 const anyOneValueCriteriaSections = [
@@ -64,7 +64,7 @@ const anyOneValueCriteriaSections = [
   "DEAL_VALUE",
   "FREE_SHIPPING_SPEND_MINIMUM",
   "BANNER_RESTRICTIONS",
-  "VOUCHER_VALIDITY"
+  "VOUCHER_VALIDITY",
 ];
 
 const getIconProps = ({ error, complete, inProgressIcon }: any) => {

@@ -179,7 +179,7 @@ const RemoveProductsModal = ({
 
     handleClose(e);
   };
-  
+
   let records: Array<{ value: string; type: string; id: string }> = [];
 
   if (exclusions) {
@@ -309,7 +309,7 @@ const RemoveProductsModal = ({
       tableData = records;
     }
   }
-  console.log("tableData", getValues());
+
   let content = null;
 
   if (showConfirmation) {

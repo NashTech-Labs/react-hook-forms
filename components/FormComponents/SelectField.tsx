@@ -29,7 +29,7 @@ interface ISelectFieldProps {
   placeholder?: string;
   multiple?: boolean;
   selectAllLabel?: string;
-  spendOption?: boolean
+  spendOption?: boolean;
 }
 
 const EmptyIconComponent = () => <div />;
@@ -46,7 +46,7 @@ const SelectField = ({
   placeholder,
   multiple,
   selectAllLabel,
-  spendOption
+  spendOption,
 }: ISelectFieldProps) => {
   const { control, setValue } = useFormContext();
   const {
@@ -70,16 +70,17 @@ const SelectField = ({
       target: { value },
     } = e;
     if (value.length === 1 && value.includes("all")) {
-      setValue(name, Object.keys(options));
+      setValue(name, Object.keys(options), { shouldValidate: true });
     } else if (value[value.length - 1] === "all") {
       setValue(
         name,
         value.length === Object.keys(options).length + 1
           ? []
-          : Object.keys(options)
+          : Object.keys(options),
+        { shouldValidate: true }
       );
     } else {
-      setValue(name, value);
+      setValue(name, value, { shouldValidate: true });
     }
   };
 
@@ -163,7 +164,11 @@ const SelectField = ({
         displayEmpty
         renderValue={() => RenderValue()}
         className={
-          spendOption ? styles["spend-points"] : dealCriteria ? styles["select-deal-criteria"] : styles["select"]
+          spendOption
+            ? styles["spend-points"]
+            : dealCriteria
+            ? styles["select-deal-criteria"]
+            : styles["select"]
         }
         inputRef={ref}
         name={name}
