@@ -73,6 +73,7 @@ const BannerRestrictions = ({
           placeholder="Choose a Banner"
           multiple
           selectAllLabel="All banners"
+          required
         />
         <Stack marginTop={4}>
           <div>

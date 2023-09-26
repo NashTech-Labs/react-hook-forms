@@ -302,13 +302,14 @@ const schema = yup.object().shape({
         } else return true
     }),
     englishMessage: yup
-      .string()
-      .required("Error: English message required")
-      .max(250, "Error: Message should be less than 250 characters"),
+        .string()
+        .required("Error: English message required")
+        .max(250, "Error: Message should be less than 250 characters"),
     frenchMessage: yup
-      .string()
-      .required("Error: French message required")
-      .max(250, "Error: Message should be less than 250 characters"),
+        .string()
+        .required("Error: French message required")
+        .max(250, "Error: Message should be less than 250 characters"),
+    restrictions: yup.array().of(yup.string()).min(1, 'At least one banner should be selected')
 })
 
 export default schema
