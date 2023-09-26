@@ -27,6 +27,10 @@ export interface ICreateSerializedVoucherFormState {
     dealLevelOptions: string,
     voucherQuantity: string | null;
     voucherDiscountTab: string;
+    pointsApplyType: string;
+    dollarPointDiscount: string;
+    basketpointsApplyType: string,
+    basketdollarPointDiscount: string,
     website: boolean,
     mobileApplication: boolean,
     productsCollectionTab: string;

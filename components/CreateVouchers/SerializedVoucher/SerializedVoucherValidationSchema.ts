@@ -107,6 +107,24 @@ const schema = yup.object().shape({
                 return value !== undefined && value >= 1
             } else return true
         }),
+    basketdollarPointDiscount: yup
+        .number()
+        .transform(value => (isNaN(value) ? undefined : value))
+        .test('basket-discount-pcx', 'Error: Dollar($) value required', (value, context) => {
+            if(context?.parent?.voucherDiscountTab === 'basket') {
+                return value !== undefined
+            } else return true
+        })
+        .test('basket-discount-pcx', "Error: Discount amount can't be greater than or equal to the spending points", (value, context) => {
+            if(context?.parent?.voucherDiscountTab === 'basket') {
+                return value !== undefined && value < context?.parent?.basketpointsApplyType
+            } else return true
+        })
+        .test('basket-discount-smaller-pcx', 'Error: Must be a minimum of $1.00', (value, context) => {
+            if(context?.parent?.voucherDiscountTab === 'basket') {
+                return value !== undefined && value >= 1
+            } else return true
+        }),
     voucherQuantity: yup
         .number()
         .required('Error: Number of vouchers required')
