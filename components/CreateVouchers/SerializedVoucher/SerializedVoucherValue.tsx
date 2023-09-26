@@ -9,7 +9,11 @@ import RadioGroupField from "../../FormComponents/RadioGroupField";
 import TextInputField from "../../FormComponents/TextInputField";
 import FormCardPreview from "../../FormCardPreview";
 import StyledTabs from "../../StyledTabs";
-import { dealLevelOptions, voucherTabs } from "../../../constants/FormOptions";
+import {
+  dealLevelOptions,
+  voucherTabs,
+  voucherValueDollarOffCriteriaOptions,
+} from "../../../constants/FormOptions";
 import { generatePreviewForValueStep } from "../../../util/generatePreview";
 import styles from "./SerializedVoucherValue.module.css";
 import SelectField from "../../FormComponents/SelectField";
@@ -26,22 +30,30 @@ const SerializedVoucherValue = ({
   currentStep,
   totalSteps,
 }: ISerializedVoucherValueProps) => {
-
   const user = useAppSelector(userProfileState);
 
-  const { voucherLevel, dollarOff, basketSpend, basketDiscount, voucherDiscountTab, pointsApplyType, dollarPointDiscount } = useWatch();
+  const {
+    voucherLevel,
+    dollarOff,
+    basketSpend,
+    basketDiscount,
+    voucherDiscountTab,
+    pointsApplyType,
+    dollarPointDiscount,
+    voucherValueDollarOffCriteria,
+  } = useWatch();
 
-  const { data } = useGetPointsQuery({ voucherDiscountTab , user });
+  const { data } = useGetPointsQuery({ voucherDiscountTab, user });
 
   const getspendApplyOptions = (data: getPointsData | undefined) => {
-    let value: { [index: string]: string } = {}
+    let value: { [index: string]: string } = {};
     if (data?.rewardIncrementResponse?.reward_increments) {
-      data?.rewardIncrementResponse?.reward_increments.forEach((pointsdata)=> {
-        value[pointsdata] = pointsdata 
-      })
+      data?.rewardIncrementResponse?.reward_increments.forEach((pointsdata) => {
+        value[pointsdata] = pointsdata;
+      });
     }
-    return value
-  }
+    return value;
+  };
 
   const { setValue, clearErrors } = useFormContext();
   const handleChange = (e: any) => {
@@ -68,60 +80,104 @@ const SerializedVoucherValue = ({
 
   const handleTabUpdate = (newTab: string): void => {
     setValue("voucherDiscountTab", newTab);
-  }
+  };
 
   let content = null;
   if (voucherLevel === "product") {
-
-    if (voucherDiscountTab === 'dollar')
-    {
+    if (voucherDiscountTab === "dollar") {
       content = (
-        <TextInputField
-          title="Enter dollar ($) off"
-          description="Must be numeric values only"
-          placeholder="$ 0.00"
-          type="number"
-          name="dollarOff"
-          required
-          displayDollarFormat
-          inputHeight={true}
-          tooltipKey={""}
-        />
+        <>
+          <RadioGroupField
+            options={voucherValueDollarOffCriteriaOptions}
+            name="voucherValueDollarOffCriteria"
+            label="Is this a minimum spend or multi-buy offer?"
+            required
+            tooltipKey={""}
+            noBottomGutters
+            handleChange={handleChange}
+          />
+          {voucherValueDollarOffCriteria === "MINIMUM_SPEND" ? (
+            <TextInputField
+              title="Enter dollar ($) off"
+              description="Must be numeric values only"
+              placeholder="$ 0.00"
+              type="number"
+              name="dollarOff"
+              required
+              displayDollarFormat
+              inputHeight={true}
+              tooltipKey={""}
+            />
+          ) : (
+            <Grid
+              container
+              className={styles["basket-fields"]}
+              wrap="nowrap"
+              alignItems={"baseline"}
+            >
+              <Grid item md={5}>
+                <TextInputField
+                  name="dollarOffMultiBuyQuantity"
+                  placeholder="0"
+                  type="number"
+                  title="Buy"
+                  inline
+                  required
+                  inputHeight={true}
+                />
+              </Grid>
+              <Grid item md={6}>
+                <TextInputField
+                  name="dollarOffMultiBuyDiscount"
+                  placeholder={`$ 0.00`}
+                  type="number"
+                  inline
+                  required
+                  displayDollarFormat
+                  inputHeight={true}
+                  title="Get"
+                />
+              </Grid>
+              <Grid item md={1}>
+                <Typography>Off</Typography>
+              </Grid>
+            </Grid>
+          )}
+        </>
       );
     }
-    if (voucherDiscountTab === 'points') {
+    if (voucherDiscountTab === "points") {
       content = (
         <Grid
-        container
-        className={styles["basket-fields"]}
-        wrap="nowrap"
-        alignItems={"baseline"}
-      >
-        <Grid item md={5}>
-          <SelectField
-            options={getspendApplyOptions(data)}
-            name="pointsApplyType"
-            inputHeight={true}
-            spendOption={true}
-          />
-
+          container
+          className={styles["basket-fields"]}
+          wrap="nowrap"
+          alignItems={"baseline"}
+        >
+          <Grid item md={5}>
+            <SelectField
+              options={getspendApplyOptions(data)}
+              name="pointsApplyType"
+              inputHeight={true}
+              spendOption={true}
+            />
+          </Grid>
+          <Grid item md={6}>
+            <TextInputField
+              name="dollarPointDiscount"
+              placeholder={`$ 0.00`}
+              type="number"
+              inline
+              required
+              displayDollarFormat
+              inputHeight={true}
+              title="Get"
+            />
+          </Grid>
+          <Grid item md={1}>
+            <Typography>Off</Typography>
+          </Grid>
         </Grid>
-        <Grid item md={6}>
-          <TextInputField
-            name="dollarPointDiscount"
-            placeholder={`$ 0.00`}
-            type="number"
-            inline
-            required
-            displayDollarFormat
-            inputHeight={true}
-            title="Get"
-          />
-        </Grid>
-        <Grid item md={1}>
-          <Typography>Off</Typography>
-        </Grid>
-      </Grid>
       );
     }
   }
@@ -193,7 +249,7 @@ const SerializedVoucherValue = ({
             basketSpend,
             basketDiscount,
             pointsApplyType,
-            dollarPointDiscount
+            dollarPointDiscount,
           })}
         />
       </Stack>
