@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Grid, Typography, Stack } from "@mui/material";
 import { useWatch, useFormContext } from "react-hook-form";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
@@ -9,17 +9,14 @@ import RadioGroupField from "../../FormComponents/RadioGroupField";
 import TextInputField from "../../FormComponents/TextInputField";
 import FormCardPreview from "../../FormCardPreview";
 import StyledTabs from "../../StyledTabs";
-import {
-  dealLevelOptions,
-  voucherTabs,
-  voucherValueDollarOffCriteriaOptions,
-} from "../../../constants/FormOptions";
+import { basketVoucherTabs, dealLevelOptions, productVoucherTabs, voucherValueDollarOffCriteriaOptions, } from "../../../constants/FormOptions";
 import { generatePreviewForValueStep } from "../../../util/generatePreview";
 import styles from "./SerializedVoucherValue.module.css";
 import SelectField from "../../FormComponents/SelectField";
 import { getPointsData, useGetPointsQuery } from "../../../api/getPoints";
 import { useAppSelector } from "../../../store";
 import { userProfileState } from "../../../store/feature/auth/authSlice";
+import CheckboxField from "../../FormComponents/CheckboxField";
 
 interface ISerializedVoucherValueProps {
   currentStep: number;
@@ -40,6 +37,8 @@ const SerializedVoucherValue = ({
     voucherDiscountTab,
     pointsApplyType,
     dollarPointDiscount,
+    basketpointsApplyType,
+    basketdollarPointDiscount,
     voucherValueDollarOffCriteria,
   } = useWatch();
 
@@ -61,22 +60,34 @@ const SerializedVoucherValue = ({
     if (level === "product") {
       setValue("basketSpend", "");
       setValue("basketDiscount", "");
-      setValue("dealDiscountTab", "dollar");
+      setValue("voucherDiscountTab", "dollar");
+      setValue("voucherLevel", "product");
+      setValue("pointsApplyType", "");
       clearErrors(["basketSpend", "basketDiscount"]);
-    } else {
+    }
+
+    if (level === "basket") {
       setValue("dollarOff", "");
       setValue("basketDiscount", "");
       setValue("fixedPriceOff", "");
-      setValue("dealDiscountTab", "");
+      setValue("voucherLevel", "basket");
+      setValue("basketpointsApplyType", "")
       setValue("productExclusionsCollectionTab", "uploadProduct");
       setValue("exFileName", null);
       setValue("exFileMCH", []);
       setValue("exFileLIAM", []);
       setValue("exliam", []);
       setValue("exmch", []);
-      clearErrors(["dollarOff", "fixedPriceOff"]);
+      clearErrors(["dollarOff", "fixedPriceOff", "dollarPointDiscount"]);
     }
   };
+
+  useEffect(() => {
+    if (voucherDiscountTab === "dollar" || voucherDiscountTab === "points")
+    {
+      setValue('voucherDiscountTab', voucherDiscountTab)
+    }
+  }, [voucherDiscountTab, voucherLevel])
 
   const handleTabUpdate = (newTab: string): void => {
     setValue("voucherDiscountTab", newTab);
@@ -182,28 +193,43 @@ const SerializedVoucherValue = ({
     }
   }
   if (voucherLevel === "basket") {
-    content = (
-      <Grid
+    if (voucherDiscountTab === 'dollar')
+    {
+      content = (
+        <TextInputField
+          title="Enter dollar ($) off"
+          description="Must be numeric values only"
+          placeholder="$ 0.00"
+          type="number"
+          name="dollarOff"
+          required
+          displayDollarFormat
+          inputHeight={true}
+          tooltipKey={""}
+        />
+      );
+    }
+
+    if (voucherDiscountTab === 'points') {
+      content = (
+        <Grid
         container
         className={styles["basket-fields"]}
         wrap="nowrap"
         alignItems={"baseline"}
       >
         <Grid item md={5}>
-          <TextInputField
-            name="basketSpend"
-            placeholder="$ 0.00"
-            type="number"
-            title="Spend"
-            inline
-            required
-            displayDollarFormat
+          <SelectField
+            options={getspendApplyOptions(data)}
+            name="basketpointsApplyType"
             inputHeight={true}
+            spendOption={true}
           />
+
         </Grid>
         <Grid item md={6}>
           <TextInputField
-            name="basketDiscount"
+            name="basketdollarPointDiscount"
             placeholder={`$ 0.00`}
             type="number"
             inline
@@ -217,7 +243,41 @@ const SerializedVoucherValue = ({
           <Typography>Off</Typography>
         </Grid>
       </Grid>
-    );
+      );
+    }
+
+    if (voucherDiscountTab === 'fulfillment') {
+      content = (
+        <>
+        <Grid
+        container
+        className={styles["basket-fields"]}
+        wrap="nowrap"
+        alignItems={"baseline"}
+      >
+        <Grid item md={5}>
+            <TextInputField
+              name="fulfillmentSpend"
+              placeholder='$ 0.00'
+              type='number'
+              title="Spend"
+              inline
+              required
+              displayDollarFormat
+              inputHeight={true}
+            />
+
+        </Grid>
+        <Grid item md={6}>
+          Get free pickup or delivery
+        </Grid>
+      </Grid>
+
+      <CheckboxField name="waivefess" label={"Waive additional service fees"} />
+      </>
+      );
+    }
+
   }
   return (
     <StepperCard
@@ -237,9 +297,9 @@ const SerializedVoucherValue = ({
           noBottomGutters
           handleChange={handleChange}
         />
-        {voucherLevel === "product" && (
-          <StyledTabs tabs={voucherTabs} handleTabUpdate={handleTabUpdate} />
-        )}
+        
+        <StyledTabs tabs={ voucherLevel === "product" ? productVoucherTabs : basketVoucherTabs} handleTabUpdate={handleTabUpdate} defaultValue={voucherDiscountTab} />
+
         {content}
         <FormCardPreview
           title="Customer preview"

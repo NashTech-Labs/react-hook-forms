@@ -30,10 +30,9 @@ export const dealTabs = [
   { label: "Fixed price", value: "fixed" },
 ];
 
-export const voucherTabs = [
-  { label: "Dollar ($) off", value: "dollar" },
-  { label: "Points", value: "points" },
-];
+export const productVoucherTabs = [{ label: "Dollar ($) off", value: "dollar"}, { label: "Points", value: "points" }];
+
+export const basketVoucherTabs = [{ label: "Dollar ($) off", value: "dollar"}, { label: "Points", value: "points" }, { label: "Fulfillment", value: "fulfillment" }];
 
 export const percentageOptions = [
   { value: "10", label: "10%" },
