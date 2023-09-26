@@ -1,4 +1,5 @@
 import {ICreateSerializedVoucherFormState} from "./SerializedVoucherFormStateType";
+import {BANNER_RESTRICTIONS} from './FormOptions'
 
 const createSerializedVoucherDefaultFormState: ICreateSerializedVoucherFormState = {
     externalVoucherCode: "",
@@ -15,7 +16,7 @@ const createSerializedVoucherDefaultFormState: ICreateSerializedVoucherFormState
     regionRestriction: 'no',
     regionRestrictions: [],
     voucherLevel: 'product',
-    restrictions: [],
+    restrictions: Object.keys(BANNER_RESTRICTIONS),
     pickUpOrders: true,
     deliveryOrders: true,
     dealLevelOptions: "no",
