@@ -44,7 +44,8 @@ const createSerializedVoucherDefaultFormState: ICreateSerializedVoucherFormState
     fileLIAM: [],
     exFileLIAM: [],
     englishMessage: "",
-    frenchMessage: ""
+    frenchMessage: "",
+    voucherValueDollarOffCriteria: 'MINIMUM_SPEND'
 };
 
 export default createSerializedVoucherDefaultFormState;

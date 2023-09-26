@@ -30,7 +30,10 @@ export const dealTabs = [
   { label: "Fixed price", value: "fixed" },
 ];
 
-export const voucherTabs = [{ label: "Dollar ($) off", value: "dollar"}, { label: "Points", value: "points" }];
+export const voucherTabs = [
+  { label: "Dollar ($) off", value: "dollar" },
+  { label: "Points", value: "points" },
+];
 
 export const percentageOptions = [
   { value: "10", label: "10%" },
@@ -57,7 +60,6 @@ export const dealLevelExclusionOptions = [
   { value: "no", label: "No" },
   { value: "yes", label: "Yes" },
 ];
-
 
 export const DEAL_APPLY_TYPE: { [index: string]: string } = {
   all: "ALL",
@@ -144,7 +146,7 @@ export const useNumberOfVoucherOptions: { [index: string]: string } = {
   "8": "8",
   "9": "9",
   "10": "10",
-  "unlimited": "Unlimited",
+  unlimited: "Unlimited",
 };
 
 export const MAX_FILE_SIZE = 1000000; //1MB
@@ -193,3 +195,8 @@ export const REGION_RESTRICTIONS: { [index: string]: string } = {
   sales_org_quebec: "Sales org Quebec",
   sales_org_west: "Sales org West",
 };
+
+export const voucherValueDollarOffCriteriaOptions = [
+  { value: "MINIMUM_SPEND", label: "Minimum Spend" },
+  { value: "MULTI_BUY", label: "Multi-buy" },
+];
