@@ -170,7 +170,7 @@ const generateCreateSerializedVoucherPayload = (
     priority: priority,
     status: isDraft ? "DRAFT" : "PUBLISHED",
     quantity: voucherQuantity,
-    redemptions_per_customer: 2,
+    redemptions_per_customer: 1,
     valid_from: convertDateTime(startDatePicker, startTimePicker),
     valid_to: convertDateTime(endDatePicker, endTimePicker),
     stacking_type: STACKING_TYPES[stackingType],

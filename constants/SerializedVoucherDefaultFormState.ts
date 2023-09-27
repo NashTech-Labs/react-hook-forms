@@ -30,6 +30,7 @@ const createSerializedVoucherDefaultFormState: ICreateSerializedVoucherFormState
     dollarPointDiscount: "",
     basketpointsApplyType: "",
     basketdollarPointDiscount: "",
+    fulfillmentSpend: "",
     voucherValidity: 'no',
     usageOfVoucher: null,
     voucherDiscountTab: "dollar",

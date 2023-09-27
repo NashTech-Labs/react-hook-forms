@@ -40,6 +40,7 @@ const SerializedVoucherValue = ({
     basketpointsApplyType,
     basketdollarPointDiscount,
     voucherValueDollarOffCriteria,
+    fulfillmentSpend
   } = useWatch();
 
   const { data } = useGetPointsQuery({ voucherDiscountTab, user });
@@ -54,7 +55,7 @@ const SerializedVoucherValue = ({
     return value;
   };
 
-  const { setValue, clearErrors } = useFormContext();
+  const { setValue, clearErrors, setError } = useFormContext();
   const handleChange = (e: any) => {
     const level = e.target.value;
     if (level === "product") {
@@ -72,6 +73,7 @@ const SerializedVoucherValue = ({
       setValue("fixedPriceOff", "");
       setValue("voucherLevel", "basket");
       setValue("basketpointsApplyType", "")
+      setValue("basketdollarPointDiscount", "")
       setValue("productExclusionsCollectionTab", "uploadProduct");
       setValue("exFileName", null);
       setValue("exFileMCH", []);
@@ -83,11 +85,51 @@ const SerializedVoucherValue = ({
   };
 
   useEffect(() => {
+    if (voucherLevel === 'product')
+    {
+      setValue("pointsApplyType", "");
+      setValue("dollarPointDiscount", "")
+      clearErrors(["dollarPointDiscount", "basketdollarPointDiscount"])
+    }
+    else {
+      setValue("basketpointsApplyType", "")
+      setValue("basketdollarPointDiscount", "")
+      clearErrors(["dollarPointDiscount", "basketdollarPointDiscount"])
+    }
+  }, [voucherLevel])
+
+  useEffect(() => {
     if (voucherDiscountTab === "dollar" || voucherDiscountTab === "points")
     {
       setValue('voucherDiscountTab', voucherDiscountTab)
     }
   }, [voucherDiscountTab, voucherLevel])
+
+  useEffect(() => {
+    if (pointsApplyType && dollarPointDiscount) {
+      if (Number(pointsApplyType) > Number(dollarPointDiscount)){
+        clearErrors('dollarPointDiscount')
+      }
+      else {
+        setError('dollarPointDiscount', {
+          message: `Error: Discount amount can't be greater than or equal to the spending points`,
+        })
+      }
+    }
+  }, [pointsApplyType])
+
+  useEffect(() => {
+    if (basketpointsApplyType && basketdollarPointDiscount) {
+      if (Number(basketpointsApplyType) > Number(basketdollarPointDiscount)){
+        clearErrors('basketdollarPointDiscount')
+      }
+      else {
+        setError('basketdollarPointDiscount', {
+          message: `Error: Discount amount can't be greater than or equal to the spending points`,
+        })
+      }
+    }
+  }, [basketpointsApplyType])
 
   const handleTabUpdate = (newTab: string): void => {
     setValue("voucherDiscountTab", newTab);
@@ -210,7 +252,7 @@ const SerializedVoucherValue = ({
       );
     }
 
-    if (voucherDiscountTab === 'points') {
+    if (voucherDiscountTab === "points") {
       content = (
         <Grid
         container
@@ -310,6 +352,9 @@ const SerializedVoucherValue = ({
             basketDiscount,
             pointsApplyType,
             dollarPointDiscount,
+            basketpointsApplyType,
+            basketdollarPointDiscount,
+            fulfillmentSpend,
           })}
         />
       </Stack>

@@ -49,13 +49,13 @@ function NumberCodes({currentStep,totalSteps}: ISerializedVoucherValueProps) {
                     tooltipKey={'VOUCHER_QUANTITY'}
                 />
 
-                <RadioGroupField noBottomGutters options={voucherCodeOptions} label="How often can the customer use this voucher?" name="useVoucherOptions" required={true} tooltipKey={'VOUCHER_USAGE'} handleChange={handleChange} />
+                {/* <RadioGroupField noBottomGutters options={voucherCodeOptions} label="How often can the customer use this voucher?" name="useVoucherOptions" required={true} tooltipKey={'VOUCHER_USAGE'} handleChange={handleChange} /> */}
 
             </Grid>
 
-            {inputVisible && <Grid ml={5} mt={2}>
+            {/* {inputVisible && <Grid ml={5} mt={2}>
                 <SelectField options={useNumberOfVoucherOptions} name="usageOfVoucher" title="Enter number of times" required inputHeight={true} />
-            </Grid>}
+            </Grid>} */}
 
         </StepperCard>
     )
