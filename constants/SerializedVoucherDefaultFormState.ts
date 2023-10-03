@@ -50,7 +50,9 @@ const createSerializedVoucherDefaultFormState: ICreateSerializedVoucherFormState
     exFileLIAM: [],
     englishMessage: "",
     frenchMessage: "",
-    voucherValueDollarOffCriteria: 'MINIMUM_SPEND'
+    voucherValueDollarOffCriteria: 'MINIMUM_SPEND',
+    dollarOffSpend: '',
+    dollarOffMultiBuyQuantity: ''
 };
 
 export default createSerializedVoucherDefaultFormState;

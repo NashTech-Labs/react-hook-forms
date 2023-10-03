@@ -30,9 +30,16 @@ export const dealTabs = [
   { label: "Fixed price", value: "fixed" },
 ];
 
-export const productVoucherTabs = [{ label: "Dollar ($) off", value: "dollar"}, { label: "Points", value: "points" }];
+export const productVoucherTabs = [
+  { label: "Dollar ($) off", value: "dollar" },
+  { label: "Points", value: "points" },
+];
 
-export const basketVoucherTabs = [{ label: "Dollar ($) off", value: "dollar"}, { label: "Points", value: "points" }, { label: "Fulfillment", value: "fulfillment" }];
+export const basketVoucherTabs = [
+  { label: "Dollar ($) off", value: "dollar" },
+  { label: "Points", value: "points" },
+  { label: "Fulfillment", value: "fulfillment" },
+];
 
 export const percentageOptions = [
   { value: "10", label: "10%" },
@@ -199,3 +206,15 @@ export const voucherValueDollarOffCriteriaOptions = [
   { value: "MINIMUM_SPEND", label: "Minimum Spend" },
   { value: "MULTI_BUY", label: "Multi-buy" },
 ];
+
+export const buyQuantityOptions: { [index: string]: string } = {
+  "2": "2",
+  "3": "3",
+  "4": "4",
+  "5": "5",
+  "6": "6",
+  "7": "7",
+  "8": "8",
+  "9": "9",
+  "10": "10",
+};

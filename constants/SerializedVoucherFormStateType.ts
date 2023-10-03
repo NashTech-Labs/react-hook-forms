@@ -47,5 +47,7 @@ export interface ICreateSerializedVoucherFormState {
     exFileName: string;
     englishMessage: string;
     frenchMessage: string;
-    voucherValueDollarOffCriteria: string
+    voucherValueDollarOffCriteria: string;
+    dollarOffSpend: string
+    dollarOffMultiBuyQuantity: string
 }
