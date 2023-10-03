@@ -16,6 +16,8 @@ import FieldErrorMessage from "../FormComponents/FieldErrorMessage";
 import styles from "./FormComponents.module.css";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import CustomTooltip from "../Tooltip";
+import Stack from "@mui/material/Stack";
+import { BooleanSchema } from "yup";
 
 interface ISelectFieldProps {
   title?: string;
@@ -30,6 +32,7 @@ interface ISelectFieldProps {
   multiple?: boolean;
   selectAllLabel?: string;
   spendOption?: boolean;
+  inline?: boolean;
 }
 
 const EmptyIconComponent = () => <div />;
@@ -47,6 +50,7 @@ const SelectField = ({
   multiple,
   selectAllLabel,
   spendOption,
+  inline,
 }: ISelectFieldProps) => {
   const { control, setValue } = useFormContext();
   const {
@@ -144,79 +148,89 @@ const SelectField = ({
       }
       sx={{ marginTop: topGutters ? "20px" : "0px" }}
     >
-      <div className={styles["title-container"]}>
-        <Typography
-          variant="body1"
-          gutterBottom
-          className={titleClassNames.join(" ")}
-        >
-          {title}
-        </Typography>
-        {tooltipKey && <CustomTooltip descriptionKey={tooltipKey} />}
-      </div>
-      <Select
-        multiple={multiple}
-        labelId="statcking-type-select"
-        id={name}
-        value={value}
-        size="small"
-        onChange={handleChange}
-        displayEmpty
-        renderValue={() => RenderValue()}
-        className={
-          spendOption
-            ? styles["spend-points"]
-            : dealCriteria
-            ? styles["select-deal-criteria"]
-            : styles["select"]
-        }
-        inputRef={ref}
-        name={name}
-        onBlur={onBlur}
-        error={Boolean(error)}
-        IconComponent={error ? EmptyIconComponent : ArrowDropDownIcon}
-        endAdornment={
-          <InputAdornment position="end" sx={{ marginRight: "5px" }}>
-            {error && (
-              <>
-                <ErrorOutlineIcon className={styles["select-error-icon"]} />
-                <ArrowDropDownIcon />
-              </>
-            )}
-          </InputAdornment>
-        }
-        sx={{
-          width: "350px",
-          "&.Mui-error": {
-            background: "#FEFAF9",
-          },
-          ".MuiSelect-select": {
-            color: value ? "#000000" : "#666B73",
-          },
-          height: inputHeight ? "40px" : "auto",
-          "::placeholder": {
-            color: "#666B73 !important",
-            opacity: "1 !important",
-            fontWeight: "400 !important ",
-            fontSize: "16px !important",
-            lineHeight: "120% !important",
-          },
-        }}
-        data-testid={name}
-        inputProps={{
-          "data-testid": `${name}-input`,
-        }}
+      <Stack
+        direction={inline ? "row" : "column"}
+        gap={1}
+        alignItems={inline ? "baseline" : "none"}
       >
-        {multiple && selectAll}
-        {multiple && dropdownOptionsForMultiple}
-        {!multiple && dropdownOptions}
-      </Select>
-      {error && (
-        <FieldErrorMessage
-          message={error.message}
-          testId={`${name}-field-error`}
-        />
-      )}
+        {title && (
+          <div className={styles["title-container"]}>
+            <Typography
+              variant="body1"
+              gutterBottom
+              className={titleClassNames.join(" ")}
+            >
+              {title}
+            </Typography>
+            {tooltipKey && <CustomTooltip descriptionKey={tooltipKey} />}
+          </div>
+        )}
+        <Stack>
+          <Select
+            multiple={multiple}
+            labelId="statcking-type-select"
+            id={name}
+            value={value}
+            size="small"
+            onChange={handleChange}
+            displayEmpty
+            renderValue={() => RenderValue()}
+            className={
+              spendOption
+                ? styles["spend-points"]
+                : dealCriteria
+                ? styles["select-deal-criteria"]
+                : styles["select"]
+            }
+            inputRef={ref}
+            name={name}
+            onBlur={onBlur}
+            error={Boolean(error)}
+            IconComponent={error ? EmptyIconComponent : ArrowDropDownIcon}
+            endAdornment={
+              <InputAdornment position="end" sx={{ marginRight: "5px" }}>
+                {error && (
+                  <>
+                    <ErrorOutlineIcon className={styles["select-error-icon"]} />
+                    <ArrowDropDownIcon />
+                  </>
+                )}
+              </InputAdornment>
+            }
+            sx={{
+              width: inline ? "250px " : "350px",
+              "&.Mui-error": {
+                background: "#FEFAF9",
+              },
+              ".MuiSelect-select": {
+                color: value ? "#000000" : "#666B73",
+              },
+              height: inputHeight ? "40px" : "auto",
+              "::placeholder": {
+                color: "#666B73 !important",
+                opacity: "1 !important",
+                fontWeight: "400 !important ",
+                fontSize: "16px !important",
+                lineHeight: "120% !important",
+              },
+            }}
+            data-testid={name}
+            inputProps={{
+              "data-testid": `${name}-input`,
+            }}
+          >
+            {multiple && selectAll}
+            {multiple && dropdownOptionsForMultiple}
+            {!multiple && dropdownOptions}
+          </Select>
+          {error && (
+            <FieldErrorMessage
+              message={error.message}
+              testId={`${name}-field-error`}
+            />
+          )}
+        </Stack>
+      </Stack>
     </FormControl>
   );
 };
