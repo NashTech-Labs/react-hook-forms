@@ -234,6 +234,7 @@ function VoucherSummary() {
       const payload = {
         code: data?.voucherGeneralInfo?.code,
         status: "DRAFT",
+        action: "SAVE",
         is_serialized: false,
         username: user.name,
       };

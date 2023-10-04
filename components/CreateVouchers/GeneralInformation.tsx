@@ -36,6 +36,7 @@ const GeneralInformation = ({
     const payload = {
       code: code.toUpperCase(),
       status: "DRAFT",
+      action: "SAVE",
       is_serialized: false,
       username: user.userProfile.name,
     };
