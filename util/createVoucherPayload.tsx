@@ -144,6 +144,7 @@ const generateCreateVoucherPayload = (
     reward_type: rewardType,
     priority: priority,
     status: isDraft ? "DRAFT" : "PUBLISHED",
+    action: isDraft ? "SAVE" : "PUBLISH",
     valid_from: convertDateTime(startDatePicker, startTimePicker),
     valid_to: convertDateTime(endDatePicker, endTimePicker),
     stacking_type: STACKING_TYPES[stackingType],
