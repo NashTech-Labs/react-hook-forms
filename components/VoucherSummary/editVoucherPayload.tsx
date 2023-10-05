@@ -2,6 +2,8 @@ import { voucherPreview } from "../../api/voucherPreview"
 
 export const editVoucherPayload = (data: voucherPreview, name: string, isDealActive: boolean, isVoucherId: number) => {
 
+    debugger
+
     const payload: any = {
         description: data?.voucherGeneralInfo?.description,
         voucherId: isVoucherId,
@@ -14,7 +16,8 @@ export const editVoucherPayload = (data: voucherPreview, name: string, isDealAct
         ],
         reward_type: data?.voucherValues?.rewardType,
         priority: data?.voucherGeneralInfo?.priority,
-        status: isDealActive ? "INACTIVE" : "PUBLISHED",
+        status: "DRAFT",
+        action: isDealActive ? "DISABLE" : "PUBLISH", 
         valid_from: data?.vouchersDateInEffect?.validFrom,
         valid_to: data?.vouchersDateInEffect?.validTo,
         stacking_type: data?.voucherGeneralInfo?.stackingType,
