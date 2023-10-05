@@ -2,8 +2,6 @@ import { voucherPreview } from "../../api/voucherPreview"
 
 export const editVoucherPayload = (data: voucherPreview, name: string, isDealActive: boolean, isVoucherId: number) => {
 
-    debugger
-
     const payload: any = {
         description: data?.voucherGeneralInfo?.description,
         voucherId: isVoucherId,

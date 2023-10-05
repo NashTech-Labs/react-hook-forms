@@ -2,6 +2,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import { CustomQuery } from "../httpInterceptors";
 
 export interface voucherPreview {
+    voucherBannerRestriction: any;
     voucherGeneralInfo: any;
     vouchersDateInEffect: any;
     voucherValues: any;
