@@ -363,6 +363,46 @@ function VoucherSummary() {
           </Grid>
         </Card>
 
+        {data?.voucherBannerRestriction?.banner?.include &&
+        <Card className={styles["step-card-container"]}>
+          <StepTitle title={"Banner Restrictions"} />
+
+          <Grid container>
+            <Grid item lg={12} md={9} sm={6} display="flex">
+              <Grid item lg={7}>
+                <Typography
+                  data-testid="title"
+                  variant="h4"
+                  className={styles.heading}
+                  mt={4}
+                  mb={1}
+                >
+                  Banner
+                </Typography>
+                <Typography className={styles.content}>
+                  { data?.voucherBannerRestriction?.banner?.include.map((banner: string) => {
+                    return <> {banner[0].toUpperCase() + banner.slice(1)} <br/> </>
+                  }) }
+                </Typography>
+
+                <Typography
+                  data-testid="title"
+                  variant="h4"
+                  className={styles.heading}
+                  mt={4}
+                  mb={1}
+                >
+                  Is this voucher restricted to a specific location?
+                </Typography>
+                <Typography className={styles.content}>
+                  Provience,Ontario
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Card>
+        }
+
         <Card className={styles["step-card-container"]}>
           <StepTitle title={"Voucher Value"} />
 
@@ -429,10 +469,85 @@ function VoucherSummary() {
                 <Typography className={styles.content}>
                   {getDealValuePreview(data)}
                 </Typography>
+
+                <Typography
+                  variant="h4"
+                  className={styles.heading}
+                  mt={2}
+                  mb={1}
+                >
+                  Is this voucher eligible for no fees?
+                </Typography>
+                <Typography className={styles.content}>
+                  Yes
+                </Typography>
               </Grid>
             </Grid>
           </Grid>
         </Card>
+
+        <Card className={styles["step-card-container"]}>
+          <StepTitle title={"Voucher Validity"} />
+
+          <Grid container>
+            <Grid item lg={12} md={9} sm={6} display="flex">
+              <Grid item lg={7}>
+                <Typography
+                  data-testid="title"
+                  variant="h4"
+                  className={styles.heading}
+                  mt={4}
+                  mb={1}
+                >
+                  Is this voucher for new customers only?
+                </Typography>
+                <Typography className={styles.content}>
+                  No
+                </Typography>
+
+                <Typography
+                  data-testid="title"
+                  variant="h4"
+                  className={styles.heading}
+                  mt={4}
+                  mb={1}
+                >
+                  Which platform(s) is this voucher eligible for redemption on?
+                </Typography>
+                <Typography className={styles.content}>
+                  Mobile, application
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Card>
+
+        {data?.voucherGeneralInfo?.quantity &&
+        <Card className={styles["step-card-container"]}>
+          <StepTitle title={"Number of Codes and Details"} />
+          <Grid container>
+            <Grid item lg={12} md={9} sm={6} display="flex">
+              <Grid item lg={7}>
+                <Typography
+                  data-testid="title"
+                  variant="h4"
+                  className={styles.heading}
+                  mt={4}
+                  mb={1}
+                >
+                  Numbers of voucher to create on {data?.vouchersDateInEffect?.createdAt
+                  ? convertToEST(data?.vouchersDateInEffect?.createdAt).format(
+                      "MMMM D, YYYY [at] h:mm A z"
+                    ).slice(0,18)
+                  : null}
+                </Typography>
+                <Typography className={styles.content}>
+                  {data?.voucherGeneralInfo?.quantity}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Card>}
 
         <Card className={styles["step-card-container"]}>
           <StepTitle title={"Date in effect"} />
