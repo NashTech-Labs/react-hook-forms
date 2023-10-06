@@ -342,7 +342,7 @@ const schema = yup.object().shape({
         .max(250, "Error: Message should be less than 250 characters"),
     restrictions: yup.array().of(yup.string()).min(1, 'At least one banner should be selected'),
     dollarOffSpend: yup.string().required('Error: Spend amount is required'),
-    dollarOffMultiBuyDiscount: yup.string().required('Error: Dollar($) value required')
+    // dollarOffMultiBuyDiscount: yup.string().required('Error: Dollar($) value required')
 })
 
 export default schema

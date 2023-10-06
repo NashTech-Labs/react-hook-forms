@@ -136,12 +136,6 @@ const SerializedVoucherValue = ({
     }
   }, [voucherLevel]);
 
-  // useEffect(() => {
-  //   if (voucherDiscountTab === "dollar" || voucherDiscountTab === "points") {
-  //     setValue("voucherDiscountTab", voucherDiscountTab);
-  //   }
-  // }, [voucherDiscountTab, voucherLevel]);
-
   useEffect(() => {
     if (pointsApplyType && dollarPointDiscount) {
       if (Number(pointsApplyType) > Number(dollarPointDiscount)) {

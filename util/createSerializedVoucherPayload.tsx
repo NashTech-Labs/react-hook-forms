@@ -169,6 +169,7 @@ const generateCreateSerializedVoucherPayload = (
     reward_type: rewardType,
     priority: priority,
     status: isDraft ? "DRAFT" : "PUBLISHED",
+    action: isDraft ? "SAVE" : "PUBLISH",
     quantity: voucherQuantity,
     redemptions_per_customer: 1,
     valid_from: convertDateTime(startDatePicker, startTimePicker),
