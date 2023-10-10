@@ -38,6 +38,7 @@ const STEP_CONFIG_VOUCHERS: { [index: string]: any } = {
   GENERAL_INFORMATION: ["externalVoucherCode", "priority", "stackingType"],
   DEAL_VALUE: [
     "dollarOff",
+    "basketDollarOff",
     "fixedPriceOff",
     "basketSpend",
     "basketDiscount",
