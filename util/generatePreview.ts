@@ -81,16 +81,16 @@ export const generatePreviewForSerializedVoucherValueStep = ({
         if(voucherDiscountTab === 'dollar') {
             if(voucherValueDollarOffCriteria === 'MINIMUM_SPEND') {
                 if(dollarOffSpend && dollarOff) {
-                    customerPreview = `Spend $${convertCentsToDollar(Number(dollarOffSpend))}.00, Get $${dollarOff}`
+                    customerPreview = `Spend $${convertCentsToDollar(Number(dollarOffSpend))}.00, Get $${dollarOff} off`
                 }
             } else {
                 if(dollarOffMultiBuyDiscount && dollarOffMultiBuyQuantity) {
-                    customerPreview = `Buy ${dollarOffMultiBuyQuantity}, Get $${dollarOffMultiBuyDiscount}`
+                    customerPreview = `Buy ${dollarOffMultiBuyQuantity}, Get $${dollarOffMultiBuyDiscount} off`
                 }
             }
         } else {
             if(pointsApplyType && dollarPointDiscount) {
-                customerPreview = `Spend ${pointsApplyType} points, Get $${dollarPointDiscount}`
+                customerPreview = `Spend ${pointsApplyType} points, Get $${dollarPointDiscount} off`
             }
         }
     }
@@ -101,7 +101,7 @@ export const generatePreviewForSerializedVoucherValueStep = ({
             customerPreview = `Get $${dollarOff} off products(s)`
         }
         if(voucherDiscountTab === 'points' && basketpointsApplyType && basketdollarPointDiscount) {
-            customerPreview = `Spend ${basketpointsApplyType} points, Get $${basketdollarPointDiscount}`
+            customerPreview = `Spend ${basketpointsApplyType} points, Get $${basketdollarPointDiscount} off`
         }
 
         if(voucherDiscountTab === 'fulfillment' && fulfillmentSpend) {

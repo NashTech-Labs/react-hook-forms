@@ -68,7 +68,6 @@ const SerializedVoucherValue = ({
   const handleChange = (e: any) => {
     const level = e.target.value;
     if (level === "product") {
-      setValue("voucherDiscountTab", "dollar");
       setValue("voucherLevel", "product");
       setValue("pointsApplyType", "");
     }
@@ -95,6 +94,7 @@ const SerializedVoucherValue = ({
         "dollarPointDiscount",
       ]);
     }
+    setValue("voucherDiscountTab", "dollar");
   };
 
   useEffect(() => {
@@ -421,6 +421,7 @@ const SerializedVoucherValue = ({
       );
     }
   }
+
   return (
     <StepperCard
       inProgressIcon={MonetizationOnOutlinedIcon}
@@ -446,6 +447,7 @@ const SerializedVoucherValue = ({
           }
           handleTabUpdate={handleTabUpdate}
           defaultValue={voucherDiscountTab}
+          value={voucherDiscountTab}
         />
 
         {content}
