@@ -28,12 +28,13 @@ export interface GetAllVoucher {
     filters: IFilters
     page: number
     user: any
+    sortOption: string
 }
 
 const getUrl = (params: any): string => {
     let url = 'v1/vouchers?'
     let urlParamsObj: { [index: string]: string } = {}
-    const { search, filters, page } = params
+    const { search, filters, page, sortOption } = params
     if (search) {
         urlParamsObj = {
             'search_text': search.toUpperCase()
@@ -72,6 +73,13 @@ const getUrl = (params: any): string => {
         urlParamsObj = {
             ...urlParamsObj,
             'page_number': String(page)
+        }
+    }
+
+    if (sortOption) {
+        urlParamsObj = {
+            ...urlParamsObj,
+            'sort_by': sortOption
         }
     }
 

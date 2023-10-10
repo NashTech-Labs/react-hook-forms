@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useSelector } from "react-redux";
 import Modal from "react-modal";
-import { Grid, Typography, Button } from "@mui/material";
+import { Grid, Typography, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import FilterListOutlinedIcon from '@mui/icons-material/FilterListOutlined';
 import styles from "./FilterSection.module.css";
 import FilterVoucherModal from './FilterVoucherModal'
@@ -28,7 +28,7 @@ const filterStyles = {
     },
 };
 
-const FilterVoucherSection = () => {
+const FilterVoucherSection = ({ sortOption, handleSortOption}: any) => {
     const { count } = useSelector(getVoucherFilters)
     const [show, setShow] = useState(false)
 
@@ -38,6 +38,11 @@ const FilterVoucherSection = () => {
 
     const closeModal = () => {
         setShow(false)
+    }
+
+    const handleChange = ({target: { value },
+      }: SelectChangeEvent<string>) => {
+        handleSortOption(value);
     }
 
     return <Grid container>
@@ -52,6 +57,7 @@ const FilterVoucherSection = () => {
         </Grid>
         <Grid item lg={6} md={6} sm={6} mt={6} sx={{ mt: 3, mb: 3 }}>
             <div className={styles["filter-container"]}>
+                <div>
                 <div className={styles["filter-label"]}>
                     Filters:
                 </div>
@@ -77,6 +83,33 @@ const FilterVoucherSection = () => {
                     </Button>
                 </div>
             </div>
+
+            {/* ++++++++++++++++++++++ */}
+            <div>
+            <div className={styles["filter-label"]}>
+                    Sort By:
+                </div>
+                <div className={styles["filter-field"]}>
+                    <FormControl>
+                      <Select
+                        value={sortOption}
+                        // onChange={handleChange}
+                        displayEmpty
+                        className={styles.dropdownSection}
+                        sx={{
+                          ".MuiSvgIcon-root ": {
+                            fill: "#000 !important",
+                          },
+                        }}
+                      >
+                        <MenuItem value={"MOST_RECENT"}>Most recent</MenuItem>
+                        <MenuItem value={"ALPHABETICAL"}>Alphabetical</MenuItem>
+                      </Select>
+                    </FormControl>
+                </div>
+                </div>
+            </div>
+                {/* ++++++++++++++++++++++ */}
             <Modal
                 style={filterStyles}
                 isOpen={show}

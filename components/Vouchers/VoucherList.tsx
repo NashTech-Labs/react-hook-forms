@@ -60,12 +60,9 @@ function VoucherList() {
 
   const user = useAppSelector(userProfileState);
 
-  const { data, isLoading, error, refetch } = useGetVoucherListQuery({
-    search,
-    filters,
-    page,
-    user,
-  });
+  const [sortOption, setSortOption] = useState("MOST_RECENT")
+
+  const { data, isLoading, error, refetch } = useGetVoucherListQuery({ search, filters, page, user, sortOption });
 
   const [selectedRows, setSelectedRows] = useState<any>([]);
 
@@ -111,8 +108,8 @@ function VoucherList() {
   }, []);
 
   useEffect(() => {
-    setPage(1);
-  }, [search, filters]);
+    setPage(1)
+  }, [search, filters, sortOption])
 
   const deleteDealStyles = {
     content: {
@@ -322,6 +319,11 @@ function VoucherList() {
     router.push("/vouchers/create");
   };
 
+  const handleSortOption = (value: string) => {
+    setSortOption(value);
+    refetch()
+  }
+
   let content = null;
 
   if (isLoading) {
@@ -408,7 +410,7 @@ function VoucherList() {
         <Grid item lg={8} md={9} sm={9} mt={2}>
           <Card className={styles["deal-card"]}>
             <CardContent sx={{ padding: "0px" }}>
-              <FilterVoucherSection />
+              <FilterVoucherSection sortOption={sortOption} handleSortOption={handleSortOption} />
               <DataTable
                 persistTableHead
                 data={data ? data.listOfVouchers : data}

@@ -14,7 +14,7 @@ import { useEditVoucherMutation } from '../../../api/editVoucher';
 import generateCreateVoucherPayload from '../../../util/createVoucherPayload';
 import { notifyError, notifySuccess } from '../../../util/Notification/Notification';
 import { userProfileState } from '../../../store/feature/auth/authSlice';
-import { updatedVoucherEditing, updatedVoucherId } from '../../../store/feature/voucher/voucherSlice';
+import { updatedBatchSize, updatedVoucherEditing, updatedVoucherId } from '../../../store/feature/voucher/voucherSlice';
 import generateCreateSerializedVoucherPayload from '../../../util/createSerializedVoucherPayload';
 
 function VoucherFormSummary() {
@@ -24,6 +24,8 @@ function VoucherFormSummary() {
     const dispatch = useAppDispatch();
 
     const user = useAppSelector(userProfileState)
+
+    const batch_size = useAppSelector(updatedBatchSize)
 
     const isVoucherEditing = useAppSelector(updatedVoucherEditing);
 
@@ -49,7 +51,7 @@ function VoucherFormSummary() {
 
         if (voucherType === "SERIALIZED") {
             console.log(newVoucherData)
-            const editPayloadData = generateCreateSerializedVoucherPayload(newVoucherData, false)
+            const editPayloadData = generateCreateSerializedVoucherPayload(newVoucherData, false, batch_size)
             const formattedPayloadWithUser = {
             ...editPayloadData,
             voucherId: voucherId,
