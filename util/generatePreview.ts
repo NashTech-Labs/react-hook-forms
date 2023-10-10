@@ -26,6 +26,7 @@ interface IGeneratePreviewForSerializedVoucherValueStep {
     basketdollarPointDiscount?: string
     fulfillmentSpend?: string
     waivefess?: string
+    basketDollarOff?: string
 }
 
 export const generatePreviewForValueStep = ({
@@ -74,6 +75,7 @@ export const generatePreviewForSerializedVoucherValueStep = ({
     basketdollarPointDiscount,
     fulfillmentSpend,
     waivefess,
+    basketDollarOff
 }: IGeneratePreviewForSerializedVoucherValueStep): string => {
     let customerPreview = 'Preview will generate after inputs are completed'
 
@@ -97,8 +99,8 @@ export const generatePreviewForSerializedVoucherValueStep = ({
 
 
     if(voucherLevel === 'basket') {
-        if(voucherDiscountTab === 'dollar' && dollarOff) {
-            customerPreview = `Get $${dollarOff} off products(s)`
+        if(voucherDiscountTab === 'dollar' && basketDollarOff) {
+            customerPreview = `Get $${basketDollarOff} off products(s)`
         }
         if(voucherDiscountTab === 'points' && basketpointsApplyType && basketdollarPointDiscount) {
             customerPreview = `Spend ${basketpointsApplyType} points, Get $${basketdollarPointDiscount} off`

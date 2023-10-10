@@ -50,6 +50,7 @@ const SerializedVoucherValue = ({
     dollarOffMultiBuyQuantity,
     dollarOffMultiBuyDiscount,
     waivefess,
+    basketDollarOff,
   } = useWatch();
   const { data } = useGetPointsQuery({ voucherDiscountTab, user });
 
@@ -65,11 +66,23 @@ const SerializedVoucherValue = ({
 
   const { setValue, clearErrors, setError, register, unregister } =
     useFormContext();
+
   const handleChange = (e: any) => {
     const level = e.target.value;
     if (level === "product") {
       setValue("voucherLevel", "product");
       setValue("pointsApplyType", "");
+      setValue("basketDollarOff", "");
+      setValue("basketpointsApplyType", "");
+      setValue("basketdollarPointDiscount", "");
+      setValue("fulfillmentSpend", "");
+      setValue("waivefess", "");
+      clearErrors([
+        "basketDollarOff",
+        "basketpointsApplyType",
+        "basketdollarPointDiscount",
+        "fulfillmentSpend",
+      ]);
     }
 
     if (level === "basket") {
@@ -87,11 +100,16 @@ const SerializedVoucherValue = ({
       setValue("dollarOffSpend", "");
       setValue("dollarOffMultiBuyQuantity", "");
       setValue("dollarOffMultiBuyDiscount", "");
+      setValue("dollarPointDiscount", "");
+      setValue("pointsApplyType", "");
+      setValue("voucherValueDollarOffCriteria", "MINIMUM_SPEND");
       clearErrors([
         "dollarOff",
         "dollarOffSpend",
+        "dollarOffMultiBuyQuantity",
         "dollarOffMultiBuyDiscount",
         "dollarPointDiscount",
+        "pointsApplyType",
       ]);
     }
     setValue("voucherDiscountTab", "dollar");
@@ -194,14 +212,14 @@ const SerializedVoucherValue = ({
         });
       } else if (newTab === "points") {
         updateAndClearErrors({
-          fields: ["dollarOff", "fulfillmentSpend", "waivefess"],
+          fields: ["basketDollarOff", "fulfillmentSpend", "waivefess"],
           setValue,
           clearErrors,
         });
       } else {
         updateAndClearErrors({
           fields: [
-            "dollarOff",
+            "basketDollarOff",
             "basketpointsApplyType",
             "basketdollarPointDiscount",
           ],
@@ -343,7 +361,7 @@ const SerializedVoucherValue = ({
           description="Must be numeric values only"
           placeholder="$ 0.00"
           type="number"
-          name="dollarOff"
+          name="basketDollarOff"
           required
           displayDollarFormat
           inputHeight={true}
@@ -467,6 +485,7 @@ const SerializedVoucherValue = ({
             basketdollarPointDiscount,
             fulfillmentSpend,
             waivefess,
+            basketDollarOff,
           })}
         />
       </Stack>

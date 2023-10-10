@@ -36,6 +36,17 @@ const schema = yup.object().shape({
                 return value !== undefined
             } else return true
         }),
+    basketDollarOff: yup
+        .number()
+        .transform(value => (isNaN(value) ? undefined : value))
+        // .typeError('Error: Dollar($) value required')
+        .min(1, 'Error: Must be minimum of $1.00')
+        .test('dollar-off', 'Error: Dollar($) value required', (value, context) => {
+            if(context?.parent?.voucherDiscountTab === 'dollar' && context?.parent?.voucherLevel === 'basket') {
+                return value !== undefined
+            } else return true
+        }),
+
     customPercentageOff: yup
         .number()
         .transform(value => (isNaN(value) ? undefined : value))
