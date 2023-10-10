@@ -343,12 +343,12 @@ const schema = yup.object().shape({
     restrictions: yup.array().of(yup.string()).min(1, 'At least one banner should be selected'),
     dollarOffSpend: yup.mixed().test('dollar-off-spend', 'Error: Spend amount is required', (value: string, context: any) => {
         if(context?.parent?.voucherLevel === 'product' && context?.parent?.voucherDiscountTab === 'dollar' && context?.parent?.voucherValueDollarOffCriteria === 'MINIMUM_SPEND') {
-            return value
+            return Boolean(value)
         } else return true
     }),
     dollarOffMultiBuyDiscount: yup.mixed().test('dollar-off-multibuy-discount', 'Error: Dollar($) value required', (value: string, context: any) => {
         if(context?.parent?.voucherLevel === 'product' && context?.parent?.voucherDiscountTab === 'dollar' && context?.parent?.voucherValueDollarOffCriteria === 'MULTI_BUY') {
-            return value
+            return Boolean(value)
         } else return true
     })
 })
