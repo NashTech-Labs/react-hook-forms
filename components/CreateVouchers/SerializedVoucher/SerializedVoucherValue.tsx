@@ -16,7 +16,7 @@ import {
   voucherValueDollarOffCriteriaOptions,
   buyQuantityOptions,
 } from "../../../constants/FormOptions";
-import { generatePreviewForValueStep } from "../../../util/generatePreview";
+import { generatePreviewForSerializedVoucherValueStep } from "../../../util/generatePreview";
 import styles from "./SerializedVoucherValue.module.css";
 import SelectField from "../../FormComponents/SelectField";
 import { getPointsData, useGetPointsQuery } from "../../../api/getPoints";
@@ -39,8 +39,6 @@ const SerializedVoucherValue = ({
   const {
     voucherLevel,
     dollarOff,
-    basketSpend,
-    basketDiscount,
     voucherDiscountTab,
     pointsApplyType,
     dollarPointDiscount,
@@ -48,6 +46,10 @@ const SerializedVoucherValue = ({
     basketdollarPointDiscount,
     voucherValueDollarOffCriteria,
     fulfillmentSpend,
+    dollarOffSpend,
+    dollarOffMultiBuyQuantity,
+    dollarOffMultiBuyDiscount,
+    waivefess,
   } = useWatch();
   const { data } = useGetPointsQuery({ voucherDiscountTab, user });
 
@@ -66,12 +68,9 @@ const SerializedVoucherValue = ({
   const handleChange = (e: any) => {
     const level = e.target.value;
     if (level === "product") {
-      setValue("basketSpend", "");
-      setValue("basketDiscount", "");
       setValue("voucherDiscountTab", "dollar");
       setValue("voucherLevel", "product");
       setValue("pointsApplyType", "");
-      clearErrors(["basketSpend", "basketDiscount"]);
     }
 
     if (level === "basket") {
@@ -120,7 +119,6 @@ const SerializedVoucherValue = ({
       register("dollarOffMultiBuyQuantity");
       register("dollarOffMultiBuyDiscount");
       setValue("dollarOffMultiBuyQuantity", "2");
-      setValue("dollarOffMultiBuyDiscount", "");
     }
   }, [voucherValueDollarOffCriteria]);
 
@@ -167,24 +165,58 @@ const SerializedVoucherValue = ({
   }, [basketpointsApplyType]);
 
   const handleTabUpdate = (newTab: string): void => {
-    if (newTab === "points") {
-      updateAndClearErrors({
-        fields: [
-          "dollarOff",
-          "dollarOffSpend",
-          "dollarOffMultiBuyQuantity",
-          "dollarOffMultiBuyDiscount",
-        ],
-        setValue,
-        clearErrors,
-      });
-    } else {
-      updateAndClearErrors({
-        fields: ["pointsApplyType", "dollarPointDiscount"],
-        setValue,
-        clearErrors,
-      });
+    if (voucherLevel === "product") {
+      if (newTab === "points") {
+        updateAndClearErrors({
+          fields: [
+            "dollarOff",
+            "dollarOffSpend",
+            "dollarOffMultiBuyQuantity",
+            "dollarOffMultiBuyDiscount",
+          ],
+          setValue,
+          clearErrors,
+        });
+      } else {
+        updateAndClearErrors({
+          fields: ["pointsApplyType", "dollarPointDiscount"],
+          setValue,
+          clearErrors,
+        });
+      }
     }
+
+    if (voucherLevel === "basket") {
+      if (newTab === "dollar") {
+        updateAndClearErrors({
+          fields: [
+            "basketpointsApplyType",
+            "basketdollarPointDiscount",
+            "fulfillmentSpend",
+            "waivefess",
+          ],
+          setValue,
+          clearErrors,
+        });
+      } else if (newTab === "points") {
+        updateAndClearErrors({
+          fields: ["dollarOff", "fulfillmentSpend", "waivefess"],
+          setValue,
+          clearErrors,
+        });
+      } else {
+        updateAndClearErrors({
+          fields: [
+            "dollarOff",
+            "basketpointsApplyType",
+            "basketdollarPointDiscount",
+          ],
+          setValue,
+          clearErrors,
+        });
+      }
+    }
+
     setValue("voucherDiscountTab", newTab);
   };
 
@@ -425,16 +457,20 @@ const SerializedVoucherValue = ({
         {content}
         <FormCardPreview
           title="Customer preview"
-          description={generatePreviewForValueStep({
-            level: voucherLevel,
+          description={generatePreviewForSerializedVoucherValueStep({
+            voucherLevel,
+            voucherDiscountTab,
+            voucherValueDollarOffCriteria,
+            dollarOffSpend,
             dollarOff,
-            basketSpend,
-            basketDiscount,
+            dollarOffMultiBuyQuantity,
+            dollarOffMultiBuyDiscount,
             pointsApplyType,
             dollarPointDiscount,
             basketpointsApplyType,
             basketdollarPointDiscount,
             fulfillmentSpend,
+            waivefess,
           })}
         />
       </Stack>

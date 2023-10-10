@@ -20,6 +20,7 @@ import {
   updateVoucherType,
   updatedVoucherEditing,
   updatedVoucherId,
+  updatedVoucherType,
 } from "../../store/feature/voucher/voucherSlice";
 import { useGetVoucherPreviewQuery } from "../../api/voucherPreview";
 import { statusOptions, voucherTypeOptions } from "../../constants/FormOptions";
@@ -28,6 +29,7 @@ import { dealStatus } from "../../constants/DealStatus";
 import { capitalizeWords } from "../../util/format";
 import { userProfileState } from "../../store/feature/auth/authSlice";
 import CreateVoucherForm from "../CreateVouchers/CreateVoucherForm";
+import SerializedCreateVoucherForm from "../CreateVouchers/SerializedVoucher/SerializedVoucherForm";
 import CustomTooltip from "../Tooltip";
 import Modal from "react-modal";
 import { styled } from "@mui/material/styles";
@@ -121,6 +123,7 @@ function VoucherSummary() {
   const user = useAppSelector(userProfileState);
   const voucherId = useAppSelector(updatedVoucherId);
   const isVoucherEditing = useAppSelector(updatedVoucherEditing);
+  const voucherType = useAppSelector(updatedVoucherType);
   const { data, refetch } = useGetVoucherPreviewQuery({ voucherId, user });
   const [createVoucher] = useCreateVoucherMutation();
   const discountTypeDealLabel =
@@ -290,7 +293,12 @@ function VoucherSummary() {
   let content = null;
 
   if (isVoucherEditing) {
-    content = <CreateVoucherForm voucher={data} />;
+    content =
+      voucherType === "PROMOTIONAL" ? (
+        <CreateVoucherForm voucher={data} />
+      ) : (
+        <SerializedCreateVoucherForm voucher={data} />
+      );
   } else {
     content = (
       <>
@@ -363,45 +371,53 @@ function VoucherSummary() {
           </Grid>
         </Card>
 
-        {data?.voucherBannerRestriction?.banner?.include &&
-        <Card className={styles["step-card-container"]}>
-          <StepTitle title={"Banner Restrictions"} />
+        {data?.voucherBannerRestriction?.banner?.include && (
+          <Card className={styles["step-card-container"]}>
+            <StepTitle title={"Banner Restrictions"} />
 
-          <Grid container>
-            <Grid item lg={12} md={9} sm={6} display="flex">
-              <Grid item lg={7}>
-                <Typography
-                  data-testid="title"
-                  variant="h4"
-                  className={styles.heading}
-                  mt={4}
-                  mb={1}
-                >
-                  Banner
-                </Typography>
-                <Typography className={styles.content}>
-                  { data?.voucherBannerRestriction?.banner?.include.map((banner: string) => {
-                    return <> {banner[0].toUpperCase() + banner.slice(1)} <br/> </>
-                  }) }
-                </Typography>
+            <Grid container>
+              <Grid item lg={12} md={9} sm={6} display="flex">
+                <Grid item lg={7}>
+                  <Typography
+                    data-testid="title"
+                    variant="h4"
+                    className={styles.heading}
+                    mt={4}
+                    mb={1}
+                  >
+                    Banner
+                  </Typography>
+                  <Typography className={styles.content}>
+                    {data?.voucherBannerRestriction?.banner?.include.map(
+                      (banner: string) => {
+                        return (
+                          <>
+                            {" "}
+                            {banner[0].toUpperCase() +
+                              banner.slice(1)} <br />{" "}
+                          </>
+                        );
+                      }
+                    )}
+                  </Typography>
 
-                <Typography
-                  data-testid="title"
-                  variant="h4"
-                  className={styles.heading}
-                  mt={4}
-                  mb={1}
-                >
-                  Is this voucher restricted to a specific location?
-                </Typography>
-                <Typography className={styles.content}>
-                  Provience,Ontario
-                </Typography>
+                  <Typography
+                    data-testid="title"
+                    variant="h4"
+                    className={styles.heading}
+                    mt={4}
+                    mb={1}
+                  >
+                    Is this voucher restricted to a specific location?
+                  </Typography>
+                  <Typography className={styles.content}>
+                    Provience,Ontario
+                  </Typography>
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
-        </Card>
-        }
+          </Card>
+        )}
 
         <Card className={styles["step-card-container"]}>
           <StepTitle title={"Voucher Value"} />
@@ -478,9 +494,7 @@ function VoucherSummary() {
                 >
                   Is this voucher eligible for no fees?
                 </Typography>
-                <Typography className={styles.content}>
-                  Yes
-                </Typography>
+                <Typography className={styles.content}>Yes</Typography>
               </Grid>
             </Grid>
           </Grid>
@@ -501,9 +515,7 @@ function VoucherSummary() {
                 >
                   Is this voucher for new customers only?
                 </Typography>
-                <Typography className={styles.content}>
-                  No
-                </Typography>
+                <Typography className={styles.content}>No</Typography>
 
                 <Typography
                   data-testid="title"
@@ -522,32 +534,34 @@ function VoucherSummary() {
           </Grid>
         </Card>
 
-        {data?.voucherGeneralInfo?.quantity &&
-        <Card className={styles["step-card-container"]}>
-          <StepTitle title={"Number of Codes and Details"} />
-          <Grid container>
-            <Grid item lg={12} md={9} sm={6} display="flex">
-              <Grid item lg={7}>
-                <Typography
-                  data-testid="title"
-                  variant="h4"
-                  className={styles.heading}
-                  mt={4}
-                  mb={1}
-                >
-                  Numbers of voucher to create on {data?.vouchersDateInEffect?.createdAt
-                  ? convertToEST(data?.vouchersDateInEffect?.createdAt).format(
-                      "MMMM D, YYYY [at] h:mm A z"
-                    ).slice(0,18)
-                  : null}
-                </Typography>
-                <Typography className={styles.content}>
-                  {data?.voucherGeneralInfo?.quantity}
-                </Typography>
+        {data?.voucherGeneralInfo?.quantity && (
+          <Card className={styles["step-card-container"]}>
+            <StepTitle title={"Number of Codes and Details"} />
+            <Grid container>
+              <Grid item lg={12} md={9} sm={6} display="flex">
+                <Grid item lg={7}>
+                  <Typography
+                    data-testid="title"
+                    variant="h4"
+                    className={styles.heading}
+                    mt={4}
+                    mb={1}
+                  >
+                    Numbers of voucher to create on{" "}
+                    {data?.vouchersDateInEffect?.createdAt
+                      ? convertToEST(data?.vouchersDateInEffect?.createdAt)
+                          .format("MMMM D, YYYY [at] h:mm A z")
+                          .slice(0, 18)
+                      : null}
+                  </Typography>
+                  <Typography className={styles.content}>
+                    {data?.voucherGeneralInfo?.quantity}
+                  </Typography>
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
-        </Card>}
+          </Card>
+        )}
 
         <Card className={styles["step-card-container"]}>
           <StepTitle title={"Date in effect"} />

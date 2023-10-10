@@ -32,7 +32,7 @@ const schema = yup.object().shape({
         // .typeError('Error: Dollar($) value required')
         .min(1, 'Error: Must be minimum of $1.00')
         .test('dollar-off', 'Error: Dollar($) value required', (value, context) => {
-            if(context?.parent?.dealDiscountTab === 'dollar' && context?.parent?.voucherLevel === 'product') {
+            if(context?.parent?.voucherDiscountTab === 'dollar' && context?.parent?.voucherLevel === 'product') {
                 return value !== undefined
             } else return true
         }),
@@ -111,17 +111,17 @@ const schema = yup.object().shape({
         .number()
         .transform(value => (isNaN(value) ? undefined : value))
         .test('basket-discount-pcx', 'Error: Dollar($) value required', (value, context) => {
-            if(context?.parent?.voucherDiscountTab === 'points') {
+            if(context?.parent?.voucherLevel === 'basket' && context?.parent?.voucherDiscountTab === 'points') {
                 return value !== undefined
             } else return true
         })
         .test('basket-discount-pcx', "Error: Discount amount can't be greater than or equal to the spending points", (value, context) => {
-            if(context?.parent?.voucherDiscountTab === 'points') {
+            if(context?.parent?.voucherLevel === 'basket' && context?.parent?.voucherDiscountTab === 'points') {
                 return value !== undefined && value < context?.parent?.basketpointsApplyType
             } else return true
         })
         .test('basket-discount-smaller-pcx', 'Error: Must be a minimum of $1.00', (value, context) => {
-            if(context?.parent?.voucherDiscountTab === 'points') {
+            if(context?.parent?.voucherLevel === 'basket' && context?.parent?.voucherDiscountTab === 'points') {
                 return value !== undefined && value >= 1
             } else return true
         }),
@@ -341,8 +341,16 @@ const schema = yup.object().shape({
         .required("Error: French message required")
         .max(250, "Error: Message should be less than 250 characters"),
     restrictions: yup.array().of(yup.string()).min(1, 'At least one banner should be selected'),
-    dollarOffSpend: yup.string().required('Error: Spend amount is required'),
-    dollarOffMultiBuyDiscount: yup.string().required('Error: Dollar($) value required')
+    dollarOffSpend: yup.mixed().test('dollar-off-spend', 'Error: Spend amount is required', (value: string, context: any) => {
+        if(context?.parent?.voucherLevel === 'product' && context?.parent?.voucherDiscountTab === 'dollar' && context?.parent?.voucherValueDollarOffCriteria === 'MINIMUM_SPEND') {
+            return value
+        } else return true
+    }),
+    dollarOffMultiBuyDiscount: yup.mixed().test('dollar-off-multibuy-discount', 'Error: Dollar($) value required', (value: string, context: any) => {
+        if(context?.parent?.voucherLevel === 'product' && context?.parent?.voucherDiscountTab === 'dollar' && context?.parent?.voucherValueDollarOffCriteria === 'MULTI_BUY') {
+            return value
+        } else return true
+    })
 })
 
 export default schema

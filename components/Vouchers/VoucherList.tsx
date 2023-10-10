@@ -3,7 +3,7 @@ import React, {
   useCallback,
   useMemo,
   ChangeEvent,
-  useEffect
+  useEffect,
 } from "react";
 import Card from "@mui/material/Card";
 import {
@@ -25,16 +25,20 @@ import { useRouter } from "next/router";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { useGetVoucherListQuery } from "../../api/voucherList";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
-import { dealStatus } from "../../constants/DealStatus"
+import { dealStatus } from "../../constants/DealStatus";
 import { dateFormat } from "../../util/format";
 import TableLoader from "../TableLoader/TableLoader";
 import CreateIcon from "@mui/icons-material/Create";
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import SearchOutlined from '@mui/icons-material/SearchOutlined';
-import CloseIcon from '@mui/icons-material/Close';
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import SearchOutlined from "@mui/icons-material/SearchOutlined";
+import CloseIcon from "@mui/icons-material/Close";
 import FilterVoucherSection from "./FilterVoucherSection";
 import { getVoucherFilters } from "../../store/feature/voucher/voucherFilterSlice";
-import { updateVoucherEditing, updateVoucherId, updateVoucherType } from "../../store/feature/voucher/voucherSlice";
+import {
+  updateVoucherEditing,
+  updateVoucherId,
+  updateVoucherType,
+} from "../../store/feature/voucher/voucherSlice";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import Modal from "react-modal";
 import DeleteVoucher from "../DeleteVoucher/DeleteVoucher";
@@ -44,22 +48,26 @@ import { lobState } from "../../store/feature/selectlob/lobSlice";
 function VoucherList() {
   const router = useRouter();
 
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   const lobType = useAppSelector(lobState);
 
-  const filters = useAppSelector(getVoucherFilters)
+  const filters = useAppSelector(getVoucherFilters);
 
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(1);
 
-  const [search, setSearch] = useState<string>('')
+  const [search, setSearch] = useState<string>("");
 
-  const user = useAppSelector(userProfileState)
+  const user = useAppSelector(userProfileState);
 
-  const { data, isLoading, error, refetch } = useGetVoucherListQuery({ search, filters, page, user });
+  const { data, isLoading, error, refetch } = useGetVoucherListQuery({
+    search,
+    filters,
+    page,
+    user,
+  });
 
   const [selectedRows, setSelectedRows] = useState<any>([]);
-
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -67,19 +75,24 @@ function VoucherList() {
     setSelectedRows(state.selectedRows);
   }, []);
 
-  const handlePagination = useCallback((e: ChangeEvent<unknown>, number: number): void => {
-    setPage(number)
-  }, [])
+  const handlePagination = useCallback(
+    (e: ChangeEvent<unknown>, number: number): void => {
+      setPage(number);
+    },
+    []
+  );
 
-  const handleSearchChange = ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = ({
+    target: { value },
+  }: ChangeEvent<HTMLInputElement>) => {
     setSearch(value);
     refetch();
-  }
+  };
 
   useEffect(() => {
     refetch();
-    dispatch(updateVoucherEditing(false))
-  }, [lobType])
+    dispatch(updateVoucherEditing(false));
+  }, [lobType]);
 
   const handleDeleteClick = () => {
     setIsOpen(true);
@@ -98,8 +111,8 @@ function VoucherList() {
   }, []);
 
   useEffect(() => {
-    setPage(1)
-  }, [search, filters])
+    setPage(1);
+  }, [search, filters]);
 
   const deleteDealStyles = {
     content: {
@@ -147,23 +160,22 @@ function VoucherList() {
     },
   };
 
-  const noDealsComponent = <Box className={styles["no-data-box"]}>
-    <Typography
-      variant="body2"
-      className={styles["no-data-text"]}
-    >
-      There are currently no vouchers to view
-    </Typography>
-    <Button
-      onClick={() => router.push("/vouchers/create")}
-      variant="outlined"
-      className={styles["create-new-btn"]}
-      data-testid="createNew-btn"
-    >
-      <CreateIcon sx={{ marginRight: "5px" }} />
-      Create new
-    </Button>
-  </Box>
+  const noDealsComponent = (
+    <Box className={styles["no-data-box"]}>
+      <Typography variant="body2" className={styles["no-data-text"]}>
+        There are currently no vouchers to view
+      </Typography>
+      <Button
+        onClick={() => router.push("/vouchers/create")}
+        variant="outlined"
+        className={styles["create-new-btn"]}
+        data-testid="createNew-btn"
+      >
+        <CreateIcon sx={{ marginRight: "5px" }} />
+        Create new
+      </Button>
+    </Box>
+  );
 
   const columns: any = useMemo(
     () => [
@@ -192,10 +204,13 @@ function VoucherList() {
                   : null}
               </div>
               <Chip
-                className={row.status === "INACTIVE" ? styles["inactiveChip"] : styles["chip"]}
+                className={
+                  row.status === "INACTIVE"
+                    ? styles["inactiveChip"]
+                    : styles["chip"]
+                }
                 sx={{
-                  backgroundColor:
-                    dealStatus[row.status],
+                  backgroundColor: dealStatus[row.status],
                 }}
                 label={
                   row.status.charAt(0).toUpperCase() +
@@ -214,58 +229,63 @@ function VoucherList() {
         name: "Value",
         selector: (row: any) => {
           if (row?.spend?.minimum > 0) {
-
-            if (
-              row.voucherValues[0]?.rewardType === "$_OFF"
-            ) {
+            if (row.voucherValues[0]?.rewardType === "$_OFF") {
               return (
                 <Grid display="grid">
-                  <Grid> Spend ${(Number(row?.spend?.minimum) / 100).toFixed(2)} </Grid>
-                  <Grid> Get ${(Number(row.voucherValues[0]?.rewardValue) / 100).toFixed(2)} Off </Grid>
+                  <Grid>
+                    {" "}
+                    Spend ${(Number(row?.spend?.minimum) / 100).toFixed(2)}{" "}
+                  </Grid>
+                  <Grid>
+                    {" "}
+                    Get $
+                    {(Number(row.voucherValues[0]?.rewardValue) / 100).toFixed(
+                      2
+                    )}{" "}
+                    Off{" "}
+                  </Grid>
                 </Grid>
-              )
+              );
             }
             if (row.voucherValues[0]?.rewardType === "%_OFF") {
               return (
                 <Grid display="grid">
-                  <Grid> Spend ${(Number(row?.spend?.minimum) / 100).toFixed(2)} </Grid>
+                  <Grid>
+                    {" "}
+                    Spend ${(Number(row?.spend?.minimum) / 100).toFixed(2)}{" "}
+                  </Grid>
                   <Grid> Get {row.voucherValues[0]?.rewardValue}% Off </Grid>
                 </Grid>
-              )
-            }
-            else {
+              );
+            } else {
               if (
                 row.voucherValues[0]?.rewardType === "$_OFF" ||
                 row.voucherValues[0]?.rewardType === "$_FIXED"
               ) {
-                return `$${(Number(row.voucherValues[0]?.rewardValue) / 100).toFixed(2)} Off`;
+                return `$${(
+                  Number(row.voucherValues[0]?.rewardValue) / 100
+                ).toFixed(2)} Off`;
               }
               if (row.voucherValues[0]?.rewardType === "%_OFF") {
                 return `${row.voucherValues[0]?.rewardValue}% Off`;
               }
             }
+          } else {
+            if (row.voucherValues[0]?.rewardType === "%_OFF") {
+              return `${row.voucherValues[0]?.rewardValue}% Off`;
+            }
+            if (row.voucherValues[0]?.rewardType === "$_OFF") {
+              return `$${(
+                Number(row.voucherValues[0]?.rewardValue) / 100
+              ).toFixed(2)} Off`;
+            }
+            if (row.voucherValues[0]?.rewardType === "$_FIXED") {
+              return `$${(
+                Number(row.voucherValues[0]?.rewardValue) / 100
+              ).toFixed(2)} Off`;
+            }
           }
-
-        else{
-
-          if (
-            row.voucherValues[0]?.rewardType === "%_OFF"
-          ) {
-            return `${row.voucherValues[0]?.rewardValue}% Off`;
-          }
-          if (
-            row.voucherValues[0]?.rewardType === "$_OFF"
-          ) {
-
-            return `$${(Number(row.voucherValues[0]?.rewardValue) / 100).toFixed(2)} Off`;
-          }
-          if (
-            row.voucherValues[0]?.rewardType === "$_FIXED"
-          ) {
-            return `$${(Number(row.voucherValues[0]?.rewardValue) / 100).toFixed(2)} Off`;
-          }
-        }
-      }
+        },
       },
       {
         name: "Action",
@@ -277,7 +297,7 @@ function VoucherList() {
               textTransform: "initial",
               marginTop: "-8%",
             }}
-            onClick={() => viewDetails(row.id)}
+            onClick={() => viewDetails(row.id, row.type)}
             data-testid="view-btn"
           >
             View
@@ -291,13 +311,14 @@ function VoucherList() {
     []
   );
 
-  const viewDetails = (value: string) => {
-    dispatch(updateVoucherId(value))
+  const viewDetails = (value: string, type: string) => {
+    dispatch(updateVoucherId(value));
+    dispatch(updateVoucherType(type));
     router.push("vouchers/view");
   };
 
   const handleCreateVoucher = () => {
-    dispatch(updateVoucherType(""))
+    dispatch(updateVoucherType(""));
     router.push("/vouchers/create");
   };
 
@@ -308,15 +329,20 @@ function VoucherList() {
   }
 
   const clearSearch = () => {
-    setSearch('')
-  }
+    setSearch("");
+  };
 
   if (data) {
-    const searchEndAdorment = search ? <CloseIcon
-      onClick={clearSearch}
-      sx={{
-        cursor: 'pointer'
-      }} /> : <SearchOutlined />
+    const searchEndAdorment = search ? (
+      <CloseIcon
+        onClick={clearSearch}
+        sx={{
+          cursor: "pointer",
+        }}
+      />
+    ) : (
+      <SearchOutlined />
+    );
     content = (
       <>
         <Grid
@@ -342,16 +368,16 @@ function VoucherList() {
               <CreateIcon sx={{ marginRight: "5px" }} />
               Create new
             </Button>
-            { lobType?.lob === "Online Groceries" ? null : 
-            <Button
-              onClick={() => router.push("/deals/managePromotions")}
-              variant="outlined"
-              className={styles.managePromotionsBtn}
-            >
-              <VisibilityOffIcon sx={{ marginRight: "5px" }} />
-              Manage Promotions
-            </Button>
-            }
+            {lobType?.lob === "Online Groceries" ? null : (
+              <Button
+                onClick={() => router.push("/deals/managePromotions")}
+                variant="outlined"
+                className={styles.managePromotionsBtn}
+              >
+                <VisibilityOffIcon sx={{ marginRight: "5px" }} />
+                Manage Promotions
+              </Button>
+            )}
           </Stack>
         </Grid>
         <Grid
@@ -405,13 +431,15 @@ function VoucherList() {
                   onClick={handleDeleteClick}
                   data-testid="delete-btn"
                 >
-                  {selectedRows.length > 0 ? `Delete (${selectedRows.length} selected)` : 'Delete'}
+                  {selectedRows.length > 0
+                    ? `Delete (${selectedRows.length} selected)`
+                    : "Delete"}
                 </Button>
               </Grid>
               <Grid item>
                 <Pagination
                   page={page}
-                  count={data?.paginationInfo?.['total_pages']}
+                  count={data?.paginationInfo?.["total_pages"]}
                   hidePrevButton={page === 1}
                   onChange={handlePagination}
                   renderItem={(item) => (
@@ -434,7 +462,7 @@ function VoucherList() {
           </Card>
         </Grid>
       </>
-    )
+    );
   }
 
   if (error) {

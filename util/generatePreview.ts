@@ -1,3 +1,4 @@
+import {convertCentsToDollar} from "./convertDealToFormData"
 
 interface IGeneratePreviewForValueStep {
     level?: string
@@ -9,11 +10,22 @@ interface IGeneratePreviewForValueStep {
     basketSpend?: string
     basketDiscount?: string
     basketDealType?: string
+}
+
+interface IGeneratePreviewForSerializedVoucherValueStep {
+    voucherLevel?: string
+    voucherDiscountTab?: string
+    voucherValueDollarOffCriteria?: string
+    dollarOffSpend?: string
+    dollarOff?: string
+    dollarOffMultiBuyQuantity?: string
+    dollarOffMultiBuyDiscount?: string
     pointsApplyType?: string
     dollarPointDiscount?: string
-    basketpointsApplyType?: string,
-    basketdollarPointDiscount?: string,
-    fulfillmentSpend?: string | undefined
+    basketpointsApplyType?: string
+    basketdollarPointDiscount?: string
+    fulfillmentSpend?: string
+    waivefess?: string
 }
 
 export const generatePreviewForValueStep = ({
@@ -26,11 +38,6 @@ export const generatePreviewForValueStep = ({
     basketSpend,
     basketDiscount,
     basketDealType,
-    pointsApplyType,
-    dollarPointDiscount,
-    basketpointsApplyType,
-    basketdollarPointDiscount,
-    fulfillmentSpend
 }: IGeneratePreviewForValueStep): string => {
     let customerPreview = 'Preview will generate after inputs are completed'
 
@@ -45,15 +52,61 @@ export const generatePreviewForValueStep = ({
             }
         } else if(dollarOff || fixedPriceOff) {
             customerPreview = `$${dollarOff || fixedPriceOff} off product(s)`
-        } else if ( pointsApplyType || dollarPointDiscount ) {
-            customerPreview = `Spend ${pointsApplyType} points, Get $${dollarPointDiscount} off`
         }
     } else if(basketSpend && basketDiscount) {
         customerPreview = `Spend $${basketSpend}, Get ${basketDealType === 'dollar' ? '$' : ''}${basketDiscount}${basketDealType === 'percentage' ? '%' : ''} off`
-    } else if (basketpointsApplyType || basketdollarPointDiscount) {
-        customerPreview = `Spend ${basketpointsApplyType} points, Get $${basketdollarPointDiscount} off`
-    } else if (fulfillmentSpend) {
-        customerPreview = `Spend $${fulfillmentSpend} and Get free pickup or delivery`
+    }
+
+    return customerPreview
+}
+
+export const generatePreviewForSerializedVoucherValueStep = ({
+    voucherLevel,
+    voucherDiscountTab,
+    voucherValueDollarOffCriteria,
+    dollarOffSpend,
+    dollarOff,
+    dollarOffMultiBuyQuantity,
+    dollarOffMultiBuyDiscount,
+    pointsApplyType,
+    dollarPointDiscount,
+    basketpointsApplyType,
+    basketdollarPointDiscount,
+    fulfillmentSpend,
+    waivefess,
+}: IGeneratePreviewForSerializedVoucherValueStep): string => {
+    let customerPreview = 'Preview will generate after inputs are completed'
+
+    if(voucherLevel === 'product') {
+        if(voucherDiscountTab === 'dollar') {
+            if(voucherValueDollarOffCriteria === 'MINIMUM_SPEND') {
+                if(dollarOffSpend && dollarOff) {
+                    customerPreview = `Spend $${convertCentsToDollar(Number(dollarOffSpend))}.00, Get $${dollarOff}`
+                }
+            } else {
+                if(dollarOffMultiBuyDiscount && dollarOffMultiBuyQuantity) {
+                    customerPreview = `Buy ${dollarOffMultiBuyQuantity}, Get $${dollarOffMultiBuyDiscount}`
+                }
+            }
+        } else {
+            if(pointsApplyType && dollarPointDiscount) {
+                customerPreview = `Spend ${pointsApplyType} points, Get $${dollarPointDiscount}`
+            }
+        }
+    }
+
+
+    if(voucherLevel === 'basket') {
+        if(voucherDiscountTab === 'dollar' && dollarOff) {
+            customerPreview = `Get $${dollarOff} off products(s)`
+        }
+        if(voucherDiscountTab === 'points' && basketpointsApplyType && basketdollarPointDiscount) {
+            customerPreview = `Spend ${basketpointsApplyType} points, Get $${basketdollarPointDiscount}`
+        }
+
+        if(voucherDiscountTab === 'fulfillment' && fulfillmentSpend) {
+            customerPreview = `Spend $${fulfillmentSpend} and Get free pickup or delivery`
+        }
     }
 
     return customerPreview

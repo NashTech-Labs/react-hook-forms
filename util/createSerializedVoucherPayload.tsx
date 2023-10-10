@@ -4,11 +4,9 @@ import { ICreateSerializedVoucherFormState } from "../constants/SerializedVouche
 import { convertDateTime } from "./ConvertDateTime";
 
 const getRewardType = ({
-  dealDiscountTab,
+  voucherDiscountTab,
   dollarOff,
-  fixedPriceOff,
   voucherLevel,
-  basketDiscount,
 }: ICreateSerializedVoucherFormState) => {
   let rewardType = "$_OFF";
   let rewardValue = null;
@@ -19,31 +17,13 @@ const getRewardType = ({
     //     ? (Number(basketDiscount) * 100).toFixed()
     //     : basketDiscount;
     // }
-
     // if (basketDealType === "percentage") {
     //   rewardType = "%_OFF";
     //   rewardValue = basketDiscount;
     // }
   } else {
-    if (dealDiscountTab === "dollar") {
+    if (voucherDiscountTab === "dollar") {
       rewardValue = dollarOff ? (Number(dollarOff) * 100).toFixed() : dollarOff;
-    }
-
-    if (dealDiscountTab === "percentage") {
-      // if (percentageOff === "custom") {
-      //   rewardType = "%_OFF";
-      //   rewardValue = customPercentageOff;
-      // } else {
-      //   rewardType = "%_OFF";
-      //   rewardValue = percentageOff;
-      // }
-    }
-
-    if (dealDiscountTab === "fixed") {
-      rewardType = "$_FIXED";
-      rewardValue = fixedPriceOff
-        ? (Number(fixedPriceOff) * 100).toFixed()
-        : fixedPriceOff;
     }
   }
 
@@ -98,24 +78,23 @@ const getScopeData = (
 };
 
 const getDeliveryDetails = (pickUpOrders: boolean, deliveryOrders: boolean) => {
-  
   if (pickUpOrders && deliveryOrders) {
-    return ["PICKUP", "DELIVERY"]
+    return ["PICKUP", "DELIVERY"];
   }
-  
+
   if (pickUpOrders) {
-    return ["PICKUP"]
+    return ["PICKUP"];
   }
 
   if (deliveryOrders) {
-    return ["DELIVERY"]
+    return ["DELIVERY"];
   }
-}
+};
 
 const getRestrictions = (restrictions: string[]) => {
-  const restrictionsArray = restrictions.map(item => item.toUpperCase());
-  return restrictionsArray
-}
+  const restrictionsArray = restrictions.map((item) => item.toUpperCase());
+  return restrictionsArray;
+};
 
 const getVoucherApplyType = (dealApplyType: string) =>
   DEAL_APPLY_TYPE[dealApplyType];
@@ -151,7 +130,10 @@ const generateCreateSerializedVoucherPayload = (
     englishMessage,
     frenchMessage,
     pickUpOrders,
-    deliveryOrders
+    deliveryOrders,
+    dollarOffSpend,
+    voucherDiscountTab,
+    voucherValueDollarOffCriteria,
   } = formData;
 
   const { rewardType, rewardValue } = getRewardType(formData);
@@ -168,7 +150,7 @@ const generateCreateSerializedVoucherPayload = (
     ],
     reward_type: rewardType,
     priority: priority,
-    status: isDraft ? "DRAFT" : "PUBLISHED",
+    status: "DRAFT",
     quantity: voucherQuantity,
     redemptions_per_customer: 1,
     valid_from: convertDateTime(startDatePicker, startTimePicker),
@@ -178,7 +160,8 @@ const generateCreateSerializedVoucherPayload = (
     promo_restrictions: {},
     display_message_en: englishMessage,
     display_message_fr: frenchMessage,
-    is_serialized: true
+    is_serialized: true,
+    action: isDraft ? "DISABLE" : "PUBLISH",
   };
 
   if (voucherLevel === "product") {
@@ -215,14 +198,20 @@ const generateCreateSerializedVoucherPayload = (
 
   if (voucherType === "SERIALIZED") {
     payload["promo_restrictions"]["fulfillment"] = {
-      "allowed_types": getDeliveryDetails(pickUpOrders, deliveryOrders),
+      allowed_types: getDeliveryDetails(pickUpOrders, deliveryOrders),
     };
-  }
-
-  if (voucherType === "SERIALIZED") {
     payload["promo_restrictions"]["banner"] = {
-      "include": getRestrictions(restrictions),
+      include: getRestrictions(restrictions),
     };
+    if (
+      voucherDiscountTab === "dollar" &&
+      voucherValueDollarOffCriteria === "MINIMUM_SPEND"
+    ) {
+      payload["promo_restrictions"]["spend"] = {
+        minimum: Number((Number(dollarOffSpend) * 100).toFixed()),
+        maximum: null,
+      };
+    }
   }
 
   return payload;

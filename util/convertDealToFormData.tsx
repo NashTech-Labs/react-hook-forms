@@ -7,7 +7,7 @@ import {
 } from "../constants/FormOptions";
 import { convertToEST } from "./ConvertDateTime";
 
-const convertCentsToDollar = (value: number) => {
+export const convertCentsToDollar = (value: number) => {
   if (value) return value / 100;
   return "";
 };
@@ -100,12 +100,11 @@ const getFreeShippingValues = (deal: any) => {
   } = deal;
 
   if (type === FREE_SHIPPING_DEAL_TYPE) {
-    values["shippingMethodType"] = "standard"
+    values["shippingMethodType"] = "standard";
     if (dealValue?.spend?.minimum === 0) {
       values["spendMinimum"] = "NO_MINIMUM";
       values["customMinimumSpend"] = "";
-    }
-    else {
+    } else {
       const minimum = dealValue?.spend?.minimum;
       if (!minimum) return values;
       const spendValue = String(convertCentsToDollar(minimum));
