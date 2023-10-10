@@ -750,7 +750,8 @@ function VoucherSummary() {
             className={styles.btn}
             variant="contained"
           >
-            {data?.voucherGeneralInfo?.status === "ENDED"
+            {data?.voucherGeneralInfo?.status === "ENDED" ||
+            data?.voucherGeneralInfo?.status === "INACTIVE" 
               ? "Re-create"
               : "Edit"}
           </Button>
@@ -824,6 +825,7 @@ function VoucherSummary() {
                         checked={isVoucherActive}
                         sx={{ m: 1, marginLeft: "38%" }}
                         onChange={handleChange}
+                        disabled={data?.voucherGeneralInfo?.status === "INACTIVE" ? true : false}
                       />
                     }
                     label=""

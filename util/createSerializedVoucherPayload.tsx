@@ -101,7 +101,8 @@ const getVoucherApplyType = (dealApplyType: string) =>
 
 const generateCreateSerializedVoucherPayload = (
   formData: ICreateSerializedVoucherFormState,
-  isDraft: boolean
+  isDraft: boolean,
+  batch_size: number
 ) => {
   const {
     externalVoucherCode,
@@ -162,6 +163,7 @@ const generateCreateSerializedVoucherPayload = (
     display_message_fr: frenchMessage,
     is_serialized: true,
     action: isDraft ? "DISABLE" : "PUBLISH",
+    batch_size: batch_size
   };
 
   if (voucherLevel === "product") {

@@ -9,7 +9,7 @@ import StepTitle from "../../StepTitle";
 import StepLabel from "../../StepLabel";
 import Tag from "../../Tag";
 import { useCreateVoucherMutation } from "../../../api/createVoucher";
-import { updateVoucherId } from "../../../store/feature/voucher/voucherSlice";
+import { updateVoucherId, updatebatchSize } from "../../../store/feature/voucher/voucherSlice";
 import { notifySuccess } from "../../../util/Notification/Notification";
 import { useAppSelector, useAppDispatch } from "../../../store";
 import { getUser } from "../../../store/feature/auth/authSlice";
@@ -46,6 +46,7 @@ const GeneralInformation = ({
         const { data, error } = response;
         if (data) {
           dispatch(updateVoucherId(data.id));
+          dispatch(updatebatchSize(data.batch_size))
           notifySuccess("Voucher successfully saved");
         }
         if (error) {

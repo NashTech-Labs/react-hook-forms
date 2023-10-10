@@ -363,6 +363,7 @@ const UserList = () => {
               }
               data={searchedText?.length > 0 ? filterData : [...data].reverse()}
               customStyles={customStyles}
+              pagination
               highlightOnHover
             />
           </CardContent>
