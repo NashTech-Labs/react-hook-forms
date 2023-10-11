@@ -24,6 +24,7 @@ import { useAppSelector } from "../../../store";
 import { userProfileState } from "../../../store/feature/auth/authSlice";
 import CheckboxField from "../../FormComponents/CheckboxField";
 import { updateAndClearErrors } from "../../../util/updateFields";
+import { convertCentsToDollar } from "../../../util/convertDealToFormData";
 
 interface ISerializedVoucherValueProps {
   currentStep: number;
@@ -87,7 +88,6 @@ const SerializedVoucherValue = ({
 
     if (level === "basket") {
       setValue("dollarOff", "");
-      setValue("basketDiscount", "");
       setValue("voucherLevel", "basket");
       setValue("basketpointsApplyType", "");
       setValue("basketdollarPointDiscount", "");
@@ -117,6 +117,7 @@ const SerializedVoucherValue = ({
 
   useEffect(() => {
     if (voucherValueDollarOffCriteria === "MINIMUM_SPEND") {
+      if (dollarOff && dollarOffSpend) return;
       updateAndClearErrors({
         fields: ["dollarOffMultiBuyQuantity", "dollarOffMultiBuyDiscount"],
         setValue,
@@ -175,6 +176,20 @@ const SerializedVoucherValue = ({
       }
     }
   }, [basketpointsApplyType]);
+
+  useEffect(() => {
+    if (dollarOff && dollarOffSpend) {
+      if (
+        Number(convertCentsToDollar(Number(dollarOffSpend))) > Number(dollarOff)
+      ) {
+        clearErrors("dollarOff");
+      } else {
+        setError("dollarOff", {
+          message: `Error: Discount amount can't be greater than or equal to the spending amount`,
+        });
+      }
+    }
+  }, [dollarOff, dollarOffSpend]);
 
   const handleTabUpdate = (newTab: string): void => {
     if (voucherLevel === "product") {

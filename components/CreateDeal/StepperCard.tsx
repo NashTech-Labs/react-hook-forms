@@ -55,7 +55,7 @@ const STEP_CONFIG_VOUCHERS: { [index: string]: any } = {
     "basketdollarPointDiscount",
     "fulfillmentSpend",
   ],
-  NUMBER_CODES: ["voucherQuantity", "useVoucherOptions"],
+  NUMBER_CODES: ["voucherQuantity"],
   VOUCHER_VALIDITY: [["website", "mobileApplication"]],
   DATE_IN_EFFECT: [
     "startDatePicker",

@@ -48,11 +48,14 @@ const getDealValues = (voucher: any) => {
     dealValues["englishMessage"] = enMessage;
     dealValues["frenchMessage"] = frMessage;
     dealValues["voucherQuantity"] = quantity;
-    dealValues["restrictions"] = voucherBannerRestriction?.banner?.include;
+    dealValues["restrictions"] =
+      voucherBannerRestriction?.banner?.include || [];
     dealValues["pickUpOrders"] =
-      voucherBannerRestriction?.fulfillment?.include?.includes("PICKUP");
+      voucherBannerRestriction?.fulfillment?.allowed_types?.includes("PICKUP");
     dealValues["deliveryOrders"] =
-      voucherBannerRestriction?.fulfillment?.include?.includes("DELIVERY");
+      voucherBannerRestriction?.fulfillment?.allowed_types?.includes(
+        "DELIVERY"
+      );
   }
   if (scopeType === "PRODUCT") {
     if (rewardType === "$_OFF") {
@@ -93,15 +96,42 @@ const getDealValues = (voucher: any) => {
     return dealValues;
   }
 
-  dealValues["basketDiscount"] =
-    rewardType === "%_OFF"
-      ? String(rewards?.[0]?.value)
-      : String(convertCentsToDollar(rewards?.[0]?.value));
-  dealValues["basketSpend"] = voucherExclusions?.spend
-    ? String(convertCentsToDollar(voucherExclusions?.spend?.minimum))
-    : null;
-  dealValues["basketDealType"] =
-    rewardType === "%_OFF" ? "percentage" : "dollar";
+  if (type === "SERIALIZED") {
+    if (rewardType === "$_OFF") {
+      dealValues["basketDollarOff"] = String(
+        convertCentsToDollar(rewards?.[0]?.value)
+      );
+      dealValues["voucherDiscountTab"] = "dollar";
+    }
+
+    if (rewardType === "POINTS") {
+      dealValues["basketdollarPointDiscount"] = String(
+        convertCentsToDollar(rewards?.[0]?.value)
+      );
+      dealValues["basketpointsApplyType"] = voucherExclusions?.spend
+        ? String(convertCentsToDollar(voucherExclusions?.spend?.minimum))
+        : null;
+      dealValues["voucherDiscountTab"] = "points";
+    }
+
+    if (rewardType === "NO_FEE") {
+      dealValues["fulfillmentSpend"] = voucherExclusions?.spend
+        ? String(convertCentsToDollar(voucherExclusions?.spend?.minimum))
+        : null;
+      dealValues["waivefess"] = rewards?.[0]?.value === "ALL_FULFILLMENT_FEES";
+      dealValues["voucherDiscountTab"] = "fulfillment";
+    }
+  } else {
+    dealValues["basketDiscount"] =
+      rewardType === "%_OFF"
+        ? String(rewards?.[0]?.value)
+        : String(convertCentsToDollar(rewards?.[0]?.value));
+    dealValues["basketSpend"] = voucherExclusions?.spend
+      ? String(convertCentsToDollar(voucherExclusions?.spend?.minimum))
+      : null;
+    dealValues["basketDealType"] =
+      rewardType === "%_OFF" ? "percentage" : "dollar";
+  }
 
   return dealValues;
 };

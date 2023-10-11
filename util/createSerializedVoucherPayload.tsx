@@ -7,23 +7,30 @@ const getRewardType = ({
   voucherDiscountTab,
   dollarOff,
   voucherLevel,
+  basketDollarOff,
+  basketdollarPointDiscount,
+  waivefess,
 }: ICreateSerializedVoucherFormState) => {
   let rewardType = "$_OFF";
   let rewardValue = null;
 
   if (voucherLevel === "basket") {
-    // if (basketDealType === "dollar") {
-    //   rewardValue = basketDiscount
-    //     ? (Number(basketDiscount) * 100).toFixed()
-    //     : basketDiscount;
-    // }
-    // if (basketDealType === "percentage") {
-    //   rewardType = "%_OFF";
-    //   rewardValue = basketDiscount;
-    // }
+    if (voucherDiscountTab === "dollar") {
+      rewardValue = (Number(basketDollarOff) * 100).toFixed();
+    }
+
+    if (voucherDiscountTab === "points") {
+      rewardType = "POINTS";
+      rewardValue = Number(basketdollarPointDiscount);
+    }
+
+    if (voucherDiscountTab === "fulfillment") {
+      rewardType = "NO_FEE";
+      rewardValue = waivefess ? "ALL_FULFILLMENT_FEES" : null;
+    }
   } else {
     if (voucherDiscountTab === "dollar") {
-      rewardValue = dollarOff ? (Number(dollarOff) * 100).toFixed() : dollarOff;
+      rewardValue = (Number(dollarOff) * 100).toFixed();
     }
   }
 
@@ -124,7 +131,7 @@ const generateCreateSerializedVoucherPayload = (
     fileLIAM,
     exFileLIAM,
     productsCollectionTab,
-    basketSpend,
+    basketpointsApplyType,
     voucherQuantity,
     voucherType,
     restrictions,
@@ -135,6 +142,7 @@ const generateCreateSerializedVoucherPayload = (
     dollarOffSpend,
     voucherDiscountTab,
     voucherValueDollarOffCriteria,
+    fulfillmentSpend,
   } = formData;
 
   const { rewardType, rewardValue } = getRewardType(formData);
@@ -163,7 +171,7 @@ const generateCreateSerializedVoucherPayload = (
     display_message_fr: frenchMessage,
     is_serialized: true,
     action: isDraft ? "DISABLE" : "PUBLISH",
-    batch_size: batch_size
+    batch_size: batch_size,
   };
 
   if (voucherLevel === "product") {
@@ -187,7 +195,7 @@ const generateCreateSerializedVoucherPayload = (
 
   if (voucherLevel?.toUpperCase() === "BASKET") {
     payload["promo_restrictions"]["spend"] = {
-      minimum: Number((Number(basketSpend) * 100).toFixed()),
+      minimum: Number((Number(basketpointsApplyType) * 100).toFixed()),
       maximum: null,
     };
   }
@@ -211,6 +219,13 @@ const generateCreateSerializedVoucherPayload = (
     ) {
       payload["promo_restrictions"]["spend"] = {
         minimum: Number((Number(dollarOffSpend) * 100).toFixed()),
+        maximum: null,
+      };
+    }
+
+    if (voucherDiscountTab === "fulfillment" && voucherLevel === "basket") {
+      payload["promo_restrictions"]["spend"] = {
+        minimum: Number((Number(fulfillmentSpend) * 100).toFixed()),
         maximum: null,
       };
     }

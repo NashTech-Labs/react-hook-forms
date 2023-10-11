@@ -182,7 +182,7 @@ export const BANNER_RESTRICTIONS: { [index: string]: string } = {
   extrafoods: "Extrafoods",
   fortinos: "Fortinos",
   independent: "Independent",
-  Independentcitymarket: "Independentcitymarket",
+  independentcitymarket: "Independentcitymarket",
   loblaw: "Loblaw",
   maxi: "Maxi",
   nofrills: "Nofrills",
