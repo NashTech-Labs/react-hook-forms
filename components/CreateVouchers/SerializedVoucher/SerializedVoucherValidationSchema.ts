@@ -29,10 +29,9 @@ const schema = yup.object().shape({
     dollarOff: yup
         .number()
         .transform(value => (isNaN(value) ? undefined : value))
-        // .typeError('Error: Dollar($) value required')
         .min(1, 'Error: Must be minimum of $1.00')
         .test('dollar-off', 'Error: Dollar($) value required', (value, context) => {
-            if(context?.parent?.voucherDiscountTab === 'dollar' && context?.parent?.voucherLevel === 'product') {
+            if(context?.parent?.voucherDiscountTab === 'dollar' && context?.parent?.voucherLevel === 'product' && context?.parent?.voucherValueDollarOffCriteria === 'MINIMUM_SPEND') {
                 return value !== undefined
             } else return true
         }),
@@ -73,48 +72,21 @@ const schema = yup.object().shape({
                 return value !== undefined
             } else return true
         }),
-    basketSpend: yup
-        .number()
-        .transform(value => (isNaN(value) ? undefined : value))
-        .min(1, 'Error: Must be a minimum of $1.00')
-        .test('basket-spend', 'Error: Dollar($) value required', (value, context) => {
-            if(context?.parent?.voucherLevel === 'basket') {
-                return value !== undefined
-            } else return true
-        }),
-    basketDiscount: yup
-        .number()
-        .transform(value => (isNaN(value) ? undefined : value))
-        .test('basket-discount', 'Error: Dollar($) value required', (value, context) => {
-            if(context?.parent?.voucherLevel === 'basket') {
-                return value !== undefined
-            } else return true
-        })
-        .test('basket-discount', "Error: Discount amount can't be greater than or equal to the spending amount", (value, context) => {
-            if(context?.parent?.voucherLevel === 'basket') {
-                return value !== undefined && value < context?.parent?.basketSpend
-            } else return true
-        })
-        .test('basket-discount-smaller', 'Error: Must be a minimum of $1.00', (value, context) => {
-            if(context?.parent?.voucherLevel === 'basket') {
-                return value !== undefined && value >= 1
-            } else return true
-        }),
     dollarPointDiscount: yup
         .number()
         .transform(value => (isNaN(value) ? undefined : value))
         .test('basket-discount', 'Error: Dollar($) value required', (value, context) => {
-            if(context?.parent?.voucherDiscountTab === 'points') {
+            if(context?.parent?.voucherLevel === 'product' && context?.parent?.voucherDiscountTab === 'points') {
                 return value !== undefined
             } else return true
         })
         .test('basket-discount', "Error: Discount amount can't be greater than or equal to the spending points", (value, context) => {
-            if(context?.parent?.voucherDiscountTab === 'points') {
+            if(context?.parent?.voucherLevel === 'product' && context?.parent?.voucherDiscountTab === 'points') {
                 return value !== undefined && value < context?.parent?.pointsApplyType
             } else return true
         })
         .test('basket-discount-smaller', 'Error: Must be a minimum of $1.00', (value, context) => {
-            if(context?.parent?.voucherDiscountTab === 'points') {
+            if(context?.parent?.voucherLevel === 'product' && context?.parent?.voucherDiscountTab === 'points') {
                 return value !== undefined && value >= 1
             } else return true
         }),

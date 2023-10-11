@@ -39,6 +39,7 @@ import VoucherValidity from "./VoucherValidity/VoucherValidity";
 import Exclusions from "../../CreateDeal/Exclusions/Exclusions";
 import ProductsCollection from "../../CreateDeal/ProductsCollection/ProductsCollection";
 import SerilizedPromotionalMessage from "./SerilizedPromotionalMessage/SerilizedPromotionalMessage";
+import ExitEditModal from "../../CreateDeal/ExitEditModal";
 
 interface ICreateVoucherFrom {
   voucher?: any;
@@ -92,7 +93,6 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
     resolver: yupResolver(schema),
     mode: "all",
   });
-
   const {
     getValues,
     setValue,
@@ -120,6 +120,14 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
       dispatch(updateNewVoucher(formMethods.getValues()));
       router.push("/vouchers/create/summary");
     }
+  };
+
+  const handleExitModalClose = () => {
+    setExitModal(false);
+  };
+
+  const handleEditCancel = () => {
+    setExitModal(true);
   };
 
   const handleBack = () => {
@@ -193,31 +201,32 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
     </div>
   );
 
-  //   if (isVoucherEditing) {
-  //     ctaContent = (
-  //       <div className={styles["submit-btn-container"]}>
-  //         <div>
-  //           <Button
-  //             variant="outlined"
-  //             className={commonStyles["cancelBtn"]}
-  //             onClick={() => handleEditCancel()}
-  //             ata-testid="cancel-btn"
-  //           >
-  //             Cancel
-  //           </Button>
-  //         </div>
-  //         <div className={styles["submit-container"]}>
-  //           <Button
-  //             variant="contained"
-  //             className={commonStyles["continueBtn"]}
-  //             onClick={(e) => handleFormSubmit(e)}
-  //             data-testid="continue-btn"
-  //           >
-  //             Save
-  //           </Button>
-  //         </div>
-  //       </div>
-  //     );
+  if (isVoucherEditing) {
+    ctaContent = (
+      <div className={styles["submit-btn-container"]}>
+        <div>
+          <Button
+            variant="outlined"
+            className={commonStyles["cancelBtn"]}
+            onClick={() => handleEditCancel()}
+            ata-testid="cancel-btn"
+          >
+            Cancel
+          </Button>
+        </div>
+        <div className={styles["submit-container"]}>
+          <Button
+            variant="contained"
+            className={commonStyles["continueBtn"]}
+            onClick={(e) => handleFormSubmit(e)}
+            data-testid="continue-btn"
+          >
+            Save
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   //     headerContent = (
   //       <>
@@ -316,13 +325,22 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
           totalSteps={voucherLevel === "product" ? 10 : 9}
         />
         <SerilizedPromotionalMessage
-        currentStep={voucherLevel === "product" ? 10 : 9}
-        totalSteps={voucherLevel === "product" ? 10 : 9}
+          currentStep={voucherLevel === "product" ? 10 : 9}
+          totalSteps={voucherLevel === "product" ? 10 : 9}
         />
       </Grid>
       {ctaContent}
+      <Modal
+        style={draftModalcustomStyles}
+        isOpen={exitModal}
+        onRequestClose={handleExitModalClose}
+      >
+        <ExitEditModal
+          closeModal={handleExitModalClose}
+          isVoucherEditing={true}
+        />
+      </Modal>
     </FormProvider>
   );
 };
-
 export default CreateVoucherForm;

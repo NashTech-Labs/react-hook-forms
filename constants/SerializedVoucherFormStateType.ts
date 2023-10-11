@@ -50,4 +50,6 @@ export interface ICreateSerializedVoucherFormState {
     voucherValueDollarOffCriteria: string;
     dollarOffSpend: string
     dollarOffMultiBuyQuantity: string
+    basketDollarOff: string
+    waivefess: boolean
 }

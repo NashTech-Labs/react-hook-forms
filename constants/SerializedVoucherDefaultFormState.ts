@@ -52,7 +52,9 @@ const createSerializedVoucherDefaultFormState: ICreateSerializedVoucherFormState
     frenchMessage: "",
     voucherValueDollarOffCriteria: 'MINIMUM_SPEND',
     dollarOffSpend: '',
-    dollarOffMultiBuyQuantity: ''
+    dollarOffMultiBuyQuantity: '',
+    basketDollarOff: '',
+    waivefess: false
 };
 
 export default createSerializedVoucherDefaultFormState;
