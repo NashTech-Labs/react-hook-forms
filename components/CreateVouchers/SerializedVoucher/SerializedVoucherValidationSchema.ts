@@ -4,6 +4,7 @@ import {
     MAX_FILE_SIZE,
     isValidFileType,
 } from "../../../constants/FormOptions";
+import {convertCentsToDollar} from "../../../util/convertDealToFormData";
 
 const isEndDateTimeValid = (endDateOrTime: any, startDateOrTime: object, operation: string) => {
     if(operation === ">=") {
@@ -29,16 +30,34 @@ const schema = yup.object().shape({
     dollarOff: yup
         .number()
         .transform(value => (isNaN(value) ? undefined : value))
-        .min(1, 'Error: Must be minimum of $1.00')
-        .test('dollar-off', 'Error: Dollar($) value required', (value, context) => {
-            if(context?.parent?.voucherDiscountTab === 'dollar' && context?.parent?.voucherLevel === 'product' && context?.parent?.voucherValueDollarOffCriteria === 'MINIMUM_SPEND') {
-                return value !== undefined
-            } else return true
+        .when(['voucherDiscountTab', 'voucherValueDollarOffCriteria'], {
+            is: (voucherDiscountTab, voucherValueDollarOffCriteria) => voucherDiscountTab === 'dollar' && voucherValueDollarOffCriteria === "MINIMUM_SPEND",
+            then: schema => schema.required('Error: Dollar($) value required'),
+            otherwise: schema => schema.nullable()
+        })
+        .when(['voucherDiscountTab', 'voucherValueDollarOffCriteria'], {
+            is: (voucherDiscountTab, voucherValueDollarOffCriteria) => voucherDiscountTab === 'dollar' && voucherValueDollarOffCriteria === "MINIMUM_SPEND",
+            then: schema => schema.min(1, 'Error: Must be minimum of $1.00'),
+            otherwise: schema => schema.nullable()
+        })
+        .when(['voucherDiscountTab', 'voucherValueDollarOffCriteria', 'dollarOffSpend'], {
+            is: (voucherDiscountTab, voucherValueDollarOffCriteria, dollarOffSpend) => voucherDiscountTab === 'dollar' && voucherValueDollarOffCriteria === "MINIMUM_SPEND" && dollarOffSpend,
+            then: schema => schema.test('priority', `Error: Discount amount can't be greater than or equal to the spending amount`, (value, context) => {
+                const dollarOffSpend = context?.parent?.dollarOffSpend
+                if(value && dollarOffSpend) {
+                    return convertCentsToDollar(Number(dollarOffSpend)) > value
+                }
+            }),
+            otherwise: schema => schema.nullable()
         }),
+    dollarOffSpend: yup.mixed().test('dollar-off-spend', 'Error: Spend amount is required', (value: string, context: any) => {
+        if(context?.parent?.voucherLevel === 'product' && context?.parent?.voucherDiscountTab === 'dollar' && context?.parent?.voucherValueDollarOffCriteria === 'MINIMUM_SPEND') {
+            return Boolean(value)
+        } else return true
+    }),
     basketDollarOff: yup
         .number()
         .transform(value => (isNaN(value) ? undefined : value))
-        // .typeError('Error: Dollar($) value required')
         .min(1, 'Error: Must be minimum of $1.00')
         .test('dollar-off', 'Error: Dollar($) value required', (value, context) => {
             if(context?.parent?.voucherDiscountTab === 'dollar' && context?.parent?.voucherLevel === 'basket') {
@@ -324,11 +343,6 @@ const schema = yup.object().shape({
         .required("Error: French message required")
         .max(250, "Error: Message should be less than 250 characters"),
     restrictions: yup.array().of(yup.string()).min(1, 'At least one banner should be selected'),
-    dollarOffSpend: yup.mixed().test('dollar-off-spend', 'Error: Spend amount is required', (value: string, context: any) => {
-        if(context?.parent?.voucherLevel === 'product' && context?.parent?.voucherDiscountTab === 'dollar' && context?.parent?.voucherValueDollarOffCriteria === 'MINIMUM_SPEND') {
-            return Boolean(value)
-        } else return true
-    }),
     dollarOffMultiBuyDiscount: yup.mixed().test('dollar-off-multibuy-discount', 'Error: Dollar($) value required', (value: string, context: any) => {
         if(context?.parent?.voucherLevel === 'product' && context?.parent?.voucherDiscountTab === 'dollar' && context?.parent?.voucherValueDollarOffCriteria === 'MULTI_BUY') {
             return Boolean(value)
