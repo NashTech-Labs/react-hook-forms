@@ -92,7 +92,7 @@ export const generatePreviewForSerializedVoucherValueStep = ({
             }
         } else {
             if(pointsApplyType && dollarPointDiscount) {
-                customerPreview = `Spend ${pointsApplyType} points, Get $${dollarPointDiscount} off`
+                customerPreview = `Spend $${dollarPointDiscount}, Get ${pointsApplyType} points`
             }
         }
     }
@@ -103,7 +103,7 @@ export const generatePreviewForSerializedVoucherValueStep = ({
             customerPreview = `Get $${basketDollarOff} off products(s)`
         }
         if(voucherDiscountTab === 'points' && basketpointsApplyType && basketdollarPointDiscount) {
-            customerPreview = `Spend ${basketpointsApplyType} points, Get $${basketdollarPointDiscount} off`
+            customerPreview = `Spend $${basketdollarPointDiscount}, Get ${basketpointsApplyType} points`
         }
 
         if(voucherDiscountTab === 'fulfillment' && fulfillmentSpend) {

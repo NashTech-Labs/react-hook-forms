@@ -101,7 +101,7 @@ const schema = yup.object().shape({
             } else return true
         })
         .test('basket-discount', "Error: Discount amount can't be greater than or equal to the spending points", (value, context) => {
-            if(context?.parent?.voucherLevel === 'product' && context?.parent?.voucherDiscountTab === 'points') {
+            if(context?.parent?.voucherLevel === 'product' && context?.parent?.voucherDiscountTab === 'points' && context?.parent?.pointsApplyType) {
                 return value !== undefined && value < context?.parent?.pointsApplyType
             } else return true
         })
@@ -119,7 +119,7 @@ const schema = yup.object().shape({
             } else return true
         })
         .test('basket-discount-pcx', "Error: Discount amount can't be greater than or equal to the spending points", (value, context) => {
-            if(context?.parent?.voucherLevel === 'basket' && context?.parent?.voucherDiscountTab === 'points') {
+            if(context?.parent?.voucherLevel === 'basket' && context?.parent?.voucherDiscountTab === 'points' && context?.parent?.basketpointsApplyType) {
                 return value !== undefined && value < context?.parent?.basketpointsApplyType
             } else return true
         })

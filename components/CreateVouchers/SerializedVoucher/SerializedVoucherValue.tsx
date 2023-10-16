@@ -59,7 +59,8 @@ const SerializedVoucherValue = ({
     let value: { [index: string]: string } = {};
     if (data?.rewardIncrementResponse?.reward_increments) {
       data?.rewardIncrementResponse?.reward_increments.forEach((pointsdata) => {
-        value[pointsdata] = pointsdata;
+        // value[pointsdata] = pointsdata;
+        value[pointsdata] = voucherDiscountTab === "dollar" ? String((Number(pointsdata) / 100).toFixed(2)) : pointsdata;
       });
     }
     return value;
@@ -141,17 +142,17 @@ const SerializedVoucherValue = ({
     }
   }, [voucherValueDollarOffCriteria]);
 
-  useEffect(() => {
-    if (voucherLevel === "product") {
-      setValue("pointsApplyType", "");
-      setValue("dollarPointDiscount", "");
-      clearErrors(["dollarPointDiscount", "basketdollarPointDiscount"]);
-    } else {
-      setValue("basketpointsApplyType", "");
-      setValue("basketdollarPointDiscount", "");
-      clearErrors(["dollarPointDiscount", "basketdollarPointDiscount"]);
-    }
-  }, [voucherLevel]);
+  // useEffect(() => {
+  //   if (voucherLevel === "product") {
+  //     setValue("pointsApplyType", "");
+  //     setValue("dollarPointDiscount", "");
+  //     clearErrors(["dollarPointDiscount", "basketdollarPointDiscount"]);
+  //   } else {
+  //     setValue("basketpointsApplyType", "");
+  //     setValue("basketdollarPointDiscount", "");
+  //     clearErrors(["dollarPointDiscount", "basketdollarPointDiscount"]);
+  //   }
+  // }, [voucherLevel]);
 
   useEffect(() => {
     if (pointsApplyType && dollarPointDiscount) {
@@ -330,16 +331,6 @@ const SerializedVoucherValue = ({
           alignItems={"baseline"}
         >
           <Grid item md={5}>
-            <SelectField
-              inline
-              title="Spend"
-              options={getspendApplyOptions(data)}
-              name="pointsApplyType"
-              inputHeight={true}
-              spendOption={true}
-            />
-          </Grid>
-          <Grid item md={6}>
             <TextInputField
               name="dollarPointDiscount"
               placeholder={`$ 0.00`}
@@ -348,7 +339,17 @@ const SerializedVoucherValue = ({
               required
               displayDollarFormat
               inputHeight={true}
+              title="Spend"
+            />
+          </Grid>
+          <Grid item md={6}>
+          <SelectField
+              inline
               title="Get"
+              options={getspendApplyOptions(data)}
+              name="pointsApplyType"
+              inputHeight={true}
+              spendOption={true}
             />
           </Grid>
           <Grid item md={1}>
@@ -384,14 +385,6 @@ const SerializedVoucherValue = ({
           alignItems={"baseline"}
         >
           <Grid item md={5}>
-            <SelectField
-              options={getspendApplyOptions(data)}
-              name="basketpointsApplyType"
-              inputHeight={true}
-              spendOption={true}
-            />
-          </Grid>
-          <Grid item md={6}>
             <TextInputField
               name="basketdollarPointDiscount"
               placeholder={`$ 0.00`}
@@ -400,7 +393,17 @@ const SerializedVoucherValue = ({
               required
               displayDollarFormat
               inputHeight={true}
+              title="Spend"
+            /> 
+          </Grid>
+          <Grid item md={6}>
+            <SelectField
+              inline
               title="Get"
+              options={getspendApplyOptions(data)}
+              name="basketpointsApplyType"
+              inputHeight={true}
+              spendOption={true}
             />
           </Grid>
           <Grid item md={1}>
@@ -418,7 +421,9 @@ const SerializedVoucherValue = ({
             className={styles["basket-fields"]}
             wrap="nowrap"
             alignItems={"baseline"}
+            display={"grid"}
           >
+            <Grid display={"flex"} justifyContent={"space-between"} >
             <Grid item md={5}>
               <TextInputField
                 name="fulfillmentSpend"
@@ -431,15 +436,17 @@ const SerializedVoucherValue = ({
                 inputHeight={true}
               />
             </Grid>
-            <Grid item md={6}>
+            <Grid item md={6} mt={3}>
               Get free pickup or delivery
             </Grid>
+            </Grid>
+            <Grid mt="-5%" >
+              <CheckboxField
+                name="waivefess"
+                label={"Waive additional service fees"}
+            />
           </Grid>
-
-          <CheckboxField
-            name="waivefess"
-            label={"Waive additional service fees"}
-          />
+          </Grid>
         </>
       );
     }
