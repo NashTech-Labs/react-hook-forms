@@ -31,22 +31,23 @@ const schema = yup.object().shape({
         .number()
         .transform(value => (isNaN(value) ? undefined : value))
         .when(['voucherDiscountTab', 'voucherValueDollarOffCriteria'], {
-            is: (voucherDiscountTab, voucherValueDollarOffCriteria) => voucherDiscountTab === 'dollar' && voucherValueDollarOffCriteria === "MINIMUM_SPEND",
+            is: (voucherDiscountTab: string, voucherValueDollarOffCriteria: string) => voucherDiscountTab === 'dollar' && voucherValueDollarOffCriteria === "MINIMUM_SPEND",
             then: schema => schema.required('Error: Dollar($) value required'),
             otherwise: schema => schema.nullable()
         })
         .when(['voucherDiscountTab', 'voucherValueDollarOffCriteria'], {
-            is: (voucherDiscountTab, voucherValueDollarOffCriteria) => voucherDiscountTab === 'dollar' && voucherValueDollarOffCriteria === "MINIMUM_SPEND",
+            is: (voucherDiscountTab: string, voucherValueDollarOffCriteria: string) => voucherDiscountTab === 'dollar' && voucherValueDollarOffCriteria === "MINIMUM_SPEND",
             then: schema => schema.min(1, 'Error: Must be minimum of $1.00'),
             otherwise: schema => schema.nullable()
         })
         .when(['voucherDiscountTab', 'voucherValueDollarOffCriteria', 'dollarOffSpend'], {
-            is: (voucherDiscountTab, voucherValueDollarOffCriteria, dollarOffSpend) => voucherDiscountTab === 'dollar' && voucherValueDollarOffCriteria === "MINIMUM_SPEND" && dollarOffSpend,
-            then: schema => schema.test('priority', `Error: Discount amount can't be greater than or equal to the spending amount`, (value, context) => {
+            is: (voucherDiscountTab: string, voucherValueDollarOffCriteria: string, dollarOffSpend: string) => voucherDiscountTab === 'dollar' && voucherValueDollarOffCriteria === "MINIMUM_SPEND" && dollarOffSpend,
+            then: schema => schema.test('priority', `Error: Discount amount can't be greater than or equal to the spending amount`, (value: number | undefined, context: any): boolean => {
                 const dollarOffSpend = context?.parent?.dollarOffSpend
                 if(value && dollarOffSpend) {
                     return convertCentsToDollar(Number(dollarOffSpend)) > value
                 }
+                return true
             }),
             otherwise: schema => schema.nullable()
         }),
