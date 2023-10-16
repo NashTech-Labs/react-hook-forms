@@ -52,4 +52,5 @@ export interface ICreateSerializedVoucherFormState {
     dollarOffMultiBuyQuantity: string
     basketDollarOff: string
     waivefess: boolean
+    dollarOffMultiBuyDiscount: string
 }

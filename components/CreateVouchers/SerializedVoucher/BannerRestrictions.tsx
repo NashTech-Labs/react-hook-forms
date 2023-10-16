@@ -101,7 +101,7 @@ const BannerRestrictions = ({
             />
           )}
         </Stack>
-        <RadioGroupField
+        {/* <RadioGroupField
           options={dealLevelExclusionOptions}
           name="regionRestriction"
           label="Is this voucher restricted to a specific region?"
@@ -122,7 +122,7 @@ const BannerRestrictions = ({
               selectAllLabel="All regions"
             />
           </Box>
-        )}
+        )} */}
       </Stack>
     </StepperCard>
   );

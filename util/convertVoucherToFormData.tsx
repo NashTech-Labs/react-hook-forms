@@ -64,10 +64,21 @@ const getDealValues = (voucher: any) => {
       );
       if (type === "SERIALIZED") {
         dealValues["voucherDiscountTab"] = "dollar";
-        dealValues["voucherValueDollarOffCriteria"] = "MINIMUM_SPEND";
-        dealValues["dollarOffSpend"] = voucherExclusions?.spend
-          ? String(convertCentsToDollar(voucherExclusions?.spend?.minimum))
-          : null;
+        if (rewards[0]?.restrictions) {
+          dealValues["voucherValueDollarOffCriteria"] = "MULTI_BUY";
+          dealValues["dollarOffMultiBuyQuantity"] = String(
+            rewards[0]?.restrictions?.quantity?.minimum
+          );
+          dealValues["dollarOffMultiBuyDiscount"] = String(
+            convertCentsToDollar(rewards?.[0]?.value)
+          );
+        } else {
+          dealValues["voucherValueDollarOffCriteria"] =
+            "restrictions" in rewards ? "MULTI_BUY" : "MINIMUM_SPEND";
+          dealValues["dollarOffSpend"] = voucherExclusions?.spend
+            ? String(convertCentsToDollar(voucherExclusions?.spend?.minimum))
+            : null;
+        }
       } else {
         dealValues["dealDiscountTab"] = "dollar";
       }

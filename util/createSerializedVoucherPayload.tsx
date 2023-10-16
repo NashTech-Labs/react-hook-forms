@@ -10,6 +10,9 @@ const getRewardType = ({
   basketDollarOff,
   basketdollarPointDiscount,
   waivefess,
+  voucherValueDollarOffCriteria,
+  dollarOffMultiBuyDiscount,
+  dollarOffMultiBuyQuantity,
 }: ICreateSerializedVoucherFormState) => {
   let rewardType = "$_OFF";
   let rewardValue = null;
@@ -30,13 +33,41 @@ const getRewardType = ({
     }
   } else {
     if (voucherDiscountTab === "dollar") {
-      rewardValue = (Number(dollarOff) * 100).toFixed();
+      if (voucherValueDollarOffCriteria === "MINIMUM_SPEND") {
+        rewardValue = (Number(dollarOff) * 100).toFixed();
+      } else {
+        rewardValue = (Number(dollarOffMultiBuyDiscount) * 100).toFixed();
+      }
     }
+  }
+
+  if (
+    voucherDiscountTab === "dollar" &&
+    voucherValueDollarOffCriteria === "MULTI_BUY"
+  ) {
+    return {
+      rewardType,
+      rewardValue: [
+        {
+          value: String(rewardValue),
+          restrictions: {
+            quantity: {
+              minimum: dollarOffMultiBuyQuantity,
+              maximum: null,
+            },
+          },
+        },
+      ],
+    };
   }
 
   return {
     rewardType,
-    rewardValue,
+    rewardValue: [
+      {
+        value: String(rewardValue),
+      },
+    ],
   };
 };
 
@@ -152,11 +183,7 @@ const generateCreateSerializedVoucherPayload = (
     description: description,
     code: externalVoucherCode.toUpperCase(),
     // scopes: getScopeData(productsCollectionTab, fileLIAM, fileMCH, liam, mch),
-    rewards: [
-      {
-        value: String(rewardValue),
-      },
-    ],
+    rewards: rewardValue,
     reward_type: rewardType,
     priority: priority,
     status: "DRAFT",

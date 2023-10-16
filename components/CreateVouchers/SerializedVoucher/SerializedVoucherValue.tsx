@@ -65,7 +65,7 @@ const SerializedVoucherValue = ({
     return value;
   };
 
-  const { setValue, clearErrors, setError, register, unregister } =
+  const { setValue, clearErrors, setError, register, unregister, trigger } =
     useFormContext();
 
   const handleChange = (e: any) => {
@@ -137,7 +137,7 @@ const SerializedVoucherValue = ({
       unregister(["dollarOff", "dollarOffSpend"]);
       register("dollarOffMultiBuyQuantity");
       register("dollarOffMultiBuyDiscount");
-      setValue("dollarOffMultiBuyQuantity", "2");
+      !dollarOffMultiBuyQuantity && setValue("dollarOffMultiBuyQuantity", "2");
     }
   }, [voucherValueDollarOffCriteria]);
 
@@ -178,17 +178,7 @@ const SerializedVoucherValue = ({
   }, [basketpointsApplyType]);
 
   useEffect(() => {
-    if (dollarOff && dollarOffSpend) {
-      if (
-        Number(convertCentsToDollar(Number(dollarOffSpend))) > Number(dollarOff)
-      ) {
-        clearErrors("dollarOff");
-      } else {
-        setError("dollarOff", {
-          message: `Error: Discount amount can't be greater than or equal to the spending amount`,
-        });
-      }
-    }
+    dollarOff && dollarOffSpend && trigger("dollarOff");
   }, [dollarOff, dollarOffSpend]);
 
   const handleTabUpdate = (newTab: string): void => {
