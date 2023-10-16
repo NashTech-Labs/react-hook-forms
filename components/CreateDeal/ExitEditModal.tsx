@@ -72,7 +72,7 @@ const ExitEditModal = ({ closeModal, isVoucherEditing }: IExitEditModal) => {
               data-testid="exitBtn"
               variant="outlined"
             >
-              Just exit
+              exit
             </Button>
           </Grid>
           <Grid item lg={9}>

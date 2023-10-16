@@ -8,7 +8,8 @@ const getRewardType = ({
   dollarOff,
   voucherLevel,
   basketDollarOff,
-  basketdollarPointDiscount,
+  pointsApplyType,
+  basketpointsApplyType,
   waivefess,
   voucherValueDollarOffCriteria,
   dollarOffMultiBuyDiscount,
@@ -24,7 +25,7 @@ const getRewardType = ({
 
     if (voucherDiscountTab === "points") {
       rewardType = "POINTS";
-      rewardValue = Number(basketdollarPointDiscount);
+      rewardValue = basketpointsApplyType;
     }
 
     if (voucherDiscountTab === "fulfillment") {
@@ -38,6 +39,11 @@ const getRewardType = ({
       } else {
         rewardValue = (Number(dollarOffMultiBuyDiscount) * 100).toFixed();
       }
+    }
+
+    if (voucherDiscountTab === "points") {
+      rewardType = "POINTS";
+      rewardValue = pointsApplyType;
     }
   }
 
@@ -174,6 +180,8 @@ const generateCreateSerializedVoucherPayload = (
     voucherDiscountTab,
     voucherValueDollarOffCriteria,
     fulfillmentSpend,
+    dollarPointDiscount,
+    basketdollarPointDiscount
   } = formData;
 
   const { rewardType, rewardValue } = getRewardType(formData);
@@ -220,9 +228,9 @@ const generateCreateSerializedVoucherPayload = (
     };
   }
 
-  if (voucherLevel?.toUpperCase() === "BASKET") {
+  if (voucherLevel?.toUpperCase() === "BASKET" && voucherDiscountTab === "points") {
     payload["promo_restrictions"]["spend"] = {
-      minimum: Number((Number(basketpointsApplyType) * 100).toFixed()),
+      minimum: Number((Number(basketdollarPointDiscount) * 100).toFixed()),
       maximum: null,
     };
   }
@@ -245,7 +253,14 @@ const generateCreateSerializedVoucherPayload = (
       voucherValueDollarOffCriteria === "MINIMUM_SPEND"
     ) {
       payload["promo_restrictions"]["spend"] = {
-        minimum: Number((Number(dollarOffSpend) * 100).toFixed()),
+        minimum: Number((dollarOffSpend)).toFixed(),
+        maximum: null,
+      };
+    }
+
+    if (voucherLevel?.toUpperCase() === "PRODUCT" && voucherDiscountTab === "points") {
+      payload["promo_restrictions"]["spend"] = {
+        minimum: Number((Number(dollarPointDiscount) * 100).toFixed()),
         maximum: null,
       };
     }

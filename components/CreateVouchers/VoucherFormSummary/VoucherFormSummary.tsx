@@ -5,6 +5,7 @@ import summaryStyles from '../../Summary/Summary.module.css'
 import commonStyles from '../../CreateDeal/Steps.module.css'
 import StepTitle from '../../StepTitle';
 import config from './VoucherFormConfig';
+import serilizedconfig from './serilizedFormConfig'
 import { getNewVoucherData, updateNewVoucher } from '../../../store/feature/voucher/newVoucherSlice';
 import { useAppDispatch, useAppSelector } from '../../../store';
 import moment from 'moment';
@@ -116,7 +117,28 @@ function VoucherFormSummary() {
 
             {/* Cards Section */}
 
-            {
+            { voucherType === "SERIALIZED" ? 
+
+                Object.keys(serilizedconfig).filter(step => !excludeSteps.includes(step)).map((stepTitle: string) => {
+                    const basketLevelTitle = voucherLevel === 'basket' ? 'Product Applicability' : stepTitle
+                    const computedTitle = stepTitle === 'Exclusions' ? basketLevelTitle : stepTitle
+                    return <Card className={commonStyles["step-card-container-summary"]} key={stepTitle}>
+                        <StepTitle title={computedTitle} />
+                        {
+                            serilizedconfig[stepTitle].map(({ title, getValue, shouldHide }) => {
+                                if (shouldHide && shouldHide(newVoucherData)) {
+                                    return null
+                                }
+                                return <>
+                                    <Typography variant="h4" className={summaryStyles.heading} mt={4}>{title}</Typography>
+                                    {<Typography className={summaryStyles.content}>{getValue(newVoucherData)}</Typography>}
+                                </>
+                            })
+                        }
+
+                    </Card>
+                })
+             :
                 Object.keys(config).filter(step => !excludeSteps.includes(step)).map((stepTitle: string) => {
                     const basketLevelTitle = voucherLevel === 'basket' ? 'Product Applicability' : stepTitle
                     const computedTitle = stepTitle === 'Exclusions' ? basketLevelTitle : stepTitle

@@ -73,7 +73,7 @@ const DraftModal = ({ loading, closeModal, isVoucher }: IDraftModal) => {
             className={commonStyles.cancelBtn}
             onClick={handleExit}
           >
-            Just exit
+            exit
           </Button>
           <Button
             variant="contained"
