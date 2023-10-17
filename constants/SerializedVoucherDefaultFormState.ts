@@ -56,7 +56,6 @@ const createSerializedVoucherDefaultFormState: ICreateSerializedVoucherFormState
     dollarOffMultiBuyQuantity: '',
     basketDollarOff: '',
     waivefess: false,
-    dollarOffMultiBuyDiscount: ''
 };
 
 export default createSerializedVoucherDefaultFormState;
