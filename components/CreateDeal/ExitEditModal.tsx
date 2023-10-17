@@ -15,7 +15,7 @@ import { updateVoucherEditing } from "../../store/feature/voucher/voucherSlice";
 
 interface IExitEditModal {
   closeModal: Function;
-  isVoucherEditing: boolean
+  isVoucherEditing: boolean;
 }
 
 const ExitEditModal = ({ closeModal, isVoucherEditing }: IExitEditModal) => {
@@ -30,15 +30,14 @@ const ExitEditModal = ({ closeModal, isVoucherEditing }: IExitEditModal) => {
   };
 
   const resetVoucherState = () => {
-    dispatch(updateVoucherEditing(false))
-  }
+    dispatch(updateVoucherEditing(false));
+  };
 
   const handelClose = () => {
     if (isVoucherEditing) {
       router.push("/vouchers");
-      resetVoucherState();  
-    }
-    else {
+      resetVoucherState();
+    } else {
       router.push("/deals");
       resetState();
     }
@@ -48,8 +47,7 @@ const ExitEditModal = ({ closeModal, isVoucherEditing }: IExitEditModal) => {
     if (isVoucherEditing) {
       closeModal();
       resetVoucherState();
-    }
-    else {
+    } else {
       closeModal();
       resetState();
     }
@@ -72,7 +70,7 @@ const ExitEditModal = ({ closeModal, isVoucherEditing }: IExitEditModal) => {
               data-testid="exitBtn"
               variant="outlined"
             >
-              exit
+              Exit
             </Button>
           </Grid>
           <Grid item lg={9}>

@@ -73,12 +73,17 @@ const serilizedconfig: IConfig = {
       },
     },
     {
-      title: "Is this voucher restricted to a specific location?",
+      title: "Voucher is valid for?",
       getValue: (formData: ICreateSerializedVoucherFormState) => {
-        const { regionRestrictions } = formData;
-        return regionRestrictions?.length > 0
-          ? regionRestrictions.join(", ")
-          : "NO";
+        const { pickUpOrders, deliveryOrders } = formData;
+        let value = "";
+        if (pickUpOrders) {
+          value += "Pickup";
+        }
+        if (deliveryOrders) {
+          value += value ? ", Delivery" : "Delivery";
+        }
+        return value;
       },
     },
   ],
@@ -100,13 +105,13 @@ const serilizedconfig: IConfig = {
           dollarOffMultiBuyQuantity,
           pointsApplyType,
           basketpointsApplyType,
-          fulfillmentSpend
+          fulfillmentSpend,
         } = formData;
         if (dollarOff) return "Dollar ($) off";
         if (fixedPriceOff) return "Fixed off";
         if (dollarOffMultiBuyQuantity) return "Dollar ($) off";
         if (pointsApplyType || basketpointsApplyType) return "Points";
-        if (fulfillmentSpend) return "Fulfillment" 
+        if (fulfillmentSpend) return "Fulfillment";
       },
     },
     {
@@ -119,11 +124,11 @@ const serilizedconfig: IConfig = {
           dollarOffMultiBuyDiscount,
           pointsApplyType,
           basketpointsApplyType,
-          fulfillmentSpend
+          fulfillmentSpend,
         } = formData;
 
         if (dollarOffMultiBuyDiscount) {
-          return `$${dollarOffMultiBuyDiscount}`
+          return `$${dollarOffMultiBuyDiscount}`;
         }
 
         if (dollarOff || fixedPriceOff) {
@@ -131,11 +136,11 @@ const serilizedconfig: IConfig = {
         }
 
         if (pointsApplyType || basketpointsApplyType) {
-          return `${pointsApplyType || basketpointsApplyType}`
+          return `${pointsApplyType || basketpointsApplyType}`;
         }
 
         if (fulfillmentSpend) {
-          return `$${fulfillmentSpend}`
+          return `$${fulfillmentSpend}`;
         }
       },
     },
@@ -151,21 +156,24 @@ const serilizedconfig: IConfig = {
           dollarPointDiscount,
           basketpointsApplyType,
           basketdollarPointDiscount,
-          fulfillmentSpend
+          fulfillmentSpend,
         } = formData;
         if (dollarOff || dollarOffSpend)
-          return `Spend $${(Number(dollarOffSpend) / 100).toFixed(2)}, Get $${dollarOff} off`;
+          return `Spend $${(Number(dollarOffSpend) / 100).toFixed(
+            2
+          )}, Get $${dollarOff} off`;
 
         if (dollarOffMultiBuyDiscount) {
-          return `Buy ${dollarOffMultiBuyQuantity}, Get $${dollarOffMultiBuyDiscount} off`
+          return `Buy ${dollarOffMultiBuyQuantity}, Get $${dollarOffMultiBuyDiscount} off`;
         }
 
-        if (dollarPointDiscount || basketdollarPointDiscount)
-        {
-          return `Spend $${dollarPointDiscount || basketdollarPointDiscount}, Get ${pointsApplyType || basketpointsApplyType} Points`;
+        if (dollarPointDiscount || basketdollarPointDiscount) {
+          return `Spend $${
+            dollarPointDiscount || basketdollarPointDiscount
+          }, Get ${pointsApplyType || basketpointsApplyType} Points`;
         }
         if (fulfillmentSpend) {
-          return `Spend $${fulfillmentSpend} and Get free pickup or delivery`
+          return `Spend $${fulfillmentSpend} and Get free pickup or delivery`;
         }
       },
     },

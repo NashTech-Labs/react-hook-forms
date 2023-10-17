@@ -76,7 +76,7 @@ const getDealValues = (voucher: any) => {
           dealValues["voucherValueDollarOffCriteria"] =
             "restrictions" in rewards ? "MULTI_BUY" : "MINIMUM_SPEND";
           dealValues["dollarOffSpend"] = voucherExclusions?.spend
-            ? String(convertCentsToDollar(voucherExclusions?.spend?.minimum))
+            ? String(voucherExclusions?.spend?.minimum)
             : null;
         }
       } else {
