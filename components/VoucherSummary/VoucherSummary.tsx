@@ -203,6 +203,11 @@ function VoucherSummary() {
     if (type === "POINTS") {
       return `${Number(value)}`;
     }
+
+    if (type === "$_OFF_MULTI") {
+      return `$${Number(Number(value)/ 100).toFixed(2)}`;
+    }
+
   };
 
   const getDealValuePreview = (data: any) => {
@@ -225,6 +230,13 @@ function VoucherSummary() {
   };
 
   const getVoucherValuePreview = (value: string, type: string) => {
+
+    if (type === "$_OFF") {
+      return `Spend $${(
+        Number(data?.voucherExclusions?.spend?.minimum) / 100
+      ).toFixed(2)}, Get $${(Number(value) / 100).toFixed(2)} off`;
+    }
+
     if (type === "NO_FEE") {
       return `Spend $${(
         Number(data?.voucherExclusions?.spend?.minimum) / 100
@@ -236,6 +248,12 @@ function VoucherSummary() {
         Number(data?.voucherExclusions?.spend?.minimum) / 100
       ).toFixed(2)}, Get ${value} points`;
     }
+
+    if (type === "$_OFF_MULTI") {
+      return `Buy ${(
+        Number(data?.voucherExclusions?.spend?.minimum))}, for $${(Number(value) / 100).toFixed(2)}`;
+    }
+
   };
 
   const downloadScopeExcel = (data: any) => {
@@ -479,7 +497,7 @@ function VoucherSummary() {
                     })}
                   </Typography>
 
-                  <Typography
+                  {/* <Typography
                     data-testid="title"
                     variant="h4"
                     className={styles.heading}
@@ -490,7 +508,7 @@ function VoucherSummary() {
                   </Typography>
                   <Typography className={styles.content}>
                     Provience,Ontario
-                  </Typography>
+                  </Typography> */}
                 </Grid>
               </Grid>
             </Grid>
@@ -561,14 +579,16 @@ function VoucherSummary() {
                   >
                     Customer Preview
                   </Typography>
+                  {data?.voucherValues?.rewards &&
                   <Typography className={styles.content}>
                     {getVoucherValuePreview(
                       data?.voucherValues?.rewards[0]?.value,
                       data?.voucherValues?.rewardType
                     )}
                   </Typography>
+                  }
 
-                  <Typography
+                  {/* <Typography
                     variant="h4"
                     className={styles.heading}
                     mt={2}
@@ -576,7 +596,7 @@ function VoucherSummary() {
                   >
                     Is this voucher eligible for no fees?
                   </Typography>
-                  <Typography className={styles.content}>Yes</Typography>
+                  <Typography className={styles.content}>Yes</Typography> */}
                 </Grid>
               </Grid>
             </Grid>

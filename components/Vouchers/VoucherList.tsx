@@ -227,6 +227,17 @@ function VoucherList() {
         selector: (row: any) => {
           if (row?.spend?.minimum > 0) {
 
+            if (row.voucherValues[0]?.rewardType === "$_OFF_MULTI") {
+              return (
+                <Grid display="grid">
+                  <Grid>
+                    Buy {(Number(row?.spend?.minimum))},{" "}
+                    for ${(Number(row.voucherValues[0]?.rewardValue)/ 100).toFixed(2)}
+                  </Grid>
+                </Grid>
+              )
+            }
+
             if (row.voucherValues[0]?.rewardType === "POINTS") {
               return (
                 <Grid display="grid">

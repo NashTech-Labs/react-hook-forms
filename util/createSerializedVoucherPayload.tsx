@@ -36,7 +36,10 @@ const getRewardType = ({
     if (voucherDiscountTab === "dollar") {
       if (voucherValueDollarOffCriteria === "MINIMUM_SPEND") {
         rewardValue = (Number(dollarOff) * 100).toFixed();
-      } else {
+      } 
+      if (voucherValueDollarOffCriteria === "MULTI_BUY")
+      {
+        rewardType = "$_OFF_MULTI";
         rewardValue = (Number(dollarOffMultiBuyDiscount) * 100).toFixed();
       }
     }
@@ -45,26 +48,6 @@ const getRewardType = ({
       rewardType = "POINTS";
       rewardValue = pointsApplyType;
     }
-  }
-
-  if (
-    voucherDiscountTab === "dollar" &&
-    voucherValueDollarOffCriteria === "MULTI_BUY"
-  ) {
-    return {
-      rewardType,
-      rewardValue: [
-        {
-          value: String(rewardValue),
-          restrictions: {
-            quantity: {
-              minimum: dollarOffMultiBuyQuantity,
-              maximum: null,
-            },
-          },
-        },
-      ],
-    };
   }
 
   return {
@@ -181,7 +164,8 @@ const generateCreateSerializedVoucherPayload = (
     voucherValueDollarOffCriteria,
     fulfillmentSpend,
     dollarPointDiscount,
-    basketdollarPointDiscount
+    basketdollarPointDiscount,
+    dollarOffMultiBuyQuantity
   } = formData;
 
   const { rewardType, rewardValue } = getRewardType(formData);
@@ -231,6 +215,13 @@ const generateCreateSerializedVoucherPayload = (
   if (voucherLevel?.toUpperCase() === "BASKET" && voucherDiscountTab === "points") {
     payload["promo_restrictions"]["spend"] = {
       minimum: Number((Number(basketdollarPointDiscount) * 100).toFixed()),
+      maximum: null,
+    };
+  }
+
+  if (voucherDiscountTab === "dollar" && voucherValueDollarOffCriteria === "MULTI_BUY") {
+    payload["promo_restrictions"]["spend"] = {
+      minimum: Number(dollarOffMultiBuyQuantity),
       maximum: null,
     };
   }
