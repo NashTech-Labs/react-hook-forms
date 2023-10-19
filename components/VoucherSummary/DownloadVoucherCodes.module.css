@@ -1,0 +1,15 @@
+.title {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.count {
+    font-size: 42px;
+    font-weight: 400;
+    line-height: 51px;
+    color: #333
+}
+
+.success-message {
+    margin-bottom: 10px;
+}

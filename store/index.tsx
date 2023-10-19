@@ -29,6 +29,8 @@ import { deleteVoucher } from "../api/deleteVoucher";
 import lobSlice from "./feature/selectlob/lobSlice";
 import { userLobs } from "../api/getuserLobs";
 import { getPoints } from "../api/getPoints";
+import { downloadVoucherBatches } from "../api/downloadVoucherBatches";
+import { downloadVoucher } from "../api/downloadVouchers";
 
 const persistauthConfig = {
   key: "auth",
@@ -60,10 +62,7 @@ const persistConfigLOB = {
   storage,
 };
 
-const persistedLOBReducer = persistReducer(
-  persistConfigLOB,
-  lobSlice
-);
+const persistedLOBReducer = persistReducer(persistConfigLOB, lobSlice);
 
 const persistedAuthReducer = persistReducer(persistauthConfig, authReducer);
 
@@ -96,7 +95,7 @@ export const generateStore = (preloadedState = {}) => {
       [updateUser.reducerPath]: updateUser.reducer,
       [createDeals.reducerPath]: createDeals.reducer,
       [dealPreview.reducerPath]: dealPreview.reducer,
-      [userLobs.reducerPath]:userLobs.reducer,
+      [userLobs.reducerPath]: userLobs.reducer,
       [editDeals.reducerPath]: editDeals.reducer,
       [disablePromotions.reducerPath]: disablePromotions.reducer,
       [voucherList.reducerPath]: voucherList.reducer,
@@ -104,7 +103,9 @@ export const generateStore = (preloadedState = {}) => {
       [createVoucher.reducerPath]: createVoucher.reducer,
       [editVoucher.reducerPath]: editVoucher.reducer,
       [deleteVoucher.reducerPath]: deleteVoucher.reducer,
-      [getPoints.reducerPath]: getPoints.reducer
+      [getPoints.reducerPath]: getPoints.reducer,
+      [downloadVoucherBatches.reducerPath]: downloadVoucherBatches.reducer,
+      [downloadVoucher.reducerPath]: downloadVoucher.reducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
@@ -127,7 +128,9 @@ export const generateStore = (preloadedState = {}) => {
         editVoucher.middleware,
         deleteVoucher.middleware,
         userLobs.middleware,
-        getPoints.middleware
+        getPoints.middleware,
+        downloadVoucherBatches.middleware,
+        downloadVoucher.middleware,
       ]),
     preloadedState,
   });

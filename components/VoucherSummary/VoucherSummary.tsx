@@ -40,6 +40,11 @@ import {
   notifyError,
 } from "../../util/Notification/Notification";
 import { updateVoucherId } from "../../store/feature/voucher/voucherSlice";
+import DownloadVoucherCodes from "./DownloadVoucherCodes";
+import {
+  useDownloadVoucherBatchesQuery,
+  IDownloadVoucherResponse,
+} from "../../api/downloadVoucherBatches";
 
 const editDealStyles = {
   content: {
@@ -126,15 +131,46 @@ function VoucherSummary() {
   const voucherType = useAppSelector(updatedVoucherType);
   const { data, refetch } = useGetVoucherPreviewQuery({ voucherId, user });
   const [createVoucher] = useCreateVoucherMutation();
+  const { data: downloadVoucherData, refetch: downloadVoucherRefetch } =
+    useDownloadVoucherBatchesQuery({
+      voucherId,
+      username: user?.name,
+    });
+
+  useEffect(() => {
+    const batches = downloadVoucherData?.response?.batches;
+    if (batches) {
+      const isAnyBatchPending = batches.some(
+        ({ status }) => status !== "COMPLETED"
+      );
+      if (isAnyBatchPending) {
+        downloadVoucherRefetch();
+      }
+    }
+  }, [downloadVoucherData, downloadVoucherRefetch]);
+
+  const downloadBatchIds =
+    downloadVoucherData?.response?.batches?.map(({ id }) => id) || [];
+  let completed = 0;
+  let total = 0;
+
+  if (downloadVoucherData) {
+    const batches = downloadVoucherData?.response?.batches || [];
+    batches.forEach(({ status, size }) => {
+      if (status === "COMPLETED") {
+        completed += size;
+      }
+      total += size;
+    });
+  }
+
   const discountTypeDealLabel =
     data?.voucherValues?.rewardType === "%_OFF"
       ? "Percentage (%) off"
       : "Fixed off";
 
-    const voucherTypeLabel =
-      data?.voucherValues?.rewardType === "POINTS"
-        ? "POINTS"
-        : "Fulfilment";
+  const voucherTypeLabel =
+    data?.voucherValues?.rewardType === "POINTS" ? "POINTS" : "Fulfilment";
 
   const ToProperCase = (string: string) => {
     let str = string.replace(/_/g, " ");
@@ -159,13 +195,14 @@ function VoucherSummary() {
     }
 
     if (type === "NO_FEE") {
-      return `$${(Number(data?.voucherExclusions?.spend?.minimum)/100).toFixed(2)}`;
+      return `$${(
+        Number(data?.voucherExclusions?.spend?.minimum) / 100
+      ).toFixed(2)}`;
     }
 
     if (type === "POINTS") {
-      return `${(Number(value))}`;
+      return `${Number(value)}`;
     }
-
   };
 
   const getDealValuePreview = (data: any) => {
@@ -188,13 +225,16 @@ function VoucherSummary() {
   };
 
   const getVoucherValuePreview = (value: string, type: string) => {
-    if (type === "NO_FEE")
-    {
-      return `Spend $${(Number(data?.voucherExclusions?.spend?.minimum)/100).toFixed(2)} and Get free pickup or delivery`
+    if (type === "NO_FEE") {
+      return `Spend $${(
+        Number(data?.voucherExclusions?.spend?.minimum) / 100
+      ).toFixed(2)} and Get free pickup or delivery`;
     }
 
     if (type === "POINTS") {
-      return `Spend $${(Number(data?.voucherExclusions?.spend?.minimum)/100).toFixed(2)}, Get ${value} points`;
+      return `Spend $${(
+        Number(data?.voucherExclusions?.spend?.minimum) / 100
+      ).toFixed(2)}, Get ${value} points`;
     }
   };
 
@@ -321,9 +361,9 @@ function VoucherSummary() {
     setIsVoucherActive(!isVoucherActive);
   };
 
-  const newArr = data?.voucherBannerRestriction?.banner?.include
+  const newArr = data?.voucherBannerRestriction?.banner?.include;
 
-  let bannerArr = newArr ? [...newArr] : []
+  let bannerArr = newArr ? [...newArr] : [];
 
   let content = null;
 
@@ -337,6 +377,12 @@ function VoucherSummary() {
   } else {
     content = (
       <>
+        <DownloadVoucherCodes
+          voucherId={voucherId}
+          downloadBatchIds={downloadBatchIds}
+          progress={(completed / total) * 100}
+          total={total}
+        />
         <Card className={styles["step-card-container"]}>
           <StepTitle title={"Voucher type"} />
           <Typography variant="h4" className={styles.heading} mt={4}>
@@ -346,7 +392,6 @@ function VoucherSummary() {
             {voucherTypeOptions[data?.voucherGeneralInfo?.type]}
           </Typography>
         </Card>
-
         <Card className={styles["step-card-container"]}>
           <StepTitle title={"General information"} />
 
@@ -423,17 +468,15 @@ function VoucherSummary() {
                     Banner
                   </Typography>
                   <Typography className={styles.content}>
-                    {bannerArr.sort().map(
-                      (banner: string) => {
-                        return (
-                          <>
-                            {" "}
-                            {banner[0].toUpperCase() +
-                              banner.slice(1)} <br />{" "}
-                          </>
-                        );
-                      }
-                    )}
+                    {bannerArr.sort().map((banner: string) => {
+                      return (
+                        <>
+                          {" "}
+                          {banner[0].toUpperCase() +
+                            banner.slice(1)} <br />{" "}
+                        </>
+                      );
+                    })}
                   </Typography>
 
                   <Typography
@@ -457,162 +500,164 @@ function VoucherSummary() {
         <Card className={styles["step-card-container"]}>
           <StepTitle title={"Voucher Value"} />
 
-          { data?.voucherGeneralInfo?.type === "SERIALIZED" ? 
-          
-          <Grid container>
-            <Grid item lg={12} md={9} sm={6} display="flex">
-              <Grid item lg={7}>
-                <Typography
-                  data-testid="title"
-                  variant="h4"
-                  className={styles.heading}
-                  mt={4}
-                  mb={1}
-                >
-                  Is this at a basket level or product level?
-                </Typography>
-                <Typography className={styles.content}>
-                  {capitalizeWords(data?.voucherValues?.scopeType || "")}
-                </Typography>
+          {data?.voucherGeneralInfo?.type === "SERIALIZED" ? (
+            <Grid container>
+              <Grid item lg={12} md={9} sm={6} display="flex">
+                <Grid item lg={7}>
+                  <Typography
+                    data-testid="title"
+                    variant="h4"
+                    className={styles.heading}
+                    mt={4}
+                    mb={1}
+                  >
+                    Is this at a basket level or product level?
+                  </Typography>
+                  <Typography className={styles.content}>
+                    {capitalizeWords(data?.voucherValues?.scopeType || "")}
+                  </Typography>
 
-                <Typography
-                  variant="h4"
-                  className={styles.heading}
-                  mt={2}
-                  mb={1}
-                >
-                  Type
-                </Typography>
+                  <Typography
+                    variant="h4"
+                    className={styles.heading}
+                    mt={2}
+                    mb={1}
+                  >
+                    Type
+                  </Typography>
 
-                {data?.voucherValues?.rewardType ? (
-                  <>
-                    <Typography className={styles.content}>
-                      {data?.voucherValues?.rewardType === "$_OFF"
-                        ? "Dollar ($) off"
-                        : voucherTypeLabel}
-                    </Typography>
-                  </>
-                ) : null}
+                  {data?.voucherValues?.rewardType ? (
+                    <>
+                      <Typography className={styles.content}>
+                        {data?.voucherValues?.rewardType === "$_OFF"
+                          ? "Dollar ($) off"
+                          : voucherTypeLabel}
+                      </Typography>
+                    </>
+                  ) : null}
 
-                <Typography
-                  variant="h4"
-                  className={styles.heading}
-                  mt={2}
-                  mb={1}
-                >
-                  Value
-                </Typography>
-                <Typography className={styles.content}>
-                  {data?.voucherValues?.rewards
-                    ? voucherValue(
-                        data?.voucherValues?.rewards[0]?.value,
-                        data?.voucherValues?.rewardType
-                      )
-                    : null}
-                </Typography>
+                  <Typography
+                    variant="h4"
+                    className={styles.heading}
+                    mt={2}
+                    mb={1}
+                  >
+                    Value
+                  </Typography>
+                  <Typography className={styles.content}>
+                    {data?.voucherValues?.rewards
+                      ? voucherValue(
+                          data?.voucherValues?.rewards[0]?.value,
+                          data?.voucherValues?.rewardType
+                        )
+                      : null}
+                  </Typography>
 
-                <Typography
-                  variant="h4"
-                  className={styles.heading}
-                  mt={2}
-                  mb={1}
-                >
-                  Customer Preview
-                </Typography>
-                <Typography className={styles.content}>
-                  {getVoucherValuePreview(data?.voucherValues?.rewards[0]?.value, data?.voucherValues?.rewardType)}
-                </Typography>
+                  <Typography
+                    variant="h4"
+                    className={styles.heading}
+                    mt={2}
+                    mb={1}
+                  >
+                    Customer Preview
+                  </Typography>
+                  <Typography className={styles.content}>
+                    {getVoucherValuePreview(
+                      data?.voucherValues?.rewards[0]?.value,
+                      data?.voucherValues?.rewardType
+                    )}
+                  </Typography>
 
-                <Typography
-                  variant="h4"
-                  className={styles.heading}
-                  mt={2}
-                  mb={1}
-                >
-                  Is this voucher eligible for no fees?
-                </Typography>
-                <Typography className={styles.content}>Yes</Typography>
+                  <Typography
+                    variant="h4"
+                    className={styles.heading}
+                    mt={2}
+                    mb={1}
+                  >
+                    Is this voucher eligible for no fees?
+                  </Typography>
+                  <Typography className={styles.content}>Yes</Typography>
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
-          :
-          <Grid container>
-            <Grid item lg={12} md={9} sm={6} display="flex">
-              <Grid item lg={7}>
-                <Typography
-                  data-testid="title"
-                  variant="h4"
-                  className={styles.heading}
-                  mt={4}
-                  mb={1}
-                >
-                  Is this at a basket level or product level?
-                </Typography>
-                <Typography className={styles.content}>
-                  {capitalizeWords(data?.voucherValues?.scopeType || "")}
-                </Typography>
+          ) : (
+            <Grid container>
+              <Grid item lg={12} md={9} sm={6} display="flex">
+                <Grid item lg={7}>
+                  <Typography
+                    data-testid="title"
+                    variant="h4"
+                    className={styles.heading}
+                    mt={4}
+                    mb={1}
+                  >
+                    Is this at a basket level or product level?
+                  </Typography>
+                  <Typography className={styles.content}>
+                    {capitalizeWords(data?.voucherValues?.scopeType || "")}
+                  </Typography>
 
-                <Typography
-                  variant="h4"
-                  className={styles.heading}
-                  mt={2}
-                  mb={1}
-                >
-                  Type
-                </Typography>
+                  <Typography
+                    variant="h4"
+                    className={styles.heading}
+                    mt={2}
+                    mb={1}
+                  >
+                    Type
+                  </Typography>
 
-                {data?.voucherValues?.rewardType ? (
-                  <>
-                    <Typography className={styles.content}>
-                      {data?.voucherValues?.rewardType === "$_OFF"
-                        ? "Dollar ($) off"
-                        : discountTypeDealLabel}
-                    </Typography>
-                  </>
-                ) : null}
+                  {data?.voucherValues?.rewardType ? (
+                    <>
+                      <Typography className={styles.content}>
+                        {data?.voucherValues?.rewardType === "$_OFF"
+                          ? "Dollar ($) off"
+                          : discountTypeDealLabel}
+                      </Typography>
+                    </>
+                  ) : null}
 
-                <Typography
-                  variant="h4"
-                  className={styles.heading}
-                  mt={2}
-                  mb={1}
-                >
-                  Value
-                </Typography>
-                <Typography className={styles.content}>
-                  {data?.voucherValues?.rewards
-                    ? dealValue(
-                        data?.voucherValues?.rewards[0]?.value,
-                        data?.voucherValues?.rewardType
-                      )
-                    : null}
-                </Typography>
+                  <Typography
+                    variant="h4"
+                    className={styles.heading}
+                    mt={2}
+                    mb={1}
+                  >
+                    Value
+                  </Typography>
+                  <Typography className={styles.content}>
+                    {data?.voucherValues?.rewards
+                      ? dealValue(
+                          data?.voucherValues?.rewards[0]?.value,
+                          data?.voucherValues?.rewardType
+                        )
+                      : null}
+                  </Typography>
 
-                <Typography
-                  variant="h4"
-                  className={styles.heading}
-                  mt={2}
-                  mb={1}
-                >
-                  Customer Preview
-                </Typography>
-                <Typography className={styles.content}>
-                  {getDealValuePreview(data)}
-                </Typography>
+                  <Typography
+                    variant="h4"
+                    className={styles.heading}
+                    mt={2}
+                    mb={1}
+                  >
+                    Customer Preview
+                  </Typography>
+                  <Typography className={styles.content}>
+                    {getDealValuePreview(data)}
+                  </Typography>
 
-                <Typography
-                  variant="h4"
-                  className={styles.heading}
-                  mt={2}
-                  mb={1}
-                >
-                  Is this voucher eligible for no fees?
-                </Typography>
-                <Typography className={styles.content}>Yes</Typography>
+                  <Typography
+                    variant="h4"
+                    className={styles.heading}
+                    mt={2}
+                    mb={1}
+                  >
+                    Is this voucher eligible for no fees?
+                  </Typography>
+                  <Typography className={styles.content}>Yes</Typography>
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
-        }
+          )}
         </Card>
 
         <Card className={styles["step-card-container"]}>
@@ -866,7 +911,7 @@ function VoucherSummary() {
             variant="contained"
           >
             {data?.voucherGeneralInfo?.status === "ENDED" ||
-            data?.voucherGeneralInfo?.status === "INACTIVE" 
+            data?.voucherGeneralInfo?.status === "INACTIVE"
               ? "Re-create"
               : "Edit"}
           </Button>
@@ -940,7 +985,11 @@ function VoucherSummary() {
                         checked={isVoucherActive}
                         sx={{ m: 1, marginLeft: "38%" }}
                         onChange={handleChange}
-                        disabled={data?.voucherGeneralInfo?.status === "INACTIVE" ? true : false}
+                        disabled={
+                          data?.voucherGeneralInfo?.status === "INACTIVE"
+                            ? true
+                            : false
+                        }
                       />
                     }
                     label=""
