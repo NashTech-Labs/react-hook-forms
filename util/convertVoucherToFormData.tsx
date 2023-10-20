@@ -62,27 +62,27 @@ const getDealValues = (voucher: any) => {
       dealValues["dollarOff"] = String(
         convertCentsToDollar(rewards?.[0]?.value)
       );
-      if (type === "SERIALIZED") {
-        dealValues["voucherDiscountTab"] = "dollar";
-        if (rewards[0]?.restrictions) {
-          dealValues["voucherValueDollarOffCriteria"] = "MULTI_BUY";
-          dealValues["dollarOffMultiBuyQuantity"] = String(
-            rewards[0]?.restrictions?.quantity?.minimum
-          );
-          dealValues["dollarOffMultiBuyDiscount"] = String(
-            convertCentsToDollar(rewards?.[0]?.value)
-          );
-        } else {
-          dealValues["voucherValueDollarOffCriteria"] =
-            "restrictions" in rewards ? "MULTI_BUY" : "MINIMUM_SPEND";
-          dealValues["dollarOffSpend"] = voucherExclusions?.spend
-            ? String(voucherExclusions?.spend?.minimum)
-            : null;
-        }
-      } else {
-        dealValues["dealDiscountTab"] = "dollar";
-      }
+      dealValues["dealDiscountTab"] = "dollar";
     }
+
+    if (rewardType === "$_OFF_MULTI" && type === "SERIALIZED") {
+      dealValues["voucherDiscountTab"] = "dollar";
+      dealValues["voucherValueDollarOffCriteria"] = "MULTI_BUY";
+      dealValues["dollarOffMultiBuyQuantity"] = String(
+        voucherExclusions?.spend?.minimum
+      );
+      dealValues["dollarOffMultiBuyDiscount"] = String(
+        convertCentsToDollar(rewards?.[0]?.value)
+      );
+    } else {
+      dealValues["voucherDiscountTab"] = "dollar";
+      dealValues["voucherValueDollarOffCriteria"] =
+        "restrictions" in rewards ? "MULTI_BUY" : "MINIMUM_SPEND";
+      dealValues["dollarOffSpend"] = voucherExclusions?.spend
+        ? String(voucherExclusions?.spend?.minimum)
+        : null;
+    }
+
     if (rewardType === "%_OFF") {
       const percentageValue = String(rewards?.[0]?.value);
       const isNotCustomPercentage = percentageOptions.some(

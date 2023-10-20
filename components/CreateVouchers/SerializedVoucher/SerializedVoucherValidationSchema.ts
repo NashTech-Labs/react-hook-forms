@@ -30,18 +30,18 @@ const schema = yup.object().shape({
     dollarOff: yup
         .number()
         .transform(value => (isNaN(value) ? undefined : value))
-        .when(['voucherDiscountTab', 'voucherValueDollarOffCriteria'], {
-            is: (voucherDiscountTab: string, voucherValueDollarOffCriteria: string) => voucherDiscountTab === 'dollar' && voucherValueDollarOffCriteria === "MINIMUM_SPEND",
+        .when(['voucherDiscountTab', 'voucherValueDollarOffCriteria', 'voucherLevel'], {
+            is: (voucherDiscountTab: string, voucherValueDollarOffCriteria: string, voucherLevel: string) => voucherDiscountTab === 'dollar' && voucherValueDollarOffCriteria === "MINIMUM_SPEND" && voucherLevel === 'Product',
             then: schema => schema.required('Error: Dollar($) value required'),
             otherwise: schema => schema.nullable()
         })
-        .when(['voucherDiscountTab', 'voucherValueDollarOffCriteria'], {
-            is: (voucherDiscountTab: string, voucherValueDollarOffCriteria: string) => voucherDiscountTab === 'dollar' && voucherValueDollarOffCriteria === "MINIMUM_SPEND",
+        .when(['voucherDiscountTab', 'voucherValueDollarOffCriteria', 'voucherLevel'], {
+            is: (voucherDiscountTab: string, voucherValueDollarOffCriteria: string, voucherLevel: string) => voucherDiscountTab === 'dollar' && voucherValueDollarOffCriteria === "MINIMUM_SPEND" && voucherLevel === 'Product',
             then: schema => schema.min(1, 'Error: Must be minimum of $1.00'),
             otherwise: schema => schema.nullable()
         })
-        .when(['voucherDiscountTab', 'voucherValueDollarOffCriteria', 'dollarOffSpend'], {
-            is: (voucherDiscountTab: string, voucherValueDollarOffCriteria: string, dollarOffSpend: string) => voucherDiscountTab === 'dollar' && voucherValueDollarOffCriteria === "MINIMUM_SPEND" && dollarOffSpend,
+        .when(['voucherDiscountTab', 'voucherValueDollarOffCriteria', 'dollarOffSpend', 'voucherLevel'], {
+            is: (voucherDiscountTab: string, voucherValueDollarOffCriteria: string, dollarOffSpend: string, voucherLevel: string) => voucherDiscountTab === 'dollar' && voucherValueDollarOffCriteria === "MINIMUM_SPEND" && dollarOffSpend && voucherLevel === 'Product',
             then: schema => schema.test('priority', `Error: Discount amount can't be greater than or equal to the spending amount`, (value: number | undefined, context: any): boolean => {
                 const dollarOffSpend = context?.parent?.dollarOffSpend
                 if(value && dollarOffSpend) {

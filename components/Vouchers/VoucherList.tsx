@@ -60,9 +60,15 @@ function VoucherList() {
 
   const user = useAppSelector(userProfileState);
 
-  const [sortOption, setSortOption] = useState("MOST_RECENT")
+  const [sortOption, setSortOption] = useState("MOST_RECENT");
 
-  const { data, isLoading, error, refetch } = useGetVoucherListQuery({ search, filters, page, user, sortOption });
+  const { data, isLoading, error, refetch } = useGetVoucherListQuery({
+    search,
+    filters,
+    page,
+    user,
+    sortOption,
+  });
 
   const [selectedRows, setSelectedRows] = useState<any>([]);
 
@@ -108,8 +114,8 @@ function VoucherList() {
   }, []);
 
   useEffect(() => {
-    setPage(1)
-  }, [search, filters, sortOption])
+    setPage(1);
+  }, [search, filters, sortOption]);
 
   const deleteDealStyles = {
     content: {
@@ -226,16 +232,17 @@ function VoucherList() {
         name: "Value",
         selector: (row: any) => {
           if (row?.spend?.minimum > 0) {
-
             if (row.voucherValues[0]?.rewardType === "$_OFF_MULTI") {
               return (
                 <Grid display="grid">
                   <Grid>
-                    Buy {(Number(row?.spend?.minimum))},{" "}
-                    for ${(Number(row.voucherValues[0]?.rewardValue)/ 100).toFixed(2)}
+                    Buy {Number(row?.spend?.minimum)}, Get $
+                    {(Number(row.voucherValues[0]?.rewardValue) / 100).toFixed(
+                      2
+                    )}
                   </Grid>
                 </Grid>
-              )
+              );
             }
 
             if (row.voucherValues[0]?.rewardType === "POINTS") {
@@ -243,15 +250,16 @@ function VoucherList() {
                 <Grid display="grid">
                   <Grid>
                     {" "}
-                    Spend ${(Number(row?.spend?.minimum) / 100).toFixed(2)},{" "}
+                    Spend ${(Number(row?.spend?.minimum) / 100).toFixed(
+                      2
+                    )},{" "}
                   </Grid>
                   <Grid>
                     {" "}
-                    Get {(Number(row.voucherValues[0]?.rewardValue))}{" "}
-                    points{" "}
+                    Get {Number(row.voucherValues[0]?.rewardValue)} points{" "}
                   </Grid>
                 </Grid>
-              )
+              );
             }
 
             if (row.voucherValues[0]?.rewardType === "NO_FEE") {
@@ -262,7 +270,7 @@ function VoucherList() {
                     ${(Number(row?.spend?.minimum) / 100).toFixed(2)}
                   </Grid>
                 </Grid>
-              )
+              );
             }
 
             if (row.voucherValues[0]?.rewardType === "$_OFF") {
@@ -360,8 +368,8 @@ function VoucherList() {
 
   const handleSortOption = (value: string) => {
     setSortOption(value);
-    refetch()
-  }
+    refetch();
+  };
 
   let content = null;
 
@@ -449,7 +457,10 @@ function VoucherList() {
         <Grid item lg={8} md={9} sm={9} mt={2}>
           <Card className={styles["deal-card"]}>
             <CardContent sx={{ padding: "0px" }}>
-              <FilterVoucherSection sortOption={sortOption} handleSortOption={handleSortOption} />
+              <FilterVoucherSection
+                sortOption={sortOption}
+                handleSortOption={handleSortOption}
+              />
               <DataTable
                 persistTableHead
                 data={data ? data.listOfVouchers : data}

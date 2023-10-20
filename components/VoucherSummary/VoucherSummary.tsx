@@ -205,9 +205,8 @@ function VoucherSummary() {
     }
 
     if (type === "$_OFF_MULTI") {
-      return `$${Number(Number(value)/ 100).toFixed(2)}`;
+      return `$${Number(Number(value) / 100).toFixed(2)}`;
     }
-
   };
 
   const getDealValuePreview = (data: any) => {
@@ -230,7 +229,6 @@ function VoucherSummary() {
   };
 
   const getVoucherValuePreview = (value: string, type: string) => {
-
     if (type === "$_OFF") {
       return `Spend $${(
         Number(data?.voucherExclusions?.spend?.minimum) / 100
@@ -250,10 +248,10 @@ function VoucherSummary() {
     }
 
     if (type === "$_OFF_MULTI") {
-      return `Buy ${(
-        Number(data?.voucherExclusions?.spend?.minimum))}, for $${(Number(value) / 100).toFixed(2)}`;
+      return `Buy ${Number(data?.voucherExclusions?.spend?.minimum)}, Get $${(
+        Number(value) / 100
+      ).toFixed(2)}`;
     }
-
   };
 
   const downloadScopeExcel = (data: any) => {
@@ -497,18 +495,27 @@ function VoucherSummary() {
                     })}
                   </Typography>
 
-                  {/* <Typography
+                  <Typography
                     data-testid="title"
                     variant="h4"
                     className={styles.heading}
                     mt={4}
                     mb={1}
                   >
-                    Is this voucher restricted to a specific location?
+                    Voucher is valid for?
                   </Typography>
                   <Typography className={styles.content}>
-                    Provience,Ontario
-                  </Typography> */}
+                    {data?.voucherBannerRestriction?.fulfillment?.allowed_types?.reduce(
+                      (acc: string, cur: string) => {
+                        const formattedValue =
+                          cur[0] + cur.slice(1).toLowerCase();
+                        return acc
+                          ? `${acc}, ${formattedValue}`
+                          : formattedValue;
+                      },
+                      ""
+                    )}
+                  </Typography>
                 </Grid>
               </Grid>
             </Grid>
@@ -547,7 +554,8 @@ function VoucherSummary() {
                   {data?.voucherValues?.rewardType ? (
                     <>
                       <Typography className={styles.content}>
-                        {data?.voucherValues?.rewardType === "$_OFF"
+                        {data?.voucherValues?.rewardType === "$_OFF" ||
+                        data?.voucherValues?.rewardType === "$_OFF_MULTI"
                           ? "Dollar ($) off"
                           : voucherTypeLabel}
                       </Typography>
@@ -579,14 +587,14 @@ function VoucherSummary() {
                   >
                     Customer Preview
                   </Typography>
-                  {data?.voucherValues?.rewards &&
-                  <Typography className={styles.content}>
-                    {getVoucherValuePreview(
-                      data?.voucherValues?.rewards[0]?.value,
-                      data?.voucherValues?.rewardType
-                    )}
-                  </Typography>
-                  }
+                  {data?.voucherValues?.rewards && (
+                    <Typography className={styles.content}>
+                      {getVoucherValuePreview(
+                        data?.voucherValues?.rewards[0]?.value,
+                        data?.voucherValues?.rewardType
+                      )}
+                    </Typography>
+                  )}
 
                   {/* <Typography
                     variant="h4"
