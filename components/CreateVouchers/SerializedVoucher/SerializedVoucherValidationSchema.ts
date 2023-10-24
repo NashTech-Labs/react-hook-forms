@@ -196,19 +196,21 @@ const schema = yup.object().shape({
         yup
             .string()
             .required("Error: LIAM field required")
-            .matches(/^[a-zA-Z]/, "Error: Must start with letter")
-            .matches(/[A-Za-z](\w{12})+_EA/, "Error: Valid LIAM required")
-            .min(16, "Error: Valid LIAM required")
-            .max(16, "Error: Valid LIAM required")
+            .test('liam-error', "Error: Invalid LIAM", (value) => {
+                if(!value) return true;
+                const regex = /[_]/
+                return regex.test(value)
+            })
     ),
     exliam: yup.array().of(
         yup
             .string()
             .required("Error: LIAM field required")
-            .matches(/^[a-zA-Z]/, "Error: Must start with letter")
-            .matches(/[A-Za-z](\w{12})+_EA/, "Error: Valid LIAM required")
-            .min(16, "Error: Valid LIAM required")
-            .max(16, "Error: Valid LIAM required")
+            .test('liam-error', "Error: Invalid LIAM", (value) => {
+                if(!value) return true;
+                const regex = /[_]/
+                return regex.test(value)
+            })
     ),
     file: yup
         .mixed()
