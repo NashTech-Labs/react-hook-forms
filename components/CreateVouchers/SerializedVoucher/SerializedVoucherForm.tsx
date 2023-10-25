@@ -292,42 +292,42 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
         <GeneralInformation
           isVoucherEditing={isVoucherEditing}
           currentStep={2}
-          totalSteps={voucherLevel === "basket" ? 9 : 10}
+          totalSteps={voucherLevel === "basket" ? 8 : 9}
           setCheckForDuplicateInProgress={setCheckForDuplicateInProgress}
         />
         <BannerRestrictions
           currentStep={3}
-          totalSteps={voucherLevel === "basket" ? 9 : 10}
+          totalSteps={voucherLevel === "basket" ? 8 : 9}
         />
         <SerializedVoucherValue
           currentStep={4}
-          totalSteps={voucherLevel === "basket" ? 9 : 10}
+          totalSteps={voucherLevel === "basket" ? 8 : 9}
         />
         <VoucherValidity
           currentStep={5}
-          totalSteps={voucherLevel === "basket" ? 9 : 10}
+          totalSteps={voucherLevel === "basket" ? 8 : 9}
         />
         <NumberCodes
           currentStep={6}
-          totalSteps={voucherLevel === "basket" ? 9 : 10}
+          totalSteps={voucherLevel === "basket" ? 8 : 9}
         />
         <DateInEffect
           deal={voucher}
           currentStep={7}
-          totalSteps={voucherLevel === "basket" ? 9 : 10}
+          totalSteps={voucherLevel === "basket" ? 8 : 9}
         />
         {voucherLevel === "product" ? (
-          <ProductsCollection currentStep={8} totalSteps={10} />
+          <ProductsCollection currentStep={8} totalSteps={9} />
         ) : null}
         <Exclusions
           dealLevelName={voucherLevel}
           currentStep={voucherLevel === "product" ? 9 : 8}
-          totalSteps={voucherLevel === "product" ? 10 : 9}
+          totalSteps={voucherLevel === "product" ? 9 : 8}
         />
-        <SerilizedPromotionalMessage
+        {/* <SerilizedPromotionalMessage
           currentStep={voucherLevel === "product" ? 10 : 9}
           totalSteps={voucherLevel === "product" ? 10 : 9}
-        />
+        /> */}
       </Grid>
       {ctaContent}
       <Modal

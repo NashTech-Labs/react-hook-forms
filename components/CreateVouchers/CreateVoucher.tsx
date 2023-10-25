@@ -54,7 +54,7 @@ function CreateVoucher() {
       <Card className={commonStyles["card-container"]}>
         <StepLabel
           currentStep={1}
-          totalSteps={lobType?.lob === JOE_FRESH_LOB ? 6 : 10}
+          totalSteps={lobType?.lob === JOE_FRESH_LOB ? 6 : 9}
         />
         <StepTitle title={"Select voucher type"} />
 
@@ -77,6 +77,25 @@ function CreateVoucher() {
           </Grid>
         )}
         {lobType?.lob === ONLINE_GROCERIES_LOB && (
+          
+          <>
+          <Grid
+            data-testid="multidealBtn"
+            onClick={() => {
+              handleVoucherValue("promotional");
+            }}
+            className={commonStyles["deal-card-container"]}
+            bgcolor={voucherType === "promotional" ? "#E6ECF6" : "#fff"}
+          >
+            <DiscountOutlinedIcon className={commonStyles.Discount} />
+            <Grid className={commonStyles.dealTitle}>
+              <Typography variant="h6" className={commonStyles.dealType}>
+                Promotional
+              </Typography>
+              <Typography>Create new promotional voucher</Typography>
+            </Grid>
+          </Grid>
+
           <Grid
             data-testid="multidealBtn"
             onClick={() => {
@@ -93,6 +112,7 @@ function CreateVoucher() {
               <Typography>Create new serialized voucher</Typography>
             </Grid>
           </Grid>
+          </>
         )}
       </Card>
       <Grid container justifyContent="center">
