@@ -348,22 +348,22 @@ const serilizedconfig: IConfig = {
       },
     },
   ],
-  "Promotional messages": [
-    {
-      title: "English message",
-      getValue: (formData: ICreateSerializedVoucherFormState) => {
-        const { englishMessage } = formData;
-        return englishMessage;
-      },
-    },
-    {
-      title: "French message",
-      getValue: (formData: ICreateSerializedVoucherFormState) => {
-        const { frenchMessage } = formData;
-        return frenchMessage;
-      },
-    },
-  ],
+  // "Promotional messages": [
+  //   {
+  //     title: "English message",
+  //     getValue: (formData: ICreateSerializedVoucherFormState) => {
+  //       const { englishMessage } = formData;
+  //       return englishMessage;
+  //     },
+  //   },
+  //   {
+  //     title: "French message",
+  //     getValue: (formData: ICreateSerializedVoucherFormState) => {
+  //       const { frenchMessage } = formData;
+  //       return frenchMessage;
+  //     },
+  //   },
+  // ],
 };
 
 export default serilizedconfig;

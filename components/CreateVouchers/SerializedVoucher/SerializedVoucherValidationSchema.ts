@@ -337,14 +337,14 @@ const schema = yup.object().shape({
             return context?.parent?.website
         } else return true
     }),
-    englishMessage: yup
-        .string()
-        .required("Error: English message required")
-        .max(250, "Error: Message should be less than 250 characters"),
-    frenchMessage: yup
-        .string()
-        .required("Error: French message required")
-        .max(250, "Error: Message should be less than 250 characters"),
+    // englishMessage: yup
+    //     .string()
+    //     .required("Error: English message required")
+    //     .max(250, "Error: Message should be less than 250 characters"),
+    // frenchMessage: yup
+    //     .string()
+    //     .required("Error: French message required")
+    //     .max(250, "Error: Message should be less than 250 characters"),
     restrictions: yup.array().of(yup.string()).min(1, 'At least one banner should be selected'),
     dollarOffMultiBuyDiscount: yup.mixed().test('dollar-off-multibuy-discount', 'Error: Dollar($) value required', (value: string, context: any) => {
         if(context?.parent?.voucherLevel === 'product' && context?.parent?.voucherDiscountTab === 'dollar' && context?.parent?.voucherValueDollarOffCriteria === 'MULTI_BUY') {
