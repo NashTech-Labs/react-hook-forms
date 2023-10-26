@@ -9,6 +9,16 @@ import ManualAddForm from "../../../FormComponents/ManualAddForm";
 import { useFormContext, useWatch } from "react-hook-form";
 import CustomTooltip from "../../../Tooltip";
 import styles from "../../../FormComponents/FormComponents.module.css";
+import { JOE_FRESH_LOB } from "../../../../constants/lob";
+import { useAppSelector } from "../../../../store/index";
+import { lobState } from "../../../../store/feature/selectlob/lobSlice";
+
+const getHelperText = (lob: string) => {
+  if (lob === JOE_FRESH_LOB) {
+    return "Must be in the following format: [article_number] _ [selling_uom]";
+  } else
+    return "Must be in the following format: [article number] _ [unit of measure]";
+};
 
 function ManuallyAddLiam({ liamValue }: any) {
   const { control, setValue, clearErrors } = useFormContext();
@@ -16,10 +26,9 @@ function ManuallyAddLiam({ liamValue }: any) {
     control,
     name: liamValue,
   });
-
   const [showAllBtnLIAM, setShowAllBtnLIAM] = useState<boolean>(false);
-
   const [showAllListLIAM, setShowAllListLIAM] = useState<boolean>(false);
+  const lobType = useAppSelector(lobState);
 
   const handleLIAM = () => {
     liam.push("");
@@ -58,8 +67,7 @@ function ManuallyAddLiam({ liamValue }: any) {
         <>
           <Typography className={commonStyles.required}>Products</Typography>
           <Typography className={commonStyles.validationHeading}>
-            Must be 16 characters beginning with a letter (E.g. :
-            F2MR029449009_EA)
+            {getHelperText(lobType?.lob)}
           </Typography>
         </>
       ) : null}
