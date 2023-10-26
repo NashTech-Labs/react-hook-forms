@@ -294,8 +294,6 @@ const schema = yup
           .string()
           .required("Error: MCH field required")
           .matches(/^[mM]/, "Error: Must start with M")
-          .min(9, "Error: Valid MCH required")
-          .max(9, "Error: Valid MCH required")
       ),
     exmch: yup
       .array()
@@ -304,8 +302,6 @@ const schema = yup
           .string()
           .required("Error: MCH field required")
           .matches(/^[mM]/, "Error: Must start with M")
-          .min(9, "Error: Valid MCH required")
-          .max(9, "Error: Valid MCH required")
       ),
     liam: yup.array().of(
       yup

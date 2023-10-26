@@ -107,20 +107,20 @@ const schema = yup.object().shape({
     //     .required('Error: Number of vouchers required'),
     // usageOfVoucher: yup.string().required('Error: Number of uses required'),
     startDatePicker: yup.date()
-    .typeError("Error: Valid date required")
-    .test(
-      "test-start-date",
-      "Error: You cannot add date before yesterday",
-      function (value, context) {
-        return isEndDateTimeValid(
-          value,
-          context.parent.startDatePicker,
-          ">="
-        );
-      }
-    )
-    .required("Error: Date required")
-    .nullable(),
+        .typeError("Error: Valid date required")
+        .test(
+            "test-start-date",
+            "Error: You cannot add date before yesterday",
+            function(value, context) {
+                return isEndDateTimeValid(
+                    value,
+                    context.parent.startDatePicker,
+                    ">="
+                );
+            }
+        )
+        .required("Error: Date required")
+        .nullable(),
     startTimePicker: yup.date().typeError("Error: Valid time required").required('Error: Time required').nullable(),
     endDatePicker: yup.date().typeError("Error: Valid date required").required('Error: Date required').nullable()
         .test("test-end-date", "Error: End date smaller than start date", function(value, context) {
@@ -137,8 +137,6 @@ const schema = yup.object().shape({
                 .string()
                 .required("Error: MCH field required")
                 .matches(/^[mM]/, "Error: Must start with M")
-                .min(9, "Error: Valid MCH required")
-                .max(9, "Error: Valid MCH required")
         ),
     exmch: yup
         .array()
@@ -147,26 +145,26 @@ const schema = yup.object().shape({
                 .string()
                 .required("Error: MCH field required")
                 .matches(/^[mM]/, "Error: Must start with M")
-                .min(9, "Error: Valid MCH required")
-                .max(9, "Error: Valid MCH required")
         ),
     liam: yup.array().of(
         yup
             .string()
             .required("Error: LIAM field required")
-            .matches(/^[a-zA-Z]/, "Error: Must start with letter")
-            .matches(/[A-Za-z](\w{12})+_EA/, "Error: Valid LIAM required")
-            .min(16, "Error: Valid LIAM required")
-            .max(16, "Error: Valid LIAM required")
+            .test('liam-error', "Error: Invalid LIAM", (value) => {
+                if(!value) return true;
+                const regex = /[_]/
+                return regex.test(value)
+            })
     ),
     exliam: yup.array().of(
         yup
             .string()
             .required("Error: LIAM field required")
-            .matches(/^[a-zA-Z]/, "Error: Must start with letter")
-            .matches(/[A-Za-z](\w{12})+_EA/, "Error: Valid LIAM required")
-            .min(16, "Error: Valid LIAM required")
-            .max(16, "Error: Valid LIAM required")
+            .test('liam-error', "Error: Invalid LIAM", (value) => {
+                if(!value) return true;
+                const regex = /[_]/
+                return regex.test(value)
+            })
     ),
     file: yup
         .mixed()
@@ -262,16 +260,16 @@ const schema = yup.object().shape({
                 } else return true;
             }
         ),
-        dealApplyType: yup
+    dealApplyType: yup
         .mixed()
         .test(
-        "dollar-value-required",
-        "Error: Select applicable products",
-        (value: any, context: any) => {
-            if (value !== "") {
-              return true;
-            } else return false;
-        }
+            "dollar-value-required",
+            "Error: Select applicable products",
+            (value: any, context: any) => {
+                if(value !== "") {
+                    return true;
+                } else return false;
+            }
         ),
 })
 

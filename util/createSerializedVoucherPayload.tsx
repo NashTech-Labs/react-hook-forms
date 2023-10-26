@@ -36,9 +36,8 @@ const getRewardType = ({
     if (voucherDiscountTab === "dollar") {
       if (voucherValueDollarOffCriteria === "MINIMUM_SPEND") {
         rewardValue = (Number(dollarOff) * 100).toFixed();
-      } 
-      if (voucherValueDollarOffCriteria === "MULTI_BUY")
-      {
+      }
+      if (voucherValueDollarOffCriteria === "MULTI_BUY") {
         rewardType = "$_OFF_MULTI";
         rewardValue = (Number(dollarOffMultiBuyDiscount) * 100).toFixed();
       }
@@ -165,7 +164,7 @@ const generateCreateSerializedVoucherPayload = (
     fulfillmentSpend,
     dollarPointDiscount,
     basketdollarPointDiscount,
-    dollarOffMultiBuyQuantity
+    dollarOffMultiBuyQuantity,
   } = formData;
 
   const { rewardType, rewardValue } = getRewardType(formData);
@@ -190,7 +189,7 @@ const generateCreateSerializedVoucherPayload = (
     // display_message_fr: frenchMessage,
     is_serialized: true,
     action: isDraft ? "DISABLE" : "PUBLISH",
-    batch_size: batch_size,
+    batch_size: 100000,
   };
 
   if (voucherLevel === "product") {
@@ -212,14 +211,20 @@ const generateCreateSerializedVoucherPayload = (
     };
   }
 
-  if (voucherLevel?.toUpperCase() === "BASKET" && voucherDiscountTab === "points") {
+  if (
+    voucherLevel?.toUpperCase() === "BASKET" &&
+    voucherDiscountTab === "points"
+  ) {
     payload["promo_restrictions"]["spend"] = {
       minimum: Number((Number(basketdollarPointDiscount) * 100).toFixed()),
       maximum: null,
     };
   }
 
-  if (voucherDiscountTab === "dollar" && voucherValueDollarOffCriteria === "MULTI_BUY") {
+  if (
+    voucherDiscountTab === "dollar" &&
+    voucherValueDollarOffCriteria === "MULTI_BUY"
+  ) {
     payload["promo_restrictions"]["spend"] = {
       minimum: Number(dollarOffMultiBuyQuantity),
       maximum: null,
@@ -244,12 +249,15 @@ const generateCreateSerializedVoucherPayload = (
       voucherValueDollarOffCriteria === "MINIMUM_SPEND"
     ) {
       payload["promo_restrictions"]["spend"] = {
-        minimum: Number((dollarOffSpend)).toFixed(),
+        minimum: Number(dollarOffSpend).toFixed(),
         maximum: null,
       };
     }
 
-    if (voucherLevel?.toUpperCase() === "PRODUCT" && voucherDiscountTab === "points") {
+    if (
+      voucherLevel?.toUpperCase() === "PRODUCT" &&
+      voucherDiscountTab === "points"
+    ) {
       payload["promo_restrictions"]["spend"] = {
         minimum: Number((Number(dollarPointDiscount) * 100).toFixed()),
         maximum: null,
