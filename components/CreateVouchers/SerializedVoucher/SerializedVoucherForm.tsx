@@ -310,6 +310,7 @@ const CreateVoucherForm = ({ voucher }: ICreateVoucherFrom) => {
         <NumberCodes
           currentStep={6}
           totalSteps={voucherLevel === "basket" ? 8 : 9}
+          isVoucherEditing={isVoucherEditing}
         />
         <DateInEffect
           deal={voucher}

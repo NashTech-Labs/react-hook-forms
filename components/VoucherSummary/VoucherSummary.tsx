@@ -381,6 +381,21 @@ function VoucherSummary() {
 
   let bannerArr = newArr ? [...newArr] : [];
 
+
+  const getDeviceType = (value: string | undefined) => {
+    if (value === "WEB")
+    {
+      return `Website`
+    }
+    if (value === "APP")
+    {
+      return `Mobile Application`
+    }
+    else {
+      return `Website and Mobile Application`
+    }
+  }
+
   let content = null;
 
   if (isVoucherEditing) {
@@ -393,12 +408,13 @@ function VoucherSummary() {
   } else {
     content = (
       <>
-        <DownloadVoucherCodes
-          voucherId={voucherId}
-          downloadBatchIds={downloadBatchIds}
-          progress={(completed / total) * 100}
-          total={total}
-        />
+        { voucherType === "SERIALIZED" ?
+         <DownloadVoucherCodes
+         voucherId={voucherId}
+         downloadBatchIds={downloadBatchIds}
+         progress={(completed / total) * 100}
+         total={total}
+       /> : null}
         <Card className={styles["step-card-container"]}>
           <StepTitle title={"Voucher type"} />
           <Typography variant="h4" className={styles.heading} mt={4}>
@@ -673,7 +689,7 @@ function VoucherSummary() {
                     {getDealValuePreview(data)}
                   </Typography>
 
-                  <Typography
+                  {/* <Typography
                     variant="h4"
                     className={styles.heading}
                     mt={2}
@@ -681,13 +697,14 @@ function VoucherSummary() {
                   >
                     Is this voucher eligible for no fees?
                   </Typography>
-                  <Typography className={styles.content}>Yes</Typography>
+                  <Typography className={styles.content}>Yes</Typography> */}
                 </Grid>
               </Grid>
             </Grid>
           )}
         </Card>
 
+        { voucherType === "SERIALIZED" &&
         <Card className={styles["step-card-container"]}>
           <StepTitle title={"Voucher Validity"} />
 
@@ -715,14 +732,15 @@ function VoucherSummary() {
                   Which platform(s) is this voucher eligible for redemption on?
                 </Typography>
                 <Typography className={styles.content}>
-                  Mobile, application
+                  {getDeviceType(data?.voucherExclusions?.platformDeviceType?.allowed)}
                 </Typography>
               </Grid>
             </Grid>
           </Grid>
         </Card>
+        }
 
-        {data?.voucherGeneralInfo?.quantity && (
+        { voucherType === "SERIALIZED" && data?.voucherGeneralInfo?.quantity && (
           <Card className={styles["step-card-container"]}>
             <StepTitle title={"Number of Codes and Details"} />
             <Grid container>

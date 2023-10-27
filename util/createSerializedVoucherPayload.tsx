@@ -165,6 +165,8 @@ const generateCreateSerializedVoucherPayload = (
     dollarPointDiscount,
     basketdollarPointDiscount,
     dollarOffMultiBuyQuantity,
+    website,
+    mobileApplication
   } = formData;
 
   const { rewardType, rewardValue } = getRewardType(formData);
@@ -244,6 +246,7 @@ const generateCreateSerializedVoucherPayload = (
     payload["promo_restrictions"]["banner"] = {
       include: getRestrictions(restrictions),
     };
+
     if (
       voucherDiscountTab === "dollar" &&
       voucherValueDollarOffCriteria === "MINIMUM_SPEND"
@@ -268,6 +271,16 @@ const generateCreateSerializedVoucherPayload = (
       payload["promo_restrictions"]["spend"] = {
         minimum: Number((Number(fulfillmentSpend) * 100).toFixed()),
         maximum: null,
+      };
+    }
+  }
+
+  if (voucherType === "SERIALIZED") {
+    if (website && mobileApplication) return payload
+    else
+    {
+      payload["promo_restrictions"]["device_type"] = {
+        "allowed": website ? "WEB" : "APP"
       };
     }
   }

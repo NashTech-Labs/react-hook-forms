@@ -79,7 +79,7 @@ function CreateVoucher() {
         {lobType?.lob === ONLINE_GROCERIES_LOB && (
           
           <>
-          <Grid
+          {/* <Grid
             data-testid="multidealBtn"
             onClick={() => {
               handleVoucherValue("promotional");
@@ -94,7 +94,7 @@ function CreateVoucher() {
               </Typography>
               <Typography>Create new promotional voucher</Typography>
             </Grid>
-          </Grid>
+          </Grid> */}
 
           <Grid
             data-testid="multidealBtn"

@@ -13,9 +13,10 @@ import { useFormContext } from 'react-hook-form';
 interface ISerializedVoucherValueProps {
     currentStep: number;
     totalSteps: number;
+    isVoucherEditing: Boolean
 }
 
-function NumberCodes({currentStep,totalSteps}: ISerializedVoucherValueProps) {
+function NumberCodes({currentStep,totalSteps, isVoucherEditing}: ISerializedVoucherValueProps) {
 
     const { setValue, clearErrors } = useFormContext();
 
@@ -47,6 +48,7 @@ function NumberCodes({currentStep,totalSteps}: ISerializedVoucherValueProps) {
                     required
                     inputHeight={true}
                     tooltipKey={'VOUCHER_QUANTITY'}
+                    disabled={isVoucherEditing ? true : false}
                 />
 
                 {/* <RadioGroupField noBottomGutters options={voucherCodeOptions} label="How often can the customer use this voucher?" name="useVoucherOptions" required={true} tooltipKey={'VOUCHER_USAGE'} handleChange={handleChange} /> */}

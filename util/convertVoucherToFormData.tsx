@@ -214,6 +214,24 @@ const convertVoucherDataToFormData = (voucher: any) => {
     formData["endTimePicker"] = convertToEST(validTo);
   }
 
+  formData["voucherValidity"] = 'no'
+
+  const { platformDeviceType } = voucherExclusions
+
+  if (platformDeviceType?.allowed) {
+  if (platformDeviceType?.allowed === "WEB") {
+    formData["website"] = true;
+  }
+  if (platformDeviceType?.allowed === "APP")
+  {
+    formData["mobileApplication"] = true;
+  }
+  }
+  else {
+    formData["website"] = true;
+    formData["mobileApplication"] = true;
+  }
+
   return {
     ...formData,
     ...getDealValues(voucher),
